@@ -1,0 +1,50 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<div class="{% if block.settings.show_percentage_bar == false%}blocky-results-hide-percentage {% endif %}{% if block.settings.show_results_borders == false %}blocky-results-hide-border {% endif %}{% if block.settings.percentage_bold == false %}blocky-results-percentage-not-bold{% endif %}"
+  style="--percentage-color: {{ block.settings.percentage_color }}; --result-text-color: {{ block.settings.result_text_color.rgb | split: ' ' | join: ',' }}; --result-text-size: {{ block.settings.result_text_size }}px; --non-percentage-color: {{ block.settings.non_percentage_color }};--percentage-size: {{ block.settings.percentage_size | default: 7 }}rem; --results-padding: {{ block.settings.results_padding  | default: 1}}rem; --results-border-width: {{ block.settings.results_border_width | default: 0.7 }}rem;" 
+  {{ block.shopify_attributes }}
+>
+  {% unless block.settings.row_text_1 == blank %}
+    <div class="blocky-results-row">
+      <div class="blocky-results-percentage" style="--percentage: {{ block.settings.percentage_1 }}%">
+        <p>{{ block.settings.percentage_1 }}%</p>
+      </div>
+      <div class="blocky-results-text"> {{ block.settings.row_text_1 }} </div>
+    </div>
+  {% endunless %}
+  {% unless block.settings.row_text_2 == blank %}
+    <div class="blocky-results-row">
+      <div class="blocky-results-percentage" style="--percentage: {{ block.settings.percentage_2 }}%">
+        <p>{{ block.settings.percentage_2 }}%</p>
+      </div>
+      <div class="blocky-results-text"> {{ block.settings.row_text_2 }} </div>
+    </div>
+  {% endunless %}
+  {% unless block.settings.row_text_3 == blank %}
+    <div class="blocky-results-row">
+      <div class="blocky-results-percentage" style="--percentage: {{ block.settings.percentage_3 }}%">
+        <p>{{ block.settings.percentage_3 }}%</p>
+      </div>
+      <div class="blocky-results-text"> {{ block.settings.row_text_3 }} </div>
+    </div>
+  {% endunless %}
+  {% unless block.settings.row_text_4 == blank %}
+    <div class="blocky-results-row">
+      <div class="blocky-results-percentage" style="--percentage: {{ block.settings.percentage_4 }}%">
+        <p>{{ block.settings.percentage_4 }}%</p>
+      </div>
+      <div class="blocky-results-text"> {{ block.settings.row_text_4 }} </div>
+    </div>
+  {% endunless %}
+  {% unless block.settings.row_text_5 == blank %}
+    <div class="blocky-results-row">
+      <div class="blocky-results-percentage" style="--percentage: {{ block.settings.percentage_5 }}%">
+        <p>{{ block.settings.percentage_5 }}%</p>
+      </div>
+      <div class="blocky-results-text"> {{ block.settings.row_text_5 }} </div>
+    </div>
+  {% endunless %}
+</div>

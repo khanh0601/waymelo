@@ -1,0 +1,556 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .blocky-video-with-text .blocky-media-adapt .bky-vid-placeholder  {
+    height: 45rem;
+  }
+  .blocky-video-with-text video,
+  .blocky-video-with-text .bky-vid-placeholder {
+    border-radius: 15px;
+  }
+  .blocky-video-with-text .blocky-flex-layout-2 video,
+  .blocky-video-with-text .blocky-flex-layout-2 .bky-vid-placeholder {
+    box-shadow: unset;
+    border-radius: 0px;
+  }
+  .blocky-video-with-text .blocky-flex-container.blocky-flex-layout-2 {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+{% endstylesheet %}
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+<div 
+  class="blocky blocky-video-with-text blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }}; --layout-2-background-color:{{ section.settings.layout_2_background_color }}"
+>
+  <div class="blocky-page-width">
+    <div class="blocky-flex-container blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-des-flex-{{ section.settings.layout }} blocky-flex-layout-{{ section.settings.layout_style }}{% if section.settings.shadow == true and section.settings.layout_style == "2" %} blocky-shadow{% endif %}">
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_video_width }} blocky-justify-center blocky-media-{{ section.settings.height }}{% if section.settings.shadow == true and section.settings.layout_style != "2" %} blocky-rounded-sm blocky-shadow blocky-overflow-hidden{% endif %}">
+        {% render "blocky-video", video: section.settings.video, video_fit: section.settings.video_fit, autoplay: section.settings.autoplay, button_color: section.settings.play_button_color, background_button_color: section.settings.play_button_background_color %} 
+      </div>
+      <div class="blocky-flex-child blocky-flex-child-2">
+        <div class="blocky-media-text-container blocky-align-{{ section.settings.desktop_content_position }} blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+          {%- for block in section.blocks -%}
+            {% case block.type %}
+              {%- when 'title' -%}
+                {% render 'blocky-titlel', block: block %}
+              {%- when 'body' -%}
+                {% render 'blocky-bodyl', block: block %}
+              {%- when 'button' -%}
+                {% render 'blocky-buttonl', block:block %}
+              {%- when 'review-stars' -%}
+                {% render 'blocky-review-starsl', block:block %}
+            {%- endcase -%}
+          {%- endfor -%}  
+        </div>
+      </div>    
+    </div>
+  </div>
+</div>
+  
+{% schema %}
+{
+  "name": "BKY - Video & Text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to video"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "adapt",
+      "label": "Height"
+    },
+    {
+      "type": "select",
+      "id": "desktop_video_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Desktop video width",
+      "info": "Video is automatically optimized for mobile."
+    },
+    {
+      "type": "select",
+      "id": "video_fit",
+      "options": [
+        {
+          "value": "fit",
+          "label": "Fit"
+        },
+        {
+          "value": "zoomed",
+          "label": "Zoomed in"
+        }
+      ],
+      "default": "zoomed",
+      "label": "Video fit"
+    },
+    {
+      "type": "checkbox",
+      "id": "shadow",
+      "label": "Show video shadow",
+      "default": true,
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true,
+    },
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "default": "#FFFFFF",
+      "label": "Play button color",
+      "info": "The play button only shows if autoplay is off"
+    },
+    {
+      "type": "color",
+      "id": "play_button_background_color",
+      "default": "#DCDCDC",
+      "label": "Play button background color",
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+
+    {
+      "type": "select",
+      "id": "layout_style",
+      "options": [
+        {
+          "value": "1",
+          "label": "Style 1"
+        },
+        {
+          "value": "2",
+          "label": "Style 2"
+        },
+      ],
+      "default": "1",
+      "label": "Layout style",
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "layout_2_background_color",
+      "label": "Text background color",
+      "default": "#FCFCFC",
+      "info": "This is only applied for style 2"
+    },
+    
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Video first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Text first"
+        },
+      ],
+      "default": "row",
+      "label": "Desktop video placement",
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Middle"
+        },
+        {
+          "value": "end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center",
+      "label": "Desktop content position"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "options": [
+        {
+          "value": "col",
+          "label": "Video first"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Text first"
+        }
+      ],
+      "default": "col",
+      "label": "Mobile video placement"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "select",
+      "id": "text_container_gap",
+      "label": "Space between text",
+      "default": "2rem",
+      "options": [
+        {
+          "label": "None",
+          "value": "0"
+        },
+        {
+          "label": "Small",
+          "value": "0.5rem"
+        },
+        {
+          "label": "Medium",
+          "value": "1rem"
+        },
+        {
+          "label": "Large",
+          "value": "1.5rem"
+        },
+        {
+          "label": "Extra Large",
+          "value": "2rem"
+        },
+      ]
+    },  
+
+
+    {
+      "type": "header",
+      "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "<b>Video with Text</b>",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 60,
+          "min": 30,
+          "max": 100,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Showcase your chosen product with a video and text. Add a detailed description to capture the customer's attention</p>",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "range",
+          "id": "body_size",
+          "label": "Body size",
+          "default": 16,
+          "min": 10,
+          "max": 30,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#000000"
+        },
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button link",
+          "info": "Leave the text blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "curved",
+          "options": [
+            {
+              "value": "flat",
+              "label": "Flat"
+            },
+            {
+              "value": "curved",
+              "label": "Curved"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "extra-round",
+              "label": "Extra Round"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "regular",
+          "options": [
+              {
+                "value": "outline",
+                "label": "Outline"
+              },
+              {
+                "value": "regular",
+                "label": "Regular"
+              }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#2065D1"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+      ]
+    },
+    {
+      "type": "review-stars",
+      "name": "Review Stars",
+      "limit": 1,
+      "settings": [
+         {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "default": 5,
+          "info": "Set the rating to 0 to hide the stars"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "default": "#ffcc00",
+          "label": "Stars color"
+        },
+        {
+          "type": "color",
+          "id": "review_text_color",
+          "label": "Review text color",
+          "default": "#000000"
+        },
+    
+        {
+          "type": "select",
+          "id": "empty_stars_style",
+          "options": [
+            {
+              "value": "outlined",
+              "label": "Outlined"
+            },
+            {
+              "value": "hidden",
+              "label": "Hidden"
+            }
+          ],
+          "label": "Empty stars style",
+          "default": "hidden"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "review_text",
+          "label": "Text",
+          "default": "Based on over <b>1000+</b> Reviews"
+        },
+        {
+          "type": "range",
+          "id": "review_font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 16,
+          "label": "Text size"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Video and Text",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "body"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

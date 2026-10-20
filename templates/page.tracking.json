@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_TW8GPX": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"page-width\"><div class=\"track-order-container\">\n<div style=\"text-align: center;\">Enter your tracking number</div>\n<input class=\"track-order-input\" type=\"text\" id=\"YQNum\" maxlength=\"50\" /> <button class=\"track-order-button\"  onclick=\"doTrack()\" > Track Your Order</button></div>\n<div id=\"YQContainer\"></div>\n<!--Script code can be put in the bottom of the page, wait until the page is loaded then execute.-->\n<script type=\"text/javascript\" src=\"//www.17track.net/externalcall.js\"></script>\n<script type=\"text/javascript\">// <![CDATA[\nfunction doTrack() {\n    var num = document.getElementById(\"YQNum\").value;\n    if(num===\"\"){\n        alert(\"Enter your number.\"); \n        return;\n    }\n    YQV5.trackSingle({\n        //Required, Specify the container ID of the carrier content.\n        YQ_ContainerId:\"YQContainer\",\n        //Optional, specify tracking result height, max height 800px, default is 560px.\n        YQ_Height:560,\n        //Optional, select carrier, default to auto identify.\n        YQ_Fc:\"0\",\n        //Optional, specify UI language, default language is automatically detected based on the browser settings.\n        YQ_Lang:\"en\",\n        //Required, specify the number needed to be tracked.\n        YQ_Num:num\n    });\n}\n// ]]></script>\n</div>\n</div>",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 64
+      }
+    },
+    "rich_text_FjaFDf": {
+      "type": "rich-text",
+      "blocks": {
+        "text_8gcR4V": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Track your WAYMELO order in real time. Enter the <strong>tracking number</strong> from your shipping confirmation email in the box below and click <strong>Track Your Order</strong>.</p><p><strong>Where do I find my tracking number?</strong> Once your order is dispatched, we email you a shipping confirmation containing your tracking number. Please check your spam or promotions folder if you cannot find it.</p><p><strong>No tracking updates yet?</strong> It can take 2–5 business days after dispatch for a new tracking number to show its first scan. Delivery times by region are listed in our <a href=\"https://galixo.store/policies/shipping-policy\">Shipping Policy</a>.</p><p>Need help? Contact us 24/7 at <a href=\"mailto:care@waymelo.com\" target=\"_blank\" title=\"mailto:care@waymelo.com\">care@waymelo.com</a> or Phone / WhatsApp +1 321-233-3336 with your order number.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_8gcR4V"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_FjaFDf",
+    "custom_liquid_TW8GPX"
+  ]
+}

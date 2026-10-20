@@ -1,0 +1,30 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+<div 
+  class="blocky-flex-col"
+  style="--icon-color: {{ block.settings.icon_color }}; --title-color: {{ block.settings.icon_heading_color }}; --description-color: {{ block.settings.icon_text_color }}; --subtitle-color: {{ block.settings.icon_subtitle_color }};"    
+  {{ block.shopify_attributes }}
+>
+  {% unless block.settings.icon_heading== blank %} <span class="blocky-product-icons-2-icon-heading">{{ block.settings.icon_heading }}</span> {% endunless %}
+  {% unless block.settings.icon_description == blank %} <span class="blocky-product-icons-2-icon-description">{{ block.settings.icon_description }}</span> {% endunless %}
+  {% unless block.settings.icon_image == null and block.settings.icon_code == blank and block.settings.icon_subtitle == blank %}
+    <span class="blocky-product-icons-2-icon">
+      {% if block.settings.icon_image != null %}
+        <img 
+          src="{{ block.settings.icon_image | image_url }}" 
+          alt="{{ block.settings.icon_heading }}"
+          width="60px"
+          height="60px"
+          style="border-radius: 50%;"
+        />
+      {% elsif block.settings.icon_code != blank %}
+        <span class="material-icons material-symbols-outlined{% if block.settings.fill_icons %} filled{% endif %}"> {{ block.settings.icon_code }} </span>
+      {% endif %}
+      {% unless block.settings.icon_subtitle == blank %}
+        <span class="blocky-product-icons-2-icon-subtitle">{{ block.settings.icon_subtitle }}</span>
+      {% endunless %}
+    </span>
+  {% endunless %}
+</div>

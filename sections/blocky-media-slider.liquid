@@ -1,0 +1,429 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+  .blocky-image-video-slider-2-arrows {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .blocky-image-video-slider-2-arrows button {
+    background: none;
+    border: 1px solid var(--arrow-color, #000);
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .blocky-image-video-slider-2-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  .blocky-slider-2-carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  .blocky-image-video-slider-2-carousel-slide {
+    flex: 0 0 33.33%;
+    padding: 1rem 0.75rem 1rem 0.75rem;
+  }
+  @media only screen and (max-width:750px) {  
+    .blocky-image-video-slider-2-carousel-slide {
+      flex: 0 0 100%;  
+    }
+  }
+  .blocky-image-video-slider-2-media-wrapper:has(.bky-vid-placeholder) {
+    height: 100%
+  }
+  .blocky-image-video-slider-2-media-wrapper img {
+    max-width: 100%;
+    height: auto;
+    width: 100%;
+  }
+  .blocky-image-video-slider-2-media-wrapper > * {
+    vertical-align: bottom;
+  }
+  .blocky-image-video-slider-2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+  }
+  .blocky-image-video-slider-2 > * {
+    padding-right: .5rem;
+    padding-left: .5rem;
+  }
+  .blocky-image-video-slider-2 .blocky-image-video-slider-2-carousel {
+    padding: 0;
+  }
+  .blocky-image-video-slider-2 .blocky-body-text {
+    text-align: center;
+    order: 4;
+    flex-grow: 1;
+  }
+  @media only screen and (max-width:750px) {  
+    .blocky-image-video-slider-2 {
+      align-items: center;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .blocky-image-video-slider-2 .blocky-image-video-slider-2-arrows {
+      order: 3;
+    }
+    .blocky-image-video-slider-2 .blocky-title {
+      text-align: center;
+      padding-bottom: .5rem;
+    }
+    .blocky-image-video-slider-2 .blocky-body-text {
+      padding-top: 1rem; 
+    }
+  }
+  @media only screen and (min-width:750px) { 
+    .blocky-image-video-slider-2 .blocky-title {
+      flex-grow: 1;
+    }
+  }
+  .blocky-image-video-slider-2-arrows .left-arrow svg {
+    transform: translateX(-1px);
+  }
+  .blocky-image-video-slider-2-arrows .right-arrow svg {
+    transform: translateX(1px);
+  }
+  .blocky-image-video-slider-2-arrows svg {
+    color: var(--arrow-color, #000);
+  }
+  .blocky-image-video-slider-2-carousel-arrow {
+    transition: all .3s linear;
+  }
+  .blocky-image-video-slider-2-carousel-arrow:hover {
+    opacity: 0.6;
+  }
+  .blocky-image-video-slider-2-carousel-arrow.disabled {
+    opacity: 0.25;
+    cursor: unset;
+  }
+{% endstyle %}
+ 
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+<script src="{{ 'blocky-slider-2.js' | asset_url }}" defer></script>
+
+<div 
+  class="blocky blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }}; --layout-2-background-color:{{ section.settings.layout_2_background_color }}"
+>
+  <div class="blocky-page-width">
+    <blocky-slider-2 class="blocky-image-video-slider-2">
+      {% render 'blocky-titlel', block: section %}
+      {% if section.settings.show_arrows != false %}
+      <div class="blocky-image-video-slider-2-arrows" style="--arrow-color: {{ section.settings.arrow_color }}">
+        <button class="blocky-image-video-slider-2-carousel-arrow left-arrow disabled">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 6 8 12 16 18"></polyline>
+          </svg>          
+        </button>
+        <button class="blocky-image-video-slider-2-carousel-arrow right-arrow disabled">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="8 6 16 12 8 18"></polyline>
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+      <div class="blocky-image-video-slider-2-carousel">
+        <div class="blocky-slider-2-carousel-track">
+          {% capture other_classes %}blocky-desktop-{{ section.settings.media_size }} blocky-mobile-{{ section.settings.mobile_media_size }}{% endcapture %}
+          {% for block in section.blocks %}
+          <div class="blocky-image-video-slider-2-carousel-slide">
+            <div class="blocky-image-video-slider-2-media-wrapper blocky-overflow-hidden{% if section.settings.shadow %} blocky-shadow{% endif %}" style="border-radius: {{ section.settings.border_radius }}px;{% if section.settings.show_border == true %}border: 1px solid {{ section.settings.border_color }};{% endif %}">
+              {% if block.type == "video" %}
+                {% render "blocky-video", video: block.settings.video, video_fit: "zoomed", autoplay: block.settings.autoplay, button_color: section.settings.play_button_color, background_button_color: section.settings.play_button_background_color, other_classes: other_classes %} 
+              {% else%}
+                {% if block.settings.image %}
+                  <img
+                    class="{{ other_classes }} blocky-image-cover"
+                    src="{{ block.settings.image | image_url: height: 750 }}"
+                  >  
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: other_classes }}
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% render 'blocky-bodyl', block: section %}    
+    </blocky-slider-2>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Media Slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text",
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>Blocky Media Slider</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 42,
+      "min": 20,
+      "max": 70,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Showcase your product with multiple images and/or videos.</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 16,
+      "min": 10,
+      "max": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+
+        
+    {
+      "type": "header",
+      "content": "Media",
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt"
+        },
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "adapt",
+      "label": "Media size"
+    },    
+    {
+      "type": "select",
+      "id": "mobile_media_size",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt"
+        },
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "adapt",
+      "label": "Mobile media size"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "default": "#000000",
+      "label": "Arrow color",
+      "visible_if": "{{ section.settings.show_arrows == true }}"
+    },
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "default": "#FFFFFF",
+      "label": "Play button color",
+      "info": "The play button only shows if autoplay is off"
+    },
+    {
+      "type": "color",
+      "id": "play_button_background_color",
+      "default": "#000000",
+      "label": "Play button background color",
+    },
+    {
+      "type": "header",
+      "content": "Media Outline"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "unit": "px",
+      "min": 0,
+      "max": 50,
+      "default": 15,
+      "label": "Media border radius",
+    },
+    {
+      "type": "checkbox",
+      "id": "shadow",
+      "label": "Show shadow",
+      "default": true,
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Show border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#000000",
+      "visible_if": "{{ section.settings.show_border == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Layout",
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay",
+          "default": false,
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Media Slider",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

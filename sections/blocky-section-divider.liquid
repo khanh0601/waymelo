@@ -1,0 +1,286 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+.blocky-section-divider {
+  transform: var(--scaleX) var(--scaleY);
+}
+.blocky-section-divider-container {
+  --max-height: 150px;
+  overflow: hidden;
+  background-color: var(--background-color);
+  transform: translateY(1px);
+  position: relative;
+}
+.blocky-section-divider-container svg {
+  transform: translateY(1px);
+  color: var(--shape-color);
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  max-height: var(--max-height);
+}
+.blocky-section-divider-waves-3 {
+  --max-height: 3rem;
+  margin: 0;
+}
+.blocky-section-divider-waves-3 .wave1 > use {
+  animation: wave-ani-1 10s linear infinite;
+  &:nth-child(1) {
+    animation-delay: -2s;
+  }
+}
+.blocky-section-divider-waves-3 .wave2 > use {
+  animation: wave-ani-2 8s linear infinite;
+  opacity: 0.4;
+  &:nth-child(1) {
+    animation-delay: -2s;
+  }
+}
+.blocky-section-divider-waves-3 .wave3 > use {
+  animation: wave-ani-1 6s linear infinite;
+  opacity: 0.3;
+  &:nth-child(1) {
+    animation-delay: -2s;
+  }
+}
+.blocky-section-divider-waves-3 .wave4 > use {
+  animation: wave-ani-2 4s linear infinite;
+  opacity: 0.2;
+  &:nth-child(1) {
+    animation-delay: -2s;
+  }
+}
+@keyframes wave-ani-1 {
+  0% {
+    transform: translate(85px, 0%);
+  }
+  100% {
+    transform: translate(-90px, 0%);
+  }
+}
+@keyframes wave-ani-2 {
+  0% {
+    transform: translate(-90px, 0%);
+  }
+  100% {
+    transform: translate(85px, 0%);
+  }
+}
+@media screen and (min-width: 750px) {
+  .blocky-section-divider-waves-3 {
+    --max-height: 6rem;
+  }
+}
+{% endstylesheet %}
+
+<div class="blocky blocky-padding background-wrapper blocky-section-divider" 
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --shape-color: {{ section.settings.shape_color }};
+    --scaleX: {% if section.settings.flip_horizontal %}scaleX(-1){% else %}scaleX(1){% endif %}; --scaleY: {% if section.settings.flip_vertical %}scaleY(-1){% else %}scaleY(1){% endif %};"
+>
+  <div class="blocky-section-divider-container">
+    {% case section.settings.shape %}
+      {% when 'diagonal_1' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 32" height="200" width="100%" preserveAspectRatio="none">
+          <polygon fill="currentColor" points="0 29.91 0 32 360 32 360 0 0 29.91"/>
+        </svg>
+      {% when 'diagonal_2' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 64 1440 256" height="200" width="100%" preserveAspectRatio="none" style='--max-height: 200px;'>
+          <path fill="currentColor" fill-opacity="1" d="M0,288L1440,64L1440,320L0,320Z"></path>
+        </svg>
+      {% when 'curved_1' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200" height="200" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,75L30,91.7C60,108,120,142,180,158.3C240,175,300,175,360,154.2C420,133,480,83,540,62.5C600,42,660,50,720,62.5C780,75,840,92,900,108.3C960,125,1020,142,1080,129.2C1140,116,1200,75,1260,62.5C1320,50,1380,67,1440,87.5L1440,200L0,200Z"></path>
+        </svg>
+      {% when 'curved_2' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 240" height="200" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,120L48,104C96,88,192,56,288,72C384,88,480,152,576,152C672,152,768,88,864,72C960,56,1056,88,1152,104C1248,120,1344,120,1392,120L1440,120L1440,240L1392,240C1344,240,1248,240,1152,240C1056,240,960,240,864,240C768,240,672,240,576,240C480,240,384,240,288,240C192,240,96,240,48,240L0,240Z"></path>
+        </svg>
+      {% when 'curved_3' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150" height="150" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,50C120,10 240,40 360,60C480,80 600,100 720,100C840,100 960,80 1080,60C1200,40 1320,10 1440,50L1440,150L0,150Z"></path>
+        </svg>
+      {% when 'curved_4' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 300" height="200" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,150 C480,300 960,0 1440,150 L1440,300 L0,300 Z"></path>
+        </svg> 
+      {% when 'waves_1' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 150" height="250" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,50C120,10 240,40 360,60C480,80 600,100 720,100C840,100 960,80 1080,60C1200,40 1320,10 1440,50L1440,150L0,150Z"></path>
+          <path style="transform:translate(0, -80%); opacity:0.5" fill="currentColor" d="M0,190C240,240 480,120 720,160C960,200 1200,250 1440,200L1440,300L0,300Z"></path>
+        </svg>
+      {% when 'waves_2' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 300" height="300" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,160C480,280 960,40 1440,160L1440,300L0,300Z"></path>
+          <path style="opacity:0.6" fill="currentColor" d="M0,130L48,115C96,100,192,80,288,95C384,110,480,160,576,160C672,160,768,130,864,120C960,110,1056,130,1152,145C1248,160,1344,145,1392,150L1440,150L1440,240L1392,240C1344,240,1248,240,1152,240C1056,240,960,240,864,240C768,240,672,240,576,240C480,240,384,240,288,240C192,240,96,240,48,240L0,240Z"></path>
+        </svg>
+      {% when 'waves_3' %}
+        <svg class="blocky-section-divider-waves-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none">
+          <defs>
+            <path id="wave-3" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18v44h-352z" />
+          </defs>
+          <g class="wave1">
+            <use xlink:href="#wave-3" x="50" y="3" fill="currentColor"/>
+          </g>
+          <g class="wave2">
+            <use xlink:href="#wave-3" x="50" y="0" fill="currentColor"/>
+          </g>
+          <g class="wave3">
+            <use xlink:href="#wave-3" x="50" y="9" fill="currentColor"/>
+          </g>
+          <g class="wave4">
+            <use xlink:href="#wave-3" x="50" y="6" fill="currentColor"/>  
+          </g>
+        </svg>
+      {% when 'mountain_peaks_1' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" height="120" width="100%" preserveAspectRatio="none">
+          <polygon fill="currentColor" points="0 20, 360 80, 720 30, 1080 80, 1440 40, 1440 120, 0 120"></polygon>
+        </svg>
+      {% when 'mountain_peaks_2' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 300" height="200" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,100 L360,200 L720,50 L1080,200 L1440,100 L1440,300 L0,300 Z"></path>
+        </svg>
+      {% when 'mountain_peaks_3' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 300" height="200" width="100%" preserveAspectRatio="none">
+          <path fill="currentColor" d="M0,180 L200,230 L400,120 L600,250 L800,100 L1000,220 L1200,50 L1440,150 L1440,300 L0,300 Z"></path>
+        </svg>
+      {% when 'mountain_peaks_4' %}
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" height="120" width="100%" preserveAspectRatio="none">
+          <polygon fill="currentColor" points="0 30, 320 110, 640 40, 960 90, 1280 60, 1440 20, 1440 120, 0 120"></polygon>
+        </svg>      
+    {% endcase %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Section Divider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "How to style",
+      "info": "For the best look, we recommend matching the shape color to the background color of the section it is next to."
+    }, 
+    {
+      "type": "select",
+      "id": "shape",
+      "options": [
+        {
+          "value": "waves_1",
+          "label": "Waves 1"
+        },
+        {
+          "value": "waves_2",
+          "label": "Waves 2"
+        },
+        {
+          "value": "waves_3",
+          "label": "Waves 3 (Animated)"
+        },
+        {
+          "value": "curved_1",
+          "label": "Curved 1"
+        },
+        {
+          "value": "curved_2",
+          "label": "Curved 2"
+        },
+        {
+          "value": "curved_3",
+          "label": "Curved 3"
+        },
+        {
+          "value": "curved_4",
+          "label": "Curved 4"
+        },
+        {
+          "value": "diagonal_1",
+          "label": "Diagonal 1"
+        },
+        {
+          "value": "diagonal_2",
+          "label": "Diagonal 2"
+        },
+        {
+          "value": "mountain_peaks_1",
+          "label": "Mountain Peaks 1"
+        },
+        {
+          "value": "mountain_peaks_2",
+          "label": "Mountain Peaks 2"
+        },
+        {
+          "value": "mountain_peaks_3",
+          "label": "Mountain Peaks 3"
+        },
+
+        {
+          "value": "mountain_peaks_4",
+          "label": "Mountain Peaks 4"
+        }
+      ],
+      "label": "Shape",
+      "default": "waves_3"
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_horizontal",
+      "label": "Flip horizontal",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "flip_vertical",
+      "label": "Flip vertical",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "shape_color",
+      "label": "Shape color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Section Divider"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

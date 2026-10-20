@@ -1,0 +1,90 @@
+{%- liquid
+  assign help_label = section.settings.label | strip
+  if help_label == blank
+    assign help_label = 'Help'
+  endif
+-%}
+
+{%- if section.settings.link != blank -%}
+  {%- style -%}
+    .help-button-{{ section.id }} {
+      position: fixed;
+      left: 24px;
+      bottom: 24px;
+      z-index: 30;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 8px 16px;
+      background-color: #ffffff;
+      color: #7a5168;
+      border: 1px solid #7a5168;
+      border-radius: 9999px;
+      font-family: var(--font-body-family);
+      font-size: 1.5rem;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.06rem;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .help-button-{{ section.id }}:hover {
+      background-color: #7a5168;
+      color: #ffffff;
+    }
+
+    .help-button-{{ section.id }}:focus-visible {
+      outline: 2px solid #7a5168;
+      outline-offset: 2px;
+    }
+
+    @media screen and (max-width: 749px) {
+      .help-button-{{ section.id }} {
+        right: 16px;
+        bottom: 16px;
+      }
+    }
+  {%- endstyle -%}
+
+  <a
+    class="help-button help-button-{{ section.id }}"
+    href="{{ section.settings.link }}"
+    {%- if section.settings.open_in_new_tab %}
+      target="_blank"
+      rel="noopener"
+    {%- endif %}
+  >
+    {{- help_label -}}
+  </a>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Help button",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Button label",
+      "default": "Help",
+      "info": "Text shown on the button and announced to screen readers."
+    },
+    {
+      "type": "text",
+      "id": "link",
+      "label": "Link",
+      "default": "/pages/contact",
+      "info": "Where the button points. Leave blank to hide the button."
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open link in a new tab",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+.list-payment {
+  display: flex;
+  justify-content: center;
+  /* margin: -0.5rem 0; */
+  padding-bottom: 1rem;
+  padding-left: 0;
+}
+
+.list-payment__item {
+  align-items: center;
+  display: flex;
+  padding: 0.25rem;
+}
+
+@media screen and (min-width: 750px) {
+  .list-payment {
+    margin: -0.5rem;
+    padding-bottom: 0;
+  }
+  .list-payment__item {
+    padding: 0.5rem;
+  }
+}
+
+.list-payment__item > svg {
+  width: 100%;
+  height: auto;
+}

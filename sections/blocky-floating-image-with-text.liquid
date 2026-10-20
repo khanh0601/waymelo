@@ -1,0 +1,431 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<div class="blocky image-padding blocky-fiwt-{{ section.settings.layout }} blocky-overflow-hidden"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
+  --top-image-size: {{ section.settings.image_size }}; --center-image-size: {{ section.settings.image_size2 }}; --bot-image-size: {{ section.settings.image_size3 }};
+  --mob-top-image-size: {{ section.settings.mobile_image_size }}; --mob-center-image-size: {{ section.settings.mobile_image_size2 }}; --mob-bot-image-size: {{ section.settings.mobile_image_size3 }};
+  --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+  background-color: {{ section.settings.bottom_background_color }};
+"
+>
+  {% assign icon_color = "#000000" %}
+  {% if section.settings.background_color == "#000000" %}
+    {% assign icon_color = "#d8d8d8" %}
+  {% endif %}
+
+  <div class="background-wrapper blocky-fiwt-skew blocky-padding">
+    <div class="blocky-page-width blocky-fiwt blocky-fiwt-container blocky-fiwt-relative">
+      <div style="width: 100%; position: relative;" class="{% if section.settings.is_floating_image %} blocky-floating{% endif %}">       
+        {% if section.settings.image != blank %}           
+          <div class="blocky-fiwt-image-top">
+            <img
+              class="blocky-fiwt-centered-image"
+              src={{ section.settings.image | image_url: width: 200 }}
+            />
+          </div>
+        {% else %}
+          {% if request.design_mode or request.visual_preview_mode%}
+            <div class="blocky-fiwt-image-top blocky-fiwt-image-svg-top">
+              {% render "blocky-circle-with-plus", fill: icon_color %}  
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="blocky-flex-container blocky-fiwt-container-center">
+        <div class="blocky-fiwt-relative blocky-fiwt-container-center-child{% if section.settings.is_floating_image %} blocky-floating{% endif %}" >
+          {% if section.settings.image2 != blank %}                 
+            <img
+              class="blocky-fiwt-image-center"
+              src={{ section.settings.image2 | image_url: width: 300 }}
+            />
+          {% else %}
+            {% if request.design_mode or request.visual_preview_mode %}
+              <div class="blocky-fiwt-image-center blocky-fiwt-image-svg-center">
+                {% render "blocky-circle-with-plus", fill: icon_color %}  
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="blocky-fiwt-relative blocky-fiwt-text-item">
+          <div class="blocky-fiwt-text-container blocky-fiwt-text-{{ section.settings.text_alignment }} blocky-fiwt-mobile-text-{{ section.settings.mobile_text_alignment }} blocky-fiwt-{{ section.settings.layout }}-text" >
+            {%- for block in section.blocks -%}
+              {% case block.type %}
+                {%- when 'title' -%}
+                  {% render 'blocky-titlel', block: block %}
+                {%- when 'body' -%}
+                  {% render 'blocky-bodyl', block: block %}
+                {%- when 'button' -%}
+                  {% render 'blocky-buttonl', block:block %}
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      <div class="blocky-fiwt-relative blocky-fiwt-image-container-bottom{% if section.settings.is_floating_image %} blocky-floating{% endif %}"> 
+        <div style="color: transparent; user-select: none; height: 0px;"> . </div>
+        {% if section.settings.image3 != blank %}
+          <div class="blocky-fiwt-image-bottom">
+            <img
+              class="blocky-fiwt-centered-image"
+              src={{ section.settings.image3 | image_url: width: 200 }}
+            />
+          </div>
+        {% else %}
+          {% if request.design_mode or request.visual_preview_mode %}
+            <div class="blocky-fiwt-image-bottom blocky-fiwt-image-svg-bottom">
+              {% render "blocky-circle-with-plus", fill: icon_color %}  
+            </div>
+          {% endif %}
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Floating Img & Text",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images",
+      "info": "The placeholders will only show in the theme editor."
+    },
+    {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Center Image"
+    },
+    {
+      "type": "range",
+      "id": "image_size2",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "unit": "%",
+      "label": "Center Image Size",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_size2",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile Center Image Size",
+      "default": 100
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Top Image"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "unit": "%",
+      "label": "Top Image Size",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_size",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile Top Image Size",
+      "default": 100
+    },
+    {
+      "type": "image_picker",
+      "id": "image3",
+      "label": "Bottom Image"
+    },
+    {
+      "type": "range",
+      "id": "image_size3",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "unit": "%",
+      "label": "Bottom Image Size",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_size3",
+      "min": 50,
+      "max": 150,
+      "step": 1,
+      "unit": "%",
+      "label": "Mobile Bottom Image Size",
+      "default": 100
+    },
+
+
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "bottom_background_color",
+      "label": "Top and Bottom Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "image_first",
+          "label": "Image first"
+        },
+        {
+          "value": "text_first",
+          "label": "Text first"
+        }
+      ],
+      "default": "image_first",
+      "label": "Desktop image placement",
+      "info": "Image first is the default mobile placement"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_text_alignment",
+      "label": "Mobile Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "is_floating_image",
+      "label": "Enable floating image",
+      "default": true
+    },
+
+    
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "<b>Floating Image with Text</b>",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 60,
+          "min": 20,
+          "max": 100,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#FFFFFF"
+        },
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Showcase your chosen product with a captivating floating image and text. Include floating images above and below to make it more appealing</p>",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#FFFFFF"
+        },
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button link",
+          "info": "Leave the text blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "curved",
+          "options": [
+            {
+              "value": "flat",
+              "label": "Flat"
+            },
+            {
+              "value": "curved",
+              "label": "Curved"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "extra-round",
+              "label": "Extra Round"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "regular",
+          "options": [
+              {
+                "value": "outline",
+                "label": "Outline"
+              },
+              {
+                "value": "regular",
+                "label": "Regular"
+              }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#2065D1"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Floating Image and Text",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "body"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

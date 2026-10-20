@@ -1,0 +1,793 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign logo_src = s.logo_url
+  if s.logo != blank
+    assign logo_src = s.logo | image_url: width: 400
+  endif
+  assign current_year = 'now' | date: '%Y'
+  assign copyright = s.copyright_text | replace: '{year}', current_year
+-%}
+
+{% style %}
+  .blocky-ft-{{ section.id }} {
+    border-top: {{ section.settings.border_top_width }}px solid {{ section.settings.border_color }};
+  }
+  .blocky-ft-{{ section.id }} .blocky-page-width { padding-left: {{ section.settings.side_padding }}px; padding-right: {{ section.settings.side_padding }}px; }
+
+  .blocky-ft-{{ section.id }}__cols {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: space-between;
+    column-gap: {{ section.settings.columns_gap }}px;
+    row-gap: {{ section.settings.columns_gap }}px;
+    align-items: start;
+  }
+
+  .blocky-ft-{{ section.id }}__logo {
+    display: block;
+    width: {{ section.settings.logo_width }}px;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    margin: 0 0 {{ section.settings.logo_bottom_gap }}px 0;
+  }
+
+  .blocky-ft-{{ section.id }}__payments {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: {{ section.settings.icons_gap }}px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .blocky-ft-{{ section.id }}__payments img {
+    display: block;
+    width: {{ section.settings.icon_size }}px;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .blocky-ft-{{ section.id }}__heading {
+    margin: 0 0 {{ section.settings.content_gap }}px 0;
+    font-family: {{ section.settings.heading_font_family }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    line-height: {{ section.settings.line_height }};
+    color: {{ section.settings.heading_color }};
+    text-transform: capitalize;
+  }
+
+  .blocky-ft-{{ section.id }}__line {
+    margin: 0 0 {{ section.settings.content_gap }}px 0;
+    max-width: {{ section.settings.contact_width }}px;
+    font-family: {{ section.settings.body_font_family }};
+    font-size: {{ section.settings.body_size }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.line_height }};
+    color: {{ section.settings.body_color }};
+  }
+  .blocky-ft-{{ section.id }}__line:last-child { margin-bottom: 0; }
+
+  .blocky-ft-{{ section.id }}__links { margin: 0; padding: 0; list-style: none; }
+  .blocky-ft-{{ section.id }}__links li { margin: 0 0 {{ section.settings.link_gap }}px 0; }
+  .blocky-ft-{{ section.id }}__links li:last-child { margin-bottom: 0; }
+  .blocky-ft-{{ section.id }}__links a {
+    display: inline-block;
+    font-family: {{ section.settings.body_font_family }};
+    font-size: {{ section.settings.body_size }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.line_height }};
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+  }
+  .blocky-ft-{{ section.id }}__links a:hover { opacity: 0.7; }
+
+  .blocky-ft-{{ section.id }}__divider {
+    width: 100%;
+    height: 0;
+    border-top: {{ section.settings.divider_width }}px solid {{ section.settings.divider_color }};
+    margin-top: {{ section.settings.divider_top_gap }}px;
+    margin-bottom: {{ section.settings.divider_bottom_gap }}px;
+  }
+
+  .blocky-ft-{{ section.id }}__copyright {
+    margin: 0;
+    padding: 0 {{ section.settings.side_padding }}px;
+    text-align: center;
+    font-family: {{ section.settings.body_font_family }};
+    font-size: {{ section.settings.copyright_size }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.line_height }};
+    color: {{ section.settings.copyright_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .blocky-ft-{{ section.id }}__cols {
+      grid-template-columns: 1fr;
+      row-gap: {{ section.settings.mobile_columns_gap }}px;
+      justify-content: start;
+    }
+    .blocky-ft-{{ section.id }}__logo { width: {{ section.settings.mobile_logo_width }}px; }
+    .blocky-ft-{{ section.id }}__payments { gap: {{ section.settings.mobile_icons_gap }}px; }
+    .blocky-ft-{{ section.id }}__payments img { width: {{ section.settings.mobile_icon_size }}px; }
+    .blocky-ft-{{ section.id }}__heading { font-size: {{ section.settings.mobile_heading_size }}px; }
+    .blocky-ft-{{ section.id }}__line,
+    .blocky-ft-{{ section.id }}__links a { font-size: {{ section.settings.mobile_body_size }}px; }
+    .blocky-ft-{{ section.id }}__copyright { font-size: {{ section.settings.mobile_copyright_size }}px; }
+    .blocky-ft-{{ section.id }}__divider { margin-top: {{ section.settings.mobile_divider_top_gap }}px; }
+  }
+{% endstyle %}
+
+<div
+  class="blocky blocky-footer blocky-ft-{{ section.id }} blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;"
+>
+  <div class="blocky-page-width">
+    <div class="blocky-ft-{{ section.id }}__cols">
+      <div class="blocky-ft-{{ section.id }}__brand">
+        {%- if logo_src != blank -%}
+          <img
+            class="blocky-ft-{{ section.id }}__logo"
+            src="{{ logo_src }}"
+            alt="{{ section.settings.logo_alt | escape }}"
+            width="{{ section.settings.logo_width }}"
+            height="{{ section.settings.logo_width }}"
+            loading="lazy"
+          >
+        {%- endif -%}
+        {%- assign payment_blocks = section.blocks | where: 'type', 'payment' -%}
+        {%- if payment_blocks.size > 0 -%}
+          <ul class="blocky-ft-{{ section.id }}__payments">
+            {%- for block in payment_blocks -%}
+              {%- liquid
+                assign icon_src = block.settings.image_url
+                if block.settings.image != blank
+                  assign icon_src = block.settings.image | image_url: width: 200
+                endif
+              -%}
+              {%- if icon_src != blank -%}
+                <li {{ block.shopify_attributes }}>
+                  <img
+                    src="{{ icon_src }}"
+                    alt="{{ block.settings.image_alt | escape }}"
+                    width="{{ section.settings.icon_size }}"
+                    height="{{ section.settings.icon_size }}"
+                    loading="lazy"
+                  >
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      <div class="blocky-ft-{{ section.id }}__contact">
+        {%- if section.settings.contact_title != blank -%}
+          <p class="blocky-ft-{{ section.id }}__heading">{{ section.settings.contact_title }}</p>
+        {%- endif -%}
+        {%- if section.settings.contact_line_1 != blank -%}
+          <p class="blocky-ft-{{ section.id }}__line">{{ section.settings.contact_line_1 }}</p>
+        {%- endif -%}
+        {%- if section.settings.contact_line_2 != blank -%}
+          <p class="blocky-ft-{{ section.id }}__line">{{ section.settings.contact_line_2 }}</p>
+        {%- endif -%}{%- if section.settings.contact_line_3 != blank -%}
+          <p class="blocky-ft-{{ section.id }}__line">{{ section.settings.contact_line_3 }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="blocky-ft-{{ section.id }}__policies">
+        {%- if section.settings.policies_title != blank -%}
+          <p class="blocky-ft-{{ section.id }}__heading">{{ section.settings.policies_title }}</p>
+        {%- endif -%}
+        {%- assign link_blocks = section.blocks | where: 'type', 'link' -%}
+        {%- if link_blocks.size > 0 -%}
+          <ul class="blocky-ft-{{ section.id }}__links">
+            {%- for block in link_blocks -%}
+              {%- liquid
+                assign href = block.settings.link_url
+                if block.settings.link != blank
+                  assign href = block.settings.link
+                endif
+              -%}
+              <li {{ block.shopify_attributes }}>
+                <a href="{{ href | default: '#' }}">{{ block.settings.label }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="blocky-ft-{{ section.id }}__divider"></div>
+
+  {%- if copyright != blank -%}
+    <p class="blocky-ft-{{ section.id }}__copyright">{{ copyright }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Footer",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "text",
+      "id": "logo_url",
+      "label": "Logo image URL (fallback)",
+      "default": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/chef_preserve._19_8fe0b423-ebea-42aa-8efa-98d73a7c64c3_4ed396fa-8f67-41d7-a9c7-b25b0e063204.png?v=1791683246"
+    },
+    {
+      "type": "text",
+      "id": "logo_alt",
+      "label": "Logo alt text",
+      "default": "FreshSeal"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 60,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "default": 125
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_width",
+      "label": "Logo width (mobile)",
+      "min": 60,
+      "max": 240,
+      "step": 5,
+      "unit": "px",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "logo_bottom_gap",
+      "label": "Space below logo",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Payment icons"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon width",
+      "min": 20,
+      "max": 120,
+      "step": 1,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_icon_size",
+      "label": "Icon width (mobile)",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 43
+    },
+    {
+      "type": "range",
+      "id": "icons_gap",
+      "label": "Icon gap",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_icons_gap",
+      "label": "Icon gap (mobile)",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Contact column"
+    },
+    {
+      "type": "text",
+      "id": "contact_title",
+      "label": "Heading",
+      "default": "contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_line_1",
+      "label": "Line 1",
+      "default": "help@freshseal.com"
+    },
+    {
+      "type": "text",
+      "id": "contact_line_2",
+      "label": "Line 2",
+      "default": "255 S Orange Avenue, Suite 104 - 1368, Orlando, FL 32801"
+    },
+    {
+      "type": "text",
+      "id": "contact_line_3",
+      "label": "Line 3",
+      "default": "care@waymelo.com"
+    },
+    {
+      "type": "range",
+      "id": "contact_width",
+      "label": "Contact text width",
+      "min": 180,
+      "max": 500,
+      "step": 5,
+      "unit": "px",
+      "default": 305
+    },
+    {
+      "type": "header",
+      "content": "Policies column"
+    },
+    {
+      "type": "text",
+      "id": "policies_title",
+      "label": "Heading",
+      "default": "policies"
+    },
+    {
+      "type": "range",
+      "id": "link_gap",
+      "label": "Space between links",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#151515"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "text",
+      "id": "heading_font_family",
+      "label": "Heading font stack",
+      "default": "'Plus Jakarta Sans', Assistant, sans-serif"
+    },
+    {
+      "type": "text",
+      "id": "body_font_family",
+      "label": "Body font stack",
+      "default": "Inter, Assistant, sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "label": "Heading size (mobile)",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "min": 300,
+      "max": 900,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1E1E1E"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "label": "Text size (mobile)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Text color",
+      "default": "#151515"
+    },
+    {
+      "type": "range",
+      "id": "line_height",
+      "label": "Line height",
+      "min": 1,
+      "max": 2.5,
+      "step": 0.1,
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "label": "Space between text",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap",
+      "label": "Column gap",
+      "min": 20,
+      "max": 120,
+      "step": 1,
+      "unit": "px",
+      "default": 77
+    },
+    {
+      "type": "range",
+      "id": "mobile_columns_gap",
+      "label": "Column gap (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "side_padding",
+      "label": "Side padding",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "Copyright © {year} FreshSeal. All Rights Reserved.",
+      "info": "Use {year} for the current year."
+    },
+    {
+      "type": "range",
+      "id": "copyright_size",
+      "label": "Copyright size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_copyright_size",
+      "label": "Copyright size (mobile)",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "copyright_color",
+      "label": "Copyright color",
+      "default": "#151515"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#15151533"
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider thickness",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "divider_top_gap",
+      "label": "Space above divider",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "mobile_divider_top_gap",
+      "label": "Space above divider (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "divider_bottom_gap",
+      "label": "Space below divider",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Section styles"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "label": "Section width",
+      "min": 800,
+      "max": 1400,
+      "step": 10,
+      "unit": "px",
+      "default": 1220
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f5f5"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Top border color",
+      "default": "#D1D1D1"
+    },
+    {
+      "type": "range",
+      "id": "border_top_width",
+      "label": "Top border width",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "payment",
+      "name": "Payment icon",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "image_url",
+          "label": "Icon image URL (fallback)",
+          "default": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/Visa_e3b66003-aef7-4b3f-8a9d-5a83c84bd7f7.svg?v=1791683243"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Icon alt text",
+          "default": "Visa"
+        }
+      ]
+    },
+    {
+      "type": "link",
+      "name": "Policy link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shipping Policy"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_url",
+          "label": "Link URL (fallback)",
+          "default": "https://chefpreserve.com/pages/shipping-policy"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BKY - Footer",
+      "blocks": [
+        {
+          "type": "payment",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/Visa_e3b66003-aef7-4b3f-8a9d-5a83c84bd7f7.svg?v=1791683243",
+            "image_alt": "Visa"
+          }
+        },
+        {
+          "type": "payment",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/Mastercard_1526e2bf-5ddc-43e7-9c58-efd7afcf789d.svg?v=1791683243",
+            "image_alt": "Mastercard"
+          }
+        },
+        {
+          "type": "payment",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/PayPal_ab79b113-4fe3-4924-9400-fbacedd35bd3.svg?v=1791683243",
+            "image_alt": "PayPal"
+          }
+        },
+        {
+          "type": "payment",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/ApplePay_747722aa-2821-4ef8-8974-de39269ff46d.svg?v=1791683243",
+            "image_alt": "Apple Pay"
+          }
+        },
+        {
+          "type": "payment",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/1092/8884/9694/files/PayPal_72648b43-c1a6-4558-abb6-fc2767082ccc_252d2d1d-25a4-404c-bd6f-f75827ec7046.svg?v=1791683243",
+            "image_alt": "American Express"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Shipping Policy",
+            "link_url": "https://chefpreserve.com/pages/shipping-policy"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Return Policy",
+            "link_url": "https://chefpreserve.com/pages/return-policy"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Terms of Service",
+            "link_url": "https://chefpreserve.com/pages/terms-of-service"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Privacy Policy",
+            "link_url": "https://chefpreserve.com/pages/privacy-policy"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Contact Us",
+            "link_url": "https://chefpreserve.com/pages/contact"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "label": "Do Not Sell My Data",
+            "link_url": "https://chefpreserve.com/pages/do-not-sell-my-data-policy"
+          }
+        }
+      ],
+      "settings": {
+        "logo_alt": "FreshSeal",
+        "contact_title": "contact",
+        "contact_line_1": "help@freshseal.com",
+        "contact_line_2": "255 S Orange Avenue, Suite 104 - 1368, Orlando, FL 32801",
+        "contact_line_3": "care@waymelo.com",
+        "policies_title": "policies",
+        "heading_font_family": "'Plus Jakarta Sans', Assistant, sans-serif",
+        "body_font_family": "Inter, Assistant, sans-serif",
+        "copyright_text": "Copyright © {year} FreshSeal. All Rights Reserved."
+      }
+    }
+  ]
+}
+{% endschema %}

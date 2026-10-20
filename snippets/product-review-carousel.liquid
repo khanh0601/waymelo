@@ -1,0 +1,52 @@
+{% capture play_icon %}
+     <svg viewBox="0 0 200 200" fill="none" class="needsclick">
+        <mask id="qA-66fc522830556700337634ed" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200" maskType="alpha">
+            <path fill="rgb(var(--color-button-text, 255,255,255))" fill-rule="evenodd" d="M200 0H0v200h200V0zM100 150c27.614 0 50-22.386 50-50s-22.386-50-50-50-50 22.386-50 50 22.386 50 50 50z"/>
+        </mask>
+        <g mask="url(#qA-66fc522830556700337634ed)" fill-opacity="1">
+            <circle fill-opacity="1" fill="rgb(var(--color-button, 0,0,0))" cx="100" cy="100" r="50"/>
+            <circle stroke-opacity="1" stroke="rgb(var(--color-button, 0,0,0))" stroke-width="5" cx="100" cy="100" r="47.5"/>
+        </g>
+        <path fill="rgb(var(--color-button, 0,0,0))" fill-opacity="1" fill-rule="evenodd" d="M100 150c27.614 0 50-22.386 50-50s-22.386-50-50-50-50 22.386-50 50 22.386 50 50 50zm22-50L89 81v38l33-19z"/>
+        <path fill="rgb(var(--color-button-text, 255,255,255))" d="M89 119V81l33 19-33 19z"/>
+    </svg>
+{% endcapture %}
+
+{% for i in (1..6) %}
+  {% assign video_select_key = 'video_select_' | append: i %}
+  {% assign image_key = 'image_' | append: i %}
+
+    {% assign video = block.settings[video_select_key] %}
+    {% assign fallback_image = block.settings[image_key] %}
+
+    {% if video != blank or fallback_image != blank %} 
+        <div class="{{ class }}">
+            {% if video != blank %}
+                {% assign poster_url = video.preview_image | image_url: width: 800 %}
+                {% if fallback_image != blank %}
+                    {% assign poster_url = fallback_image | image_url: width: 800 %}
+                {% endif %}
+
+                {{ video | video_tag: 
+                    class: "video", 
+                    controls: false,
+                    muted: true,
+                    loop: true, 
+                    poster: poster_url 
+                }}
+                {% if icon == 'true' %} {{ play_icon }} {% endif %} 
+            {% else %}
+                <img src="{{ fallback_image | image_url: width: 800 }}" class="video" style="width: 100%; height: 100%; object-fit: cover;" alt="Fallback Image">
+            {% endif %}
+        </div>
+    {% endif %}
+{% endfor %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% capture 'play_icon'%}"
+  to: "{% capture play_icon %}"
+  position: 0..23
+{%- endcomment -%}

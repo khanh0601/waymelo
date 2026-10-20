@@ -1,0 +1,52 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<div class="blocky" style="display: block; padding: 0; margin: 0;" id="{{ section.settings.scroll_to_target }}"></div>
+
+{% schema %}
+{
+  "name": "BKY - Scroll-To Target",
+  "enabled_on": {"templates": [ "product" ]},
+  "settings": [
+    {
+      "type": "header",
+      "content": "How to use"
+    },
+    {
+      "type": "paragraph",
+      "content": "Use this section with the 'Scroll To' block from the product information. Place it right above the section you want to scroll to. If there are multiple sections with the same button target, it will scroll to the topmost one."
+    },
+    {
+      "type": "radio",
+      "id": "scroll_to_target",
+      "label": "Button target",
+      "default": "blocky-scroll-to-target-1",
+      "options": [
+        {
+          "value": "blocky-scroll-to-target-1",
+          "label": "Button 1"
+        },
+        {
+          "value": "blocky-scroll-to-target-2",
+          "label": "Button 2"
+        },
+        {
+          "value": "blocky-scroll-to-target-3",
+          "label": "Button 3"
+        },
+        {
+          "value": "blocky-scroll-to-target-4",
+          "label": "Button 4"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Scroll-To Target"
+    }
+  ]
+}
+{% endschema %}

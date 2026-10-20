@@ -1,0 +1,767 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+@media screen and (max-width: 749px) {
+  .blocky-faq-flex {
+    row-gap: 3rem !important;
+  }
+  .blocky-faq-flex > * {
+    width: 100% !important;
+    flex-grow: 1 !important;
+  }
+}
+.blocky-faq-question {
+  border: none;
+  width: 100%;
+  padding: var(--question-padding);
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all .125s ease-in-out;
+  font-size: calc(var(--question-font-size) * .85);
+  color: var(--question-text-color);
+}
+.blocky-faq-question.active {
+  border-radius: 5px 5px 0px 0px;
+}
+.blocky-faq-question.active .bky-accordion-carot {
+  transform: rotate(180deg);
+}
+.bky-accordion-carot {
+  transition: transform .25s;
+}
+.blocky-faq-question.active .bky-accordion-minus,
+.blocky-faq-question:not(.active) .bky-accordion-plus {
+  display: block;  
+}
+.blocky-faq-question:not(.active) .bky-accordion-minus,  
+.blocky-faq-question.active .bky-accordion-plus {
+  display: none;
+}
+.blocky-faq-question:hover {
+  opacity: 0.65;
+}
+.blocky-faq-answer {
+  overflow: hidden;
+  border-radius: 0px 0px 5px 5px;
+  transition: all 0.125s ease-in-out;
+  padding: 0px var(--question-padding) 0px var(--question-padding);
+  max-height: 0;
+  font-size: calc(var(--answer-font-size) * .85);
+  color: var(--answer-text-color);
+}
+.blocky-faq-answer.active {
+  max-height: 1000px;
+  padding: var(--question-padding);
+  padding-top: 0px;
+}
+.blocky-faq-icon {
+  font-size: calc(var(--question-font-size)) !important;
+  height: calc(var(--question-font-size));
+  width: calc(var(--question-font-size));          
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq-question {
+    font-size: var(--question-font-size);
+  }
+  .blocky-faq-answer {
+    font-size: var(--answer-font-size);
+  }
+  .blocky-faq-icon {
+    font-size: calc(var(--question-font-size) * 1.2) !important;
+    height: calc(var(--question-font-size) * 1.2);
+    width: calc(var(--question-font-size) * 1.2);
+  }
+}
+.blocky-accordion {
+  height: fit-content;
+}
+.blocky-accordion-row .blocky-faq-item {
+  margin-bottom: 1rem;  
+}
+.blocky-accordion-border .blocky-faq-question,
+.blocky-accordion-none .blocky-faq-question {
+  background-color: unset;
+}
+.blocky-accordion-border .blocky-accordion-btn,
+.blocky-accordion-none .blocky-accordion-btn,
+.blocky-accordion-border .blocky-faq-answer,
+.blocky-accordion-none .blocky-faq-answer {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+.blocky-accordion-border .blocky-faq-item {
+  border-top: solid 1px var(--question-text-color);
+}
+.blocky-accordion-border .blocky-faq-item:last-of-type {
+  border-bottom: solid 1px var(--question-text-color);
+} 
+.blocky-accordion-section,
+.blocky-accordion-row .blocky-faq-item {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 4px, rgba(0, 0, 0, 0.16) 0px 3px 8px;
+} 
+.blocky-accordion-row .blocky-faq-item,
+.blocky-accordion-row .blocky-faq-question,
+.blocky-accordion-section,
+.blocky-accordion-section .blocky-faq-question {
+  background-color: var(--faq-background);      
+  border-radius: var(--faq-border-radius);
+}
+.blocky-faq .blocky-flex-container > .blocky-flex-child-small,
+.blocky-faq .blocky-flex-child-large + .blocky-flex-child {
+  width: 40%;
+}
+.blocky-faq-media-has-text {
+  position: absolute;
+  z-index: 1;
+  padding: 2.5rem;
+  gap: var(--text-container-gap, 2rem);
+}
+@media screen and (max-width: 750px) {
+  .blocky-faq-media-has-text {
+    padding: 1.5rem;  
+  }
+}
+.blocky-faq .blocky-media-hero-container img,
+.blocky-faq .blocky-media-hero-container video,
+.blocky-faq .blocky-media-hero-text-wrap-opacity::before {
+  border-radius: var(--border-radius);
+}
+.blocky-faq .blocky-media-hero-container .blocky-video,
+.blocky-faq .blocky-media-hero-container {
+  position: unset;
+}
+{% endstyle %}
+
+<script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div 
+  class="blocky blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }};
+    --faq-background: {{ section.settings.faq_container_background }}; --question-padding: {{ section.settings.question_padding }}px; --faq-border-radius: {{ section.settings.faq_border_radius }}px;
+    --question-font-size: {{ section.settings.question_font_size }}px; --answer-font-size: {{ section.settings.answer_font_size }}px; --question-text-color: {{ section.settings.question_text_color }};
+    --answer-text-color: {{ section.settings.answer_text_color }}; --overlay_opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+  "
+>
+  <div class="blocky-page-width blocky-faq">
+    <div class="blocky-flex-container blocky-des-flex-{{ section.settings.layout }} blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-faq-flex" style="align-items: center;">
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_faq_width }} blocky-justify-center blocky-align-center blocky-flex-col">
+        {% unless section.settings.faq_title == blank %}
+          <h2 
+            class="blocky-title"
+            style="--title-color: {{ section.settings.faq_title_color }}; --title-size: {{ section.settings.faq_title_size }}; margin-bottom: 40px; "
+          >
+            {{ section.settings.faq_title }}
+          </h2>
+        {% endunless %}
+        <blocky-accordion class="blocky-accordion blocky-w-full blocky-accordion-{{ section.settings.faq_layout }}">
+          {% for block in section.blocks %}
+            <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
+              <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}"> 
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: .7rem;">
+                  <div style="display: flex; align-items: center; gap: inherit;">
+                   {% if block.settings.image != null %}
+                      <img 
+                        src="{{ block.settings.image | image_url }}" 
+                        alt="{{ block.settings.question }}"
+                        class="blocky-faq-icon"
+                        style="border-radius: 50%;"
+                      />
+                    {% elsif block.settings.icon_code != blank %}
+                        <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
+                    {% endif %}
+                    <span>
+                      {{ block.settings.question }}
+                    </span>
+                  </div>
+                  {% if section.settings.faq_toggle_icon == "caret" %}
+                    <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                  {% else %}
+                    <svg class="bky-accordion-plus" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <line x1="8" y1="1.5" x2="8" y2="14.5" stroke="currentColor" stroke-width="2"/>
+                      <line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <svg class="bky-accordion-minus" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" stroke-width="1.5"/>
+                    </svg> 
+                  {% endif %}
+                </div>
+              </button>
+              <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}"> {{ block.settings.content }} </div>
+            </div>
+          {% endfor %}
+        </blocky-accordion>
+      </div>
+        <div class="blocky-flex-child blocky-relative" style="--border-radius: {{ section.settings.faq_media_radius }}px">
+          <div class="blocky-media-{{ section.settings.height }} blocky-w-full{% if section.settings.overlay_opacity != 0 %} blocky-media-hero-text-wrap-opacity{% endif %}">
+            <div class="blocky-media-hero-container">
+              {% if section.settings.video != blank  %}
+                {% render "blocky-video", video: section.settings.video, video_fit: "zoomed", fill: "#DCDCDC" %}          
+              {% elsif section.settings.image != blank %}
+                <img
+                  class="blocky-image-cover"
+                  src="{{ section.settings.image | image_url: height: 750 }}"
+                  height="100%"
+                  width="100%"
+                >
+              {% else %}
+               {{ 'image' | placeholder_svg_tag: "blocky-full" }}
+              {% endif %}
+            </div>
+          </div>
+          {% unless section.settings.title == blank and section.settings.body_text == blank and section.settings.button_label == blank %}
+            <div class="blocky-media-hero-text-content blocky-faq-media-has-text {{ section.settings.text_align }} ">
+              {% render 'blocky-titlel', block: section %}
+              {% render 'blocky-bodyl', block: section %}
+              {% unless section.settings.button_label == blank %}
+                <div>
+                  {% render 'blocky-buttonl', block: section %}    
+                </div>
+              {% endunless %}
+            </div>
+          {% endunless %}
+        </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - FAQ with Media",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background Video"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to media"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "adapt",
+      "label": "Media height"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Background video darkness",
+      "info": "Lower the brightness of your video to make your text easier to read",
+      "default": 10,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "faq_media_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Media border radius",
+      "default": 15
+    },
+
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>FAQS</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 16,
+      "min": 15,
+      "max": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Still have questions?</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 32,
+      "min": 10,
+      "max": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Leave the text blank to hide the button.",
+      "default": "<p>Ask our Team</p>"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "default": "extra-round",
+      "options": [
+        {
+          "value": "flat",
+          "label": "Flat"
+        },
+        {
+          "value": "curved",
+          "label": "Curved"
+        },
+        {
+          "value": "round",
+          "label": "Round"
+        },
+        {
+          "value": "extra-round",
+          "label": "Extra Round"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "header",
+      "content": "FAQ Layout",
+    },
+    {
+      "type": "inline_richtext",
+      "id": "faq_title",
+      "default": "<b>Frequently Asked Questions</b>",
+      "label": "Faq Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "faq_title_size",
+      "label": "Title size",
+      "default": 60,
+      "min": 15,
+      "max": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "faq_title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    
+    {
+      "type": "select",
+      "id": "faq_layout",
+      "label": "FAQ Layout",
+      "options": [
+        {
+          "value": "none",
+          "label": "No container"
+        },
+        {
+          "value": "border",
+          "label": "No container with borders"
+        },
+        {
+          "value": "row",
+          "label": "Row container"
+        },
+        {
+          "value": "section",
+          "label": "Section container"
+        }
+      ],
+      "default": "border"
+    },
+    {
+      "type": "range",
+      "id": "question_padding",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Container padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "faq_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "faq_container_background",
+      "label": "Container background",
+      "default": "#FFFFFF",
+      "info": "If 'no container' is selected for layout, this is color is ignored"
+    },
+    
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Question font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer font size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "question_text_color",
+      "label": "Question text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "answer_text_color",
+      "label": "Answer text color",
+      "default": "#606367"
+    },
+    {
+      "type": "select",
+      "id": "faq_toggle_icon",
+      "options": [
+        {
+          "value": "caret",
+          "label": "Arrow"
+        },
+        {
+          "value": "plus",
+          "label": "Plus/Minus"
+        },
+      ],
+      "default": "plus",
+      "label": "FAQ toggle icon",
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "FAQ first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Media first"
+        }
+      ],
+      "default": "row",
+      "label": "FAQ placement",
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "options": [
+        {
+          "value": "col",
+          "label": "FAQ first"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Media first"
+        },
+      ],
+      "default": "col",
+      "label": "Mobile FAQ placement",
+    },
+    {
+      "type": "select",
+      "id": "desktop_faq_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "FAQ width",
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "vertical-bottom horizontal-left",
+      "options": [
+        {
+          "value": "vertical-top horizontal-left",
+          "label": "Top left"
+        },
+        {
+          "value": "vertical-top horizontal-center",
+          "label": "Top center"
+        },
+        {
+          "value": "vertical-top horizontal-right",
+          "label": "Top right"
+        },
+        {
+            "value": "vertical-center horizontal-left",
+            "label": "Center left"
+        },
+        {
+          "value": "vertical-center horizontal-center",
+          "label": "Center"
+        },
+        {
+          "value": "vertical-center horizontal-right",
+          "label": "Center right"
+        },
+        {
+          "value": "vertical-bottom horizontal-left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "vertical-bottom horizontal-center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "vertical-bottom horizontal-right",
+          "label": "Bottom right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_container_gap",
+      "label": "Space between text",
+      "default": "0",
+      "options": [
+        {
+          "label": "None",
+          "value": "0"
+        },
+        {
+          "label": "Small",
+          "value": "0.5rem"
+        },
+        {
+          "label": "Medium",
+          "value": "1rem"
+        },
+        {
+          "label": "Large",
+          "value": "1.5rem"
+        },
+        {
+          "label": "Extra Large",
+          "value": "2rem"
+        },
+      ]
+    },  
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+         
+        {
+          "type": "inline_richtext",
+          "id": "question",
+          "default": "<b>Question</b>",
+          "label": "Question",
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>Answer</p>",
+          "label": "Answer",
+        },
+        {
+          "type": "checkbox",
+          "id": "default_open",
+          "default": false,
+          "label": "Opened by default"
+        },
+
+        {
+          "type": "header",
+          "content": "Image/Icon"
+        },
+        {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Icon",
+        },
+        {
+          "type": "text",
+          "id": "icon_code",
+          "label": "Icon Code",
+          "info": "Get icon codes from [this link](https://fonts.google.com/icons/). example: 'check_circle', 'search', 'home'. For help adding icons, you can click [here](/admin/apps/blocky-apps/icons)"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#000000"
+        } 
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky FAQ with Media",
+      "blocks": [
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

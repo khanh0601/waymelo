@@ -1,0 +1,201 @@
+{% doc %}
+  @prompt
+    Create a logo and payment methods block matching this reference layout: a very light gray background, generous padding, a left-aligned store logo at the top, and a horizontal row of small white rectangular payment icon tiles below it. Each tile has a thin light gray border and subtle shadow. Use an editable logo image picker for the store's own logo, not the reference's chef preserve branding, with adjustable logo width. Display payment icons for the store's enabled payment methods rather than implying unsupported methods are accepted; the visual reference shows Visa, Mastercard, PayPal, Apple Pay, and American Express. Keep the icons evenly spaced, wrap neatly on mobile, and allow editing background color, spacing, and tile size. Suitable for placement on the product page.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-payment-panel-{{ ai_gen_id }} {
+    display: block;
+    box-sizing: border-box;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.panel_padding }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-payment-panel-{{ ai_gen_id }}__logo {
+    display: block;
+    width: {{ block.settings.logo_width }}px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .ai-payment-panel-{{ ai_gen_id }}__logo-placeholder {
+    width: {{ block.settings.logo_width }}px;
+    max-width: 100%;
+    color: #555555;
+  }
+
+  .ai-payment-panel-{{ ai_gen_id }}__logo-placeholder svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 80px;
+  }
+
+  .ai-payment-panel-{{ ai_gen_id }}__methods {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: {{ block.settings.tile_spacing }}px;
+    margin-top: {{ block.settings.logo_payment_spacing }}px;
+  }
+
+  .ai-payment-panel-{{ ai_gen_id }}__tile {
+    display: flex;
+    flex: 0 0 {{ block.settings.tile_width }}px;
+    width: {{ block.settings.tile_width }}px;
+    height: {{ block.settings.tile_height }}px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 7px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .ai-payment-panel-{{ ai_gen_id }}__tile svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-payment-panel-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-payment-panel-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.logo_image != blank %}
+    <img
+      class="ai-payment-panel-{{ ai_gen_id }}__logo"
+      src="{{ block.settings.logo_image | image_url: width: 900 }}"
+      alt="{{ block.settings.logo_image.alt | default: shop.name | escape }}"
+      width="{{ block.settings.logo_image.width }}"
+      height="{{ block.settings.logo_image.height }}"
+      loading="lazy"
+    >
+  {% else %}
+    <div class="ai-payment-panel-{{ ai_gen_id }}__logo-placeholder" aria-label="Add your store logo">
+      {{ 'image' | placeholder_svg_tag }}
+    </div>
+  {% endif %}
+
+  {% if shop.enabled_payment_types != blank %}
+    <div class="ai-payment-panel-{{ ai_gen_id }}__methods" aria-label="Accepted payment methods">
+      {%- capture payment_tile_class -%}ai-payment-panel-{{ ai_gen_id }}__tile{%- endcapture -%}
+      {%- render 'payment-icon-list',
+        types: shop.enabled_payment_types,
+        item_tag: 'span',
+        item_class: payment_tile_class,
+        aria_label_from_type: true
+      -%}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Logo and payments",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Store logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F5F5F5"
+    },
+    {
+      "type": "range",
+      "id": "panel_padding",
+      "label": "Panel padding",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "logo_payment_spacing",
+      "label": "Logo to icons spacing",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tile_spacing",
+      "label": "Tile spacing",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "tile_width",
+      "label": "Tile width",
+      "min": 44,
+      "max": 88,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "tile_height",
+      "label": "Tile height",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo and payments"
+    }
+  ],
+  "tag": null,
+  "class": "logo-payment-block"
+}
+{% endschema %}

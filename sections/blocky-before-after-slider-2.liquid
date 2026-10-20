@@ -1,0 +1,629 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .bky-bais2 {
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bky-bais2-text-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;   
+    text-align: center;
+    max-width: 750px;
+  }
+
+  .bky-bais2-container {
+    display: flex; 
+    gap: 4rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bky-bais2-icon-container {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 27%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+  
+  .bky-bais2-icon-container > img {
+    max-width: 100%;
+  }
+
+  .bky-bais2-slider {
+    display: flex;
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    max-width: 100%;
+    width: var(--mobile-media-size);
+  }
+  
+  @media screen and (min-width: 750px) {
+    .bky-bais2-slider {
+      width: var(--media-size);
+    }
+    .bky-bais2-icon-container {
+      flex-direction: column;
+      gap: 32px;
+    }
+  }
+  
+  .bky-bais2 img.blocky-square {
+    aspect-ratio: 9/9;
+  }
+  .bky-bais2 svg.blocky-wide,
+  .bky-bais2 img.blocky-wide {
+    aspect-ratio: 16/9;
+  }
+  .bky-bais2 svg.blocky-long,
+  .bky-bais2 img.blocky-long {
+    aspect-ratio: 9/16;
+  }
+  .bky-bais2-slider.blocky-rounded {
+    aspect-ratio: 1;
+    border-radius: 50%;
+  } 
+
+  .bky-bais2-image-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .bky-bais2-overflow-wrapper {
+    width: 100%;
+    transform: scale(1);
+  }
+  
+  @media screen and (max-width: 749px) {
+    .bky-bais2 {
+      padding: 0 1.5rem;
+    }
+    .bky-bais2-image-container {
+      width: 100%;
+    }
+    .bky-bais2-overflow-wrapper {
+      width: unset;
+      max-width: 100%;
+    }
+  }
+  @media screen and (min-width: 750px) {
+    .bky-bais2-image-container {
+      max-width: 60%;
+    }
+    .bky-bais2-text-container {
+      margin-bottom: 32px;
+    }
+  }
+  @media screen and (max-width: 749px) {
+    .bky-bais2 .iwt-heading > * {
+      font-size: calc(var(--icon-heading-size, 18px) * .8)
+    }
+    .bky-bais2 .iwt-text > p {
+      font-size: calc(var(--icon-text-size, 14px) * .9)
+    }
+    .bky-bais2 .blocky-body-text {
+      font-size: calc(var(--description-size, 16px) * .85) 
+    }
+    .bky-bais2-container {
+      flex-wrap: wrap;    
+      margin-top: 0px;
+      max-width: 100%;
+    }    
+  }
+  
+  @media screen and (min-width: 750px) {
+    .bky-bais2 .iwt-heading > * {
+      font-size: var(--icon-heading-size, 18px)
+    }
+    .bky-bais2 .iwt-text > p {
+      font-size: var(--icon-text-size, 14px)    
+    }
+    .bky-bais2 .blocky-body-text {
+      font-size: var(--description-size, 16px)
+    }
+  }
+
+  .bky-bais2-before-text,
+  .bky-bais2-after-text {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    max-width: 50%;
+  }
+    
+  .bky-bais2-before-text h3,
+  .bky-bais2-after-text h3 {
+    font-size: 1.4rem;
+    padding: 1rem;
+    margin: 0;
+  }
+
+  .bky-bais2-after-text {
+    left: auto;
+    right: 0;
+  }
+  .bky-bais2-label-text h3 {
+    color: var(--label-color);
+  }
+  .iwt-icon-top .iwt-heading {
+      margin-bottom: .5rem;
+  }
+  .iwt-icon-top.iwt-container {
+      gap: 1rem;
+  }
+{% endstylesheet %}
+
+<script src="{{ 'blocky-before-and-after-slider.js' | asset_url }}" defer></script>
+
+<div class="blocky background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --title-color: {{ section.settings.title_color }}; --description-color: {{ section.settings.body_color }};
+    --media-size: {{ 450 | times: section.settings.media_size | divided_by: 100 }}px; --mobile-media-size: {{ 250 | times: section.settings.mobile_media_size | divided_by: 100 }}px;
+    --label-color: {{ section.settings.labels_color }}; --line-color: {{ section.settings.line_color }};
+    --icon-heading-size: {{ section.settings.icon_heading_size }}px; --icon-text-size: {{ section.settings.icon_text_size }}px; --description-size: {{ section.settings.description_size }}px;"
+>
+  <div class="blocky-padding blocky-page-width">
+    <div class="bky-bais2">
+      <div class="bky-bais2-text-container blocky-flex-{{ section.settings.text_layout }}">
+        {% render 'blocky-bodyl', block: section %}
+        {% render 'blocky-titlel', block: section %}
+      </div>
+
+      <div class="bky-bais2-container blocky-w-full">
+        <div class="bky-bais2-icon-container blocky-ciwi-icon-container-0">
+          {% for block in section.blocks %}
+            {% assign mod = forloop.index | modulo: 2 %}
+            {% if mod != 0 %}
+              {% render 'blocky-icon-with-textl', block: block, side: 0, index: forloop.index, icon_position: section.settings.icon_position %}
+            {% else %}
+              {% render 'blocky-icon-with-textl', block: block, side: 1, index: forloop.index, icon_position: section.settings.icon_position %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        <blocky-before-after-slider class="bky-bais2-image-container">
+          <div class="bky-bais2-overflow-wrapper">
+            <div class="bky-bais2-slider blocky-{{ section.settings.slider_shape}}{% if section.settings.show_shadow %} blocky-shadow{% endif %}">
+              {% unless section.settings.before_label == blank %}
+                <div class="bky-bais2-before-text bky-bais2-label-text">
+                  <h3>{{ section.settings.before_label }}</h3>
+                </div>
+              {% endunless %}
+              {% capture placeholder_class %}placeholder-svg placeholder blocky-{{ section.settings.slider_shape}} blocky-h-full{% endcapture %}
+              {% capture image_class %}blocky-{{ section.settings.slider_shape}} blocky-h-full{% endcapture %}
+              <div 
+                class="blocky-absolute blocky-full blocky-before-after-before-image blocky-before-after-slider-{{ section.settings.before_image_fit }}"
+                style="background: {{ section.settings.background_color }}"
+              >
+                {%- if section.settings.before_image != blank -%}
+                  {{ section.settings.before_image | image_url: width: 1000 | image_tag: loading: 'lazy', class: image_class }}
+                {% else %}
+                  {{ 'collection-1' | placeholder_svg_tag: placeholder_class }}
+                {%- endif -%}
+              </div>
+              <div 
+                class="blocky-absolute blocky-full blocky-before-after-after-image blocky-before-after-slider-{{ section.settings.after_image_fit }}"
+                style="background: {{ section.settings.background_color }}"
+              >
+                {%- if section.settings.after_image != blank -%}
+                  {{ section.settings.after_image | image_url: width: 1000 | image_tag: loading: 'lazy', class: image_class }}
+                {% else %}
+                  {{ 'collection-4' | placeholder_svg_tag: placeholder_class }}
+                {%- endif -%}
+              </div>
+              <div class="blocky-before-after-slider-line slider-line">
+                <div class="blocky-before-after-slider-arrow-left slider-line"></div>
+                <div class="blocky-before-after-slider-arrow-right slider-line"></div>
+              </div>
+              <input type="range" class="blocky-before-after-slider-input" min="0" max="100" value="50">
+              {% unless section.settings.after_label == blank %}
+                <div class="bky-bais2-after-text bky-bais2-label-text">
+                  <h3>{{ section.settings.after_label }}</h3>
+                </div>
+              {% endunless %}
+            </div>
+          </div>
+        </blocky-before-after-slider>
+        <div class="bky-bais2-icon-container blocky-ciwi-icon-container-1">
+          {% for block in section.blocks %}
+            {% assign mod = forloop.index | modulo: 2 %}
+            {% if mod == 0 %}
+              {% render 'blocky-icon-with-textl', block: block, side: 1, index: forloop.index, icon_position: section.settings.icon_position %}
+            {% else %}
+              {% render 'blocky-icon-with-textl', block: block, side: 0, index: forloop.index, icon_position: section.settings.icon_position %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+    "name": "BKY - Before/After 2",
+    "disabled_on": { "groups": [ "header", "footer" ] },
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "before_image",
+        "label": "Before image"
+      },
+      {
+        "type": "select",
+        "id": "before_image_fit",
+        "label": "Image fit",
+        "default": "cover",
+        "options": [
+          {
+            "value": "fill",
+            "label": "Fill"
+          },
+          {
+            "value": "contain",
+            "label": "Fit"
+          },
+          {
+            "value": "cover",
+            "label": "Zoomed in"
+          }
+        ]
+      },
+      {
+        "type": "image_picker",
+        "id": "after_image",
+        "label": "After image"
+      },
+      {
+        "type": "select",
+        "id": "after_image_fit",
+        "label": "Image fit",
+        "default": "cover",
+        "options": [
+          {
+            "value": "fill",
+            "label": "Fill"
+          },
+          {
+            "value": "contain",
+            "label": "Fit"
+          },
+          {
+            "value": "cover",
+            "label": "Zoomed in"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Slider",
+      },
+
+      {
+        "type": "range",
+        "id": "media_size",
+        "min": 25,
+        "max": 175,
+        "step": 5,
+        "unit": "%",
+        "label": "Media Size",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "mobile_media_size",
+        "min": 50,
+        "max": 150,
+        "step": 5,
+        "unit": "%",
+        "label": "Mobile media Size",
+        "default": 100
+      },
+      {
+        "type": "select",
+        "id": "slider_shape",
+        "options": [
+            {
+              "value": "rounded",
+              "label": "Circle"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            },
+            {
+              "value": "long",
+              "label": "Long Rectangle"
+            },
+            {
+              "value": "wide",
+              "label": "Wide Rectangle"
+            }
+        ],
+        "default": "rounded",
+        "label": "Slider shape"
+      },
+      {
+        "type": "text",
+        "id": "before_label",
+        "label": "Before label",
+        "default": "Before"
+      },
+      {
+        "type": "text",
+        "id": "after_label",
+        "label": "After label",
+        "default": "After"
+      },
+      {
+        "type": "color",
+        "id": "labels_color",
+        "default": "#000000",
+        "label": "Label color"
+      },
+      {
+        "type": "color",
+        "id": "line_color",
+        "default": "#000000",
+        "label": "Separator line color"
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "label": "Title",
+        "default": "<b>Before & After Slider 2</b>"
+      },
+      {
+        "type": "range",
+        "id": "title_size",
+        "label": "Title size",
+        "default": 60,
+        "min": 30,
+        "max": 100,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title Color",
+        "default": "#000000",
+      },
+      {
+        "type": "richtext",
+        "id": "body_text",
+        "default": "<p>Easily show off your product and its main features with easy to identify icons</p>",
+        "label": "Description",
+        "info": "Leave the text blank to hide the body."
+      },
+      {
+        "type": "color",
+        "id": "body_color",
+        "label": "Description Color",
+        "default": "#000000",
+      },
+      {
+        "type": "range",
+        "id": "description_size",
+        "label": "Description size",
+        "default": 20,
+        "min": 10,
+        "max": 40,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "text_layout",
+        "options": [
+          {
+            "value": "col",
+            "label": "Description first"
+          },
+          {
+            "value": "col-reverse",
+            "label": "Title first"
+          }
+        ],
+        "default": "col-reverse",
+        "label": "Text placement",
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#FFFFFF"
+      },
+
+      {
+        "type": "checkbox",
+        "id": "show_shadow",
+        "label": "Show Shadow",
+        "default": true
+      },
+
+      {
+        "type": "header",
+        "content": "Icon"
+      },
+      {
+        "type": "select",
+        "id": "icon_position",
+        "options": [
+          {
+            "value": "next-to",
+            "label": "Next to text"
+          },
+          {
+            "value": "top",
+            "label": "Top of text"
+          }
+        ],
+        "default": "top",
+        "label": "Icon placement",
+      },
+      {
+        "type": "range",
+        "id": "icon_heading_size",
+        "label": "Icon heading size",
+        "default": 20,
+        "min": 10,
+        "max": 30,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "icon_text_size",
+        "label": "Icon text size",
+        "default": 16,
+        "min": 10,
+        "max": 20,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+          "content": "Section size",
+      },
+      {
+        "type": "range",
+        "id": "page_width",
+        "unit": "px",
+        "step": 100,
+        "min": 800,
+        "max": 1600,
+        "default": 1100,
+        "label": "Section width",
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Top padding",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Bottom padding",
+        "default": 36
+      }
+    ],
+    "blocks": [
+      {
+        "type": "icon",
+        "name": "Icon",
+        "limit": 6,        
+        "settings": [
+          {
+            "type": "header",
+            "content": "Icons",
+          },
+          {
+            "type": "select",
+            "id": "icon_choice",
+            "options": [
+              {
+                "value": "icon",
+                "label": "Icon Code"
+              },
+              {
+                "value": "image",
+                "label": "Image"
+              }
+            ],
+            "default": "icon",
+            "label": "Icon",
+            "info": "If there is no image, the icon code will be shown regardless of this option."
+          },
+          {
+             "type": "image_picker",
+             "id": "icon_image",
+             "label": "Icon",
+             "info": "Recommended size: 60x60."
+          },
+          {
+            "type": "text",
+            "id": "icon_code",
+            "label": "Icon Code",
+            "default": "check_circle",
+            "info": "Get icon codes from [this link](https://fonts.google.com/icons/). example: 'check_circle', 'search', 'home'. For help adding icons, you can click [here](/admin/apps/blocky-apps/icons)"
+          },
+          {
+            "type": "color",
+            "id": "icon_color",
+            "label": "Icon Color",
+            "default": "#000000"
+          },       
+          {
+              "type": "richtext",
+              "id": "icon_heading",
+              "label": "Icon Heading",
+              "default": "<h3><b>Feature</b></h3>"
+          },
+          {
+            "type": "color",
+            "id": "icon_heading_color",
+            "label": "Icon Heading Color",
+            "default": "#000000",
+          },
+          {
+              "type": "richtext",
+              "id": "icon_description",
+              "label": "Icon Text",
+              "default": "<p>Highlight why this feature is important</p>"
+          },
+          {
+            "type": "color",
+            "id": "icon_text_color",
+            "label": "Icon Text Color",
+            "default": "#000000",
+          },
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Blocky Before & After Slider 2",
+        "blocks": [
+            {
+              "type": "icon"
+            },
+            {
+              "type": "icon"
+            },
+            {
+              "type": "icon"
+            },
+            {
+              "type": "icon"
+            }
+        ]
+      }
+    ],
+    
+}
+{% endschema %}

@@ -1,0 +1,551 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-container {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.text_container_gap }}px;
+    align-items: {% if section.settings.desktop_content_alignment == 'left' %}flex-start{% elsif section.settings.desktop_content_alignment == 'right' %}flex-end{% else %}center{% endif %};
+    text-align: {{ section.settings.desktop_content_alignment }};
+  }
+  @media (max-width: 749px) {
+    #blocky-rich-text-{{ section.id }} .blocky-rich-text-container {
+      align-items: {% if section.settings.mobile_content_alignment == 'left' %}flex-start{% elsif section.settings.mobile_content_alignment == 'right' %}flex-end{% else %}center{% endif %};
+      text-align: {{ section.settings.mobile_content_alignment }};
+    }
+  }
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+  }
+  {% if section.settings.container_style %}
+    #blocky-rich-text-{{ section.id }} .blocky-rich-text-container {
+      width: 100%;
+      box-sizing: border-box;
+      background-color: {{ section.settings.container_background }};
+      border-radius: {{ section.settings.container_radius }}px;
+      padding: {{ section.settings.container_padding }}px;
+    }
+    @media (max-width: 749px) {
+      #blocky-rich-text-{{ section.id }} .blocky-rich-text-container {
+        padding: {{ section.settings.container_padding_mobile }}px;
+      }
+    }
+  {% endif %}
+
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-benefit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--benefit-text-color);
+    font-size: var(--benefit-text-size);
+  }
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-benefit-image {
+    flex: 0 0 auto;
+    width: var(--benefit-icon-size);
+    height: var(--benefit-icon-size);
+    overflow: hidden;
+    border-radius: 50%;
+    background: transparent;
+  }
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-benefit-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-benefit .material-icons,
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-benefit .material-symbols-outlined {
+    flex: 0 0 auto;
+    font-size: var(--benefit-icon-size);
+    color: var(--benefit-icon-color);
+    line-height: 1;
+  }
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-benefit-text > * {
+    margin: 0;
+    color: inherit;
+  }
+
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-image {
+    width: var(--image-width);
+    max-width: 100%;
+  }
+  #blocky-rich-text-{{ section.id }} .blocky-rich-text-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--image-radius);
+  }
+{% endstyle %}
+
+<div
+  id="blocky-rich-text-{{ section.id }}"
+  class="blocky blocky-padding background-wrapper{% if section.settings.use_gradient_background %} background-wrapper-gradient{% endif %}"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --gradient-background-color: {{ section.settings.gradient_background }};
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-rich-text-container{% if section.settings.container_style and section.settings.container_shadow %} blocky-shadow{% endif %}">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'eyebrow' -%}
+            {%- if block.settings.eyebrow != blank -%}
+              <p
+                class="blocky-rich-text-eyebrow"
+                style="font-size: {{ block.settings.eyebrow_size }}px; color: {{ block.settings.eyebrow_color }};"
+                {{ block.shopify_attributes }}
+              >{{ block.settings.eyebrow }}</p>
+            {%- endif -%}
+          {%- when 'title' -%}
+            {% render 'blocky-titlel', block: block %}
+          {%- when 'body' -%}
+            {% render 'blocky-bodyl', block: block %}
+          {%- when 'button' -%}
+            {% render 'blocky-buttonl', block: block %}
+          {%- when 'benefit' -%}
+            <div
+              class="blocky-rich-text-benefit"
+              style="--benefit-text-color: {{ block.settings.text_color }}; --benefit-text-size: {{ block.settings.text_size }}px; --benefit-icon-size: {{ block.settings.icon_size }}px; --benefit-icon-color: {{ block.settings.icon_color }};"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.icon_choice == 'image' and block.settings.icon_image != blank -%}
+                <span class="blocky-rich-text-benefit-image" aria-hidden="true">
+                  <img src="{{ block.settings.icon_image | image_url: width: 120 }}" alt="" width="{{ block.settings.icon_image.width }}" height="{{ block.settings.icon_image.height }}" loading="lazy">
+                </span>
+              {%- elsif block.settings.icon_code != blank -%}
+                <span class="material-icons material-symbols-outlined" aria-hidden="true">{{ block.settings.icon_code }}</span>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="blocky-rich-text-benefit-text">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+          {%- when 'image' -%}
+            {%- if block.settings.image != blank -%}
+              <div
+                class="blocky-rich-text-image"
+                style="--image-width: {{ block.settings.image_width }}%; --image-radius: {{ block.settings.image_radius }}px;"
+                {{ block.shopify_attributes }}
+              >
+                <img src="{{ block.settings.image | image_url: width: 1600 }}" alt="{{ block.settings.image.alt | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy">
+              </div>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Rich Text",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "range",
+      "id": "text_container_gap",
+      "label": "Spacing between blocks",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "use_gradient_background",
+      "label": "Use Gradient Background",
+      "default": false
+    },
+    {
+      "type": "color_background",
+      "id": "gradient_background",
+      "label": "Gradient Background Colors",
+      "default": "linear-gradient(#FFFFFF, #000000)",
+      "visible_if": "{{ section.settings.use_gradient_background == true }}"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF",
+      "visible_if": "{{ section.settings.use_gradient_background == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Container style"
+    },
+    {
+      "type": "checkbox",
+      "id": "container_style",
+      "label": "Use container style",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "container_background",
+      "label": "Container background",
+      "default": "#F5F5F5",
+      "visible_if": "{{ section.settings.container_style == true }}"
+    },
+    {
+      "type": "range",
+      "id": "container_radius",
+      "label": "Rounded corner",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ section.settings.container_style == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "container_shadow",
+      "label": "Show shadow",
+      "default": true,
+      "visible_if": "{{ section.settings.container_style == true }}"
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container padding (desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48,
+      "visible_if": "{{ section.settings.container_style == true }}"
+    },
+    {
+      "type": "range",
+      "id": "container_padding_mobile",
+      "label": "Container padding (mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24,
+      "visible_if": "{{ section.settings.container_style == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 400,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 52
+    }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Eyebrow",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "eyebrow",
+          "default": "OUR STORY",
+          "label": "Eyebrow text",
+          "info": "Small label shown above the heading. Leave blank to hide."
+        },
+        {
+          "type": "range",
+          "id": "eyebrow_size",
+          "label": "Eyebrow size",
+          "default": 13,
+          "min": 10,
+          "max": 20,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "eyebrow_color",
+          "label": "Eyebrow color",
+          "default": "#666666"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "<b>Section Title</b>",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 40,
+          "min": 20,
+          "max": 80,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        }
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Description text here.</p>",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "range",
+          "id": "body_size",
+          "label": "Body size",
+          "default": 16,
+          "min": 10,
+          "max": 30,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#000000"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Learn more",
+          "info": "Leave the text blank to hide the button."
+        },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "extra-round",
+          "options": [
+            { "value": "flat", "label": "Flat" },
+            { "value": "curved", "label": "Curved" },
+            { "value": "round", "label": "Round" },
+            { "value": "extra-round", "label": "Extra Round" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "regular",
+          "options": [
+            { "value": "outline", "label": "Outline" },
+            { "value": "regular", "label": "Regular" }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Benefits Line",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_choice",
+          "label": "Icon type",
+          "default": "icon",
+          "options": [
+            { "value": "icon", "label": "Icon Code" },
+            { "value": "image", "label": "Image" }
+          ],
+          "info": "If no image is uploaded, the icon code will be shown regardless of this setting."
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image",
+          "info": "Recommended size: 60x60."
+        },
+        {
+          "type": "text",
+          "id": "icon_code",
+          "label": "Icon code",
+          "default": "check_circle",
+          "info": "Get icon codes from [this link](https://fonts.google.com/icons/). Example: 'check_circle', 'verified', 'star'. For help, click [here](/admin/apps/blocky-apps/icons)"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "label": "Icon size",
+          "min": 16,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "default": 24
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>1-year warranty</p>"
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "label": "Text size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Image width",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 100
+        },
+        {
+          "type": "range",
+          "id": "image_radius",
+          "label": "Border radius",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Rich Text",
+      "blocks": [
+        { "type": "eyebrow" },
+        { "type": "title" },
+        { "type": "body" }
+      ]
+    }
+  ]
+}
+{% endschema %}

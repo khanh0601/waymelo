@@ -1,0 +1,726 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+.blocky-results-ivs .blocky-title {
+  padding-bottom: 0.5rem;
+}
+.blocky-results-ivs .blocky-button {
+  margin-top: 1rem;
+}
+.blocky-results-ivs .product-review-stars:not(:first-child) {
+  margin-top: .5rem;
+}
+.blocky-results-ivs .blocky-body-text {
+  line-height: 1.4;
+}
+{% endstylesheet %}
+
+<link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div class="blocky blocky-results-ivs blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;"
+>
+  <div class="blocky-page-width">
+    <div class="blocky-flex-container blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-des-flex-{{ section.settings.layout }}" style="row-gap: 3.5rem;">
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_results_width }} blocky-justify-center blocky-flex-col" style="gap: 1rem;">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {%- when 'title' -%}
+              {% render 'blocky-titlel', block: block %}
+            {%- when 'results' -%}
+              {% render 'blocky-results', block: block %}
+            {%- when 'body' -%}
+              {% render 'blocky-bodyl', block: block %}
+            {%- when 'button' -%}
+              {% unless block.settings.button_label == blank %}
+                <div>
+                  {% render 'blocky-buttonl', block:block %}
+                </div>
+              {% endunless %}
+            {%- when 'review-stars' -%}
+              {% unless block.settings.rating == 0 %}
+                {% render 'blocky-review-starsl', block:block %}
+            {% endunless %}
+          {%- endcase -%}
+        {% endfor %}
+      </div>
+      <div class="blocky-flex-child">
+        <blocky-media-slider 
+          class="blocky-ivs-glide ivs-{{ section.id }} glide" data-id="{{ section.id }}" data-size="{{ section.blocks.size }}" data-peek="40"
+          media-spacing="14" mobile-media-spacing="7" slide-size="{{ section.settings.slides_desktop }}" mobile-slide-size="{{ section.settings.slides_mobile }}"
+          {% if section.settings.auto_scroll %}data-auto{% endif %}{% if section.settings.shadow %} data-shadow{% endif %}
+          style="--border-radius: {{ section.settings.media_border_radius }}px"
+        >
+          <div class="glide__track blocky-flex" data-glide-el="track" style="align-items: center; padding-top: 4px; padding-bottom: 4px;">
+            <ul class="glide__slides blocky-flex" style="margin: 0; padding: 0;">      
+              {% assign missing = 0 %}
+              {% for i in (1..6) %}
+                {%- assign this_image = "image_" | append: i %}
+                {%- assign this_video = "video_" | append: i %}
+                {% if section.settings[this_video] or section.settings[this_image] %}
+                  <li class="glide__slide blocky-slider-slide blocky-slider-slide-media{% if section.settings.shadow %} blocky-shadow{% endif %}">
+                    <div class="blocky-ivs-media-container">
+                      {% if section.settings[this_video] %}
+                        {% render "blocky-video", video: section.settings[this_video], video_fit: section.settings.video_fit, placeholder: 1, autoplay: section.settings.autoplay, button_color: section.settings.play_button_color, background_button_color: section.settings.play_button_background_color %} 
+                      {% else %}
+                        <img
+                          class="blocky-desktop-long blocky-mobile-long"
+                          src="{{ section.settings[this_image] | image_url: height: 750 }}"
+                        >  
+                      {% endif %}
+                    </div>
+                  </li>
+                {% else %}
+                  {% assign missing = missing | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+              {% if missing == 6 %}
+                {% for j in (1..6) %}
+                  <li class="glide__slide blocky-slider-slide blocky-slider-slide-media{% if section.settings.shadow %} blocky-shadow{% endif %}">
+                    <div class="blocky-ivs-media-container">
+                      {% if j < 3 %}
+                        {% render "blocky-video", button_color: section.settings.play_button_color, background_button_color: section.settings.play_button_background_color %} 
+                      {% else %}
+                        {{ 'image' | placeholder_svg_tag: "blocky-desktop-long blocky-mobile-long" }}
+                      {% endif %}
+                    </div>
+                  </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </div>
+        </blocky-media-slider >            
+      </div>    
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Results Carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media",
+    },
+    {
+      "type": "video",
+      "id": "video_1",
+      "label": "Video 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1",
+      "info": "This only displays if video 1 is empty"
+    },
+    {
+      "type": "video",
+      "id": "video_2",
+      "label": "Video 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2",
+      "info": "This only displays if video 2 is empty"
+    },
+    {
+      "type": "video",
+      "id": "video_3",
+      "label": "Video 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3",
+      "info": "This only displays if video 3 is empty"
+    },
+    {
+      "type": "video",
+      "id": "video_4",
+      "label": "Video 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image 4",
+      "info": "This only displays if video 4 is empty"
+    },
+    {
+      "type": "video",
+      "id": "video_5",
+      "label": "Video 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image 5",
+      "info": "This only displays if video 5 is empty"
+    },
+    {
+      "type": "video",
+      "id": "video_6",
+      "label": "Video 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Image 6",
+      "info": "This only displays if video 6 is empty"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Media",
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay videos",
+      "default": false,
+    },
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "default": "#FFFFFF",
+      "label": "Play button color",
+      "info": "The play button only shows if autoplay is off"
+    },
+    {
+      "type": "color",
+      "id": "play_button_background_color",
+      "default": "#000000",
+      "label": "Play button background color",
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Enable auto scroll",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "shadow",
+      "label": "Show shadow",
+      "default": true,
+    },
+    {
+      "type": "range",
+      "id": "media_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 15
+    },
+    
+    
+
+
+    {
+      "type": "header",
+      "content": "Layout",
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Results first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Media first"
+        }
+      ],
+      "default": "row-reverse",
+      "label": "Desktop results placement"
+    },
+    {
+      "type": "select",
+      "id": "desktop_results_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Desktop results width",
+    },
+    {
+      "type": "range",
+      "id": "slides_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Desktop slides per page"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "options": [
+        {
+          "value": "col",
+          "label": "Results first"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Media first"
+        }
+      ],
+      "default": "col-reverse",
+      "label": "Mobile results placement"
+    },
+    {
+      "type": "range",
+      "id": "slides_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Mobile slides per page"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "header",
+      "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "<b>Results Carousel</b>",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 40,
+          "min": 20,
+          "max": 100,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Give proof of your results with text or a link.</p>",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "range",
+          "id": "body_size",
+          "label": "Body size",
+          "default": 12,
+          "min": 10,
+          "max": 30,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#000000"
+        },
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button link",
+          "info": "Leave the text blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "curved",
+          "options": [
+            {
+              "value": "flat",
+              "label": "Flat"
+            },
+            {
+              "value": "curved",
+              "label": "Curved"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "extra-round",
+              "label": "Extra Round"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "regular",
+          "options": [
+              {
+                "value": "outline",
+                "label": "Outline"
+              },
+              {
+                "value": "regular",
+                "label": "Regular"
+              }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#2065D1"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+      ]
+    },
+    {
+      "type": "review-stars",
+      "name": "Review Stars",
+      "limit": 1,
+      "settings": [
+         {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "default": 5,
+          "info": "Set the rating to 0 to hide the stars"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "default": "#ffcc00",
+          "label": "Stars color"
+        },
+        {
+          "type": "color",
+          "id": "review_text_color",
+          "label": "Review text color",
+          "default": "#000000"
+        },
+    
+        {
+          "type": "select",
+          "id": "empty_stars_style",
+          "options": [
+            {
+              "value": "outlined",
+              "label": "Outlined"
+            },
+            {
+              "value": "hidden",
+              "label": "Hidden"
+            }
+          ],
+          "label": "Empty stars style",
+          "default": "hidden"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "review_text",
+          "label": "Text",
+          "default": "Based on over <b>1000+</b> Reviews"
+        },
+        {
+          "type": "range",
+          "id": "review_font_size",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "default": 16,
+          "label": "Text size"
+        }
+      ]
+    },
+    {
+      "type": "results",
+      "name": "Results",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Results",
+        },
+        {
+          "type": "range",
+          "id": "percentage_1",
+          "min": 0,
+          "max": 100,
+          "default": 90,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage 1"
+        },
+        {
+          "type": "richtext",
+          "id": "row_text_1",
+          "default": "<p>Saw real benefits within the first week.</p>",
+          "label": "Result 1",
+          "info": "Leave the text blank to hide the row"
+        },
+        {
+          "type": "range",
+          "id": "percentage_2",
+          "min": 0,
+          "max": 100,
+          "default": 90,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage 2"
+        },
+        {
+          "type": "richtext",
+          "id": "row_text_2",
+          "default": "<p>Experienced a noticeable positive change.</p>",
+          "label": "Result 2",
+          "info": "Leave the text blank to hide the row"
+        },
+        {
+          "type": "range",
+          "id": "percentage_3",
+          "min": 0,
+          "max": 100,
+          "default": 90,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage 3"
+        },
+        {
+          "type": "richtext",
+          "id": "row_text_3",
+          "default": "<p>Found this product to be a game-changer</p>",
+          "label": "Result 3",
+          "info": "Leave the text blank to hide the row"
+        },
+        {
+          "type": "range",
+          "id": "percentage_4",
+          "min": 0,
+          "max": 100,
+          "default": 90,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage 4"
+        },
+        {
+          "type": "richtext",
+          "id": "row_text_4",
+          "label": "Result 4",
+          "info": "Leave the text blank to hide the row"
+        },
+        {
+          "type": "range",
+          "id": "percentage_5",
+          "min": 0,
+          "max": 100,
+          "default": 90,
+          "step": 1,
+          "unit": "%",
+          "label": "Percentage 5"
+        },
+        {
+          "type": "richtext",
+          "id": "row_text_5",
+          "label": "Result 5",
+          "info": "Leave the text blank to hide the row"
+        },
+        {
+          "type": "header",
+          "content": "Result design"
+        },
+        {
+          "type": "checkbox",
+          "default": true,
+          "id": "show_results_borders",
+          "label": "Show borders between results"
+        },
+        {
+          "type": "range",
+          "id": "results_padding",
+          "label": "Space between results",
+          "min": 0,
+          "max": 2,
+          "step": 0.2,
+          "unit": "rem",
+          "default": 1
+        },
+        {
+          "type": "checkbox",
+          "default": true,
+          "id": "show_percentage_bar",
+          "label": "Show percentage bar"
+        },
+        {
+          "type": "checkbox",
+          "default": true,
+          "id": "percentage_bold",
+          "label": "Bold percentage"
+        },
+        {
+          "type": "range",
+          "id": "percentage_size",
+          "label": "Percentage size",
+          "min": 5,
+          "max": 14,
+          "step": 0.5,
+          "unit": "rem",
+          "default": 7
+        },
+        {
+          "type": "color",
+          "id": "percentage_color",
+          "label": "Percentage color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "non_percentage_color",
+          "label": "Remaining percentage color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "color",
+          "id": "result_text_color",
+          "label": "Result text color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "result_text_size",
+          "label": "Result text size",
+          "default": 16,
+          "min": 10,
+          "max": 30,
+          "unit": "px"
+        }
+      ]
+    },
+  ],
+  "presets": [
+    {
+      "name": "Blocky Results Carousel",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "results"
+        },
+        {
+          "type": "body"
+        },
+        {
+          "type": "button"
+        },
+        {
+          "type": "review-stars"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

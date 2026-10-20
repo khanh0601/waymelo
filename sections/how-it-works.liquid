@@ -1,0 +1,327 @@
+{%- comment -%}
+© BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .blocky-how-it-works .blocky-media-adapt .bky-vid-placeholder {
+    height: 45rem;
+    max-height: 480px;
+  }
+
+  @media (max-width: 768px) {
+    .blocky-how-it-works .blocky-media-adapt .bky-vid-placeholder {
+      height: 30rem;
+      max-height: 320px;
+    }
+  }
+
+  .blocky-how-it-works .how-steps { 
+    padding-left: 58px; 
+  }
+
+  .blocky-how-it-works .how-steps-line {
+    display: block;
+    position: absolute; 
+    top: 0; 
+    left: 18px; 
+    width:2px; 
+    z-index: 1;
+    background: var(--timeline-background-color, #194C4F);
+  }
+
+  .blocky-how-it-works .how-step { 
+    position: relative; 
+    margin-bottom: 20px; 
+    display: flex; 
+    flex-direction: column; 
+  }
+  .blocky-how-it-works .how-step:last-child { 
+    margin-bottom: 0; 
+  }
+
+  .blocky-how-it-works .how-step-number {
+    position: absolute; 
+    left: -55px; 
+    top: 2px; 
+    z-index: 1; 
+    width: 32px; 
+    height: 32px; 
+    border-radius: 50%;
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    font-weight:700; 
+    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #000;
+    background-color: var(--how-number-bg); 
+    color: var(--how-number-color); 
+    font-size: var(--how-number-size);
+  }
+  .blocky-how-it-works .how-step-text .heading { 
+    font-weight: 700; 
+    line-height: 1.35; 
+    margin: 0 0 5px; 
+    color: var(--how-block-heading-color); 
+    font-size: var(--how-block-heading-size); 
+  }
+  .blocky-how-it-works .how-step-text .desc { 
+    margin: 0; 
+    line-height: 1.4; 
+    color: var(--how-block-desc-color); 
+    font-size: var(--how-block-desc-size); 
+  }
+{% endstylesheet %}
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div 
+  class="blocky blocky-how-it-works blocky-padding background-wrapper"
+  style="
+    --padding-top: {{ section.settings.padding_top }}; 
+    --padding-bottom: {{ section.settings.padding_bottom }}; 
+    --background-color: {{ section.settings.background_color }}; 
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; 
+    --text-container-gap: {{ section.settings.text_container_gap }};
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-flex-container blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-des-flex-{{ section.settings.layout }} blocky-flex-layout-1">
+
+      
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'media' -%}
+          <div class="blocky-flex-child blocky-flex-child-{{ block.settings.desktop_media_width }} blocky-align-{{ block.settings.desktop_media_position }} blocky-media-{{ block.settings.media_height }} blocky-rounded-sm {% if block.settings.shadow == true %} blocky-shadow {% endif %} blocky-overflow-hidden" style="{% if block.settings.show_border == true %}border: 1px solid {{ block.settings.border_color }};{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.video != blank -%}
+              {% render 'blocky-video', 
+                video: block.settings.video, 
+                video_fit: block.settings.media_fit, 
+                autoplay: block.settings.autoplay, 
+                button_color: block.settings.play_button_color, 
+                background_button_color: block.settings.play_button_background_color 
+              %}
+            {%- elsif block.settings.image != blank -%}
+              {%- assign img = block.settings.image -%}
+              <img
+                class="blocky-media blocky-image-{{ block.settings.media_height }} {% if block.settings.media_fit == "zoomed" %} blocky-video-zoomed{% endif %}"
+                src="{{ img | image_url: height: 750 }}"
+              >  
+            {% else %}
+              <div class="blocky-video blocky-shadow bky-vid-placeholder" style="--play-button-color: white; --play-button-background-color: lightgrey">
+                <button class="blocky-video-play-button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="48" stroke="fill" stroke-width="2" class="background"/>
+                    <polygon 
+                      points="35,25 75,50 35,75"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                      class="play-button"
+                    /> 
+                  </svg>  
+                </button>
+              </div>
+            {%- endif -%}
+          </div>
+        {% endif %}
+      {% endfor %}
+      
+      <div class="blocky-flex-child blocky-flex-child-2">
+        <div class="blocky-media-text-container blocky-align-{{ section.settings.desktop_content_position }} blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+          {%- if section.settings.main_heading != blank -%}
+            <h2 class="blocky-title" style="--title-size: {{ section.settings.main_heading_font_size }}; --title-color: {{ section.settings.main_heading_color }}">{{ section.settings.main_heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subheading != blank -%}
+            <div class="blocky-body-text" style="--body-color: {{ section.settings.subheading_color }}; --body-font-size: {{ section.settings.subheading_font_size }}px">
+              <p>{{ section.settings.subheading }}</p>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.sub_subheading != blank -%}
+            <div class="blocky-body-text" style="--body-color: {{ section.settings.sub_subheading_color }}; --body-font-size: {{ section.settings.sub_subheading_font_size }}px">
+              <p><strong>{{ section.settings.sub_subheading }}</strong></p>
+            </div>
+          {%- endif -%}
+
+
+          {% for block in section.blocks -%}
+            {%- if block.type == 'timeline' -%}
+              <div class="how-steps blocky-relative"
+                style="    
+                  --timeline-background-color: {{ block.settings.timeline_background_color }};
+                  --how-block-heading-color: {{ block.settings.block_heading_color }};
+                  --how-block-heading-size: {{ block.settings.block_heading_font_size }}px;
+                  --how-block-desc-color: {{ block.settings.block_description_color }};
+                  --how-block-desc-size: {{ block.settings.block_description_font_size }}px;
+                  --how-number-bg: {{ block.settings.number_block_background_color }};
+                  --how-number-color: {{ block.settings.number_block_text_color }};
+                  --how-number-size: {{ block.settings.number_block_font_size }}px;
+                "
+                {{ block.shopify_attributes }}
+              >
+                <div class="how-steps-line" aria-hidden="true"></div>
+                {%- for i in (1..7) -%}
+                  {%- assign heading = "block_heading" | append: i -%}
+                  {%- assign heading = block.settings[heading] -%}
+                  {%- assign text = "block_text" | append: i -%}
+                  {%- assign text = block.settings[text] -%}
+                  {%- if heading != blank -%}
+                    <div class="how-step">
+                      <div class="how-step-number">{{ i }}</div>
+                      <div class="how-step-text">
+                        <h3 class="heading">{{ heading }}</h3>
+                        {%- if text != blank -%}
+                          <p class="desc">{{ text }}</p>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    function updateTimeline(container){
+      try{
+        var line = container.querySelector('.how-steps-line');
+        var last = container.querySelector('.how-step:last-child .how-step-number');
+        if(!line || !last) return;
+        var tRect = container.getBoundingClientRect();
+        var bRect = last.getBoundingClientRect();
+        var height = (bRect.bottom - tRect.top);
+        line.style.height = height + 'px';
+      }catch(e){}
+    }
+    function initAll(){
+      document.querySelectorAll('.blocky-how-it-works .how-steps').forEach(updateTimeline);
+    }
+    window.addEventListener('DOMContentLoaded', initAll);
+    window.addEventListener('resize', initAll);
+    document.addEventListener('shopify:section:load', initAll);
+    document.addEventListener('shopify:section:select', initAll);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BKY - How It Works",
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "main_heading", "label": "Main Heading", "default": "How It Works" },
+    { "type": "range", "id": "main_heading_font_size", "label": "Main Heading Font Size", "default": 32, "min": 20, "max": 60, "step": 1, "unit": "px" },
+    { "type": "color", "id": "main_heading_color", "label": "Main Heading Color", "default": "#0D2628" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Each step is designed to bring out your skin’s natural glow and keep it protected." },
+    { "type": "range", "id": "subheading_font_size", "label": "Subheading Font Size", "default": 16, "min": 10, "max": 40, "step": 1, "unit": "px" },
+    { "type": "color", "id": "subheading_color", "label": "Subheading Color", "default": "#505257" },
+    { "type": "textarea", "id": "sub_subheading", "label": "Sub Subheading", "default": "HERE’S WHAT HAPPENS:" },
+    { "type": "range", "id": "sub_subheading_font_size", "label": "Sub Subheading Font Size", "default": 16, "min": 10, "max": 40, "step": 1, "unit": "px" },
+    { "type": "color", "id": "sub_subheading_color", "label": "Sub Subheading Color", "default": "#505257" },
+    { "type": "header", "content": "Layout" },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#FFFFFF" },
+    { "type": "select", "id": "layout", "label": "Desktop media placement", "default": "row", "options": [
+      {"value":"row","label":"Media first"},
+      {"value":"row-reverse","label":"Text first"}
+    ]},
+    { "type": "select", "id": "mobile_layout", "label": "Mobile media placement", "default": "col", "options": [
+      {"value":"col","label":"Media first"},
+      {"value":"col-reverse","label":"Text first"}
+    ]},
+    { "type": "select", "id": "text_container_gap", "label": "Space between text", "default": "1.5rem", "options": [
+      {"label":"None","value":"0"},
+      {"label":"Small","value":"0.5rem"},
+      {"label":"Medium","value":"1rem"},
+      {"label":"Large","value":"1.5rem"},
+      {"label":"Extra Large","value":"2rem"}
+    ]},
+
+    { "type": "header", "content": "Section size" },
+    { "type": "range", "id": "page_width", "label": "Section width", "unit": "px", "step": 100, "min": 800, "max": 1600, "default": 1200 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 }
+  ],
+  "disabled_on": { "groups": ["header", "footer"] },
+  "blocks": [
+    {
+      "type": "media",
+      "name": "Media",
+      "limit": 1,
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "text", "id": "alt_text", "label": "Image alt text" },
+        { "type": "select", "id": "media_height", "label": "Height", "default": "adapt", "options": [
+          {"value":"adapt","label":"Adapt to media"},
+          {"value":"small","label":"Small"},
+          {"value":"medium","label":"Medium"},
+          {"value":"large","label":"Large"}
+        ]},
+        { "type": "select", "id": "desktop_media_width", "label": "Width", "default": "medium", "options": [
+          {"value":"small","label":"Small"},
+          {"value":"medium","label":"Medium"},
+          {"value":"large","label":"Large"}
+        ]},
+        { "type": "select", "id": "desktop_media_position", "label": "Desktop position", "default": "center", "options": [
+          {"value":"start","label":"Top"},
+          {"value":"center","label":"Middle"},
+          {"value":"end","label":"Bottom"}
+        ]},
+        { "type": "select", "id": "media_fit", "label": "Media fit", "default": "zoomed", "options": [
+          {"value":"fit","label":"Fit"},
+          {"value":"zoomed","label":"Zoomed in"}
+        ]},
+        { "type": "checkbox", "id": "shadow", "label": "Show media shadow", "default": true },
+        { "type": "checkbox", "id": "show_border", "label": "Show border", "default": false },
+        { "type": "color", "id": "border_color", "label": "Border color", "default": "#000000", "visible_if": "{{ block.settings.show_border == true }}" },
+        { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true },
+        { "type": "color", "id": "play_button_color", "label": "Play button color", "default": "#FFFFFF", "info": "Shown only if autoplay is off" },
+        { "type": "color", "id": "play_button_background_color", "label": "Play button background", "default": "#DCDCDC" }
+      ]
+    },
+    {
+      "type": "timeline",
+      "name": "Timeline",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Timeline Design" },
+        { "type": "color", "id": "timeline_background_color", "label": "Timeline Color", "default": "#17a2b8" },
+        { "type": "color", "id": "block_heading_color", "label": "Block Heading Color", "default": "#32999E" },
+        { "type": "range", "id": "block_heading_font_size", "label": "Block Heading Font Size", "default": 17, "min": 10, "max": 25, "step": 1, "unit": "px" },
+        { "type": "color", "id": "block_description_color", "label": "Block Description Color", "default": "#555" },
+        { "type": "range", "id": "block_description_font_size", "label": "Block Description Font Size", "default": 14, "min": 10, "max": 15, "step": 1, "unit": "px" },
+        { "type": "color", "id": "number_block_background_color", "label": "Number Block Background Color", "default": "#17a2b8" },
+        { "type": "color", "id": "number_block_text_color", "label": "Number Block Text Color", "default": "#fff" },
+        { "type": "range", "id": "number_block_font_size", "label": "Number Block Font Size", "default": 18, "min": 10, "max": 40, "step": 1, "unit": "px" },
+        { "type": "header", "content": "Content" },
+        { "type": "text", "id": "block_heading1", "label": "Step 1 Heading", "default": "Cleanse" },
+        { "type": "textarea", "id": "block_text1", "label": "Step 1 Text", "default": "Impurities are gently lifted away" },
+        { "type": "text", "id": "block_heading2", "label": "Step 2 Heading", "default": "Activate" },
+        { "type": "textarea", "id": "block_text2", "label": "Step 2 Text", "default": "Key ingredients begin targeting the skin’s surface" },
+        { "type": "text", "id": "block_heading3", "label": "Step 3 Heading", "default": "Penetrate" },
+        { "type": "textarea", "id": "block_text3", "label": "Step 3 Text", "default": "The formula reaches deeper layers for maximum impact" },
+        { "type": "text", "id": "block_heading4", "label": "Step 4 Heading", "default": "Repair" },
+        { "type": "textarea", "id": "block_text4", "label": "Step 4 Text", "default": "Skin is soothed, renewed, and supported" },
+        { "type": "text", "id": "block_heading5", "label": "Step 5 Heading", "default": "Protect" },
+        { "type": "textarea", "id": "block_text5", "label": "Step 5 Text", "default": "A barrier locks in hydration and shields against stressors" },
+        { "type": "text", "id": "block_heading6", "label": "Step 6 Heading", "default": "Glow" },
+        { "type": "textarea", "id": "block_text6", "label": "Step 6 Text", "default": "Radiance and confidence shine through with consistent use" },
+        { "type": "text", "id": "block_heading7", "label": "Step 7 Heading" },
+        { "type": "textarea", "id": "block_text7", "label": "Step 7 Text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+        "name": "Blocky How It Works",
+        "blocks": [
+            { "type": "media" },
+            { "type": "timeline"}
+        ]
+    }
+  ]
+}
+{% endschema %}

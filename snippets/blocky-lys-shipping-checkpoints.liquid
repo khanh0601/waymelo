@@ -1,0 +1,79 @@
+{% capture date_format %}
+  {{ block.settings.date_format | replace: "day", block.settings.day_label | replace: "month", block.settings.month_label }}
+{% endcapture %}
+
+<div
+  class='blocky blocky-shipping-checkpoints'
+  style="--icon-background-color: {{ block.settings.icon_background_color }}; --icon-color: {{ block.settings.icon_color }}; --text-size: {{ block.settings.text_size }};"
+  {{ block.shopify_attributes }}
+>
+  <div class="blocky-shipping-checkpoint-line blocky-shipping-checkpoint-line-{{ block.settings.icon_size }}"> </div>
+  {% if block.settings.text_1 != blank and block.settings.icon_1 != blank %}
+    <div class='blocky-shipping-checkpoint'>
+      <span class="material-icons material-symbols-outlined blocky-shipping-checkpoint-icon blocky-shipping-checkpoint-icon-{{ block.settings.icon_size }}"> {{ block.settings.icon_1 }} </span>
+      <div class="blocky-shipping-checkpoint-text blocky-flex-{{ block.settings.date_placement }}">
+        {% assign start_date_seconds_1 = block.settings.start_date_1 | times: 86400 %}
+        {% assign end_date_seconds_1 = block.settings.end_date_1 | times: 86400 %}
+        {% assign start_date_1 = "now" | date: "%s" | plus: start_date_seconds_1 | date: date_format %}
+        {% assign end_date_1 = "now" | date: "%s" | plus: end_date_seconds_1 | date: date_format %}
+        <p>
+          <b>{{ start_date_1 }}{% if block.settings.start_date_1 != block.settings.end_date_1 %} - {{ end_date_1 }}{% endif %}</b>
+        </p>
+        <p>
+          {{ block.settings.text_1 }}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  {% if block.settings.text_2 != blank and block.settings.icon_2 != blank %}
+    <div class='blocky-shipping-checkpoint'>
+      <span class="material-icons material-symbols-outlined blocky-shipping-checkpoint-icon blocky-shipping-checkpoint-icon-{{ block.settings.icon_size }}"> {{ block.settings.icon_2 }} </span>
+      <div class="blocky-shipping-checkpoint-text blocky-flex-{{ block.settings.date_placement }}">
+        {% assign start_date_seconds_2 = block.settings.start_date_2 | times: 86400 %}
+        {% assign end_date_seconds_2 = block.settings.end_date_2 | times: 86400 %}
+        {% assign start_date_2 = "now" | date: "%s" | plus: start_date_seconds_2 | date: date_format %}
+        {% assign end_date_2 = "now" | date: "%s" | plus: end_date_seconds_2 | date: date_format %}
+        <p>
+          <b>{{ start_date_2 }}{% if block.settings.start_date_2 != block.settings.end_date_2 %} - {{ end_date_2 }}{% endif %}</b>
+        </p>
+        <p>
+          {{ block.settings.text_2 }}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  {% if block.settings.text_3 != blank and block.settings.icon_3 != blank %}
+    <div class='blocky-shipping-checkpoint'>
+      <span class="material-icons material-symbols-outlined blocky-shipping-checkpoint-icon blocky-shipping-checkpoint-icon-{{ block.settings.icon_size }}"> {{ block.settings.icon_3 }} </span>
+      <div class="blocky-shipping-checkpoint-text blocky-flex-{{ block.settings.date_placement }}">
+        {% assign start_date_seconds_3 = block.settings.start_date_3 | times: 86400 %}
+        {% assign end_date_seconds_3 = block.settings.end_date_3 | times: 86400 %}
+        {% assign start_date_3 = "now" | date: "%s" | plus: start_date_seconds_3 | date: date_format %}
+        {% assign end_date_3 = "now" | date: "%s" | plus: end_date_seconds_3 | date: date_format %}
+        <p>
+          <b>{{ start_date_3 }}{% if block.settings.start_date_3 != block.settings.end_date_3 %} - {{ end_date_3 }}{% endif %}</b>
+        </p>
+        <p>
+          {{ block.settings.text_3 }}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  {% if block.settings.text_4 != blank and block.settings.icon_4 != blank %}
+    <div class='blocky-shipping-checkpoint'>
+      <span class="material-icons material-symbols-outlined blocky-shipping-checkpoint-icon blocky-shipping-checkpoint-icon-{{ block.settings.icon_size }}"> {{ block.settings.icon_4 }} </span>
+      <div class="blocky-shipping-checkpoint-text blocky-flex-{{ block.settings.date_placement }}">
+        {% assign start_date_seconds_4 = block.settings.start_date_4 | times: 86400 %}
+        {% assign end_date_seconds_4 = block.settings.end_date_4 | times: 86400 %}
+        {% assign start_date_4 = "now" | date: "%s" | plus: start_date_seconds_4 | date: date_format %}
+        {% assign end_date_4 = "now" | date: "%s" | plus: end_date_seconds_4 | date: date_format %}
+        <p>
+          <b>{{ start_date_4 }}{% if block.settings.start_date_4 != block.settings.end_date_4 %} - {{ end_date_4 }}{% endif %}</b>
+        </p>
+        <p>
+          {{ block.settings.text_4 }}
+        </p>
+      </div>
+    </div>
+  {% endif %}
+</div>

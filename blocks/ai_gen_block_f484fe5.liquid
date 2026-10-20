@@ -1,0 +1,68 @@
+{% doc %}
+  @prompt
+    In the footer section (specifically the Contact column), add a new line of text that displays an email address. It should be styled consistently with the existing footer content, include a label like "Email:" and a clickable mailto link for the email address. The email address should be easily customizable through theme settings.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-footer-email-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+  }
+
+  .ai-footer-email-{{ ai_gen_id }}__link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    overflow-wrap: anywhere;
+  }
+
+  .ai-footer-email-{{ ai_gen_id }}__link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+{% endstyle %}
+
+{% if block.settings.email_address != blank %}
+  <div class="ai-footer-email-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+    <span>Email: </span><a class="ai-footer-email-{{ ai_gen_id }}__link" href="mailto:{{ block.settings.email_address | strip | escape }}">{{ block.settings.email_address | strip | escape }}</a>
+  </div>
+{% else %}
+  <div class="ai-footer-email-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+    <span>Email: </span><span>Add an email address in this block's settings.</span>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Footer email",
+  "settings": [
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email address"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer email"
+    }
+  ],
+  "tag": null,
+  "class": "footer-email-block"
+}
+{% endschema %}

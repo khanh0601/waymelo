@@ -1,0 +1,32 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<div 
+  class="iwt-container iwt-container-{{ index }}{% if icon_position == "top" %} iwt-icon-top blocky-flex-col-reverse{% elsif side == 1 %} iwt-flex-reverse{% endif %}" 
+  style="--icon-color: {{ block.settings.icon_color }}; --title-color: {{ block.settings.icon_heading_color }}; --description-color: {{ block.settings.icon_text_color }};"
+  {{ block.shopify_attributes }}
+>
+  <div class="iwt-text">
+    {% if block.settings.icon_heading != blank %} 
+      <div class="iwt-heading">{{ block.settings.icon_heading }}</div>
+    {% endif %}
+    {% if block.settings.icon_description != blank %} 
+      <div class="iwt-description"> {{ block.settings.icon_description }} </div>
+    {% endif %}
+  </div>
+  {% if block.settings.icon_choice == "image" and block.settings.icon_image != null %}
+    <img 
+      src="{{ block.settings.icon_image | image_url }}" 
+      alt="{{ block.settings.icon_heading }}"
+      width="60px"
+      height="60px"
+      style="border-radius: 50%;"
+    />
+  {% elsif block.settings.icon_code != blank %}
+    <div class="iwt-icon-container">
+      <span class="material-icons material-symbols-outlined iwt-icon"> {{ block.settings.icon_code }} </span>
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,705 @@
+{%- comment -%}
+© BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{%- stylesheet -%}
+.blocky-showcase-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  row-gap: 3rem;
+}
+
+.blocky-showcase-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: var(--showcase-background-color);
+  border-radius: var(--button-border-radius);
+  transition-delay: 0.1s;
+}
+.blocky-showcase-buttons-outlined {
+  --padding: 0.4rem;
+  padding: var(--padding);
+  border: solid 0.1rem var(--selected-showcase-background-color-opactiy);
+  border-radius: calc(var(--button-border-radius) + var(--padding));
+}
+.blocky-showcase-buttons-shadow {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;  
+}
+.blocky-showcase-button {
+  padding: 1rem 2rem;
+  flex-shrink: 0;
+  flex-grow: 1;
+  color: var(--showcase-text-color);
+  background-color: var(--showcase-background-color);
+  transition: background 0.2s, color 0.2s;
+  border-color: var(--showcase-background-color);
+  border-radius: var(--button-border-radius);
+  cursor: pointer;
+  border-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+.blocky-showcase-button-active {
+  color: var(--selected-showcase-text-color);
+  background-color: var(--selected-showcase-background-color);
+  border-color: var(--selected-showcase-background-color);
+}
+.blocky-showcase-container {
+  position: relative;
+  transition: height 0.15s ease-in-out;
+  margin-top: 5rem;
+  border-radius: 0.5rem;
+}
+.blocky-showcase-showcase {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0; 
+  visibility: hidden; 
+  transition: opacity 0.15s ease-in-out;
+  row-gap: 3rem;
+}
+.blocky-showcase-showcase-active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+}
+
+@media screen and (min-width: 750px) {
+  .blocky-showcase-header-horizontal {
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    text-align: start !important;
+  }
+  .blocky-showcase-header-horizontal > * {
+    max-width: 50%;
+  }
+  .blocky-showcase-header-horizontal:has(.blocky-des-full) > * {
+    max-width: unset;
+  }
+  .blocky-showcase-button {
+    font-size: var(--showcase-desktop-font-size);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .blocky-showcase-buttons-outlined {
+    --padding: 0.3rem;
+  }
+  .blocky-showcase-header {
+    row-gap: 2rem;
+  }
+  .blocky-showcase-container {
+    margin-top: 3rem;
+  }
+  .blocky-showcase-button {
+    font-size: var(--showcase-mobile-font-size);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .blocky-showcase .blocky-media-adapt .bky-vid-placeholder,
+  .blocky-showcase .blocky-media-adapt .blocky-showcase-img-placeholder {
+    height: 20rem;
+  }
+}
+@media screen and (min-width: 750px) {
+  .blocky-showcase .blocky-media-adapt .bky-vid-placeholder, 
+  .blocky-showcase .blocky-media-adapt .blocky-showcase-img-placeholder {
+    height: 50rem;
+  }
+  .blocky-showcase .blocky-des-flex-row-reverse:has(.blocky-flex-child-full) {
+    flex-direction: column-reverse
+  }
+}
+{%- endstylesheet -%}
+
+<script src="{{ 'blocky-product-showcase.js' | asset_url }}" defer></script>
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div class="blocky blocky-showcase blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --showcase-background-color: {{ section.settings.showcase_background_color }}; --showcase-text-color: {{ section.settings.showcase_text_color }}; --selected-showcase-background-color: {{ section.settings.selected_showcase_background_color }}; --selected-showcase-text-color: {{ section.settings.selected_showcase_text_color }};
+    --button-border-radius: {{ section.settings.button_border_radius }}px; --showcase-desktop-font-size: {{ section.settings.showcase_desktop_font_size }}px; --showcase-mobile-font-size: {{ section.settings.showcase_mobile_font_size }}px; --selected-showcase-background-color-opactiy: {{ section.settings.selected_showcase_background_color }}80;"  
+>
+  <div class="blocky-page-width">
+    <blocky-product-showcase>
+      <div class="blocky-showcase-header blocky-showcase-header-{{ section.settings.header_layout }}">
+        {% render 'blocky-titlel', block: section %}
+        <div class='blocky-showcase-buttons blocky-showcase-buttons-{{ section.settings.buttons_style }}{% if section.settings.desktop_full_size_buttons %} blocky-des-full{% endif %}{% if section.settings.mobile_full_size_buttons %} blocky-mob-full{% endif %}'>
+          {% for block in section.blocks %}
+            <button class='blocky-showcase-button {% if forloop.index0 == 0 %} blocky-showcase-button-active{% endif %}' data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+              {{ block.settings.btn_label }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class='blocky-showcase-container'>
+        {%- for block in section.blocks -%}
+          <div class="blocky-flex-container blocky-des-flex-{{ block.settings.layout }} blocky-mob-flex-{{ block.settings.mobile_layout }} blocky-showcase-showcase{% if forloop.index0 == 0 %} blocky-showcase-showcase-active{% endif %}" data-index="{{ forloop.index0 }}">
+             <div class="blocky-flex-child blocky-flex-child-{{ block.settings.desktop_video_width }} blocky-justify-center blocky-border-rounded-md blocky-overflow-hidden blocky-media-{{ section.settings.height }}{% if section.settings.show_shadow %} blocky-shadow{% endif %}" style="line-height: 0;">
+              {% capture image_block %}
+                {% if block.settings.image  %}
+                  <img
+                    class="blocky-full blocky-image-cover"
+                    src="{{ block.settings.image | image_url: height: 750 }}"
+                  >  
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag: "blocky-full blocky-showcase-img-placeholder" }}
+                {% endif %}
+              {% endcapture %}
+              {% if block.settings.media_type == "image" and block.settings.image %} {{ image_block }}
+              {% elsif block.settings.media_type == "image" and block.settings.image == null and block.settings.video == null %} {{ image_block }}
+              {% elsif block.settings.image and block.settings.video == null %} {{ image_block }}
+              {% else %}
+                {% render "blocky-video", video: block.settings.video, video_fit: block.settings.video_fit, placeholder: 0, autoplay: block.settings.autoplay, button_color: block.settings.play_button_color, background_button_color: block.settings.play_button_background_color %}
+              {% endif %}           
+             </div>
+            {% if block.settings.title != blank or block.settings.body_text != blank or block.settings.button_label != blank %}
+              <div class="blocky-flex-child">
+                <div class="blocky-media-text-container blocky-align-center blocky-text-container-desktop-{{ block.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ block.settings.mobile_content_alignment }}">
+                  {% render 'blocky-titlel', block: block %}
+                  {% render 'blocky-bodyl', block: block %}
+                  {% render 'blocky-buttonl', block:block %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {%- endfor -%}
+      </div>    
+    </blocky-product-showcase>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Product Showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>Product Showcase</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 50,
+      "min": 30,
+      "max": 100,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+
+    
+    {
+      "type": "header",
+      "content": "Showcases"
+    },
+    {
+      "type": "color",
+      "id": "selected_showcase_background_color",
+      "label": "Selected showcase background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "selected_showcase_text_color",
+      "label": "Selected showcase text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "showcase_background_color",
+      "label": "Not-selected showcase text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "showcase_text_color",
+      "label": "Not-selected showcase text color",
+      "default": "#000000"
+    },
+    
+
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Buttons corner radius",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "buttons_style",
+      "options": [
+        {
+          "value": "outlined",
+          "label": "Outlined"
+        },
+        {
+          "value": "shadow",
+          "label": "Shadow"
+        }
+      ],
+      "default": "outlined",
+      "label": "Buttons container style"
+    },
+
+    
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "select",
+      "id": "header_layout",
+      "options": [
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        }
+      ],
+      "default": "horizontal",
+      "label": "Desktop header layout"
+    },
+    {
+      "type": "range",
+      "id": "showcase_desktop_font_size",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Showcase font size",
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop_full_size_buttons",
+      "label": "Expand buttons to full width",
+      "default": false,
+    },
+    
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "showcase_mobile_font_size",
+      "min": 8,
+      "max": 25,
+      "step": 1,
+      "unit": "px",
+      "label": "Showcase font size",
+      "default": 13
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_full_size_buttons",
+      "label": "Expand buttons to full width",
+      "default": true,
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to media"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "adapt",
+      "label": "Media height"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shadow",
+      "label": "Show media shadow",
+      "default": true,
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+   
+    {
+      "type": "header",
+      "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "showcase",
+      "name": "Showcase",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Showcase button"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "btn_label",
+          "label": "Button label",
+          "default": "Feature"
+        },
+        {
+          "type": "header",
+          "content": "Media"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "video",
+          "info": "If only a video or image is added, it will be shown regardless of this option's value."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay",
+          "default": true,
+        },
+        {
+          "type": "color",
+          "id": "play_button_color",
+          "default": "#FFFFFF",
+          "label": "Play button color",
+          "info": "The play button only shows if autoplay is off"
+        },
+        {
+          "type": "color",
+          "id": "play_button_background_color",
+          "default": "#000000",
+          "label": "Play button background color",
+        },
+        {
+          "type": "select",
+          "id": "video_fit",
+          "options": [
+            {
+              "value": "fit",
+              "label": "Fit"
+            },
+            {
+              "value": "zoomed",
+              "label": "Zoomed in"
+            }
+          ],
+          "default": "zoomed",
+          "label": "Video fit"
+        },
+
+
+
+        {
+          "type": "header",
+          "content": "Content",
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 35,
+          "min": 10,
+          "max": 80,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#000000"
+        },       
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "info": "Leave the text blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "curved",
+          "options": [
+            {
+              "value": "flat",
+              "label": "Flat"
+            },
+            {
+              "value": "curved",
+              "label": "Curved"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "extra-round",
+              "label": "Extra Round"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#2065D1"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+
+        
+        {
+          "type": "header",
+          "content": "Desktop layout"
+        },
+        {
+          "type": "select",
+          "id": "desktop_video_width",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "large",
+              "label": "Large"
+            },
+            {
+              "value": "full",
+              "label": "Full Width"
+            },            
+          ],
+          "default": "large",
+          "label": "Media width",
+          "info": "Media is automatically full width if there is no text."
+        },
+        {
+          "type": "select",
+          "id": "layout",
+          "options": [
+            {
+              "value": "row",
+              "label": "Media first"
+            },
+            {
+              "value": "row-reverse",
+              "label": "Text first"
+            },
+          ],
+          "default": "row",
+          "label": "Media placement",
+        },
+    
+        {
+          "type": "select",
+          "id": "desktop_content_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center",
+          "label": "Content alignment"
+        },
+        
+        {
+          "type": "header",
+          "content": "Mobile layout"
+        },
+        {
+          "type": "select",
+          "id": "mobile_layout",
+          "options": [
+            {
+              "value": "col",
+              "label": "Media first"
+            },
+            {
+              "value": "col-reverse",
+              "label": "Text first"
+            }
+          ],
+          "default": "col",
+          "label": "Media placement"
+        },
+        {
+          "type": "select",
+          "id": "mobile_content_alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center",
+          "label": "Content alignment"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Product Showcase",
+      "blocks": [
+        {
+          "type": "showcase"
+        },
+        {
+          "type": "showcase"
+        },
+        {
+          "type": "showcase"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

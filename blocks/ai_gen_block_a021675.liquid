@@ -1,0 +1,280 @@
+{% doc %}
+  @prompt
+    Create a responsive video showcase section with three videos displayed side by side in one row on desktop. Make the section width flexible, with an option to fill the available content width or span the full page width. Each video should fill its column neatly. Allow the merchant to choose each of the three videos. Start all videos automatically when the page loads, muted and playing inline to support browser autoplay rules. Use a responsive layout that fits smaller screens without horizontal overflow. Include controls so visitors can play or pause the videos.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-showcase-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+    box-sizing: border-box;
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}.ai-video-showcase-{{ ai_gen_id }}--wide {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: {{ block.settings.gap }}px;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}--wide .ai-video-showcase-{{ ai_gen_id }}__grid {
+    width: 100%;
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}__item {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: {{ block.settings.corner_radius }}px;
+    background: #171717;
+    aspect-ratio: {{ block.settings.aspect_ratio }};
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}__item video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}__toggle {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 1;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    background: #171717;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}__toggle:hover {
+    background: #333333;
+  }
+
+  .ai-video-showcase-{{ ai_gen_id }}__toggle:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-showcase-{{ ai_gen_id }}__grid {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    .ai-video-showcase-{{ ai_gen_id }}__item {
+      aspect-ratio: {{ block.settings.mobile_aspect_ratio }};
+    }
+  }
+{% endstyle %}
+
+<video-showcase-{{ ai_gen_id }}
+  class="ai-video-showcase-{{ ai_gen_id }}{% if block.settings.width_mode == 'full' %} ai-video-showcase-{{ ai_gen_id }}--wide{% endif %}"
+  {{ block.shopify_attributes }} style={padding: 20px 0}
+>
+  <div class="ai-video-showcase-{{ ai_gen_id }}__grid">
+    {% for i in (1..3) %}
+      {% liquid
+        assign video_key = 'video_' | append: i
+        assign video_object = block.settings[video_key]
+      %}
+      <div class="ai-video-showcase-{{ ai_gen_id }}__item">
+        {% if video_object != blank %}
+          {{ video_object | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto' }}
+        {% else %}
+          <div class="ai-video-showcase-{{ ai_gen_id }}__empty" role="img" aria-label="Add video {{ i }} in block settings">
+            <span>Add video {{ i }} in block settings</span>
+          </div>
+        {% endif %}
+        {% if video_object != blank %}
+          <button class="ai-video-showcase-{{ ai_gen_id }}__toggle" type="button" aria-label="Pause video {{ i }}" aria-pressed="false">Pause</button>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</video-showcase-{{ ai_gen_id }}>
+
+{% style %}
+  .ai-video-showcase-{{ ai_gen_id }}__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    color: #ffffff;
+    background: #383838;
+    text-align: center;
+    font-size: 14px;
+  }
+{% endstyle %}
+
+<script>
+  (function() {
+    var tagName = 'video-showcase-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+
+    class VideoShowcase extends HTMLElement {
+      connectedCallback() {
+        this.querySelectorAll('.ai-video-showcase-{{ ai_gen_id }}__item').forEach((item) => {
+          const video = item.querySelector('video');
+          const button = item.querySelector('.ai-video-showcase-{{ ai_gen_id }}__toggle');
+          if (!video || !button) return;
+
+          video.muted = true;
+          video.playsInline = true;
+          const playAttempt = video.play();
+          if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+
+          button.addEventListener('click', () => {
+            if (video.paused) {
+              const attempt = video.play();
+              if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+              button.textContent = 'Pause';
+              button.setAttribute('aria-label', 'Pause video');
+              button.setAttribute('aria-pressed', 'false');
+            } else {
+              video.pause();
+              button.textContent = 'Play';
+              button.setAttribute('aria-label', 'Play video');
+              button.setAttribute('aria-pressed', 'true');
+            }
+          });
+
+          video.addEventListener('play', () => {
+            button.textContent = 'Pause';
+            button.setAttribute('aria-label', 'Pause video');
+            button.setAttribute('aria-pressed', 'false');
+          });
+          video.addEventListener('pause', () => {
+            button.textContent = 'Play';
+            button.setAttribute('aria-label', 'Play video');
+            button.setAttribute('aria-pressed', 'true');
+          });
+        });
+      }
+    }
+
+    customElements.define(tagName, VideoShowcase);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Video showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Videos"
+    },
+    {
+      "type": "video",
+      "id": "video_1",
+      "label": "Video 1"
+    },
+    {
+      "type": "video",
+      "id": "video_2",
+      "label": "Video 2"
+    },
+    {
+      "type": "video",
+      "id": "video_3",
+      "label": "Video 3"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "width_mode",
+      "label": "Page width",
+      "options": [
+        { "value": "content", "label": "Content width" },
+        { "value": "full", "label": "Full page width" }
+      ],
+      "default": "content"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Video spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Desktop video ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "16 / 9", "label": "Landscape" }
+      ],
+      "default": "16 / 9"
+    },
+    {
+      "type": "select",
+      "id": "mobile_aspect_ratio",
+      "label": "Mobile video ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "16 / 9", "label": "Landscape" }
+      ],
+      "default": "16 / 9"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video showcase"
+    }
+  ],
+  "tag": null,
+  "class": "video-showcase-block"
+}
+{% endschema %}

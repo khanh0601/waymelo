@@ -1,0 +1,39 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<blocky-product-reviews 
+  class="blocky blocky-pdr background-wrapper blocky-pdr-{{ side }} blocky-pdr-side-{{ block.settings.side }}{%if block.settings.show_card%} blocky-pdr-card{% endif %}{% if block.settings.auto_scroll %} blocky-pdr-slider-auto-old{% endif %}" 
+  style="--background-color: {{ block.settings.background_color }}; --text-size: {{ block.settings.text_size }}; --text-color: {{ block.settings.text_color }}; 
+      --image-size: {{ block.settings.image_size }}; --star-color: {{ block.settings.star_color }}; --star-size: {{ block.settings.star_size }};
+  "
+  {{ block.shopify_attributes }}
+>
+  {%- assign items_count = 0 -%}
+  {%- if block.settings.text_1 != blank -%}
+    {%- assign items_count = items_count | plus: 1 -%}
+  {%- endif -%}
+  {%- if block.settings.text_2 != blank -%}
+    {%- assign items_count = items_count | plus: 1 -%}
+  {%- endif -%}
+  {%- if block.settings.text_3 != blank -%}
+    {%- assign items_count = items_count | plus: 1 -%}
+  {%- endif -%}
+  
+  {%- if items_count > 1 -%}
+    <button type="button" class="blocky-pdr-carot-old" name="previous">
+      <span class="blocky-pdr-ccarot blocky-pdr-ccarot-left"></span>
+    </button>
+  {%- endif -%}
+  <div class="blocky-pdr-container">
+    {% render "blocky-lys-product-description-text", index: 0, text: block.settings.text_1, image: block.settings.image_1, reviewer: block.settings.reviewer_1, display_stars: block.settings.display_stars, image_alignment: block.settings.image_alignment, image_shape: block.settings.image_shape, star_placement: block.settings.star_placement, text_alignment: block.settings.text_alignment, show_placeholder: block.settings.show_placeholder_image, image_size: block.settings.image_size %} 
+    {% render "blocky-lys-product-description-text", index: 1, text: block.settings.text_2,  image: block.settings.image_2, reviewer: block.settings.reviewer_2, display_stars: block.settings.display_stars, image_alignment: block.settings.image_alignment, image_shape: block.settings.image_shape, star_placement: block.settings.star_placement, text_alignment: block.settings.text_alignment, show_placeholder: block.settings.show_placeholder_image, image_size: block.settings.image_size %} 
+    {% render "blocky-lys-product-description-text", index: 2, text: block.settings.text_3, image: block.settings.image_3, reviewer: block.settings.reviewer_3, display_stars: block.settings.display_stars, image_alignment: block.settings.image_alignment, image_shape: block.settings.image_shape, star_placement: block.settings.star_placement, text_alignment: block.settings.text_alignment, show_placeholder: block.settings.show_placeholder_image, image_size: block.settings.image_size %} 
+  </div>
+  {%- if items_count > 1 -%}
+    <button type="button" class="blocky-pdr-carot-old" name="next">
+        <span class="blocky-pdr-ccarot blocky-pdr-ccarot-right"></span>
+    </button>
+  {%- endif -%}
+</blocky-product-reviews>

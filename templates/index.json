@@ -1,0 +1,578 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "blocky_image_embedded_XPGRAk": {
+      "type": "blocky-image-embedded",
+      "blocks": {
+        "title_ykwkb9": {
+          "type": "title",
+          "settings": {
+            "title": "Stop Settling for Average",
+            "title_size": 50,
+            "title_color": "#000000"
+          }
+        },
+        "body_qHbzVW": {
+          "type": "body",
+          "settings": {
+            "body_text": "<p>Experience quality you can feel</p>",
+            "body_size": 16,
+            "body_color": "#000000"
+          }
+        },
+        "button_hHkHMn": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/all",
+            "button_border_radius": "extra-round",
+            "button_style": "regular",
+            "button_background_color": "#7A5168",
+            "button_text_color": "#FFFFFF"
+          }
+        }
+      },
+      "block_order": [
+        "title_ykwkb9",
+        "body_qHbzVW",
+        "button_hHkHMn"
+      ],
+      "name": "Blocky Image Embed",
+      "settings": {
+        "section_height": "650px",
+        "mobile_height": "300px",
+        "image_fit": "cover",
+        "border_radius": 0,
+        "show_border": false,
+        "border_color": "#000000",
+        "overlay_opacity": 0,
+        "text_align": "vertical-center horizontal-center",
+        "full_screen": true,
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "blocky_testimonial_slider_z4MCcB": {
+      "type": "blocky-testimonial-slider",
+      "blocks": {
+        "testimonial_aYfcXE": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "star_color": "#d4af36",
+            "empty_stars_style": "hidden",
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Jessica C.",
+            "show_verified": true
+          }
+        },
+        "testimonial_4YWXhM": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "star_color": "#d4af36",
+            "empty_stars_style": "hidden",
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Terri M.",
+            "show_verified": true
+          }
+        },
+        "testimonial_NX7AAi": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 4.5,
+            "star_color": "#d4af36",
+            "empty_stars_style": "hidden",
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Mark M.",
+            "show_verified": true
+          }
+        },
+        "testimonial_DxM8tM": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "star_color": "#d4af36",
+            "empty_stars_style": "hidden",
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Carley K.",
+            "show_verified": true
+          }
+        },
+        "testimonial_Emtcyx": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 4.7,
+            "star_color": "#d4af36",
+            "empty_stars_style": "hidden",
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Leah M.",
+            "show_verified": true
+          }
+        },
+        "testimonial_KRUyV3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "star_color": "#d4af36",
+            "empty_stars_style": "hidden",
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Rebecca C.",
+            "show_verified": true
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_aYfcXE",
+        "testimonial_4YWXhM",
+        "testimonial_NX7AAi",
+        "testimonial_DxM8tM",
+        "testimonial_Emtcyx",
+        "testimonial_KRUyV3"
+      ],
+      "name": "BKY Testimonial Slider",
+      "settings": {
+        "title": "What Our Customers Say",
+        "title_size": 60,
+        "title_color": "#000000",
+        "body_text": "<p>100,000+ Reviews • 3M+ Customers</p>",
+        "body_size": 16,
+        "body_color": "#000000",
+        "auto_scroll": true,
+        "dot_color": "#000000",
+        "show_dots": true,
+        "slides_desktop": 3,
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "card_bg_color": "#ebe5e8",
+        "card_border_radius": 10,
+        "card_padding": 20,
+        "testimonial_text_size": 16,
+        "testimonial_text_color": "#1a1a1a",
+        "author_size": 16,
+        "author_color": "#1a1a1a",
+        "verified_color": "#00896b",
+        "full_width": false,
+        "media_spacing": 18,
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_result_with_media_pMNFnR": {
+      "type": "blocky-result-with-media",
+      "blocks": {
+        "body_mKPtRc": {
+          "type": "body",
+          "settings": {
+            "body_text": "<p>THE SCIENCE OF VISIBLE RESULTS</p>",
+            "body_size": 15,
+            "body_color": "#000000"
+          }
+        },
+        "title_Wnbt6n": {
+          "type": "title",
+          "settings": {
+            "title": "Results After 30 Days",
+            "title_size": 40,
+            "title_color": "#000000"
+          }
+        },
+        "results_Ymrmq3": {
+          "type": "results",
+          "settings": {
+            "percentage_1": 94,
+            "row_text_1": "<p>said their looks more radiant and glowing</p>",
+            "percentage_2": 90,
+            "row_text_2": "<p>saw a noticeable boost in efficiency</p>",
+            "percentage_3": 86,
+            "row_text_3": "<p>saw a noticeable boost in efficiency</p>",
+            "percentage_4": 90,
+            "row_text_4": "",
+            "percentage_5": 90,
+            "row_text_5": "",
+            "result_text_color": "#000000",
+            "result_text_size": 18,
+            "show_results_borders": true,
+            "results_padding": 1.4,
+            "percentage_size": 8,
+            "percentage_bold": true,
+            "show_percentage_bar": true,
+            "percentage_color": "#000000",
+            "non_percentage_color": "#ffffff",
+            "results_border_width": 0.4
+          }
+        },
+        "body_xTwLea": {
+          "type": "body",
+          "settings": {
+            "body_text": "<p>Claims are based on an independent consumer perception study as well as an expert assessment by a dermatologist in an independent clinical study of 33 people after using the 4-in-1 Skincare Wand and LightBoost Wand Activating Serum 5x per week within an 8-week time period.<br/><br/></p>",
+            "body_size": 12,
+            "body_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "body_mKPtRc",
+        "title_Wnbt6n",
+        "results_Ymrmq3",
+        "body_xTwLea"
+      ],
+      "name": "Blocky Results with Media",
+      "settings": {
+        "height": "adapt",
+        "media_border_radius": 15,
+        "shadow": false,
+        "show_media_border": true,
+        "media_border_color": "#000000",
+        "layout": "row-reverse",
+        "desktop_results_width": "medium",
+        "mobile_layout": "col-reverse",
+        "background_color": "#f8f6f7",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_product_MK8yta": {
+      "type": "featured-product",
+      "blocks": {
+        "text_NY3Y7t": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_EYnRTV": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "price_78qAnp": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker_bijPFf": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector_dxf8CJ": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons_9mzxcf": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share_cCCWyq": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "text_NY3Y7t",
+        "title_EYnRTV",
+        "price_78qAnp",
+        "variant_picker_bijPFf",
+        "quantity_selector_dxf8CJ",
+        "buy_buttons_9mzxcf",
+        "share_cCCWyq"
+      ],
+      "name": "t:sections.featured-product.presets.name",
+      "settings": {
+        "product": "",
+        "color_scheme": "",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_comparison_table_2_FTEgXR": {
+      "type": "blocky-comparison-table-2",
+      "blocks": {
+        "row_UzjyDa": {
+          "type": "row",
+          "settings": {
+            "left_text": "Why we are better",
+            "right_text": "Why not to choose them"
+          }
+        },
+        "row_FzRHXk": {
+          "type": "row",
+          "settings": {
+            "left_text": "Why we are better",
+            "right_text": "Why not to choose them"
+          }
+        },
+        "row_fP3ppi": {
+          "type": "row",
+          "settings": {
+            "left_text": "Why we are better",
+            "right_text": "Why not to choose them"
+          }
+        },
+        "row_EjnPyY": {
+          "type": "row",
+          "settings": {
+            "left_text": "Why we are better",
+            "right_text": "Why not to choose them"
+          }
+        },
+        "row_Wqczg6": {
+          "type": "row",
+          "settings": {
+            "left_text": "Why we are better",
+            "right_text": "Why not to choose them"
+          }
+        }
+      },
+      "block_order": [
+        "row_UzjyDa",
+        "row_FzRHXk",
+        "row_fP3ppi",
+        "row_EjnPyY",
+        "row_Wqczg6"
+      ],
+      "name": "Blocky Comparison Table 2",
+      "settings": {
+        "image_alt": "",
+        "height": "medium",
+        "media_shadow": false,
+        "image_radius": 30,
+        "show_border": true,
+        "border_color": "#000000",
+        "title": "Comparison Table",
+        "title_size": 40,
+        "title_color": "#000000",
+        "body_text": "<p>Show why your product is the smarter choice for your customers</p>",
+        "body_size": 16,
+        "body_color": "#000000",
+        "text_container_gap": "1.5rem",
+        "left_label": "WE",
+        "left_label_color": "#000000",
+        "right_label": "THEM",
+        "right_label_color": "#000000",
+        "vs_label": "VS",
+        "vs_border_color": "#7A5168",
+        "label_size": 18,
+        "row_text_size": 18,
+        "list_gap": 12,
+        "item_gap": 12,
+        "card_shadow": false,
+        "card_radius": 28,
+        "card_padding": 24,
+        "top_bg": "#ebe5e8",
+        "bottom_bg": "#ffffff",
+        "icon_size": 20,
+        "show_icons": true,
+        "check_icon_bg_color": "#7A5168",
+        "check_icon_border_color": "#7A5168",
+        "check_icon_color": "#ffffff",
+        "x_icon_border_color": "#000000",
+        "x_icon_bg_color": "#ffffff",
+        "x_icon_color": "#000000",
+        "desktop_layout": "image_right",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "page_width": 1200,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "background_color": "#f8f6f7"
+      }
+    },
+    "blocky_faq_with_media_wGXCgt": {
+      "type": "blocky-faq-with-media",
+      "blocks": {
+        "question_FLzyar": {
+          "type": "question",
+          "settings": {
+            "question": "Question",
+            "content": "<p>Answer</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_7AgkdX": {
+          "type": "question",
+          "settings": {
+            "question": "Question",
+            "content": "<p>Answer</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_WdnqVU": {
+          "type": "question",
+          "settings": {
+            "question": "Question",
+            "content": "<p>Answer</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_r4JDnn": {
+          "type": "question",
+          "settings": {
+            "question": "Question",
+            "content": "<p>Answer</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_BGVYDk": {
+          "type": "question",
+          "settings": {
+            "question": "Question",
+            "content": "<p>Answer</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "question_FLzyar",
+        "question_7AgkdX",
+        "question_WdnqVU",
+        "question_r4JDnn",
+        "question_BGVYDk"
+      ],
+      "name": "Blocky FAQ with Media",
+      "settings": {
+        "height": "adapt",
+        "overlay_opacity": 10,
+        "faq_media_radius": 15,
+        "title": "",
+        "title_size": 16,
+        "title_color": "#000000",
+        "body_text": "",
+        "body_size": 32,
+        "body_color": "#000000",
+        "button_label": "",
+        "button_link": "",
+        "button_border_radius": "extra-round",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "faq_title": "Frequently Asked Questions",
+        "faq_title_size": 40,
+        "faq_title_color": "#000000",
+        "faq_layout": "border",
+        "question_padding": 15,
+        "faq_border_radius": 15,
+        "faq_container_background": "#ffffff",
+        "question_font_size": 18,
+        "answer_font_size": 16,
+        "question_text_color": "#000000",
+        "answer_text_color": "#606367",
+        "faq_toggle_icon": "plus",
+        "layout": "row-reverse",
+        "mobile_layout": "col",
+        "desktop_faq_width": "medium",
+        "text_align": "vertical-bottom horizontal-left",
+        "text_container_gap": "0",
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_6eLRa3": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_fepTXK": {
+          "type": "heading",
+          "settings": {
+            "heading": "Ready to Experience the Difference?",
+            "heading_size": "h1"
+          }
+        },
+        "text_p7LQtt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Thoughtfully designed, built to perform, and trusted by customers who expect more from their everyday essentials.</p>"
+          }
+        },
+        "button_ptiRVj": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_fepTXK",
+        "text_p7LQtt",
+        "button_ptiRVj"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "blocky_section_divider_MxLRby": {
+      "type": "blocky-section-divider",
+      "name": "Blocky Section Divider",
+      "settings": {
+        "shape": "waves_3",
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "shape_color": "#7A5168",
+        "background_color": "#ffffff",
+        "padding_top": 12,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "blocky_image_embedded_XPGRAk",
+    "blocky_testimonial_slider_z4MCcB",
+    "blocky_result_with_media_pMNFnR",
+    "featured_product_MK8yta",
+    "blocky_comparison_table_2_FTEgXR",
+    "blocky_faq_with_media_wGXCgt",
+    "rich_text_6eLRa3",
+    "blocky_section_divider_MxLRby"
+  ]
+}

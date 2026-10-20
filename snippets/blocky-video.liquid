@@ -1,0 +1,62 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+{%- if video != null -%}
+  <blocky-video 
+    class="blocky-video{% if autoplay == false %} blocky-video-manual{% endif %}{% if video_fit == "zoomed" %} blocky-video-zoomed{% endif %}{% if other_classes != null %} {{ other_classes }}{% endif %}"
+   style="--play-button-color:{% if button_color %}{{ button_color }}{% else %}white{% endif %}; --play-button-background-color: {% if background_button_color %}{{ background_button_color }}{% else %}black{% endif %}"
+    {{ block-attributes }}
+  >
+    <video
+      preload="metadata"
+      poster="{{ video.preview_image | image_url }}"
+      loop
+      playsinline
+      {% unless autoplay == false %}autoplay muted{% endunless %}
+    >
+      {% for source in video.sources %}
+        <source
+          {% if autoplay == false %}
+            src="{{ source.url }}"
+          {% else %}
+            data-src="{{ source.url }}"
+          {% endif %}
+          type="{{ source.mime_type }}"
+        >
+      {% endfor %}
+    </video>
+    {% if autoplay == false %}
+      <button class="blocky-video-play-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="48" stroke="fill" stroke-width="2" class="background"/>
+          <polygon 
+            points="35,25 75,50 35,75"
+            stroke-width="2"
+            stroke-linejoin="round"
+            class="play-button"
+          /> 
+        </svg>  
+      </button>
+    {% endif %}
+    <svg class="blocky-video-spinner" xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="20" stroke="#D3D3D3" stroke-width="5" fill="none" stroke-dasharray="126.92" stroke-dashoffset="126.92">
+        <animate attributeName="stroke-dashoffset" values="126.92;0" dur="0.75s" keyTimes="0;1" repeatCount="indefinite" />
+      </circle>
+    </svg>
+  </blocky-video>
+{% else %}
+  <div class="blocky-video blocky-shadow bky-vid-placeholder{% if other_classes != null %} {{ other_classes }}{% endif %}" style="--play-button-color:{% if button_color %}{{ button_color }}{% else %}white{% endif %}; --play-button-background-color: {% if background_button_color %}{{ background_button_color }}{% else %}lightgrey{% endif %}" {{ block-attributes }}>
+    <button class="blocky-video-play-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="48" stroke="fill" stroke-width="2" class="background"/>
+        <polygon 
+          points="35,25 75,50 35,75"
+          stroke-width="2"
+          stroke-linejoin="round"
+          class="play-button"
+        /> 
+      </svg>  
+    </button>
+  </div>
+{% endif %}

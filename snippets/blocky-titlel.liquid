@@ -1,0 +1,14 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{%- unless block.settings.title == blank -%}
+  <h2 
+    class="blocky-title{% if block.settings.title_bold %} blocky-title-bold{% endif %} "
+    style="--title-color: {{ block.settings.title_color }}; --title-size: {{ block.settings.title_size }};"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.title }}
+  </h2>
+{%- endunless -%}

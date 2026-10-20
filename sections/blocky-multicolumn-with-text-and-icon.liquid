@@ -1,0 +1,484 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .blocky-mcti-icon {
+    font-size: var(--mobile-icon-size, 40px) !important;
+    max-width: var(--mobile-icon-size, 40px);    
+    width: var(--mobile-icon-size, 40px);    
+    height: var(--mobile-icon-size, 40px);
+  }
+  .blocky-mcti-icon-container-heading {
+    margin-bottom: 4px;
+  }
+  .blocky-mcti-icon-container-heading,
+  .blocky-mcti-icon-container-heading > * {
+    font-size: calc(var(--heading-font-size, 18px) * .85);
+    color: var(--title-color);
+  }
+  .blocky-mcti-icon-container-text,
+  .blocky-mcti-icon-container-text > * {
+    font-size: calc(var(--text-font-size, 13px) * .85);    
+    color: var(--description-color);
+    line-height: 1.4;
+  }
+  .blocky-mcti-column {
+    padding: 10px 15px;
+  }
+  @media only screen and (min-width:750px) {  
+    .blocky-mcti-column {
+      padding: 25px 30px;
+    }
+    .blocky-mcti-icon-container-heading,
+    .blocky-mcti-icon-container-heading > * {
+      font-size: var(--heading-font-size, 18px)
+    }
+    .blocky-mcti-icon-container-text,
+    .blocky-mcti-icon-container-text > * {
+      font-size: var(--text-font-size, 13px);
+    }
+    .blocky-mcti-icon {
+      font-size: var(--icon-size, 40px) !important;
+      max-width: var(--icon-size, 40px);    
+      width: var(--icon-size, 40px);    
+      height: var(--icon-size, 40px);
+    }
+  }
+{% endstylesheet %}
+
+<div class="blocky background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
+  --column-gap: {{ section.settings.columns_gap }}px; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --icon-size: {{ section.settings.icon_size_px }}px; --mobile-icon-size: {{ section.settings.mobile_icon_size_px }}px;
+  --desktop-width: calc((100% - ({{ section.settings.columns_gap }}px*{{ section.settings.columns_desktop | minus: 1 }}))/ {{ section.settings.columns_desktop }}); 
+  --mobile-width: calc((100% - ({{ section.settings.columns_gap }}px*{{ section.settings.columns_mobile | minus: 1 }}))/ {{ section.settings.columns_mobile }}); 
+  "
+>
+  <div class="blocky-padding">
+    <div class="blocky-mcti{% if section.settings.full_screen == false %} blocky-page-width{% endif %}">
+      {% assign title = section.settings.title | strip_html %}
+      {% if title != blank %}
+        <div class="blocky-mcti-title-container blocky-text-{{ section.settings.title_alignment }}">
+          {% render 'blocky-titlel', block: section %}
+        </div>
+      {% endif %}
+      <div class="blocky-mcti-container">
+        {% for block in section.blocks %}
+          <div 
+            class="blocky-mcti-column blocky-mcti-column-icon-{{ section.settings.icon_position }} blocky-mcti-column-mobile-icon-{{ section.settings.mobile_icon_position }} blocky-text-desktop-{{ section.settings.text_alignment }} blocky-text-mobile-{{ section.settings.mobile_text_alignment }}{% if section.settings.show_shadow %} blocky-mcti-column-shadow{% endif %}" 
+            style="--icon-color: {{ block.settings.icon_color }}; --title-color: {{ block.settings.heading_color }}; --description-color: {{ block.settings.text_color }}; --icon-background-color: {{ block.settings.background_color }}; --heading-font-size:{{ block.settings.heading_font_size }}px; --text-font-size:{{ block.settings.text_font_size }}px;"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.image != null %}
+              <img 
+                src="{{ block.settings.image | image_url }}" 
+                alt="{{ block.settings.heading }}"
+                class="blocky-mcti-icon"
+                style="border-radius: 50%;"
+              />
+            {% elsif block.settings.icon_code != blank %}
+              <div class="blocky-icon-container">
+                <span class="material-icons material-symbols-outlined blocky-icon blocky-mcti-icon"> {{ block.settings.icon_code }} </span>
+              </div>
+            {% endif %}
+            <div class="blocky-icon-text blocky-w-full">
+              {% if block.settings.heading != blank %} 
+                <div class="blocky-mcti-icon-container-heading">{{ block.settings.heading }}</div>
+              {% endif %}
+              {% if block.settings.text != blank %} 
+                 <div class="blocky-mcti-icon-container-text">{{ block.settings.text }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "BKY - Multicol. Text/Icon",
+    "disabled_on": { "groups": [ "header", "footer" ] },
+    "settings": [
+      {
+        "type": "header",
+        "content": "Desktop"
+      },
+      {
+        "type": "range",
+        "id": "columns_desktop",
+        "min": 1,
+        "max": 6,
+        "step": 1,
+        "default": 4,
+        "label": "Number of columns on desktop"
+      },
+
+      {
+        "type": "select",
+        "id": "icon_position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left of Text"
+          },
+          {
+            "value": "top",
+            "label": "Top of text"
+          },
+          {
+            "value": "right",
+            "label": "Right of Text"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom of text"
+          },
+        ],
+        "default": "left",
+        "label": "Desktop icon Position"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+          
+        ],
+        "default": "left",
+        "label": "Desktop text alignment"
+      },
+      {
+        "type": "range",
+        "id": "icon_size_px",
+        "label": "Icon size",
+        "default": 40,
+        "min": 25,
+        "max": 250,
+        "step": 5,
+        "unit": "px"
+      },
+
+      {
+        "type": "header",
+        "content": "Mobile"
+      },
+      {
+        "type": "range",
+        "id": "columns_mobile",
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "default": 2,
+        "label": "Number of columns on mobile"
+      },
+
+      {
+        "type": "select",
+        "id": "mobile_icon_position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left of Text"
+          },
+          {
+            "value": "top",
+            "label": "Top of text"
+          },
+          {
+            "value": "right",
+            "label": "Right of Text"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom of text"
+          },
+        ],
+        "default": "left",
+        "label": "Mobile Icon Position"
+      },
+      {
+        "type": "select",
+        "id": "mobile_text_alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left",
+        "label": "Mobile text alignment"
+      },
+      {
+        "type": "range",
+        "id": "mobile_icon_size_px",
+        "label": "Mobile icon size",
+        "default": 40,
+        "min": 25,
+        "max": 250,
+        "step": 5,
+        "unit": "px"
+      },
+
+      
+      {
+        "type": "header",
+        "content": "Title"
+      },
+      {
+        "type": "inline_richtext",
+        "id": "title",
+        "label": "Title",
+        "default": "<b></b>",
+        "info": "Leave the text blank to hide the title."
+      },
+      {
+        "type": "range",
+        "id": "title_size",
+        "label": "Title size",
+        "default": 45,
+        "min": 30,
+        "max": 100,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Title Color",
+        "default": "#000000",
+      },
+      {
+        "type": "select",
+        "id": "title_alignment",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+          
+        ],
+        "default": "center",
+        "label": "Title alignment"
+      },
+      
+
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      
+
+      {
+        "type": "range",
+        "id": "columns_gap",
+        "min": 0,
+        "max": 30,
+        "step": 2,
+        "default": 14,
+        "unit": "px",
+        "label": "Space between columns"
+      },
+
+
+      {
+        "type": "checkbox",
+        "id": "show_shadow",
+        "label": "Show shadow",
+        "default": false
+      },
+
+      {
+        "type": "checkbox",
+        "id": "full_screen",
+        "label": "Cover full screen",
+        "default": false
+      },
+      
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#FFFFFF"
+      },
+
+            
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Top padding",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Bottom padding",
+        "default": 36
+      }
+    ],
+    "blocks": [
+      {
+        "type": "column",
+        "name": "Column",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Icon",
+          },
+          {
+             "type": "image_picker",
+             "id": "image",
+             "label": "Icon",
+          },
+          {
+            "type": "text",
+            "id": "icon_code",
+            "label": "Icon Code",
+            "default": "check_circle",
+            "info": "Get icon codes from [this link](https://fonts.google.com/icons/). example: 'check_circle', 'search', 'home'. For help adding icons, you can click [here](/admin/apps/blocky-apps/icons)"
+          },
+          {
+            "type": "color",
+            "id": "icon_color",
+            "label": "Icon Color",
+            "default": "#000000"
+          },       
+          
+          {
+            "type": "header",
+            "content": "Text",
+          },
+
+          {
+            "type": "richtext",
+            "id": "heading",
+            "label": "Heading",
+            "default": "<h4><b>Feature</b></h4>"
+          },
+          {
+            "type": "color",
+            "id": "heading_color",
+            "label": "Heading Color",
+            "default": "#000000",
+          },
+          {
+            "type": "range",
+            "id": "heading_font_size",
+            "label": "Heading font size",
+            "default": 18,
+            "min": 10,
+            "max": 65,
+            "step": 1,
+            "unit": "px"
+          },
+          
+          {
+              "type": "richtext",
+              "id": "text",
+              "label": "Text",
+              "default": "<p>Highlight why this feature is important</p>"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color",
+            "default": "#000000",
+          },
+          {
+            "type": "range",
+            "id": "text_font_size",
+            "label": "Text font size",
+            "default": 13,
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "unit": "px"
+          },
+
+          {
+            "type": "header",
+            "content": "Layout",
+          },
+
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background color",
+            "default": "#FFFFFF"
+          }
+
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Blocky Multicolumn with Text & Icon",
+        "blocks": [
+            {
+              "type": "column"
+            },
+            {
+              "type": "column"
+            },
+            {
+              "type": "column"
+            },
+            {
+              "type": "column"
+            },
+        ]
+      }
+    ],
+
+  }
+{% endschema %}

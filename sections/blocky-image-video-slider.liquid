@@ -1,0 +1,520 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div class="blocky blocky-padding background-wrapper blocky-ivs"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
+  --title-color: {{ section.settings.title_color }}; --description-color: {{ section.settings.body_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+  --arrow-background-color: {{ section.settings.arrow-background-color }}; --arrow-color: {{ section.settings.arrow-carot-color }}; --dot-color: {{ section.settings.dot-color }};
+  "  
+>
+  <div class="blocky-ivs-text-container blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }} blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} page-width{% if section.settings.show_shadow %} blocky-ivs-text-container-shadow{% endif %}">
+    {% render 'blocky-titlel', block: section %}
+    {% render 'blocky-bodyl', block: section %}
+  </div>
+  <div class="blocky-slider{% if section.settings.full_screen == false %} blocky-page-width{% endif %}">
+    <blocky-media-slider 
+      class="blocky-ivs-glide ivs-{{ section.id }} glide" data-id={{ section.id }} data-size={{ section.blocks.size }}
+      media-spacing={{ section.settings.media_spacing }} mobile-media-spacing="{{ section.settings.media_spacing | divided_by: 2 }}" slide-size={{ section.settings.slides_desktop }} mobile-slide-size={{ section.settings.slides_mobile }}
+      {% if section.settings.auto_scroll %}data-auto{% endif %}{% if section.settings.show_shadow %} data-shadow{% endif %}
+    >
+      <div class="glide__track{% if section.settings.show_blur %} blocky-slider-slides-blur{% endif %}" data-glide-el="track">
+        <ul class="glide__slides " style="padding-bottom: 10px;">      
+          {% capture other_classes %}blocky-desktop-{{ section.settings.media_size }} blocky-mobile-{{ section.settings.mobile_media_size }}{% endcapture %}
+          {% for block in section.blocks %}
+            <li class="glide__slide blocky-slider-slide blocky-slider-slide-media{% if section.settings.show_shadow %} blocky-shadow{% endif %}" {{ block.shopify_attributes }}>
+              <div class="blocky-ivs-media-container">
+                {% if block.type == "image" %}
+                  {% if block.settings.image %}
+                    <img
+                      class="{{ other_classes }}"
+                      src="{{ block.settings.image | image_url: height: 750 }}"
+                      {% if block.settings.link %}class="blocky-slider-img-link" data-url={{ block.settings.link }}{% endif %}
+                    >  
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: other_classes }}
+                  {% endif %}
+                {% endif %}
+                {% if block.type == "video" %}
+                  {% render "blocky-video", video: block.settings.video, video_fit: block.settings.video_fit, placeholder: 1, autoplay: block.settings.autoplay, button_color: section.settings.play_button_color, background_button_color: section.settings.play_button_background_color, other_classes: other_classes %} 
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <div class="blocky-ivs-media-text blocky-text-container-mobile-{{ block.settings.text_alignment }} blocky-text-container-desktop-{{ block.settings.text_alignment }}" style="--background-color:{{ block.settings.background_color }}; --text-color: {{ block.settings.text_color }}"> {{ block.settings.text }} </div>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% unless section.settings.arrows_position == "hidden" %}
+        <div class="glide__arrows" data-glide-el="controls">
+          <button class="glide__arrow glide__arrow--next blocky-slider-arrows-center blocky-slider-arrows-left" data-glide-dir="<">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle class="blocky-slider-arrows-circle" cx="12" cy="12" r="11" stroke="fill"/>
+              <path class="blocky-slider-arrows-arrow" d="M13 8l-4 4 4 4" />
+            </svg>               
+          </button>
+          <button class="glide__arrow glide__arrow--next blocky-slider-arrows-center blocky-slider-arrows-right" data-glide-dir=">">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle class="blocky-slider-arrows-circle" cx="12" cy="12" r="11" stroke="fill"/>  
+              <path class="blocky-slider-arrows-arrow" d="M11 8l4 4-4 4" />
+            </svg>
+          </button>
+        </div>
+      {% endunless %}
+      {% unless section.settings.dots_position == "hidden" %}
+      <div class="glide__bullets blocky-slider-dots{% if section.settings.dots_position == "slider" %} blocky-slider-dots-slider{% endif %}" data-glide-el="controls[nav]">
+        {% for i in (1..section.blocks.size) %}
+          <button class="glide__bullet blocky-slider-dot" data-glide-dir="={{ i | minus: 1 }}"></button>
+        {% endfor %}
+      </div>
+      {% endunless %}
+    </blocky-media-slider>            
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Image/Video Slider",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>Image/Video Slider</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 60,
+      "min": 30,
+      "max": 100,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Showcase your product with multiple images and/or videos.</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+
+
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Enable auto scroll",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "arrow-background-color",
+      "label": "Arrow background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow-carot-color",
+      "label": "Arrow color",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "color",
+      "id": "dot-color",
+      "label": "Dot background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "default": "#FFFFFF",
+      "label": "Play button color",
+      "info": "The play button only shows if autoplay is off"
+    },
+    {
+      "type": "color",
+      "id": "play_button_background_color",
+      "default": "#000000",
+      "label": "Play button background color",
+    },
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "long",
+      "label": "Media size"
+    },
+    {
+      "type": "range",
+      "id": "slides_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_screen",
+      "label": "Enable full screen",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "select",
+      "id": "mobile_media_size",
+      "options": [
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "long",
+      "label": "Media size"
+    },
+    {
+      "type": "range",
+      "id": "slides_mobile",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Slides per page"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "header",
+      "content": "Layout",
+    },
+
+
+    {
+      "type": "range",
+      "id": "media_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing between media",
+      "default": 28,
+      "info": "On mobile, spacing is halved. Refresh in mobile view to check."
+    },
+    {
+      "type": "select",
+      "id": "arrows_position",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "slider",
+          "label": "Over the slider"
+        }
+      ],
+      "default": "hidden",
+      "label": "Arrows position"
+    },
+    {
+      "type": "select",
+      "id": "dots_position",
+      "options": [
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        },
+        {
+          "value": "under",
+          "label": "Under the slider"
+        },
+        {
+          "value": "slider",
+          "label": "Over the slider"
+        }
+      ],
+      "default": "under",
+      "label": "Dots position"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blur",
+      "label": "Blur slider sides",
+      "info": "Blurs the slides at the ends",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shadow",
+      "label": "Show shadow",
+      "default": true
+    },
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#FFFFFF"
+        },
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay",
+          "default": false,
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Image/Video Slider",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

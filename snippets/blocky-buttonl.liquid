@@ -1,0 +1,19 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{%- if block.settings.button_label != blank -%}
+  <a
+    {% if block.settings.button_link == blank %}
+      role="link" aria-disabled="true"
+    {% else %}
+      href="{{ block.settings.button_link }}"
+    {% endif %}
+    class="blocky-button blocky-button-{{ block.settings.button_border_radius }}{% unless block.settings.button_style == "outline" %} blocky-button-regular{% endunless %}"
+    style="--button-text-color: {{ block.settings.button_text_color }}; --button-background-color: {{ block.settings.button_background_color }};"
+    {{ block.shopify_attributes }}
+  >
+    {{ block.settings.button_label }}
+  </a>
+{%- endif -%}

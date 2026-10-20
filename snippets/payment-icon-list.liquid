@@ -1,0 +1,42 @@
+{%- comment -%}
+  Renders de-duplicated accepted payment method icons.
+
+  Each payment type is normalized to a canonical "brand" so entries that map to
+  the same brand (for example Amazon Pay and the legacy Amazon Payments type)
+  render only a single icon. The first occurrence wins, preserving the store's
+  enabled payment type order.
+
+  Parameters:
+    - types:                Array of payment types. Defaults to shop.enabled_payment_types.
+    - item_tag:             Wrapper tag for each icon. Defaults to 'div'.
+    - item_class:           CSS class for each item wrapper.
+    - svg_class:            Class passed to payment_type_svg_tag.
+    - aria_label_from_type: When truthy, adds an aria-label derived from the brand.
+
+  Alias map: each `when` lists alias keys that resolve to the same brand as the
+  `assign brand = '...'` value. Default brand is the payment type itself.
+  To add a new alias, add its key to a `when` and point it at the canonical
+  (renderable) payment type, e.g.:
+    {%- when 'some_legacy_key' -%}{%- assign brand = 'canonical_key' -%}
+{%- endcomment -%}
+{%- assign payment_types = types | default: shop.enabled_payment_types -%}
+{%- assign seen_brands = ',' -%}
+{%- for type in payment_types -%}
+  {%- assign payment_type = type | strip -%}
+  {%- comment -%} Alias map: default brand = the payment type itself. {%- endcomment -%}
+  {%- assign brand = payment_type -%}
+  {%- case payment_type -%}
+    {%- when 'amazon_payments', 'amazon' -%}{%- assign brand = 'amazon_pay' -%}
+  {%- endcase -%}
+  {%- assign brand_key = ',' | append: brand | append: ',' -%}
+  {%- unless seen_brands contains brand_key -%}
+    {%- assign seen_brands = seen_brands | append: brand | append: ',' -%}
+    <{{ item_tag | default: 'div' }}{% if item_class != blank %} class="{{ item_class }}"{% endif %}{% if aria_label_from_type %} aria-label="{{ brand | replace: '_', ' ' | capitalize | escape }}"{% endif %}>
+      {%- if svg_class != blank -%}
+        {{ brand | payment_type_svg_tag: class: svg_class }}
+      {%- else -%}
+        {{ brand | payment_type_svg_tag }}
+      {%- endif -%}
+    </{{ item_tag | default: 'div' }}>
+  {%- endunless -%}
+{%- endfor -%}

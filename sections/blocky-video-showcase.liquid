@@ -1,0 +1,433 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+{%- comment -%}
+  BKY - Video Showcase
+
+  A single autoplaying video preview with an optional title (40px default) and
+  description. Derived from the `ai-video-showcase-{{ ai_gen_id }}__item`
+  treatment in blocks/ai_gen_block_a021675.liquid.
+
+  Self-contained by design: it defines its own content-width container and
+  padding instead of relying on `.blocky-page-width` / `.blocky-padding`, which
+  have no shipped definition in this theme.
+{% endcomment %}
+
+{%- liquid
+  assign video_showcase_id = section.id | replace: '_', '' | downcase
+
+  assign content_alignment = section.settings.content_alignment
+  case content_alignment
+    when 'left'
+      assign flex_align = 'flex-start'
+      assign media_margin = 'margin-left: 0; margin-right: auto;'
+    when 'right'
+      assign flex_align = 'flex-end'
+      assign media_margin = 'margin-left: auto; margin-right: 0;'
+    else
+      assign flex_align = 'center'
+      assign media_margin = 'margin-inline: auto;'
+  endcase
+
+  assign mobile_content_alignment = section.settings.mobile_content_alignment
+  case mobile_content_alignment
+    when 'left'
+      assign mobile_flex_align = 'flex-start'
+      assign mobile_media_margin = 'margin-left: 0; margin-right: auto;'
+    when 'right'
+      assign mobile_flex_align = 'flex-end'
+      assign mobile_media_margin = 'margin-left: auto; margin-right: 0;'
+    else
+      assign mobile_flex_align = 'center'
+      assign mobile_media_margin = 'margin-inline: auto;'
+  endcase
+-%}
+
+{% style %}
+  #blocky-video-showcase-{{ section.id }} {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: {{ section.settings.background_color }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__inner {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    margin-inline: auto;
+    padding-left: {{ section.settings.content_padding }}px;
+    padding-right: {{ section.settings.content_padding }}px;
+    box-sizing: border-box;
+    align-items: {{ flex_align }};
+    text-align: {{ content_alignment }};
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__title {
+    margin: 0 0 12px;
+    font-size: {{ section.settings.title_size }}px;
+    line-height: 1.15;
+    color: {{ section.settings.title_color }};
+    word-break: break-word;
+  }
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__title > * {
+    margin: 0;
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__description {
+    margin: 0 0 28px;
+    font-size: {{ section.settings.description_size }}px;
+    color: {{ section.settings.description_color }};
+  }
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__description > * {
+    margin: 0;
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__media {
+    position: relative;
+    width: {{ section.settings.video_width }}%;
+    max-width: 100%;
+    {{ media_margin }}
+    overflow: hidden;
+    border-radius: {{ section.settings.corner_radius }}px;
+    background: #171717;
+    {%- if section.settings.fixed_height > 0 %}
+    height: {{ section.settings.fixed_height }}px;
+    {%- else %}
+    aspect-ratio: {{ section.settings.aspect_ratio }};
+    {%- endif %}
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__media video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.video_fit }};
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    padding: 16px;
+    color: #ffffff;
+    background: #383838;
+    text-align: center;
+    font-size: 14px;
+  }
+
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__toggle {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    z-index: 1;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    background: #171717;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__toggle:hover {
+    background: #333333;
+  }
+  #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__toggle:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__inner {
+      align-items: {{ mobile_flex_align }};
+      text-align: {{ mobile_content_alignment }};
+    }
+    #blocky-video-showcase-{{ section.id }} .blocky-video-showcase__media {
+      {{ mobile_media_margin }}
+    }
+  }
+{% endstyle %}
+
+<blocky-video-showcase-{{ video_showcase_id }}
+  id="blocky-video-showcase-{{ section.id }}"
+  class="blocky-video-showcase"
+>
+  <div class="blocky-video-showcase__inner">
+    {%- if section.settings.title != blank -%}
+      <h2 class="blocky-video-showcase__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="blocky-video-showcase__description">{{ section.settings.description }}</div>
+    {%- endif -%}
+
+    <div class="blocky-video-showcase__media">
+      {%- if section.settings.video != blank -%}
+        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto' }}
+        <button class="blocky-video-showcase__toggle" type="button" aria-label="Pause video" aria-pressed="false">Pause</button>
+      {%- else -%}
+        <div class="blocky-video-showcase__placeholder" role="img" aria-label="Add a video in the section settings">
+          <span>Add a video in the section settings</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</blocky-video-showcase-{{ video_showcase_id }}>
+
+<script>
+  (function () {
+    var tagName = 'blocky-video-showcase-{{ video_showcase_id }}';
+    if (customElements.get(tagName)) return;
+
+    class BlockyVideoShowcase extends HTMLElement {
+      connectedCallback() {
+        var video = this.querySelector('video');
+        var button = this.querySelector('.blocky-video-showcase__toggle');
+        if (!video || !button) return;
+
+        video.muted = true;
+        video.playsInline = true;
+        var playAttempt = video.play();
+        if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(function () {});
+
+        var setState = function (paused) {
+          button.textContent = paused ? 'Play' : 'Pause';
+          button.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
+          button.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        };
+
+        setState(video.paused);
+
+        button.addEventListener('click', function () {
+          if (video.paused) {
+            var attempt = video.play();
+            if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+          } else {
+            video.pause();
+          }
+        });
+
+        video.addEventListener('play', function () { setState(false); });
+        video.addEventListener('pause', function () { setState(true); });
+      }
+    }
+
+    customElements.define(tagName, BlockyVideoShowcase);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BKY - Video Showcase",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "<b>Video Showcase</b>",
+      "info": "Leave blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 16,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Add a short description for your video.</p>",
+      "info": "Leave blank to hide the description."
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video"
+    },
+    {
+      "type": "select",
+      "id": "video_fit",
+      "label": "Fit mode",
+      "options": [
+        { "value": "cover", "label": "Cover (crop to fill)" },
+        { "value": "contain", "label": "Contain (letterbox)" },
+        { "value": "fill", "label": "Fill (stretch)" }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Mobile content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "video_width",
+      "label": "Video width",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Video aspect ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "16 / 9", "label": "Landscape" },
+        { "value": "21 / 9", "label": "Wide" }
+      ],
+      "default": "16 / 9"
+    },
+    {
+      "type": "range",
+      "id": "fixed_height",
+      "label": "Fixed height",
+      "min": 0,
+      "max": 900,
+      "step": 10,
+      "unit": "px",
+      "default": 0,
+      "info": "0 keeps the aspect ratio above."
+    },
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "label": "Section width",
+      "min": 400,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Horizontal content padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "BKY - Video Showcase"
+    }
+  ]
+}
+{% endschema %}

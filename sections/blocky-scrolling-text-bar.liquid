@@ -1,0 +1,163 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<div class="blocky blocky-announcement-bar blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
+    --text-color: {{ section.settings.text_color }}; --text-size: {{ section.settings.text_size }}; --text-spacing: {{ section.settings.text_spacing }};
+    --marquee-speed: {{ section.settings.speed }}"
+>
+  {% assign blockCount = section.blocks | size %}
+  {%- assign upperLimit = 20 | divided_by: blockCount | ceil %}
+
+  {% capture marqueeContainer %}
+    <div class="blocky-announcement-bar-container" style="display: flex; flex-shrink:0;">
+      {% for i in (1..upperLimit) %}
+          {%- for block in section.blocks -%}
+            <p class="blocky-announcement-bar-text" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </p>
+          {%- endfor -%}
+      {% endfor %}
+    </div>
+  {% endcapture %}
+  
+  <div style="display: flex;">
+    {{ marqueeContainer }}
+    {{ marqueeContainer }}
+    {{ marqueeContainer }}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Scrolling Text Bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        {
+            "value": "1.25",
+            "label": "Extra small"
+        },
+        {
+            "value": "1.5",
+            "label": "Small"
+        },
+        {
+            "value": "1.75",
+            "label": "Medium"
+        },
+        {
+            "value": "2",
+            "label": "Large"
+        },
+        {
+            "value": "2.5",
+            "label": "Extra large"
+        }
+      ],
+      "default": "1.75"
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Ticker speed",
+      "min": 0,
+      "max": 5,
+      "default": 1,
+      "step": 0.5
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "label": "Text spacing",
+      "min": 1,
+      "max": 5,
+      "default": 3,
+      "step": 0.5
+    },
+
+    {
+      "type": "header",
+      "content": "Block Padding",
+      "info": "Change the size of the announcement bar"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 16
+    }
+  ],
+    "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Scrolling Text Bar",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Scrolling Text Bar",
+      "blocks": [
+        {
+            "type": "text"
+        },
+        {
+            "type": "text"
+        },
+        {
+            "type": "text"
+        },
+        {
+            "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

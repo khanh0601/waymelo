@@ -1,0 +1,458 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  .blocky-before-after-slider-slider.blocky-before-after-slider-adapt {
+    aspect-ratio: unset;
+    line-height: 0;
+  }
+  .blocky-before-after-slider-adapt .blocky-before-after-before-image {
+    position: unset;
+    height: auto;
+  }
+  .blocky-before-after-slider-adapt .blocky-before-after-before-image img {
+    height: 100%;
+    object-fit: unset;
+  }
+  .blocky-before-after-slider-adapt .blocky-before-after-after-image img {
+    aspect-ratio: unset !important;
+    object-fit: unset;
+  }
+{% endstylesheet %}
+
+<script src="{{ 'blocky-before-and-after-slider.js' | asset_url }}" defer></script>
+
+<div 
+  class="blocky background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+  --label-color: {{ section.settings.labels_color }}; --line-color: {{ section.settings.line_color }};"
+>
+  <div class="blocky-padding blocky-page-width">
+    <div class="blocky-flex-container blocky-before-after-slider{% if section.settings.layout == 'slider_second' %} blocky-before-after-slider-second{% endif %} blocky-before-after-slider-{{ section.settings.slider_size }}">
+      <div class="blocky-before-after-slider-flex-wrapper">
+        <div class="blocky-before-after-slider-overflow-wrapper">
+          <blocky-before-after-slider class="blocky-before-after-slider-slider {% if section.settings.auto_shape %}blocky-before-after-slider-adapt{% else %}blocky-before-after-slider-{{ section.settings.slider_shape}}{% endif %}">
+            {% unless section.settings.before_label == blank %}
+              <div class="blocky-before-after-slider-before-text blocky-before-after-slider-label-text">
+                <h3>{{ section.settings.before_label }}</h3>
+              </div>
+            {% endunless %}
+            <div class="blocky-before-after-image blocky-before-after-before-image blocky-before-after-slider-{{ section.settings.before_image_fit }}">
+              {%- if section.settings.before_image != blank -%}
+                {{ section.settings.before_image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
+              {% else %}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="blocky-before-after-image blocky-before-after-after-image blocky-before-after-slider-img-{{ section.settings.slider_shape }} blocky-before-after-slider-{{ section.settings.after_image_fit }}">
+              {%- if section.settings.after_image != blank -%}
+                {{ section.settings.after_image | image_url: width: 1000 | image_tag: loading: 'lazy' }}
+              {% else %}
+                {{ 'collection-4' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="blocky-before-after-slider-line slider-line">
+              <div class="blocky-before-after-slider-arrow-left slider-line"></div>
+              <div class="blocky-before-after-slider-arrow-right slider-line"></div>
+            </div>
+            <input type="range" class="blocky-before-after-slider-input" min="0" max="100" value="50">
+            {% unless section.settings.after_label == blank %}
+              <div class="blocky-before-after-slider-after-text blocky-before-after-slider-label-text">
+                <h3>{{ section.settings.after_label }}</h3>
+              </div>
+            {% endunless %}
+          </blocky-before-after-slider>
+        </div>
+      </div>
+      <div class="blocky-before-after-slider-text blocky-before-after-slider-text-{{section.settings.text_align}}">
+        {%- for block in section.blocks -%}
+          {% case block.type %}
+            {%- when 'title' -%}
+              {% render 'blocky-titlel', block: block %}
+            {%- when 'body' -%}
+              {% render 'blocky-bodyl', block: block %}
+            {%- when 'button' -%}
+              <div>
+                {% render 'blocky-buttonl', block:block %}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Before/After Slider",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Before image"
+    },
+    {
+      "type": "select",
+      "id": "before_image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "contain",
+          "label": "Fit"
+        },
+        {
+          "value": "cover",
+          "label": "Zoomed in"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "After image"
+    },
+    {
+      "type": "select",
+      "id": "after_image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "fill",
+          "label": "Fill"
+        },
+        {
+          "value": "contain",
+          "label": "Fit"
+        },
+        {
+          "value": "cover",
+          "label": "Zoomed in"
+        }
+      ]
+    },
+    
+
+    {
+      "type": "header",
+      "content": "Slider",
+    },
+
+    {
+      "type": "select",
+      "id": "slider_size",
+      "label": "Slider Size",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ]
+    },
+
+    {
+      "type": "select",
+      "id": "slider_shape",
+      "options": [
+          {
+            "value": "circle",
+            "label": "Circle"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "long-rectangle",
+            "label": "Long Rectangle"
+          },
+          {
+            "value": "wide-rectangle",
+            "label": "Wide Rectangle"
+          }
+      ],
+      "default": "square",
+      "label": "Slider shape",
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_shape",
+      "label": "Auto Shape",
+      "info": "Auto Shape changes the shape to match the before image. It works best if both images are the same size. It ignores both image fit and slider shape."
+    },  
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+          {
+              "value": "slider_first",
+              "label": "Slider first"
+          },
+          {
+              "value": "slider_second",
+              "label": "Text first"
+          }
+      ],
+      "default": "slider_second",
+      "label": "Desktop slider position"
+    },
+    {
+      "type": "text",
+      "id": "before_label",
+      "label": "Before label",
+      "default": "Before"
+    },
+    {
+      "type": "text",
+      "id": "after_label",
+      "label": "After label",
+      "default": "After"
+    },
+    {
+      "type": "color",
+      "id": "labels_color",
+      "default": "#000000",
+      "label": "Label color"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "default": "#000000",
+      "label": "Separator line color"
+    },
+
+
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+
+
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "<b>Before & After Slider</b>",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 60,
+          "min": 30,
+          "max": 100,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+      ]
+    },
+    {
+      "type": "body",
+      "name": "Body",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Use the before and after slider to easily show the differences with your brand and other products</p>",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "range",
+          "id": "body_size",
+          "label": "Body size",
+          "default": 16,
+          "min": 10,
+          "max": 30,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#000000"
+        },
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button link",
+          "info": "Leave the text blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "curved",
+          "options": [
+            {
+              "value": "flat",
+              "label": "Flat"
+            },
+            {
+              "value": "curved",
+              "label": "Curved"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "extra-round",
+              "label": "Extra Round"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "regular",
+          "options": [
+              {
+                "value": "outline",
+                "label": "Outline"
+              },
+              {
+                "value": "regular",
+                "label": "Regular"
+              }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#2065D1"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Before & After Slider",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "body"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

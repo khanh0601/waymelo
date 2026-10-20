@@ -1,0 +1,415 @@
+{%- comment -%}
+© BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+  .bky-tech__heading-body { margin-bottom: var(--bky-tech-space-eyebrow-title, 12px); }
+  .bky-tech__heading-title { margin-bottom: var(--bky-tech-space-title-media, 24px); }
+
+  .bky-tech__grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .bky-tech__device-link {
+    display: block;
+    line-height: 0;
+  }
+
+  .bky-tech__device-media {
+    max-width: 100%;
+    width: auto;
+    height: var(--bky-tech-device-height, 420px);
+    display: block;
+    border-radius: var(--bky-tech-device-radius, 0px);
+  }
+
+  .bky-tech-item { margin-bottom: 2.2rem; }
+  .bky-tech-item:last-child { margin-bottom: 0; }
+
+  .bky-feature-title {
+    font-size: var(--bky-tech-feature-title-size, 14px);
+    color: var(--bky-tech-feature-title-color, #2B1A1E);
+    line-height: 1;
+  }
+
+  .bky-feature-text {
+    margin-top: 0.4rem;
+    font-size: var(--bky-tech-feature-body-size, 14px);
+    line-height: 1.5;
+    color: var(--bky-tech-feature-body-color, #7B6A73);
+  }
+
+  .bky-tech-title--above { margin-bottom: 0.5rem; }
+  .bky-tech-title--below { margin-top: 0.5rem; }
+
+  .bky-tech-line {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .bky-tech-line .bky-tech-rail {
+    display: block;
+    position: relative;
+    height: 2px;
+    border-radius: 999px;
+    flex: 1;
+    background: transparent;
+    overflow: visible;
+  }
+
+  .bky-tech-rail::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    border-radius: 999px;
+    background: var(--bky-tech-accent, #E8705A);
+  }
+
+  .bky-tech-rail::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--bky-tech-accent, #E8705A);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  .bky-tech-line-right .bky-tech-rail::before { left: auto; right: 0; }
+  .bky-tech-line-right .bky-tech-rail::after { left: 100%; }
+
+  @keyframes bky-tech-trail-ltr { from { width: 0%; } to { width: 100%; } }
+  @keyframes bky-tech-dot-ltr { from { left: 0%; } to { left: 100%; } }
+  @keyframes bky-tech-trail-rtl { from { width: 0%; } to { width: 100%; } }
+  @keyframes bky-tech-dot-rtl { from { left: 100%; } to { left: 0%; } }
+
+  .bky-tech-animated .bky-tech-line-left .bky-tech-rail::before {
+    animation: bky-tech-trail-ltr 0.7s ease-out forwards;
+  }
+  .bky-tech-animated .bky-tech-line-left .bky-tech-rail::after {
+    opacity: 1;
+    animation: bky-tech-dot-ltr 0.7s ease-out forwards;
+  }
+
+  .bky-tech-animated .bky-tech-line-right .bky-tech-rail::before {
+    transform-origin: right center;
+    animation: bky-tech-trail-rtl 0.7s ease-out forwards;
+  }
+  .bky-tech-animated .bky-tech-line-right .bky-tech-rail::after {
+    opacity: 1;
+    animation: bky-tech-dot-rtl 0.7s ease-out forwards;
+  }
+
+  .bky-tech-feature {
+    opacity: 0;
+    transform: translateY(calc(var(--bky-tech-y, 0px) * -1 + 12px));
+    transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+  }
+  .bky-tech-animated .bky-tech-feature {
+    opacity: 1;
+    transform: translateY(calc(var(--bky-tech-y, 0px) * -1));
+  }
+
+  .bky-tech-mobile-list { position: relative; padding-left: 28px; }
+  .bky-tech-mobile-item { position: relative; margin-bottom: 1.75rem; }
+  .bky-tech-mobile-item:last-child { margin-bottom: 0; }
+
+  .bky-tech-mobile-item .bky-feature-title::before {
+    content: "";
+    position: absolute;
+    top: 0.6rem;
+    left: -100px;
+    width: 80px;
+    height: 1px;
+    background-color: var(--bky-tech-accent, #E8705A);
+  }
+  .bky-tech-mobile-item .bky-feature-title::after {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    top: 0.6rem;
+    left: -24px;
+    border-radius: 999px;
+    background-color: var(--bky-tech-accent, #E8705A);
+    transform: translate(0, -40%);
+  }
+{% endstyle %}
+
+<div
+  class="blocky blocky-padding background-wrapper bky-tech"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --text-container-gap: 0;
+    
+    --bky-tech-accent: {{ section.settings.accent_color }};
+    --bky-tech-device-height: {{ section.settings.device_height }}px;
+    --bky-tech-device-radius: {{ section.settings.device_radius }}px;
+
+    --bky-tech-feature-title-size: {{ section.settings.feature_title_size }}px;
+    --bky-tech-feature-title-color: {{ section.settings.feature_title_color }};
+    --bky-tech-feature-body-size: {{ section.settings.feature_body_size }}px;
+    --bky-tech-feature-body-color: {{ section.settings.feature_body_color }};
+
+    --bky-tech-space-eyebrow-title: {{ section.settings.spacing_eyebrow_title }}px;
+    --bky-tech-space-title-media: {{ section.settings.spacing_title_media }}px;
+
+    --body-font-size: {{ section.settings.body_size }}px;
+    --body-color: {{ section.settings.body_color }};
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-media-text-container blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+      <div class="bky-tech__heading-body">
+        {% render 'blocky-bodyl', block: section %}
+      </div>
+      <div class="bky-tech__heading-title">
+        {% render 'blocky-titlel', block: section %}
+      </div>
+    </div>
+
+    <div class="blocky-mobile-hidden">
+      <div class="bky-tech__grid">
+        <div>
+          <div class="blocky-media-text-container blocky-text-container-desktop-left">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'feature' and block.settings.side == 'left' -%}
+                <div class="bky-tech-item bky-tech-feature" style="--bky-tech-y: {{ block.settings.y_offset }}px;" {{ block.shopify_attributes }}>
+                  {%- if block.settings.title_position == 'above' and block.settings.title != blank -%}
+                    <div class="bky-feature-title bky-tech-title--above">{{ block.settings.title }}</div>
+                  {%- endif -%}
+
+                  <div class="bky-tech-line bky-tech-line-left">
+                    <div class="bky-tech-rail" aria-hidden="true"></div>
+                  </div>
+
+                  {%- if block.settings.title_position == 'below' and block.settings.title != blank -%}
+                    <div class="bky-feature-title bky-tech-title--below">{{ block.settings.title }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.text != blank -%}
+                    <div class="bky-feature-text">{{ block.settings.text }}</div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <div class="blocky-flex blocky-justify-center">
+          {%- if section.settings.device_image != blank -%}
+            {%- capture bky_device_img -%}
+              <img
+                class="bky-tech__device-media"
+                src="{{ section.settings.device_image | image_url: height: 700 }}"
+                alt="{{ section.settings.device_image_alt | escape }}"
+                loading="lazy"
+              >
+            {%- endcapture -%}
+
+            {%- if section.settings.device_link != blank -%}
+              <a class="bky-tech__device-link" href="{{ section.settings.device_link }}">
+                {{ bky_device_img }}
+              </a>
+            {%- else -%}
+              {{ bky_device_img }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'blocky-media blocky-media-medium' }}
+          {%- endif -%}
+        </div>
+
+        <div>
+          <div class="blocky-media-text-container blocky-text-container-desktop-right">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'feature' and block.settings.side == 'right' -%}
+                <div class="bky-tech-item bky-tech-feature" style="--bky-tech-y: {{ block.settings.y_offset }}px;" {{ block.shopify_attributes }}>
+                  {%- if block.settings.title_position == 'above' and block.settings.title != blank -%}
+                    <div class="bky-feature-title bky-tech-title--above">{{ block.settings.title }}</div>
+                  {%- endif -%}
+
+                  <div class="bky-tech-line bky-tech-line-right">
+                    <div class="bky-tech-rail" aria-hidden="true"></div>
+                  </div>
+
+                  {%- if block.settings.title_position == 'below' and block.settings.title != blank -%}
+                    <div class="bky-feature-title bky-tech-title--below">{{ block.settings.title }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.text != blank -%}
+                    <div class="bky-feature-text">{{ block.settings.text }}</div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="blocky-desktop-hidden">
+      <div class="blocky-media-text-container blocky-text-container-mobile-center">
+        <div class="blocky-flex blocky-justify-center">
+          {%- if section.settings.device_image != blank -%}
+            {%- capture bky_device_img_m -%}
+              <img
+                class="bky-tech__device-media"
+                src="{{ section.settings.device_image | image_url: height: 600 }}"
+                alt="{{ section.settings.device_image_alt | escape }}"
+                loading="lazy"
+              >
+            {%- endcapture -%}
+
+            {%- if section.settings.device_link != blank -%}
+              <a class="bky-tech__device-link" href="{{ section.settings.device_link }}">
+                {{ bky_device_img_m }}
+              </a>
+            {%- else -%}
+              {{ bky_device_img_m }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'blocky-media blocky-media-medium' }}
+          {%- endif -%}
+        </div>
+
+        <div class="bky-tech-mobile-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'feature' -%}
+              <div class="bky-tech-mobile-item bky-tech-feature" style="--bky-tech-y: 0px;" {{ block.shopify_attributes }}>
+                {%- if block.settings.title != blank -%}
+                  <div class="bky-feature-title">{{ block.settings.title }}</div>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="bky-feature-text">{{ block.settings.text }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    function initTechSection(root) {
+      if (!root || root.dataset.techInit === 'true') return;
+      root.dataset.techInit = 'true';
+
+      if (typeof IntersectionObserver === 'undefined') {
+        root.classList.add('bky-tech-animated');
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('bky-tech-animated');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(root);
+    }
+
+    function initAllTechSections() {
+      var sections = document.querySelectorAll('.bky-tech');
+      for (var i = 0; i < sections.length; i++) {
+        initTechSection(sections[i]);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initAllTechSections);
+    document.addEventListener('shopify:section:load', initAllTechSections);
+    document.addEventListener('shopify:section:select', initAllTechSections);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "BKY - Product Feature 2",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Text" },
+    { "type": "inline_richtext", "id": "body_text", "label": "Subtitle", "default": "PRODUCT FEATURES" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "New Best Selling Product" },
+    { "type": "range", "id": "title_size", "label": "Heading size", "min": 24, "max": 80, "step": 1, "unit": "px", "default": 40 },
+    { "type": "color", "id": "title_color", "label": "Heading color", "default": "#000000" },
+    { "type": "range", "id": "body_size", "label": "Subtitle text size", "min": 10, "max": 24, "step": 1, "unit": "px", "default": 13 },
+    { "type": "color", "id": "body_color", "label": "Subtitle text color", "default": "#000000" },
+
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "device_image", "label": "Image" },
+    { "type": "text", "id": "device_image_alt", "label": "Alt text" },
+    { "type": "url", "id": "device_link", "label": "Link" },
+    { "type": "range", "id": "device_height", "label": "Height", "min": 200, "max": 800, "step": 20, "unit": "px", "default": 500 },
+    { "type": "range", "id": "device_radius", "label": "Border radius", "min": 0, "max": 60, "step": 1, "unit": "px", "default": 15 },
+
+    { "type": "header", "content": "Feature styling" },
+    { "type": "range", "id": "feature_title_size", "label": "Feature title size", "min": 10, "max": 26, "step": 1, "unit": "px", "default": 18 },
+    { "type": "color", "id": "feature_title_color", "label": "Feature title color", "default": "#000000" },
+    { "type": "range", "id": "feature_body_size", "label": "Feature body size", "min": 10, "max": 22, "step": 1, "unit": "px", "default": 14 },
+    { "type": "color", "id": "feature_body_color", "label": "Feature body color", "default": "#000000" },
+    { "type": "color", "id": "accent_color", "label": "Line & dot color", "default": "#000000" },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "desktop_content_alignment", "label": "Desktop heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ] },
+    { "type": "select", "id": "mobile_content_alignment", "label": "Mobile heading alignment", "default": "center",
+      "options": [ { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" } ] },
+    { "type": "range", "id": "spacing_eyebrow_title", "label": "Space between subtitle and title", "min": 0, "max": 80, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "spacing_title_media", "label": "Space between title and image", "min": 0, "max": 120, "step": 2, "unit": "px", "default": 24 },
+
+    { "type": "header", "content": "Section settings" },
+    { "type": "range", "id": "page_width", "label": "Section width", "min": 800, "max": 1600, "step": 100, "unit": "px", "default": 1000 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 8,
+      "settings": [
+        { "type": "select", "id": "side", "label": "Desktop side", "default": "left",
+          "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ] },
+        { "type": "range", "id": "y_offset", "label": "Desktop Y offset (positive moves up)", "min": -200, "max": 200, "step": 4, "unit": "px", "default": 0 },
+        { "type": "select", "id": "title_position", "label": "Title position (desktop)", "default": "below",
+          "options": [ { "value": "above", "label": "Above the line" }, { "value": "below", "label": "Below the line" } ] },
+        { "type": "inline_richtext", "id": "title", "label": "Feature title", "default": "FEATURE" },
+        { "type": "richtext", "id": "text", "label": "Description", "default": "<p>Position the feature to highlight the right spot on the image.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Product Feature 2",
+      "blocks": [
+        { "type": "feature", "settings": { "side": "left", "y_offset": 32, "title_position": "above" } },
+        { "type": "feature", "settings": { "side": "left", "y_offset": -20, "title_position": "above" } },
+        { "type": "feature", "settings": { "side": "right", "y_offset": 32, "title_position": "above" } },
+        { "type": "feature", "settings": { "side": "right", "y_offset": -20, "title_position": "above" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

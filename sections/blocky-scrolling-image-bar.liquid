@@ -1,0 +1,431 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+  @media screen and (max-width: 750px) {
+    .blocky-announcement-bar .blocky-title + .blocky-body-text {
+      margin-top: .5rem;
+    }
+    .blocky-scrolling-image-flex-container {
+      --text-padding-v: 3px;
+      --text-padding-h: 4px; 
+    }
+    
+    .blocky-mob-flex-over-text .blocky-scrolling-image-text {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      text-align: center;
+      background-color: var(--text-background-color);
+      padding: calc(var(--text-padding) * var(--text-padding-v)) calc(var(--text-padding) * var(--text-padding-h));
+      border-radius: calc(var(--border-radius) * 1px);
+      max-width: min(85%, 400px);
+      min-width: 200px;
+      width: max-content;
+    }
+    .blocky-mob-flex-col .blocky-scrolling-image-text,
+    .blocky-mob-flex-col-reverse .blocky-scrolling-image-text {
+      box-shadow: unset;
+      text-align: center;
+    }
+    .blocky-announcement-bar .blocky-mob-flex-over-text .blocky-title + .blocky-body-text {
+      margin-top: 1rem;
+    }
+  }  
+
+  @media screen and (min-width: 750px) {
+    .blocky-scrolling-image-flex-container{
+      --text-padding-v: 8px;
+      --text-padding-h: 12px; 
+    }
+    
+    .blocky-announcement-bar .blocky-title + .blocky-body-text {
+      margin-top: .75rem;
+    }
+    .blocky-des-flex-over-text .blocky-scrolling-image-text { 
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      text-align: center;
+      background-color: var(--text-background-color);
+      padding: calc(var(--text-padding) * var(--text-padding-v)) calc(var(--text-padding) * var(--text-padding-h));
+      border-radius: calc(var(--border-radius) * 1px);
+      max-width: 550px;
+      min-width: 300px;
+      width: max-content;
+   }
+
+    .blocky-announcement-bar .blocky-des-flex-over-text .blocky-title + .blocky-body-text {
+      margin-top: 1rem;
+    }
+    
+    .blocky-des-flex-col .blocky-scrolling-image-text,
+    .blocky-des-flex-col-reverse .blocky-scrolling-image-text {
+      box-shadow: unset;
+      text-align: center;
+    }
+  }
+
+  .blocky-announcement-bar-image.blocky-announcement-bar-image-adapt > img {
+    width: unset;
+  }
+
+  .blocky-announcement-bar-image.blocky-announcement-bar-image-circle > img,
+  .blocky-announcement-bar-image.blocky-announcement-bar-image-circle svg {
+    border-radius: 50%;
+  }
+
+  .blocky-announcement-bar .blocky-blur-sides {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .blocky-scrolling-image-flex-container {
+    gap: calc(var(--text-padding) * 1rem)
+  }
+
+  .blocky-scrolling-image-bar-grid .blocky-scrolling-image-container {
+    justify-content: center;
+  }
+  .blocky-scrolling-image-bar-grid .blocky-announcement-bar-image {
+    animation: unset;
+    padding-right: 0;
+  }
+  @media screen and (max-width: 750px) {
+    .blocky-scrolling-image-bar-grid .blocky-announcement-bar-image {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: calc(var(--image-spacing) * .65rem);
+      column-gap: calc(var(--image-spacing) * .5rem);
+      max-height: unset;     
+      flex-shrink: 1;
+      
+    }
+
+   .blocky-scrolling-image-bar-grid .blocky-scrolling-image-container {
+      max-height: unset;     
+      padding: 0 1.5rem;
+   }
+
+    .blocky-scrolling-image-bar-grid img {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% assign image_height = section.settings.image_height | times: 2 %}
+
+<div class="blocky blocky-announcement-bar blocky-padding background-wrapper blocky-relative"
+    style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
+    --image-spacing:{{ section.settings.image_spacing }}; --border-radius: {{ section.settings.border_radius }}; --image-height: {{ image_height }};
+    --marquee-speed: {{ 50 | divided_by: section.settings.speed }}; --text-background-color: {{ section.settings.text_background_color }}; --text-padding: {{ section.settings.text_padding }};"
+>
+  <div class="blocky-scrolling-image-flex-container blocky-des-flex-{{ section.settings.desktop_position }} blocky-mob-flex-{{ section.settings.mobile_position }}{% if section.settings.show_blur %} blocky-blur-sides{% endif %}{% if section.settings.disable_carousel %} blocky-scrolling-image-bar-grid{% endif %}">
+    <div class="blocky-scrolling-image-container">
+      {% if section.settings.disable_carousel %}
+        <div class="blocky-announcement-bar-image blocky-announcement-bar-image-{{ section.settings.image_shape }}{% if section.settings.show_shadow %} blocky-announcement-bar-image-shadow{% endif %}">
+          {%- for block in section.blocks -%}
+            {%- if block.settings.image != blank -%}
+              <img src={{ block.settings.image | image_url: height: image_height }} {{ block.shopify_attributes }}/>
+            {% else %}
+              <div class="blocky-announcement-bar-svg" {{ block.shopify_attributes }}>
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {% else %}
+        {% assign blockCount = section.blocks | size %}
+        {%- if blockCount == 0 -%}
+            {%- assign blockCount = 1 -%}
+        {%- endif -%}
+        {%- assign upperLimit = 15 | divided_by: blockCount | ceil %}    
+      
+        {% capture marqueeContainer %}
+          <div class="blocky-announcement-bar-image blocky-announcement-bar-image-{{ section.settings.image_shape }}{% if section.settings.show_shadow %} blocky-announcement-bar-image-shadow{% endif %}">
+            {% for i in (1..upperLimit) %}
+              {%- for block in section.blocks -%}
+                {%- if block.settings.image != blank -%}
+                  <img src={{ block.settings.image | image_url: height: image_height }} {{ block.shopify_attributes }}/>
+                {% else %}
+                  <div class="blocky-announcement-bar-svg" {{ block.shopify_attributes }}>
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {% endfor %} 
+          </div>
+        {% endcapture %}
+        
+        {{ marqueeContainer }}
+        {{ marqueeContainer }}
+        {{ marqueeContainer }}
+      {% endif %}
+    </div>
+    {% if section.settings.title != blank or section.settings.body_text != blank %}
+      <div class="blocky-scrolling-image-text{% if section.settings.text_background_color != "rgba(0,0,0,0)" %} blocky-shadow{% endif %}{% if section.settings.hide_mobile %} blocky-mobile-hidden{% endif %}">
+        {% render 'blocky-titlel', block: section %}
+        {% render 'blocky-bodyl', block: section %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Scrolling Image Bar",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+        "type": "header",
+        "content": "Layout"
+    },
+    {
+        "type": "range",
+        "id": "image_height",
+        "min": 10,
+        "max": 200,
+        "step": 2,
+        "unit": "px",
+        "label": "Image height",
+        "default": 100
+    },
+    {
+      "type": "select",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt"
+        },
+        {
+          "value": "circle",
+          "label": "Circle"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },            
+      ],
+      "id": "image_shape",
+      "label": "Image shape",
+      "default": "adapt"
+    },
+    {
+        "type": "range",
+        "id": "image_spacing",
+        "label": "Image spacing",
+        "min": 1,
+        "max": 5,
+        "default": 3,
+        "step": 0.5
+    },
+    {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Border radius",
+        "unit": "px",
+        "min": 0,
+        "max": 40,
+        "default": 15,
+        "step": 1
+    },
+    {
+        "type": "range",
+        "id": "speed",
+        "label": "Ticker speed",
+        "min": 0,
+        "max": 5,
+        "default": 1,
+        "step": 0.5
+    },
+    {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color",
+        "default": "#FFFFFF"
+    },
+    {
+        "type": "checkbox",
+        "id": "show_shadow",
+        "label": "Show shadow",
+        "default": true
+    },
+    {
+        "type": "checkbox",
+        "id": "show_blur",
+        "label": "Blur sides",
+        "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_carousel",
+      "label": "Disable carousel",
+      "default": false,
+      "info": "Displays images without sliding or animation"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 36,
+      "min": 10,
+      "max": 60,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+   {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 20,
+      "min": 10,
+      "max": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_background_color",
+      "label": "Text container background",
+      "default": "#FFFFFF",
+      "info": "This is only shown if the text position is 'over images'"
+    },
+    {
+      "type": "range",
+      "id": "text_padding",
+      "default": 3,
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "label": "Text container padding"
+    },
+    {
+        "type": "checkbox",
+        "id": "hide_mobile",
+        "label": "Hide in mobile",
+        "default": false
+    },    
+    {
+      "type": "select",
+      "id": "desktop_position",
+      "label": "Desktop text position",
+      "options": [
+        {
+          "value": "over-text",
+          "label": "Over images"
+        },
+        {
+          "value": "col",
+          "label": "Under text"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Above text"
+        }
+      ],
+      "default": "over-text"
+    },    
+    {
+      "type": "select",
+      "id": "mobile_position",
+      "label": "Mobile text position",
+      "options": [
+        {
+          "value": "over-text",
+          "label": "Over images"
+        },
+        {
+          "value": "col",
+          "label": "Under text"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Above text"
+        }
+      ],
+      "default": "over-text"
+    }, 
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Select an image here to replace the placeholder"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+        "name": "Blocky Scrolling Image Bar",
+        "blocks": [
+          {
+            "type": "image"
+          }
+        ]
+    }
+  ]
+}
+{% endschema %}

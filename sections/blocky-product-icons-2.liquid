@@ -1,0 +1,628 @@
+{%- comment -%}
+© BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+{% style %}
+#blocky-product-icons-2-{{ section.id }} .blocky-flex-layout-2 img,
+#blocky-product-icons-2-{{ section.id }} .blocky-flex-layout-2 svg {
+  border-radius: 0px;
+}
+#blocky-product-icons-2-{{ section.id }} .blocky-flex-container.blocky-flex-layout-2 {
+  border-radius: {{ section.settings.border_radius }}px;
+  overflow: hidden;
+  {% if section.settings.show_border == true %}border: 1px solid {{ section.settings.border_color }};{% endif %}
+  gap: 3.2rem;
+  background-color: {{ section.settings.container_background_color }};
+}
+#blocky-product-icons-2-{{ section.id }} .blocky-flex-layout-2 > .blocky-product-icons-2-icons-container {
+  padding: {{ section.settings.container_padding }}rem;
+}
+@media screen and (max-width: 749px) {
+  #blocky-product-icons-2-{{ section.id }} .blocky-flex-layout-2 {
+    gap: 2rem;
+  }
+  #blocky-product-icons-2-{{ section.id }} .blocky-flex-layout-2 > .blocky-product-icons-2-icons-container {
+    {% if section.settings.mobile_layout == 'col' %}
+      padding: {{ section.settings.container_padding_mobile }}rem {{ section.settings.container_padding_mobile }}rem 0 {{ section.settings.container_padding_mobile }}rem;
+    {% elsif section.settings.mobile_layout == 'col-reverse' %}
+      padding: 0 {{ section.settings.container_padding_mobile }}rem {{ section.settings.container_padding_mobile }}rem {{ section.settings.container_padding_mobile }}rem;
+    {% else %}
+      padding: {{ section.settings.container_padding_mobile }}rem;
+    {% endif %}
+  }
+}
+#blocky-product-icons-2-{{ section.id }} .blocky-product-icons-2-placeholder,
+#blocky-product-icons-2-{{ section.id }} .blocky-media-wrapper {
+  {% if section.settings.container_style != true %}
+    border-radius: {{ section.settings.border_radius }}px;
+    {% if section.settings.show_border == true %}border: 1px solid {{ section.settings.border_color }};{% endif %}
+  {% endif %}
+}
+{% endstyle %}
+<style>
+.blocky-product-icons-2-icons {
+  row-gap: 40px;
+  column-gap: 60px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media screen and (max-width: 749px) {
+  .blocky-product-icons-2-icons {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 3rem;
+  }
+}
+.blocky-product-icons-2-icons img,
+.blocky-product-icons-2-icons .material-icons {
+  height: var(--icon-size);
+  width: var(--icon-size);
+  font-size: var(--icon-size);
+}
+.blocky-product-icons-2-icons .material-icons {
+  color: var(--icon-color);
+  line-height: 1.1;
+}
+.blocky-product-icons-2-icon {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.blocky-product-icons-2-icon-show-card .blocky-product-icons-2-icon {
+  border-radius: 25px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: var(--icon-card-background);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 4px;  
+  width: fit-content;
+}
+.blocky-product-icons-2-icon-subtitle {
+  font-size: var(--icon-subtitle-size);
+  line-height: 1.1;
+  color: var(--subtitle-color);
+}
+.blocky-product-icons-2-icon-description {
+  font-size: var(--icon-body-size);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  color: var(--description-color);
+}
+.blocky-product-icons-2-icon-heading,
+.blocky-product-icons-2-icon-heading > *{
+  font-size: var(--icon-heading-size);
+  margin-bottom: 10px;
+  line-height: 1.2;
+  color:var(--title-color);
+}
+.blocky-product-icons-2-icons-container {
+  gap: 32px;
+}
+@media screen and (min-width: 750px) {
+  .blocky-product-icons-2-icons-des-left > * {
+    align-items: start;
+    text-align: start;
+  }
+  .blocky-product-icons-2-icons-des-center > * {
+    align-items: center;
+    text-align: center;
+  }
+  .blocky-product-icons-2-icons-des-right > * {
+    align-items: end;
+    text-align: end;
+  }
+}
+@media screen and (max-width: 749px) {
+  .blocky-product-icons-2-icons-mob-left > * {
+    align-items: start;
+    text-align: start;
+  }
+  .blocky-product-icons-2-icons-mob-center > * {
+    align-items: center;
+    text-align: center;
+  }
+  .blocky-product-icons-2-icons-mob-right > * {
+    align-items: end;
+    text-align: end;
+  }
+  .blocky-product-feature-icons-2 .blocky-flex-container {
+    gap: 3.6rem;
+  }
+  .blocky-product-icons-2-icons-container {
+    gap: 20px;
+  }
+  .blocky-product-icons-2-icon-heading, .blocky-product-icons-2-icon-heading > * {
+    margin-bottom: 4px;
+  }
+  .blocky-product-icons-2-icon-description {
+    margin-bottom: 8px;
+  }
+}
+.blocky-product-feature-icons-2 .blocky-media-adapt img {
+  height: fit-content;
+}
+@media screen and (min-width: 750px) {
+  .blocky-flex-child-mid-large + .blocky-flex-child,
+  .blocky-flex-container > .blocky-flex-child-smedium {
+    width: 40%;
+    flex-grow: 0;
+  }
+}
+</style>
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div 
+  id="blocky-product-icons-2-{{ section.id }}"
+  class="blocky blocky-padding background-wrapper"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;"
+>
+<div class="blocky-page-width blocky-product-feature-icons-2">
+  <div class="blocky-flex-container blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-des-flex-{{ section.settings.layout }}{% if section.settings.container_style == true %} blocky-flex-layout-2{% endif %}{% if section.settings.shadow == true and section.settings.container_style == true %} blocky-shadow{% endif %}" style="align-items: center;">
+    <div class="blocky-product-icons-2-icons-container blocky-flex-child blocky-flex-child-{{ section.settings.desktop_icons_width }} blocky-product-icons-2-icons-des-{{ section.settings.icon_text_alignment }} blocky-product-icons-2-icons-mob-{{ section.settings.mobile_icon_text_alignment }} blocky-justify-center blocky-flex-col">
+      {% render 'blocky-titlel', block: section %}
+      <div class="blocky-product-icons-2-icons{% if section.settings.show_icons_card %} blocky-product-icons-2-icon-show-card{% endif %} blocky-product-icons-2-icons-des-{{ section.settings.icon_text_alignment }} blocky-product-icons-2-icons-mob-{{ section.settings.mobile_icon_text_alignment }}" 
+        style="--icon-size: {{ section.settings.icon_size }}px; --icon-card-background: {{ section.settings.icon_card_background }};--icon-heading-size: {{ section.settings.icon_heading_size }}px; --icon-body-size: {{ section.settings.icon_body_size }}px; --icon-subtitle-size: {{ section.settings.icon_subtitle_size }}px;"
+      >      
+        {%- for block in section.blocks -%}    
+          {% render 'blocky-product-icons-2', block: block %}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="blocky-flex-child blocky-justify-center blocky-media-{{ section.settings.height }} blocky-overflow-hidden{% if section.settings.shadow and section.settings.container_style != true %} blocky-shadow{% endif %} blocky-media-wrapper" {% if section.settings.container_style != true %}style="border-radius: {{ section.settings.border_radius }}px;{% if section.settings.show_border == true %}border: 1px solid {{ section.settings.border_color }};{% endif %}"{% endif %}>
+      {% if section.settings.video %}
+        {% render "blocky-video", video: section.settings.video, video_fit: "zoomed", autoplay: true %}      
+      {% elsif section.settings.image %}
+        <img
+          class="blocky-image-cover"
+          src="{{ section.settings.image | image_url: height: 1200 }}"
+          width="100%"
+          height="100%"
+        >
+      {% else %}
+        {% capture placeholder_class %}blocky-product-icons-2-placeholder{% endcapture %}
+        {{ 'image' | placeholder_svg_tag: placeholder_class }}
+      {% endif %}      
+    </div>    
+  </div>
+</div>
+</div>
+
+{% schema %}
+{
+"name": "BKY - Product Icons 2",
+"settings": [
+  {
+    "type": "header",
+    "content": "Media",
+  },
+  {
+    "type": "image_picker",
+    "id": "image",
+    "label": "Image"
+  },
+  {
+    "type": "video",
+    "id": "video",
+    "label": "Video",
+  },    
+  {
+    "type": "select",
+    "id": "height",
+    "options": [
+      {
+        "value": "adapt",
+        "label": "Adapt to media"
+      },
+      {
+        "value": "small",
+        "label": "Small"
+      },
+      {
+        "value": "medium",
+        "label": "Medium"
+      },
+      {
+        "value": "large",
+        "label": "Large"
+      }
+    ],
+    "default": "adapt",
+    "label": "Height"
+  },
+  {
+    "type": "range",
+    "id": "border_radius",
+    "min": 0,
+    "max": 50,
+    "step": 1,
+    "unit": "px",
+    "label": "Border radius",
+    "default": 15
+  },
+  {
+    "type": "checkbox",
+    "id": "show_border",
+    "label": "Show border",
+    "default": false
+  },
+  {
+    "type": "color",
+    "id": "border_color",
+    "label": "Border color",
+    "default": "#000000",
+    "visible_if": "{{ section.settings.show_border == true }}"
+  },
+  {
+    "type": "checkbox",
+    "id": "shadow",
+    "default": true,
+    "label": "Show shadow"
+  },
+  
+  {
+    "type": "header",
+    "content": "Title",
+  },
+  {
+    "type": "inline_richtext",
+    "id": "title",
+    "default": "<b>Product Icons</b>",
+    "label": "Results title",
+    "info": "Leave the text blank to hide the title."
+  },
+  {
+    "type": "range",
+    "id": "title_size",
+    "label": "Results title size",
+    "default": 50,
+    "min": 20,
+    "max": 100,
+    "unit": "px"
+  },
+  {
+    "type": "color",
+    "id": "title_color",
+    "label": "Results title color",
+    "default": "#000000"
+  },
+
+  {
+    "type": "header",
+    "content": "Icon Settings"
+  },
+  {
+    "type": "range",
+    "label": "Icon heading size",
+    "min": 12,
+    "max": 30,
+    "unit": "px",
+    "id": "icon_heading_size",
+    "default": 22
+  },
+  {
+    "type": "range",
+    "label": "Icon text size",
+    "min": 12,
+    "max": 30,
+    "unit": "px",
+    "id": "icon_body_size",
+    "default": 16
+  },
+  {
+    "type": "range",
+    "label": "Icon subtitle size",
+    "min": 8,
+    "max": 20,
+    "unit": "px",
+    "id": "icon_subtitle_size",
+    "default": 16
+  },
+  {
+    "type": "range",
+    "label": "Icon size",
+    "min": 10,
+    "max": 100,
+    "unit": "px",
+    "id": "icon_size",
+    "default": 18
+  },
+  {
+    "type": "select",
+    "id": "icon_text_alignment",
+    "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      }, 
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+    ],
+    "default": "left",
+    "label": "Icon text alignment"
+  },
+  {
+    "type": "select",
+    "id": "mobile_icon_text_alignment",
+    "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      }, 
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+    ],
+    "default": "center",
+    "label": "Mobile icon text alignment"
+  },
+  {
+    "type": "checkbox",
+    "id": "show_icons_card",
+    "default": true,
+    "label": "Show icons card"
+  },
+  {
+    "type": "color",
+    "id": "icon_card_background",
+    "label": "Icon Card Background",
+    "default": "#FFFFFF",
+  },
+
+  
+  
+  {
+    "type": "header",
+    "content": "Layout",
+  },
+  {
+    "type": "select",
+    "id": "layout",
+    "options": [
+      {
+        "value": "row",
+        "label": "Icons first"
+      },
+      {
+        "value": "row-reverse",
+        "label": "Media first"
+      }
+    ],
+    "default": "row-reverse",
+    "label": "Desktop icons placement"
+  },
+  {
+    "type": "select",
+    "id": "desktop_icons_width",
+    "options": [
+      {
+        "value": "small",
+        "label": "Extra Small"
+      },
+      {
+        "value": "smedium",
+        "label": "Small"
+      },
+      {
+        "value": "medium",
+        "label": "Medium"
+      },
+      {
+        "value": "mid-large",
+        "label": "Large"
+      },
+      {
+        "value": "large",
+        "label": "Extra Large"
+      }
+    ],
+    "default": "medium",
+    "label": "Desktop icons width",
+  },
+  {
+    "type": "select",
+    "id": "mobile_layout",
+    "options": [
+      {
+        "value": "col",
+        "label": "Icons first"
+      },
+      {
+        "value": "col-reverse",
+        "label": "Media first"
+      }
+    ],
+    "default": "col",
+    "label": "Mobile icons placement"
+  },
+  
+  
+  {
+    "type": "color",
+    "id": "background_color",
+    "label": "Background color",
+    "default": "#FFFFFF"
+  },
+  {
+    "type": "checkbox",
+    "id": "container_style",
+    "label": "Use container style",
+    "default": false,
+  },
+  {
+    "type": "color",
+    "id": "container_background_color",
+    "label": "Container background color",
+    "default": "#FCFCFC",
+    "visible_if": "{{ section.settings.container_style == true }}"
+  },
+  {
+    "type": "range",
+    "id": "container_padding",
+    "min": 0,
+    "max": 10,
+    "step": 0.2,
+    "unit": "rem",
+    "label": "Container padding (desktop)",
+    "default": 3,
+    "visible_if": "{{ section.settings.container_style == true }}"
+  },
+  {
+    "type": "range",
+    "id": "container_padding_mobile",
+    "min": 0,
+    "max": 6,
+    "step": 0.2,
+    "unit": "rem",
+    "label": "Container padding (mobile)",
+    "default": 2.4,
+    "visible_if": "{{ section.settings.container_style == true }}"
+  },
+
+
+  {
+    "type": "header",
+    "content": "Section size",
+  },
+  {
+    "type": "range",
+    "id": "page_width",
+    "unit": "px",
+    "step": 100,
+    "min": 800,
+    "max": 1600,
+    "default": 1200,
+    "label": "Section width",
+  },
+  {
+    "type": "range",
+    "id": "padding_top",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "Top padding",
+    "default": 36
+  },
+  {
+    "type": "range",
+    "id": "padding_bottom",
+    "min": 0,
+    "max": 100,
+    "step": 4,
+    "unit": "px",
+    "label": "Bottom padding",
+    "default": 36
+  }
+],
+"blocks": [
+  {
+    "type": "product-icons",
+    "name": "Icons",
+    "limit": 6,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Icon",
+      },
+      {
+         "type": "image_picker",
+         "id": "icon_image",
+         "label": "Icon",
+      },
+      {
+        "type": "text",
+        "id": "icon_code",
+        "label": "Icon Code",
+        "default": "check_circle",
+        "info": "Get icon codes from [this link](https://fonts.google.com/icons/). example: 'check_circle', 'search', 'home'. For help adding icons, you can click [here](/admin/apps/blocky-apps/icons)"
+      },
+      {
+        "type": "color",
+        "id": "icon_color",
+        "label": "Icon Color",
+        "default": "#000000"
+      },    
+      {
+        "type": "checkbox",
+        "id": "fill_icons",
+        "default": false,
+        "label": "Fill Icon"
+      },
+      {
+        "type": "header",
+        "content": "Text",
+      },
+      {
+          "type": "richtext",
+          "id": "icon_heading",
+          "label": "Heading",
+          "default": "<p><b>Feature Name</b></p>"
+      },
+      {
+        "type": "color",
+        "id": "icon_heading_color",
+        "label": "Heading color",
+        "default": "#000000",
+      },
+      {
+          "type": "richtext",
+          "id": "icon_description",
+          "label": "Description",
+          "default": "<p>Briefly describe why this feature is beneficial for customers</p>"
+      },
+      {
+        "type": "color",
+        "id": "icon_text_color",
+        "label": "Description color",
+        "default": "#000000",
+      },
+      {
+        "type": "richtext",
+        "id": "icon_subtitle",
+        "label": "Subtitle",
+        "default": "<p><b>Key Benefit</b></p>"
+      },
+      {
+        "type": "color",
+        "id": "icon_subtitle_color",
+        "label": "Subtitle color",
+        "default": "#000000",
+      },
+    ]
+  }
+],
+"presets": [
+  {
+    "name": "Blocky Product Icons 2 ",
+    "blocks": [
+      {
+        "type": "product-icons"
+      },
+      {
+        "type": "product-icons"
+      },
+      {
+        "type": "product-icons"
+      },
+      {
+        "type": "product-icons"
+      }
+    ]
+  }
+],
+"disabled_on": {
+  "groups": ["header", "footer"]
+}
+}
+{% endschema %}

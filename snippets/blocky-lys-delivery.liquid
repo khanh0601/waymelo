@@ -1,0 +1,183 @@
+{%- comment -%}
+  Blocky Delivery block
+  Renders the destination line, estimated arrival line, Update Your Preferences
+  modal (functional Shopify localization), and Delivery Method popover.
+
+  Accepts:
+    - block: the section block object
+{%- endcomment -%}
+
+{%- liquid
+  assign bd_uid = block.id | default: section.id
+
+  capture bd_date_format
+    echo block.settings.date_format | replace: 'day', block.settings.day_label | replace: 'month', block.settings.month_label
+  endcapture
+
+  assign bd_earliest_s = block.settings.earliest_days | times: 86400
+  assign bd_latest_s = block.settings.latest_days | times: 86400
+  assign bd_earliest = 'now' | date: '%s' | plus: bd_earliest_s | date: bd_date_format | strip
+  assign bd_latest = 'now' | date: '%s' | plus: bd_latest_s | date: bd_date_format | strip
+  assign bd_placed = 'now' | date: bd_date_format | strip
+
+  assign bd_ship_start_s = block.settings.ship_start_days | times: 86400
+  assign bd_ship_end_s = block.settings.ship_end_days | times: 86400
+  assign bd_ship_start = 'now' | date: '%s' | plus: bd_ship_start_s | date: bd_date_format | strip
+  assign bd_ship_end = 'now' | date: '%s' | plus: bd_ship_end_s | date: bd_date_format | strip
+
+  if bd_earliest == bd_latest
+    assign bd_arrival_range = bd_earliest
+  else
+    assign bd_arrival_range = bd_earliest | append: ' - ' | append: bd_latest
+  endif
+
+  if bd_ship_start == bd_ship_end
+    assign bd_ships_range = bd_ship_start
+  else
+    assign bd_ships_range = bd_ship_start | append: ' - ' | append: bd_ship_end
+  endif
+
+  capture bd_arrival_markup
+    echo '<b class="blocky-delivery__strong">' | append: bd_arrival_range | append: '</b>'
+  endcapture
+  assign bd_arrival_html = block.settings.arrival_text | replace: '[DATE]', bd_arrival_markup
+-%}
+
+<blocky-delivery
+  class="blocky blocky-delivery"
+  style="--bd-text: {{ block.settings.text_color }}; --bd-strong: {{ block.settings.strong_color }}; --bd-heading: {{ block.settings.heading_color }}; --bd-bg: {{ block.settings.bg_color }}; --bd-border: {{ block.settings.border_color }}; --bd-radius: {{ block.settings.radius }}px; --bd-text-size: {{ block.settings.text_size }}px;{% if block.settings.line_height > 0 %} --bd-lh: {{ block.settings.line_height }};{% endif %}{% if block.settings.letter_spacing != 0 %} --bd-ls: {{ block.settings.letter_spacing }}px;{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  <button
+    type="button"
+    class="blocky-delivery__line blocky-delivery__line--destination"
+    data-bd-open="modal"
+    aria-expanded="false"
+    aria-controls="bd-modal-{{ bd_uid }}"
+  >
+    <span class="blocky-delivery__label">{{ block.settings.destination_label }}</span>
+    <span class="blocky-delivery__strong">{{ localization.country.name }}</span>
+    <span class="blocky-delivery__caret" aria-hidden="true">
+      <svg viewBox="0 0 10 6" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"/></svg>
+    </span>
+  </button>
+
+  <button
+    type="button"
+    class="blocky-delivery__line blocky-delivery__line--arrival"
+    data-bd-open="method"
+    aria-expanded="false"
+    aria-controls="bd-method-{{ bd_uid }}"
+  >
+    <span class="blocky-delivery__label">{{ bd_arrival_html }}</span>
+    <span class="blocky-delivery__caret" aria-hidden="true">
+      <svg viewBox="0 0 10 6" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"/></svg>
+    </span>
+  </button>
+
+  {%- comment -%} Delivery Method popover {%- endcomment -%}
+  <div class="blocky-delivery__popover" id="bd-method-{{ bd_uid }}" data-bd-panel="method" hidden>
+    <div class="blocky-delivery__head">
+      <span class="blocky-delivery__head-title">
+        <span class="blocky-delivery__head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false" fill="currentColor"><path d="M3 5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v3h3.5a1 1 0 0 1 .8.4l2.5 3.33a1 1 0 0 1 .2.6V16a1 1 0 0 1-1 1h-1.05a2.5 2.5 0 0 1-4.9 0h-3.1a2.5 2.5 0 0 1-4.9 0H4a1 1 0 0 1-1-1V5Zm11 4v6h1.05a2.5 2.5 0 0 1 4.4-1.5l.05.06V12h-1.5a1 1 0 0 1 0-2H15V9Zm-6.5 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm8 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg>
+        </span>
+        {{ block.settings.method_title }}
+      </span>
+      <button type="button" class="blocky-delivery__close" data-bd-close aria-label="Close">
+        <svg viewBox="0 0 18 17" focusable="false" aria-hidden="true"><path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.433 7.433 7.433a.5.5 0 00.707-.707L9.712 8.545l7.433-7.433A.5.5 0 0016.438.405L9.005 7.838 1.572.405A.5.5 0 00.865 1.112l7.433 7.433-7.433 7.433z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <p class="blocky-delivery__method">
+      <b>{{ block.settings.method_name }}</b> {{ block.settings.method_range }}
+    </p>
+
+    <div class="blocky-delivery__timeline">
+      <div class="blocky-delivery__row">
+        <span>{{ block.settings.placed_label }}</span>
+        <span class="blocky-delivery__strong">{{ bd_placed }}</span>
+      </div>
+      <div class="blocky-delivery__row">
+        <span>{{ block.settings.ships_label }}</span>
+        <span class="blocky-delivery__strong">{{ bd_ships_range }}</span>
+      </div>
+      <div class="blocky-delivery__row">
+        <span>{{ block.settings.delivered_label }}</span>
+        <span class="blocky-delivery__strong">{{ bd_arrival_range }}</span>
+      </div>
+    </div>
+
+    {%- assign bd_has_notes = false -%}
+    {%- for i in (1..3) -%}
+      {%- assign bd_note_key = 'note_' | append: i -%}
+      {%- if block.settings[bd_note_key] != blank -%}
+        {%- assign bd_has_notes = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if bd_has_notes -%}
+      <ul class="blocky-delivery__notes">
+        {%- for i in (1..3) -%}
+          {%- assign bd_note_key = 'note_' | append: i -%}
+          {%- if block.settings[bd_note_key] != blank -%}
+            <li>{{ block.settings[bd_note_key] }}</li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Update Your Preferences modal {%- endcomment -%}
+  <div class="blocky-delivery__overlay" data-bd-overlay hidden></div>
+  <div
+    class="blocky-delivery__modal"
+    id="bd-modal-{{ bd_uid }}"
+    data-bd-panel="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ block.settings.modal_title | escape }}"
+    hidden
+  >
+    <div class="blocky-delivery__head">
+      <span class="blocky-delivery__head-title">
+        <span class="blocky-delivery__head-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+        </span>
+        {{ block.settings.modal_title }}
+      </span>
+      <button type="button" class="blocky-delivery__close" data-bd-close aria-label="Close">
+        <svg viewBox="0 0 18 17" focusable="false" aria-hidden="true"><path d="M.865 15.978a.5.5 0 00.707.707l7.433-7.433 7.433 7.433a.5.5 0 00.707-.707L9.712 8.545l7.433-7.433A.5.5 0 0016.438.405L9.005 7.838 1.572.405A.5.5 0 00.865 1.112l7.433 7.433-7.433 7.433z" fill="currentColor"/></svg>
+      </button>
+    </div>
+
+    <p class="blocky-delivery__note">{{ block.settings.modal_note }}</p>
+
+    {%- assign bd_form_id = 'bd-form-' | append: bd_uid -%}
+    {%- form 'localization', id: bd_form_id, class: 'blocky-delivery__form' -%}
+      <label class="visually-hidden" for="bd-country-{{ bd_uid }}">{{ block.settings.modal_note }}</label>
+      <div class="blocky-delivery__select-wrap">
+        <select class="blocky-delivery__select" id="bd-country-{{ bd_uid }}" name="country_code">
+          {%- for country in localization.available_countries -%}
+            <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+              {{ country.name }} ({{ country.currency.iso_code }})
+            </option>
+          {%- endfor -%}
+        </select>
+        <span class="blocky-delivery__select-caret" aria-hidden="true">
+          <svg viewBox="0 0 10 6" focusable="false"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor"/></svg>
+        </span>
+      </div>
+      <button type="submit" class="blocky-delivery__save">{{ block.settings.save_button_text }}</button>
+    {%- endform -%}
+
+    {%- if block.settings.policy_text != blank -%}
+      <p class="blocky-delivery__policy">
+        {%- if block.settings.policy_url != blank -%}
+          <a href="{{ block.settings.policy_url }}">{{ block.settings.policy_text }}</a>
+        {%- else -%}
+          {{ block.settings.policy_text }}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+</blocky-delivery>

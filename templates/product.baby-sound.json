@@ -1,0 +1,819 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "blocky-main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "title_color": "#000000",
+            "title_size": 32
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_color": "#000000",
+            "compare_price_color": "#000000",
+            "price_size": 22,
+            "price_bold": true,
+            "show_sale_badge": true,
+            "sale_badge_label": "<strong>SALE</strong>",
+            "sale_badge_use_gradient": false,
+            "sale_badge_bg": "#7a5168",
+            "sale_badge_gradient": "linear-gradient(to right, #e53e3e, #e07b39)",
+            "sale_badge_text_color": "#ffffff",
+            "sale_badge_border_radius": 100,
+            "sale_badge_font_size": 14,
+            "text_alignment": "flex-start"
+          }
+        },
+        "product_server_rating_cFNHhg": {
+          "type": "product-server-rating",
+          "settings": {}
+        },
+        "delivery_jCU86n": {
+          "type": "delivery",
+          "settings": {
+            "destination_label": "Deliver to:",
+            "modal_title": "Update Your Preferences",
+            "modal_note": "Select your shipping country",
+            "save_button_text": "Save & Continue",
+            "policy_text": "Learn more about our <strong>Shipping Policy</strong>",
+            "policy_url": "",
+            "arrival_text": "Order today, get it as early as: [DATE]",
+            "earliest_days": 7,
+            "latest_days": 15,
+            "method_title": "Delivery Method",
+            "method_name": "Standard Shipping:",
+            "method_range": "(7 - 10 business days)",
+            "placed_label": "Order Placed:",
+            "ships_label": "Order Ships:",
+            "delivered_label": "Delivered:",
+            "ship_start_days": 1,
+            "ship_end_days": 2,
+            "note_1": "Orders can be cancelled or modified within 2 hours after being placed.",
+            "note_2": "Canvas/ Poster/ Metal Sign: These packages cannot be delivered to a PO box.",
+            "note_3": "",
+            "date_format": "month %e",
+            "day_label": "%A",
+            "month_label": "%B",
+            "text_color": "#4a4a4a",
+            "strong_color": "#111111",
+            "heading_color": "#111111",
+            "bg_color": "#ffffff",
+            "border_color": "#e5e5e5",
+            "radius": 16,
+            "text_size": 14,
+            "line_height": 0,
+            "letter_spacing": 0
+          }
+        },
+        "text_4UAXfW": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body",
+            "text_color": "#000000",
+            "text_size": 16,
+            "text_alignment": "left",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "line_height": 0,
+            "letter_spacing": 0
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "text_style": "body",
+            "text_color": "#000000",
+            "text_size": 16,
+            "text_alignment": "left",
+            "margin_top": 0,
+            "margin_bottom": 0,
+            "line_height": 1.8,
+            "letter_spacing": 0
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "input_background_color": "#ffffff",
+            "input_text_color": "#000000",
+            "input_border_color": "#d8d8d8",
+            "input_border_radius": 6,
+            "picker_type": "button",
+            "show_color_swatches": true,
+            "color_swatch_mapping": "Rose Gold: #b76e79\nMidnight: #111827\nCream White: #f4efe6"
+          }
+        },
+        "pumper_bundles_app_block_qb_EHeEkM": {
+          "type": "shopify://apps/pumper-bundles/blocks/app-block-qb/0856870d-2aca-4b1e-a662-cf1797f61270",
+          "settings": {
+            "selected_product": "{{section.settings.product}}",
+            "using_page_builder": false
+          }
+        },
+        "custom_liquid_3JEXmK": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div style=\"margin:2px 0;\">\n  <label for=\"color-choices\"\n    style=\"display:block;margin-bottom:6px;font-weight:700;font-size:14px;\">\n    Different Color Requests\n  </label>\n\n  <input\n    id=\"color-choices\"\n    type=\"text\"\n    name=\"properties[Different Color Requests]\"\n    form=\"{{ product_form_id }}\"\n    maxlength=\"150\"\n    placeholder=\"e.g. 1 Pink, 1 Blue\"\n    style=\"width:100%;height:40px;padding:8px 12px;border:1px solid #ccc;border-radius:6px;font-size:13px;box-sizing:border-box;\"\n  >\n\n  <small style=\"display:block;margin-top:6px;color:#555;font-size:12px;font-weight:600;line-height:1.5;\">\n    Only fill this in if you want different colors for your items. Leave blank to keep your selected color.\n  </small>\n</div>"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "cart_action": "cart_drawer",
+            "button_background": "#7a5168",
+            "button_border_color": "#7a5168",
+            "button_text_color": "#ffffff",
+            "dynamic_button_background_color": "#7a5168",
+            "dynamic_button_text_color": "#ffffff",
+            "dynamic_button_border_color": "",
+            "button_height": 68,
+            "button_text_size": 20,
+            "add_to_cart_text": "ADD TO CART",
+            "sold_out_text": "Sold out",
+            "unavailable_text": "Unavailable",
+            "margin_top": 0.2,
+            "margin_bottom": 1.1
+          }
+        },
+        "payment_badges_edFzPC": {
+          "type": "payment_badges",
+          "settings": {
+            "icon_size": 38,
+            "alignment": "center"
+          }
+        },
+        "guarantee_badge_AaBfap": {
+          "type": "guarantee_badge",
+          "settings": {
+            "heading": "60-day money-back guarantee",
+            "body": "<p>If you don’t love it, return it within 60 days for a full refund.</p>",
+            "ring_text": "MONEY-BACK GUARANTEE",
+            "days_number": "60",
+            "day_label": "Day",
+            "bg_color": "#f5f1e8",
+            "accent_color": "#a0522d",
+            "heading_color": "#5c3a21",
+            "text_color": "#5c3a21",
+            "radius": 12,
+            "border_color": "",
+            "border_width": 1,
+            "show_shadow": false,
+            "badge_size": 80,
+            "heading_size": 16,
+            "body_size": 14,
+            "line_height": 0,
+            "letter_spacing": 0
+          }
+        },
+        "review_carousel_fxV7nG": {
+          "type": "review_carousel",
+          "settings": {
+            "popup_featured_product": "",
+            "heading": "<strong>Real results from real customers</strong>",
+            "heading_font_size": 16,
+            "slides_to_show": 4,
+            "card_height": 0,
+            "play_circle_color": "#ffffff",
+            "play_icon_color": "#000000",
+            "collection_1": "",
+            "collection_2": "",
+            "collection_3": "",
+            "collection_4": "",
+            "collection_5": "",
+            "collection_6": ""
+          }
+        },
+        "collapsible_tab_pnakVM": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Product Details",
+            "icon": "none",
+            "heading_size": 16,
+            "content": "<h3>Portable Baby Sound Machine & Sleep Soother</h3><p>👶 <strong>20 Soothing Sounds</strong> – White noise, heartbeat, ocean sounds, and more to create a calming environment for your baby.</p><p>🔋 <strong>15-Hour Battery Life</strong> – USB-C rechargeable for convenient use at home or on the go.</p><p>⏰ <strong>Smart Sleep Timer</strong> – Automatically turns off based on your selected timer setting.</p><p>💤 <strong>No Wi-Fi or App Needed</strong> – Simple, easy-to-use buttons for everyday convenience.</p><p>✈️ <strong>Compact & Travel-Friendly</strong> – Lightweight, palm-sized design with a hanging loop for strollers, diaper bags, and travel.</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 14,
+            "letter_spacing": 0
+          }
+        },
+        "collapsible_tab_VBrdmj": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "How To Use",
+            "icon": "none",
+            "heading_size": 16,
+            "content": "<h3>🍼 How To Use</h3><p><strong>Step 1: Charge Your Sound Machine</strong><br/>Connect the included USB-C cable to fully charge the device before use.</p><p><strong>Step 2: Turn It On</strong><br/>Press the power button to switch on the sound machine.</p><p><strong>Step 3: Choose Your Soothing Sound</strong><br/>Use the + and – buttons to browse through 20 calming sounds, including white noise, heartbeat, and ocean sounds.</p><p><strong>Step 4: Set the Sleep Timer</strong><br/>Press the timer button to activate your preferred automatic shut-off setting.</p><p><strong>Step 5: Place It Safely</strong><br/>Place the machine on a stable surface or securely attach the hanging loop to your stroller handle, away from your baby's reach.</p><p><strong>Step 6: Enjoy Peaceful Moments</strong><br/>Keep the volume low and let the soothing sounds create a relaxing atmosphere for your little one, whether at home or on the go.</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 14,
+            "letter_spacing": 0
+          }
+        },
+        "collapsible_tab_9jUktt": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & Delivery",
+            "icon": "none",
+            "heading_size": 16,
+            "content": "<p>📦 <strong>Fast Processing</strong> – Orders are packed and shipped within 2 business days.<br/>🚚 <strong>Reliable Shipping</strong> – We partner with trusted carriers to ensure your order arrives safely.<br/>🌍 <strong>Worldwide Delivery</strong> – We ship to most locations around the world.<br/>📩 <strong>Tracking Included</strong> – Stay updated with tracking details sent to your email.</p><p>Delivery times may vary based on your location. If you have any questions, feel free to reach out!</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 14,
+            "letter_spacing": 0
+          }
+        },
+        "collapsible_tab_mXtiYD": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Return & Refund Policy",
+            "icon": "none",
+            "heading_size": 16,
+            "content": "<p>🔄 <strong>Hassle-Free Returns</strong> – If you're not satisfied, you can return your item within 30 days.<br/>💰 <strong>Money-Back Guarantee</strong> – Get a full refund or exchange if your item arrives damaged or defective.<br/>📦 <strong>Easy Process</strong> – Simply contact our support team, and we’ll guide you through the steps.<br/>📩 <strong>Customer Support</strong> – Have questions? We’re here to help!</p><p>For full details, please check our Return Policy or contact us anytime.</p>",
+            "content_size": 14,
+            "page": "",
+            "open_by_default": false,
+            "bg_color": "",
+            "text_color": "",
+            "row_padding": 14,
+            "letter_spacing": 0
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "product_server_rating_cFNHhg",
+        "delivery_jCU86n",
+        "text_4UAXfW",
+        "description",
+        "variant_picker",
+        "pumper_bundles_app_block_qb_EHeEkM",
+        "custom_liquid_3JEXmK",
+        "buy_buttons",
+        "payment_badges_edFzPC",
+        "guarantee_badge_AaBfap",
+        "review_carousel_fxV7nG",
+        "collapsible_tab_pnakVM",
+        "collapsible_tab_VBrdmj",
+        "collapsible_tab_9jUktt",
+        "collapsible_tab_mXtiYD"
+      ],
+      "custom_css": [
+        ".alert-text + .product__text {margin: 1rem 0;}",
+        ".alert-text:has(+ .product__text) {margin-bottom: 0.75rem;}",
+        ".product__tax.caption.rte {display: none;}",
+        ".product-review-stars + .product__title {margin-bottom: 1.5rem !important; margin-top: 1rem !important;}",
+        "@media (min-width: 1200px) {product-info .product {padding: 0 3rem; margin-right: auto; margin-left: auto; } product-info .product .product__media-wrapper {padding-right: 3.25rem; }}"
+      ],
+      "settings": {
+        "product_source": "current",
+        "product": "wearable-nursing-pillow",
+        "content_gap": 76,
+        "mobile_content_gap": 28,
+        "content_vertical_gap": 12,
+        "media_size": 46,
+        "media_fit": "contain",
+        "media_aspect_ratio": "adapt",
+        "media_position": "left",
+        "media_border_radius": 16,
+        "media_shadow": false,
+        "show_media_border": false,
+        "media_border_color": "#000000",
+        "thumbnail_layout": "carousel",
+        "thumbnail_slides_per_column": 5,
+        "thumbnail_border_radius": 6,
+        "thumbnail_border_color": "#d8d8d8",
+        "thumbnail_active_border_color": "#000000",
+        "background_color": "#ffffff",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "page_width": 1200,
+        "padding_top": 20,
+        "padding_bottom": 60
+      }
+    },
+    "blocky_announcement_bar_H6FtGh": {
+      "type": "blocky-announcement-bar",
+      "blocks": {
+        "slide_cCXrJe": {
+          "type": "slide",
+          "settings": {
+            "message": "Black Friday Deals Ending This Week",
+            "link": ""
+          }
+        },
+        "slide_7GYCt3": {
+          "type": "slide",
+          "settings": {
+            "message": "Free shipping on all orders!",
+            "link": ""
+          }
+        },
+        "slide_KykXxX": {
+          "type": "slide",
+          "settings": {
+            "message": "Free shipping on all orders!",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_cCXrJe",
+        "slide_7GYCt3",
+        "slide_KykXxX"
+      ],
+      "name": "Blocky Announcement Bar",
+      "settings": {
+        "background_color": "#7a5168",
+        "text_color": "#ffffff",
+        "font_size": 18,
+        "font_size_mobile": 14,
+        "padding_y": 12,
+        "autoplay_enabled": false,
+        "autoplay_interval": 4,
+        "show_arrows": false,
+        "anim_duration": 300,
+        "anim_easing": "ease-out"
+      }
+    },
+    "custom_liquid_jfQF7P": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "179162975708a3df6e": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_a021675_mGdeCW": {
+          "type": "ai_gen_block_a021675",
+          "disabled": true,
+          "settings": {
+            "video_1": "shopify://files/videos/b0de7a670dfd47649eab19b95e4e5f64.HD-1080p-4.8Mbps-96370967.mp4",
+            "video_2": "shopify://files/videos/a09c85bbe3874fb497872c70465032c2.HD-1080p-4.8Mbps-96370965.mp4",
+            "video_3": "shopify://files/videos/15e5058885674252810d4be9ab7fa236.HD-1080p-4.8Mbps-96370960.mp4",
+            "width_mode": "content",
+            "desktop_width_percent": 90,
+            "gap": 20,
+            "corner_radius": 12,
+            "aspect_ratio": "4 / 5",
+            "mobile_aspect_ratio": "4 / 5"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_a021675_mGdeCW"
+      ],
+      "custom_css": [],
+      "name": "Video Showcase",
+      "settings": {}
+    },
+    "blocky_product_feature_3_3LE4A8": {
+      "type": "blocky-product-feature-3",
+      "blocks": {
+        "feature_JpkBCA": {
+          "type": "feature",
+          "settings": {
+            "side": "left",
+            "y_offset": 32,
+            "title_position": "above",
+            "title": "&nbsp;<strong>20 Soothing Sounds</strong>&nbsp;",
+            "text": "<p>White noise, heartbeat, ocean sounds, and more to help calm your baby.</p>"
+          }
+        },
+        "feature_44Kfqk": {
+          "type": "feature",
+          "settings": {
+            "side": "left",
+            "y_offset": -20,
+            "title_position": "above",
+            "title": "&nbsp;<strong>Up to 15-Hour Battery Life</strong>&nbsp;",
+            "text": "<p>USB-C rechargeable for convenient use at home or on the go.</p><p></p>"
+          }
+        },
+        "feature_d7iDcb": {
+          "type": "feature",
+          "settings": {
+            "side": "right",
+            "y_offset": 32,
+            "title_position": "above",
+            "title": "&nbsp;<strong>Smart Sleep Timer</strong>&nbsp;",
+            "text": "<p>Set the timer for automatic shut-off during naps or bedtime.</p>"
+          }
+        },
+        "feature_b6fVTa": {
+          "type": "feature",
+          "settings": {
+            "side": "right",
+            "y_offset": -20,
+            "title_position": "above",
+            "title": "&nbsp;<strong>Portable & Stroller-Friendly</strong>&nbsp;",
+            "text": "<p>Compact, lightweight design with a hanging loop for easy travel.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "feature_JpkBCA",
+        "feature_44Kfqk",
+        "feature_d7iDcb",
+        "feature_b6fVTa"
+      ],
+      "name": "Blocky Product Feature 2",
+      "settings": {
+        "body_text": "PRODUCT FEATURES",
+        "title": "&nbsp;Peaceful Sleep, Anywhere You Go&nbsp;",
+        "title_size": 40,
+        "title_color": "#000000",
+        "body_size": 13,
+        "body_color": "#000000",
+        "device_image": "shopify://shop_images/DSDFD.png",
+        "device_image_alt": "",
+        "device_link": "",
+        "device_height": 400,
+        "device_radius": 15,
+        "feature_title_size": 20,
+        "feature_title_color": "#000000",
+        "feature_body_size": 14,
+        "feature_body_color": "#7a5168",
+        "accent_color": "#7a5168",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "spacing_eyebrow_title": 12,
+        "spacing_title_media": 24,
+        "page_width": 1300,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "background_color": "#ffffff"
+      }
+    },
+    "blocky_video_with_text_97hNbH": {
+      "type": "blocky-video-with-text",
+      "blocks": {
+        "title_nDYf4Y": {
+          "type": "title",
+          "settings": {
+            "title": "&nbsp;Peaceful Sleep, Wherever You Go&nbsp;",
+            "title_size": 42,
+            "title_color": "#000000"
+          }
+        },
+        "body_zYyMTy": {
+          "type": "body",
+          "settings": {
+            "body_text": "<p><strong>20 Soothing Sounds</strong><br/>White noise, heartbeat, ocean sounds, and more to help your baby relax.</p><p><strong>Up to 15 Hours of Battery Life</strong><br/>USB-C rechargeable for convenient use at home or while traveling.</p><p><strong>Smart Sleep Timer</strong><br/>Set your preferred timer for automatic shut-off.</p><p><strong>Perfect for On-the-Go Moms</strong><br/>Compact, lightweight, and easy to hang on a stroller or carry in a diaper bag.</p>",
+            "body_size": 16,
+            "body_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "title_nDYf4Y",
+        "body_zYyMTy"
+      ],
+      "name": "Blocky Video and Text",
+      "settings": {
+        "video": "shopify://files/videos/Portable Baby Sound Machine [White Noise for Babies Kids Adults][Sleep Soother][Timer Function][12 Soothing Sounds] 15 Hours Battery Life, Travel,Registry Toys,Gifts,Shower,Clips on Baby StrollerPractical little item.mp4",
+        "height": "adapt",
+        "desktop_video_width": "medium",
+        "video_fit": "zoomed",
+        "shadow": true,
+        "autoplay": true,
+        "play_button_color": "#ffffff",
+        "play_button_background_color": "#dcdcdc",
+        "layout_style": "1",
+        "background_color": "#ffffff",
+        "layout_2_background_color": "#fcfcfc",
+        "layout": "row",
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "left",
+        "mobile_layout": "col",
+        "mobile_content_alignment": "left",
+        "text_container_gap": "2rem",
+        "page_width": 1300,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "reviews_section_7Waym": {
+      "type": "reviews-section",
+      "blocks": {
+        "review_iX6iBe": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "DJ",
+            "date": "",
+            "verified": true,
+            "body": "<p>I absolutely love this sound machine! It lasts forever on one charge. I’ve let it play for 12+ hours. It’s the perfect noise level for any situation with your baby or even if you want to use it on the go for yourself. It’s hard for me to stay up when some of the sounds are playing lol it has a lot of different sound options as well<br/>10/10 recommend!<br/><br/></p>"
+          }
+        },
+        "review_a1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Tatum phillips",
+            "date": "",
+            "verified": true,
+            "body": "<p>Amazing quality! Especially for the price, this is a staple piece in our household and i HIGHLY recommend it. Perfect size for travel and the little strap makes it super convenient to attach to just about anywhere. Used this the whole time we were in the hospital and it never ran out of battery. There’s a variety of different sounds which is nice and the volume is perfect, not too loud, but just enough to put our baby to sleep. I also love that it takes a type c charger, but again, the battery life is incredible.<br/><br/></p>",
+            "image": "shopify://shop_images/61N3fGhp9eL.jpg"
+          }
+        },
+        "review_a2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Laura K.",
+            "date": "",
+            "verified": true,
+            "body": "<p>I have purchased so many sound machines in the past. This by far is the best, easy to use, keeps a charge, small and compact. I will be purchasing more for my family members.<br/><br/></p>",
+            "image": "shopify://shop_images/71xee7rmRKL.jpg"
+          }
+        },
+        "review_a3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Victoria Searles",
+            "date": "",
+            "verified": true,
+            "body": "<p>The sleep quality my little one gets when this is on is unmatched. He loves the ocean noises. The battery life is amazing on it, great for travel. Very reliable!<br/><br/></p>",
+            "image": "shopify://shop_images/511YS-LqxvL._SY500.jpg"
+          }
+        },
+        "review_a4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Jessica T.",
+            "date": "",
+            "verified": true,
+            "body": "<p>Ever since I got this white noise speaker, it has become part of our daily routine. I love that it includes relaxing sounds like rain and thunder, creating a calm and peaceful atmosphere.</p><p>We use it during nap time or at bedtime, and it helps create a more relaxing environment at home. It's also compact, easy to use, and convenient to take anywhere. If you're looking for a white noise speaker with soothing sounds, this is a great option.</p>",
+            "image": "shopify://shop_images/61esT6uc83L._SY500.jpg"
+          }
+        },
+        "review_a5": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Yanis Barreto Ortega",
+            "date": "",
+            "verified": true,
+            "body": "<p>I’m very impressed with this portable baby sound machine. It’s well-made, easy to use, and incredibly convenient to take anywhere. The sound quality is clear and consistent, making it a great addition to our baby’s sleep routine. The buttons are easy to find and use, which makes adjusting the settings quick and simple. The battery life is also excellent and lasts a very long time between charges, making it especially convenient when we’re away from home. Overall, it’s a practical, reliable, and high-quality product that I would highly recommend to other parents.<br/><br/></p>",
+            "image": "shopify://shop_images/61SVZuL_oXL.jpg"
+          }
+        },
+        "review_wch9ap": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Lylacscc",
+            "date": "",
+            "verified": true,
+            "body": "<p>This little sound machine has quickly become one of my favorite baby essentials. It’s compact enough to keep in the diaper bag, so it’s convenient for naps on the go, traveling, or moving from room to room.</p><p></p><p>I really like the variety of sound options and the timer feature. The controls are simple, and despite its small size, the sound is clear and provides good coverage without needing the volume too high. The neutral Putty color is also cute and blends nicely with baby gear.</p><p></p><p>What I appreciate most is the portability—you’re not limited to using it only in the nursery. It’s practical, easy to use, and something I actually reach for regularly. A great option for parents looking for a travel-friendly sound machine.</p>"
+          }
+        },
+        "review_cUryjU": {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "author": "Nicole B.",
+            "date": "",
+            "verified": true,
+            "body": "<p>This is very handy and there’s quite a few sound to choose from. The reason I chose 4 stars however, is because the lullabies are a short snippet of the song and play on a loop which isn’t the worst thing, but I just wish it would replay the whole lullaby. Secondly I wish I could make the sounds/noise one or two notches quieter than the quietest the machine gets. On a budget, this is a good little sound machine. Not sure how the battery life is as I usually always charge it after I’m done using it.<br/><br/></p>"
+          }
+        },
+        "review_ra6AQV": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Laura K.",
+            "date": "",
+            "verified": true,
+            "body": "<p>This is AMAZING! I’ve never wrote a review before until now<br/>Great noise level whether loud or quiet and will stay on for days. The slightest charge will keep the machine running for hours. My newborn loves the sound and helps him sleep well. Many choices of sound to pick from whether a heartbeat to remind ur little one of the pregnancy or cute lullaby’s. Overall it’s a great purchase I am beyond happy.<br/><br/></p>",
+            "image": "shopify://shop_images/618-rZ5cibL.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "review_iX6iBe",
+        "review_a1",
+        "review_a2",
+        "review_a3",
+        "review_a4",
+        "review_a5",
+        "review_wch9ap",
+        "review_cUryjU",
+        "review_ra6AQV"
+      ],
+      "settings": {
+        "images_heading": "<strong>Reviews with Images</strong>",
+        "list_heading": "Top reviews",
+        "all_reviews_label": "All Reviews",
+        "star_word": "Star",
+        "verified_label": "Verified Purchase",
+        "total_label": "reviews",
+        "show_summary": true,
+        "rating_decimals": 1,
+        "gallery_item_width": 180,
+        "review_image_width": 96,
+        "star_size": 18,
+        "average_value_size": 40,
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "heading_color": "#000000",
+        "star_color": "#f5a623",
+        "pill_border_color": "#e3e3e3",
+        "pill_active_border_color": "#000000",
+        "pill_text_color": "#8a8a8a",
+        "pill_active_text_color": "#000000",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_faq_cFeeU6": {
+      "type": "blocky-faq",
+      "blocks": {
+        "question_CF8zA8": {
+          "type": "question",
+          "settings": {
+            "question": "&nbsp;1. What sounds does the machine offer?&nbsp;",
+            "content": "<p>The machine offers 20 soothing sounds, including white, pink, and brown noise, nature sounds, and gentle melodies. Choose a sound to create a calming background for naps, bedtime, or travel.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_cLHAnz": {
+          "type": "question",
+          "settings": {
+            "question": "2. Does it need to stay plugged in?",
+            "content": "<p>No. The rechargeable battery provides up to 15 hours of playback per charge. Actual battery life depends on the volume level and usage. Charge the device according to the included instructions before heading out.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_LF7aE4": {
+          "type": "question",
+          "settings": {
+            "question": "3. Can I adjust the volume and set a timer?",
+            "content": "<p>Yes. The machine features adjustable volume and a built-in timer. Start at the lowest volume and select an available timer setting using the controls. Refer to the included instructions for specific settings.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_KtVzDN": {
+          "type": "question",
+          "settings": {
+            "question": "&nbsp;4. Can I use it on a stroller or while traveling?&nbsp;",
+            "content": "<p>Yes. Its compact design and hanging loop make it convenient for outings and travel. Secure it outside your baby’s reach, keep the speaker away from their head, and keep the device and charging cable outside the sleep space.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "question_CF8zA8",
+        "question_cLHAnz",
+        "question_LF7aE4",
+        "question_KtVzDN"
+      ],
+      "name": "Blocky FAQ",
+      "settings": {
+        "title": "Frequently Asked Questions",
+        "title_size": 40,
+        "title_color": "#000000",
+        "body_text": "",
+        "body_size": 16,
+        "body_color": "#000000",
+        "button_label": "<p>Contact Us</p>",
+        "button_link": "shopify://pages/contact",
+        "button_border_radius": "extra-round",
+        "button_background_color": "#7a5168",
+        "button_text_color": "#ffffff",
+        "faq_layout": "border",
+        "question_padding": 15,
+        "faq_border_radius": 15,
+        "faq_container_background": "#ffffff",
+        "faq_container_border_color": "rgba(0,0,0,0)",
+        "show_container_shadow": true,
+        "question_font_size": 18,
+        "answer_font_size": 16,
+        "question_text_color": "#000000",
+        "answer_text_color": "#606367",
+        "layout": "row-reverse",
+        "columns": 1,
+        "desktop_faq_width": "large",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "left",
+        "text_vertical_alignment": "top",
+        "chevron_style": "chevron",
+        "chevron_position": "end",
+        "text_container_gap": "1.5rem",
+        "background_color": "#ffffff",
+        "page_width": 1200,
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "newsletter_HjqpNj": {
+      "type": "newsletter",
+      "blocks": {
+        "heading_gHCQzk": {
+          "type": "heading",
+          "settings": {
+            "heading": "Unlock Your 10% OFF!",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph_CPD6XK": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+          }
+        },
+        "email_form_kKrjKF": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_gHCQzk",
+        "paragraph_CPD6XK",
+        "email_form_kKrjKF"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "blocky_section_divider_7AQYYY": {
+      "type": "blocky-section-divider",
+      "name": "Blocky Section Divider",
+      "settings": {
+        "shape": "waves_3",
+        "flip_horizontal": false,
+        "flip_vertical": false,
+        "shape_color": "#7a5168",
+        "background_color": "#ffffff",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "179217406534353e97": {
+      "type": "apps",
+      "disabled": true,
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "blocky_announcement_bar_H6FtGh",
+    "custom_liquid_jfQF7P",
+    "179162975708a3df6e",
+    "blocky_product_feature_3_3LE4A8",
+    "blocky_video_with_text_97hNbH",
+    "reviews_section_7Waym",
+    "blocky_faq_cFeeU6",
+    "newsletter_HjqpNj",
+    "blocky_section_divider_7AQYYY",
+    "179217406534353e97"
+  ]
+}

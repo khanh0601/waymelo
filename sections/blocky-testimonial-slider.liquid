@@ -1,0 +1,557 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+<link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
+<script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .blocky-testimonial-slider .blocky-testimonial-card {
+    padding: var(--card-padding);
+    background-color: var(--card-bg-color);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (max-width: 749px) {
+    .blocky-testimonial-slider .blocky-testimonial-card {
+      padding: calc(var(--card-padding) * 0.75);
+    }
+  }
+
+  .blocky-testimonial-slider .blocky-testimonial-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .blocky-testimonial-slider .blocky-testimonial-text {
+    padding: 28px 0;
+    margin: 0;
+    font-size: var(--testimonial-text-size);
+    color: var(--testimonial-text-color);
+    font-weight: 500;
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  @media (max-width: 749px) {
+    .blocky-testimonial-slider .blocky-testimonial-text {
+      padding: 20px 0;
+      font-size: calc(var(--testimonial-text-size) * 0.85);
+    }
+  }
+
+  .blocky-testimonial-slider .blocky-testimonial-author {
+    display: block;
+    margin-bottom: 12px;
+    font-size: var(--author-size);
+    color: var(--author-color);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  @media (max-width: 749px) {
+    .blocky-testimonial-slider .blocky-testimonial-author {
+      font-size: calc(var(--author-size) * 0.85);
+    }
+  }
+
+  .blocky-testimonial-slider .blocky-testimonial-verified {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    font-size: 14px;
+    color: var(--verified-color);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  @media (max-width: 749px) {
+    .blocky-testimonial-slider .blocky-testimonial-verified {
+      font-size: 13px;
+    }
+  }
+
+  .blocky-testimonial-slider .blocky-testimonial-verified svg {
+    width: 10px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+
+  .blocky-testimonial-slider .blocky-testimonial-card .product-review-stars,
+  .blocky-testimonial-slider .blocky-testimonial-card .product-review-stars-container {
+    justify-content: center;
+  }
+{% endstylesheet %}
+
+<div
+  class="blocky blocky-padding background-wrapper blocky-testimonial-slider{% if section.settings.full_width %} blocky-testimonial-full-width{% endif %}"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --title-color: {{ section.settings.title_color }};
+    --description-color: {{ section.settings.body_color }};
+    --dot-color: {{ section.settings.dot_color }};
+    --card-bg-color: {{ section.settings.card_bg_color }};
+    --card-border-radius: {{ section.settings.card_border_radius }}px;
+    --card-padding: {{ section.settings.card_padding }}px;
+    --testimonial-text-color: {{ section.settings.testimonial_text_color }};
+    --testimonial-text-size: {{ section.settings.testimonial_text_size }}px;
+    --author-color: {{ section.settings.author_color }};
+    --author-size: {{ section.settings.author_size }}px;
+    --verified-color: {{ section.settings.verified_color }};
+  "
+>
+  <div class="blocky-ivs-text-container blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }} blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }}{% unless section.settings.full_width %} page-width{% endunless %}">
+    {% render 'blocky-titlel', block: section %}
+    {% render 'blocky-bodyl', block: section %}
+  </div>
+
+  <div class="blocky-slider{% unless section.settings.full_width %} blocky-page-width{% endunless %}">
+    <blocky-media-slider
+      class="blocky-ivs-glide ivs-{{ section.id }} glide"
+      data-id="{{ section.id }}"
+      data-size="{{ section.blocks.size }}"
+      media-spacing="{{ section.settings.media_spacing }}"
+      mobile-media-spacing="{{ section.settings.media_spacing | divided_by: 2 }}"
+      slide-size="{{ section.settings.slides_desktop }}"
+      mobile-slide-size="1"
+      {% if section.settings.auto_scroll %}
+        data-auto
+      {% endif %}
+    >
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides" style="padding-bottom: 10px;">
+          {% for block in section.blocks %}
+            <li class="glide__slide blocky-slider-slide" {{ block.shopify_attributes }}>
+              <div
+                class="blocky-testimonial-card"
+                style="
+                  --star-color: {{ block.settings.star_color }};
+                  --rating: {{ block.settings.rating }};
+                "
+              >
+                <div class="blocky-testimonial-content">
+                  {% render 'blocky-review-starsl', block: block %}
+                  {% if block.settings.testimonial_text != blank %}
+                    <p class="blocky-testimonial-text">"{{ block.settings.testimonial_text }}"</p>
+                  {% endif %}
+                  {% if block.settings.author_name != blank %}
+                    <span class="blocky-testimonial-author">{{ block.settings.author_name }}</span>
+                  {% endif %}
+                  {% if block.settings.show_verified %}
+                    <div class="blocky-testimonial-verified">
+                      <svg width="10" height="11" viewBox="0 0 10 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5 10.1553C7.7615 10.1553 10 7.91677 10 5.15527C10 2.39377 7.7615 0.155273 5 0.155273C2.2385 0.155273 0 2.39377 0 5.15527C0 7.91677 2.2385 10.1553 5 10.1553ZM6.768 3.38727C6.86189 3.29352 6.98917 3.2409 7.12185 3.241C7.25454 3.24109 7.38175 3.29389 7.4755 3.38777C7.56925 3.48166 7.62187 3.60895 7.62178 3.74163C7.62168 3.87431 7.56889 4.00152 7.475 4.09527L4.6485 6.92177L4.6465 6.92377C4.60017 6.97037 4.54509 7.00734 4.48443 7.03257C4.42376 7.0578 4.3587 7.07079 4.293 7.07079C4.2273 7.07079 4.16224 7.0578 4.10157 7.03257C4.04091 7.00734 3.98583 6.97037 3.9395 6.92377L3.9375 6.92177L2.525 5.50927C2.47725 5.46315 2.43915 5.40798 2.41295 5.34698C2.38674 5.28597 2.37295 5.22036 2.37237 5.15397C2.3718 5.08758 2.38445 5.02174 2.40959 4.9603C2.43473 4.89885 2.47186 4.84302 2.5188 4.79608C2.56575 4.74913 2.62157 4.712 2.68302 4.68686C2.74447 4.66172 2.81031 4.64907 2.8767 4.64965C2.94309 4.65023 3.0087 4.66402 3.0697 4.69022C3.1307 4.71643 3.18588 4.75452 3.232 4.80227L4.293 5.86277L6.768 3.38777V3.38727Z" fill="currentColor"/>
+                      </svg>
+                      Verified Customer
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      {% if section.settings.show_dots %}
+        <div
+          class="glide__bullets blocky-slider-dots"
+          data-glide-el="controls[nav]"
+        >
+          {% for i in (1..section.blocks.size) %}
+            <button class="glide__bullet blocky-slider-dot" data-glide-dir="={{ i | minus: 1 }}"></button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </blocky-media-slider>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Testimonial Slider",
+  "class": "section",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>What Our Customers Say</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 60,
+      "min": 30,
+      "max": 100,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>100,000+ Reviews • 3M+ Customers</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 16,
+      "min": 10,
+      "max": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Enable auto scroll",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show pagination dots",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "slides_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Slides per page"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card background color",
+      "default": "#F4F4F4"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card padding",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 32,
+      "unit": "px",
+      "info": "Mobile will be 75% of this size"
+    },
+    {
+      "type": "header",
+      "content": "Testimonial Typography"
+    },
+    {
+      "type": "range",
+      "id": "testimonial_text_size",
+      "label": "Review text size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "default": 20,
+      "unit": "px",
+      "info": "Mobile will be 85% of this size"
+    },
+    {
+      "type": "color",
+      "id": "testimonial_text_color",
+      "label": "Review text color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "range",
+      "id": "author_size",
+      "label": "Author name size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px",
+      "info": "Mobile will be 85% of this size"
+    },
+    {
+      "type": "color",
+      "id": "author_color",
+      "label": "Author name color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "verified_color",
+      "label": "Verified badge color",
+      "default": "#00896B"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false,
+      "info": "Make the section span the full width of the page"
+    },
+    {
+      "type": "range",
+      "id": "media_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Spacing between cards",
+      "default": 18,
+      "info": "On mobile, spacing is halved."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section size"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Star Rating"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "default": 5,
+          "info": "Set the rating to 0 to hide the stars"
+        },
+        {
+          "type": "color",
+          "id": "star_color",
+          "default": "#D4AF36",
+          "label": "Stars color"
+        },
+        {
+          "type": "select",
+          "id": "empty_stars_style",
+          "options": [
+            { "value": "outlined", "label": "Outlined" },
+            { "value": "hidden", "label": "Hidden" }
+          ],
+          "label": "Empty stars style",
+          "default": "hidden"
+        },
+        {
+          "type": "header",
+          "content": "Testimonial Content"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Review Text",
+          "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Jessica C."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified",
+          "label": "Show Verified Badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Testimonial Slider",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Jessica C.",
+            "rating": 5,
+            "star_color": "#D4AF36",
+            "show_verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Terri M.",
+            "rating": 5,
+            "star_color": "#D4AF36",
+            "show_verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Mark M.",
+            "rating": 4.5,
+            "star_color": "#D4AF36",
+            "show_verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Carley K.",
+            "rating": 5,
+            "star_color": "#D4AF36",
+            "show_verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Leah M.",
+            "rating": 4.7,
+            "star_color": "#D4AF36",
+            "show_verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "testimonial_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+            "author_name": "Rebecca C.",
+            "rating": 5,
+            "star_color": "#D4AF36",
+            "show_verified": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

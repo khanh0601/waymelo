@@ -1,0 +1,1053 @@
+{%- comment -%}
+  BKY - Reviews Section
+  Merchant-authored reviews: aggregate rating + star distribution, a "Reviews with
+  Images" gallery, star filter pills, and the review list. Clicking a review photo
+  (in the gallery or in a review entry) opens it enlarged in a section-scoped image
+  viewer with previous/next navigation and a reviewer caption. See
+  openspec/changes/add-reviews-section for the base spec and design, and
+  openspec/changes/add-review-image-viewer for the image-viewer spec and design.
+{%- endcomment -%}
+
+{%- liquid
+  assign total = 0
+  assign rating_sum = 0
+  assign c5 = 0
+  assign c4 = 0
+  assign c3 = 0
+  assign c2 = 0
+  assign c1 = 0
+  assign image_count = 0
+
+  for block in section.blocks
+    assign r = block.settings.rating | plus: 0
+    assign total = total | plus: 1
+    assign rating_sum = rating_sum | plus: r
+    if block.settings.image != blank
+      assign image_count = image_count | plus: 1
+    endif
+    if r == 5
+      assign c5 = c5 | plus: 1
+    elsif r == 4
+      assign c4 = c4 | plus: 1
+    elsif r == 3
+      assign c3 = c3 | plus: 1
+    elsif r == 2
+      assign c2 = c2 | plus: 1
+    elsif r == 1
+      assign c1 = c1 | plus: 1
+    endif
+  endfor
+
+  assign avg = 0
+  assign avg_pct = 0
+  assign p5 = 0
+  assign p4 = 0
+  assign p3 = 0
+  assign p2 = 0
+  assign p1 = 0
+  if total > 0
+    assign avg = rating_sum | times: 1.0 | divided_by: total
+    assign avg_pct = avg | times: 20 | round: 1
+    assign p5 = c5 | times: 100.0 | divided_by: total | round: 1
+    assign p4 = c4 | times: 100.0 | divided_by: total | round: 1
+    assign p3 = c3 | times: 100.0 | divided_by: total | round: 1
+    assign p2 = c2 | times: 100.0 | divided_by: total | round: 1
+    assign p1 = c1 | times: 100.0 | divided_by: total | round: 1
+  endif
+  assign avg_display = avg | round: section.settings.rating_decimals
+  assign total_pages = total | plus: 2 | divided_by: 3
+-%}
+
+{%- capture rs_star_empty -%}
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M13.73 3.51001L15.49 7.03001C15.73 7.52002 16.37 7.99001 16.91 8.08001L20.1 8.61001C22.14 8.95001 22.62 10.43 21.15 11.89L18.67 14.37C18.25 14.79 18.02 15.6 18.15 16.18L18.86 19.25C19.42 21.68 18.13 22.62 15.98 21.35L12.99 19.58C12.45 19.26 11.56 19.26 11.01 19.58L8.01997 21.35C5.87997 22.62 4.57997 21.67 5.13997 19.25L5.84997 16.18C5.97997 15.6 5.74997 14.79 5.32997 14.37L2.84997 11.89C1.38997 10.43 1.85997 8.95001 3.89997 8.61001L7.08997 8.08001C7.61997 7.99001 8.25997 7.52002 8.49997 7.03001L10.26 3.51001C11.22 1.60001 12.78 1.60001 13.73 3.51001Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+{%- endcapture -%}
+{%- capture rs_star_full -%}
+  <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M13.73 3.51001L15.49 7.03001C15.73 7.52002 16.37 7.99001 16.91 8.08001L20.1 8.61001C22.14 8.95001 22.62 10.43 21.15 11.89L18.67 14.37C18.25 14.79 18.02 15.6 18.15 16.18L18.86 19.25C19.42 21.68 18.13 22.62 15.98 21.35L12.99 19.58C12.45 19.26 11.56 19.26 11.01 19.58L8.01997 21.35C5.87997 22.62 4.57997 21.67 5.13997 19.25L5.84997 16.18C5.97997 15.6 5.74997 14.79 5.32997 14.37L2.84997 11.89C1.38997 10.43 1.85997 8.95001 3.89997 8.61001L7.08997 8.08001C7.61997 7.99001 8.25997 7.52002 8.49997 7.03001L10.26 3.51001C11.22 1.60001 12.78 1.60001 13.73 3.51001Z"/></svg>
+{%- endcapture -%}
+
+{% style %}
+  #reviews-section-{{ section.id }} {
+    --rs-bg: {{ section.settings.background_color }};
+    --rs-text: {{ section.settings.text_color }};
+    --rs-heading: {{ section.settings.heading_color }};
+    --rs-star: {{ section.settings.star_color }};
+    --rs-pill-border: {{ section.settings.pill_border_color }};
+    --rs-pill-active-border: {{ section.settings.pill_active_border_color }};
+    --rs-pill-text: {{ section.settings.pill_text_color }};
+    --rs-pill-active-text: {{ section.settings.pill_active_text_color }};
+    --rs-star-size: {{ section.settings.star_size }}px;
+    --rs-avg-size: {{ section.settings.average_value_size }}px;
+    --rs-page-width: {{ section.settings.page_width }}px;
+    --rs-pad-top: {{ section.settings.padding_top }}px;
+    --rs-pad-bottom: {{ section.settings.padding_bottom }}px;
+    --rs-gallery-item-w: {{ section.settings.gallery_item_width }}px;
+    --rs-review-image-w: {{ section.settings.review_image_width }}px;
+    background-color: var(--rs-bg);
+    color: var(--rs-text);
+    padding-top: var(--rs-pad-top);
+    padding-bottom: var(--rs-pad-bottom);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__inner {
+    max-width: var(--rs-page-width);
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__layout--no-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__summary {
+    position: sticky;
+    top: 1rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__average {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__average-value {
+    font-size: var(--rs-avg-size);
+    font-weight: 700;
+    line-height: 1;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__average-total {
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__dist-row {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr) 3rem;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__dist-row + .reviews-section__dist-row {
+    margin-top: 0.4rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__dist-bar {
+    position: relative;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__dist-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background: var(--rs-star);
+    border-radius: 999px;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__dist-pct {
+    text-align: right;
+    opacity: 0.7;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__heading {
+    margin: 0;
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    color: var(--rs-heading);
+    line-height: 1.2;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-region {
+    margin-bottom: 2.5rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--rs-pill-border);
+    background: transparent;
+    color: var(--rs-text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-btn:hover {
+    border-color: var(--rs-pill-active-border);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-btn svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination[hidden] {
+    display: none;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid var(--rs-pill-border);
+    background: transparent;
+    color: var(--rs-text);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-btn:hover {
+    border-color: var(--rs-pill-active-border);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-btn:focus-visible {
+    outline: 2px solid var(--rs-pill-active-border);
+    outline-offset: 2px;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-btn[disabled] {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-btn[disabled]:hover {
+    border-color: var(--rs-pill-border);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-btn svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pagination-status {
+    font-size: 0.9rem;
+    min-width: 6rem;
+    text-align: center;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0 0 0.5rem;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery::-webkit-scrollbar {
+    display: none;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-item {
+    flex: 0 0 var(--rs-gallery-item-w);
+    width: var(--rs-gallery-item-w);
+    scroll-snap-align: start;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-item img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.04);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__photo {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    line-height: 0;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__gallery-item .reviews-section__photo {
+    display: block;
+    width: 100%;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-image .reviews-section__photo {
+    display: inline-block;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__photo:focus-visible {
+    outline: 2px solid var(--rs-pill-active-border);
+    outline-offset: 2px;
+    border-radius: 12px;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 1.5rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pill {
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--rs-pill-border);
+    background: transparent;
+    color: var(--rs-pill-text);
+    cursor: pointer;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pill.is-active {
+    border-color: var(--rs-pill-active-border);
+    color: var(--rs-pill-active-text);
+    font-weight: 700;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__pill:focus-visible {
+    outline: 2px solid var(--rs-pill-active-border);
+    outline-offset: 2px;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__list-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__list {
+    display: flex;
+    flex-direction: column;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review {
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review[hidden] {
+    display: none;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review:first-child {
+    border-top: 0;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-stars {
+    margin-bottom: 0.5rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-author {
+    font-weight: 700;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__verified {
+    font-size: 0.8rem;
+    color: #1a7f37;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-date {
+    font-size: 0.85rem;
+    opacity: 0.6;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-body {
+    line-height: 1.6;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-body p {
+    margin: 0 0 0.75rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-body > :last-child {
+    margin-bottom: 0;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-image {
+    margin-top: 0.75rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__review-image img {
+    display: block;
+    width: var(--rs-review-image-w);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.04);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__stars {
+    position: relative;
+    display: inline-flex;
+    line-height: 0;
+    color: var(--rs-star);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__stars svg {
+    display: block;
+    width: var(--rs-star-size);
+    height: var(--rs-star-size);
+    flex: 0 0 auto;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__stars-underlay {
+    display: inline-flex;
+    gap: 2px;
+    color: rgba(0, 0, 0, 0.22);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__stars-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    gap: 2px;
+    overflow: hidden;
+    width: var(--rs-rating-pct, 0%);
+    color: var(--rs-star);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3.5rem 1.5rem;
+    background: rgba(0, 0, 0, 0.85);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer[hidden] {
+    display: none;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__figure {
+    margin: 0;
+    max-width: min(1000px, 92vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__image {
+    display: block;
+    max-width: 100%;
+    max-height: 76vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__caption {
+    color: #ffffff;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__close,
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.45);
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__close:hover,
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__close:focus-visible,
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__close svg,
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__close {
+    top: 1rem;
+    right: 1rem;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav--prev {
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav--next {
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav[hidden] {
+    display: none;
+  }
+  #reviews-section-{{ section.id }} .reviews-section__viewer__nav[disabled] {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  @media (max-width: 749px) {
+    #reviews-section-{{ section.id }} .reviews-section__viewer {
+      padding: 3rem 0.75rem;
+    }
+    #reviews-section-{{ section.id }} .reviews-section__viewer__image {
+      max-height: 70vh;
+    }
+    #reviews-section-{{ section.id }} .reviews-section__viewer__nav {
+      width: 38px;
+      height: 38px;
+    }
+    #reviews-section-{{ section.id }} .reviews-section__viewer__nav--prev {
+      left: 0.25rem;
+    }
+    #reviews-section-{{ section.id }} .reviews-section__viewer__nav--next {
+      right: 0.25rem;
+    }
+  }
+  @media (max-width: 989px) {
+    #reviews-section-{{ section.id }} .reviews-section__layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2rem;
+    }
+    #reviews-section-{{ section.id }} .reviews-section__summary {
+      position: static;
+    }
+  }
+{% endstyle %}
+
+<div id="reviews-section-{{ section.id }}" class="reviews-section" data-rs data-rs-total="{{ total }}" data-rs-avg="{{ avg_display }}" data-rs-avg-pct="{{ avg_pct }}" data-rs-page="1" {{ section.shopify_attributes }}>
+  <span id="trustshop-review" class="reviews-section__anchor" aria-hidden="true"></span>
+  <div class="reviews-section__inner">
+    <div class="reviews-section__layout{% unless section.settings.show_summary %} reviews-section__layout--no-summary{% endunless %}">
+
+      {%- if section.settings.show_summary -%}
+        <div class="reviews-section__summary">
+          <div class="reviews-section__average">
+            <span class="reviews-section__average-value">{{ avg_display }}</span>
+            <div
+              class="reviews-section__stars"
+              role="img"
+              aria-label="{{ avg_display }} out of 5 stars"
+              style="--rs-rating-pct: {{ avg_pct }}%;"
+            >
+              <span class="reviews-section__stars-underlay" aria-hidden="true">
+                {{ rs_star_empty }}{{ rs_star_empty }}{{ rs_star_empty }}{{ rs_star_empty }}{{ rs_star_empty }}
+              </span>
+              <span class="reviews-section__stars-overlay" aria-hidden="true">
+                {{ rs_star_full }}{{ rs_star_full }}{{ rs_star_full }}{{ rs_star_full }}{{ rs_star_full }}
+              </span>
+            </div>
+            <span class="reviews-section__average-total">{{ total }} {{ section.settings.total_label }}</span>
+          </div>
+
+          <div class="reviews-section__distribution">
+            <div class="reviews-section__dist-row">
+              <span>5 {{ section.settings.star_word }}</span>
+              <span class="reviews-section__dist-bar"><span class="reviews-section__dist-fill" style="width: {{ p5 }}%;"></span></span>
+              <span class="reviews-section__dist-pct">{{ p5 }}%</span>
+            </div>
+            <div class="reviews-section__dist-row">
+              <span>4 {{ section.settings.star_word }}</span>
+              <span class="reviews-section__dist-bar"><span class="reviews-section__dist-fill" style="width: {{ p4 }}%;"></span></span>
+              <span class="reviews-section__dist-pct">{{ p4 }}%</span>
+            </div>
+            <div class="reviews-section__dist-row">
+              <span>3 {{ section.settings.star_word }}</span>
+              <span class="reviews-section__dist-bar"><span class="reviews-section__dist-fill" style="width: {{ p3 }}%;"></span></span>
+              <span class="reviews-section__dist-pct">{{ p3 }}%</span>
+            </div>
+            <div class="reviews-section__dist-row">
+              <span>2 {{ section.settings.star_word }}</span>
+              <span class="reviews-section__dist-bar"><span class="reviews-section__dist-fill" style="width: {{ p2 }}%;"></span></span>
+              <span class="reviews-section__dist-pct">{{ p2 }}%</span>
+            </div>
+            <div class="reviews-section__dist-row">
+              <span>1 {{ section.settings.star_word }}</span>
+              <span class="reviews-section__dist-bar"><span class="reviews-section__dist-fill" style="width: {{ p1 }}%;"></span></span>
+              <span class="reviews-section__dist-pct">{{ p1 }}%</span>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="reviews-section__content">
+        {%- if image_count > 0 -%}
+          <div class="reviews-section__gallery-region">
+            <div class="reviews-section__gallery-head">
+              <h2 class="reviews-section__heading">{{ section.settings.images_heading }}</h2>
+              <div class="reviews-section__gallery-nav" data-rs-nav>
+                <button
+                  type="button"
+                  class="reviews-section__gallery-btn"
+                  data-rs-gallery-prev
+                  aria-label="{{ section.settings.images_heading | strip_html | escape }}: previous"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button
+                  type="button"
+                  class="reviews-section__gallery-btn"
+                  data-rs-gallery-next
+                  aria-label="{{ section.settings.images_heading | strip_html | escape }}: next"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+            <ul class="reviews-section__gallery" data-rs-gallery>
+              {%- for block in section.blocks -%}
+                {%- if block.settings.image != blank -%}
+                  {%- assign photo_alt = block.settings.image.alt | default: block.settings.author -%}
+                  <li class="reviews-section__gallery-item">
+                    <button
+                      type="button"
+                      class="reviews-section__photo"
+                      data-rs-photo-open
+                      data-rs-full="{{ block.settings.image | image_url: width: 1600 }}"
+                      data-rs-caption="{{ block.settings.author | escape }}"
+                      data-rs-alt="{{ photo_alt | escape }}"
+                      aria-label="{{ section.settings.images_heading | strip_html | escape }}: {{ photo_alt | escape }}"
+                    >
+                      <img
+                        src="{{ block.settings.image | image_url: width: 400 }}"
+                        alt="{{ block.settings.author | escape }}"
+                        width="{{ section.settings.gallery_item_width }}"
+                        height="{{ section.settings.gallery_item_width }}"
+                        loading="lazy"
+                      >
+                    </button>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="reviews-section__list-head">
+          <h2 class="reviews-section__heading">{{ section.settings.list_heading }}</h2>
+        </div>
+
+        <div class="reviews-section__pills" role="group" aria-label="{{ section.settings.list_heading | strip_html | escape }}">
+          <button type="button" class="reviews-section__pill is-active" data-rs-filter="all" aria-pressed="true">
+            {{ section.settings.all_reviews_label }} ({{ total }})
+          </button>
+          <button type="button" class="reviews-section__pill" data-rs-filter="5" aria-pressed="false">
+            5 {{ section.settings.star_word }} ({{ c5 }})
+          </button>
+          <button type="button" class="reviews-section__pill" data-rs-filter="4" aria-pressed="false">
+            4 {{ section.settings.star_word }} ({{ c4 }})
+          </button>
+          <button type="button" class="reviews-section__pill" data-rs-filter="3" aria-pressed="false">
+            3 {{ section.settings.star_word }} ({{ c3 }})
+          </button>
+          <button type="button" class="reviews-section__pill" data-rs-filter="2" aria-pressed="false">
+            2 {{ section.settings.star_word }} ({{ c2 }})
+          </button>
+          <button type="button" class="reviews-section__pill" data-rs-filter="1" aria-pressed="false">
+            1 {{ section.settings.star_word }} ({{ c1 }})
+          </button>
+        </div>
+
+        <div class="reviews-section__list" data-rs-list>
+          {%- for block in section.blocks -%}
+            <article class="reviews-section__review" data-rating="{{ block.settings.rating }}" {{ block.shopify_attributes }}>
+              <div
+                class="reviews-section__stars reviews-section__review-stars"
+                role="img"
+                aria-label="{{ block.settings.rating }} out of 5 stars"
+                style="--rs-rating-pct: {{ block.settings.rating | times: 20 }}%;"
+              >
+                <span class="reviews-section__stars-underlay" aria-hidden="true">
+                  {{ rs_star_empty }}{{ rs_star_empty }}{{ rs_star_empty }}{{ rs_star_empty }}{{ rs_star_empty }}
+                </span>
+                <span class="reviews-section__stars-overlay" aria-hidden="true">
+                  {{ rs_star_full }}{{ rs_star_full }}{{ rs_star_full }}{{ rs_star_full }}{{ rs_star_full }}
+                </span>
+              </div>
+              <div class="reviews-section__review-meta">
+                {%- if block.settings.author != blank -%}
+                  <span class="reviews-section__review-author">{{ block.settings.author }}</span>
+                {%- endif -%}
+                {%- if block.settings.verified -%}
+                  <span class="reviews-section__verified">{{ section.settings.verified_label }}</span>
+                {%- endif -%}
+                {%- if block.settings.date != blank -%}
+                  <span class="reviews-section__review-date">{{ block.settings.date }}</span>
+                {%- endif -%}
+              </div>
+              {%- if block.settings.body != blank -%}
+                <div class="reviews-section__review-body">{{ block.settings.body }}</div>
+              {%- endif -%}
+              {%- if block.settings.image != blank -%}
+                {%- assign photo_alt = block.settings.image.alt | default: block.settings.author -%}
+                <div class="reviews-section__review-image">
+                  <button
+                    type="button"
+                    class="reviews-section__photo"
+                    data-rs-photo-open
+                    data-rs-full="{{ block.settings.image | image_url: width: 1600 }}"
+                    data-rs-caption="{{ block.settings.author | escape }}"
+                    data-rs-alt="{{ photo_alt | escape }}"
+                    aria-label="{{ section.settings.list_heading | strip_html | escape }}: {{ photo_alt | escape }}"
+                  >
+                    <img
+                      src="{{ block.settings.image | image_url: width: 300 }}"
+                      alt="{{ block.settings.author | escape }}"
+                      width="{{ section.settings.review_image_width }}"
+                      height="{{ section.settings.review_image_width }}"
+                      loading="lazy"
+                    >
+                  </button>
+                </div>
+              {%- endif -%}
+            </article>
+          {%- endfor -%}
+        </div>
+
+        {%- if total > 3 -%}
+          <nav
+            class="reviews-section__pagination"
+            data-rs-pagination
+            aria-label="{{ section.settings.list_heading | strip_html | escape }}: pagination"
+          >
+            <button
+              type="button"
+              class="reviews-section__pagination-btn"
+              data-rs-page-prev
+              aria-label="{{ section.settings.list_heading | strip_html | escape }}: previous page"
+            >
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="reviews-section__pagination-status" data-rs-page-status role="status" aria-live="polite">
+              Page 1 of {{ total_pages }}
+            </span>
+            <button
+              type="button"
+              class="reviews-section__pagination-btn"
+              data-rs-page-next
+              aria-label="{{ section.settings.list_heading | strip_html | escape }}: next page"
+            >
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </nav>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+
+  <div
+    class="reviews-section__viewer"
+    data-rs-viewer
+    role="dialog"
+    aria-modal="true"
+    aria-label="{{ section.settings.images_heading | strip_html | escape }}"
+    hidden
+  >
+    <button
+      type="button"
+      class="reviews-section__viewer__close"
+      data-rs-viewer-close
+      aria-label="Close image viewer"
+    >
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button
+      type="button"
+      class="reviews-section__viewer__nav reviews-section__viewer__nav--prev"
+      data-rs-viewer-prev
+      aria-label="Previous image"
+    >
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <figure class="reviews-section__viewer__figure">
+      <img
+        class="reviews-section__viewer__image"
+        data-rs-viewer-image
+        alt=""
+        width="1600"
+        height="1600"
+        decoding="async"
+      >
+      <figcaption class="reviews-section__viewer__caption" data-rs-viewer-caption></figcaption>
+    </figure>
+    <button
+      type="button"
+      class="reviews-section__viewer__nav reviews-section__viewer__nav--next"
+      data-rs-viewer-next
+      aria-label="Next image"
+    >
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="{{ 'reviews-section.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "BKY - Reviews Section",
+  "class": "section-reviews-section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Content" },
+    {
+      "type": "inline_richtext",
+      "id": "images_heading",
+      "label": "Reviews-with-images heading",
+      "default": "Reviews with Images"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "list_heading",
+      "label": "Review list heading",
+      "default": "Top reviews"
+    },
+    {
+      "type": "text",
+      "id": "all_reviews_label",
+      "label": "\"All reviews\" filter label",
+      "default": "All Reviews"
+    },
+    {
+      "type": "text",
+      "id": "star_word",
+      "label": "Star word (used in pills and distribution)",
+      "default": "Star"
+    },
+    {
+      "type": "text",
+      "id": "verified_label",
+      "label": "Verified-purchase label",
+      "default": "Verified Purchase"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total count label",
+      "default": "reviews",
+      "info": "Shown after the total count in the rating summary, for example \"69 reviews\"."
+    },
+
+    { "type": "header", "content": "Rating summary" },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Show rating summary and distribution",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rating_decimals",
+      "label": "Average rating decimals",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "default": 1
+    },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "gallery_item_width",
+      "label": "Gallery image width",
+      "min": 100,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "default": 180
+    },
+    {
+      "type": "range",
+      "id": "review_image_width",
+      "label": "Review photo width",
+      "min": 60,
+      "max": 240,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "label": "Star size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "average_value_size",
+      "label": "Average value size",
+      "min": 20,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+
+    { "type": "header", "content": "Colors" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#f5a623"
+    },
+    {
+      "type": "color",
+      "id": "pill_border_color",
+      "label": "Filter pill border",
+      "default": "#e3e3e3"
+    },
+    {
+      "type": "color",
+      "id": "pill_active_border_color",
+      "label": "Active filter pill border",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "pill_text_color",
+      "label": "Filter pill text",
+      "default": "#8a8a8a"
+    },
+    {
+      "type": "color",
+      "id": "pill_active_text_color",
+      "label": "Active filter pill text",
+      "default": "#000000"
+    },
+
+    { "type": "header", "content": "Section size" },
+    {
+      "type": "range",
+      "id": "page_width",
+      "label": "Section width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Reviewer name",
+          "default": "Customer name"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "01/01/2026",
+          "info": "Free-text date shown next to the reviewer name."
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Verified purchase",
+          "default": true
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Review",
+          "default": "<p>Share what you loved about your purchase.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Review photo"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "BKY - Reviews Section",
+      "category": "Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Donald Turner",
+            "date": "09/21/2026",
+            "verified": true,
+            "body": "<p>I'm really happy with how our picture looks. The colors are soft and pretty.</p>"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "author": "Evelyn King",
+            "date": "09/18/2026",
+            "verified": true,
+            "body": "<p>Beautiful quality and it arrived quickly. Would order again.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

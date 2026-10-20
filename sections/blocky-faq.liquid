@@ -1,0 +1,800 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+.blocky-faq-text-align-top {
+  align-self: flex-start;
+}
+.blocky-faq-text-align-middle {
+  align-self: center;
+}
+.blocky-faq-text-align-bottom {
+  align-self: flex-end;
+}
+@media screen and (max-width: 749px) {
+  .blocky-faq-flex {
+    flex-direction: column-reverse !important;
+    row-gap: 3rem !important;
+  }
+  .blocky-faq-flex > * {
+    width: 100% !important;
+    flex-grow: 1 !important;
+  }
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq-table-under {
+    flex-direction: column-reverse;
+    row-gap: 4rem !important;
+  }
+}
+.blocky-faq-table-under > * {
+  width: 100% !important;
+  flex-grow: 1 !important;
+}
+
+@media screen and (min-width: 749px) {
+  .blocky-faq-columns {
+    display: flex;
+    gap: 2rem;
+  }
+}
+
+.blocky-faq-column {
+  flex:1; 
+  min-width:0;
+}
+
+.blocky-faq-question {
+  border: none;
+  width: 100%;
+  padding: var(--question-padding);
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all .125s ease-in-out;
+  font-size: calc(var(--question-font-size) * .85);
+  color: var(--question-text-color);
+}
+.blocky-faq-question.active {
+  border-radius: 5px 5px 0px 0px;
+}
+.blocky-faq-question.active .bky-accordion-carot {
+  transform: rotate(180deg);
+}
+.blocky-faq-question.active .bar-vertical {
+  display: none;
+}
+.bky-accordion-carot {
+  transition: transform .25s;
+}
+.blocky-faq-question:hover {
+  opacity: 0.65;
+}
+.blocky-faq-question-text {
+  display: flex; 
+  align-items: center; 
+  gap: .7rem;
+}
+.blocky-faq-answer {
+  overflow: hidden;
+  border-radius: 0px 0px 5px 5px;
+  transition: all 0.125s ease-in-out;
+  padding: 0px var(--question-padding) 0px var(--question-padding);
+  max-height: 0;
+  font-size: calc(var(--answer-font-size) * .85);
+  color: var(--answer-text-color);
+}
+.blocky-faq-answer.active {
+  max-height: 1000px;
+  padding: var(--question-padding);
+  padding-top: 0px;
+}
+.blocky-faq-icon {
+  font-size: calc(var(--question-font-size)) !important;
+  height: calc(var(--question-font-size));
+  width: calc(var(--question-font-size));          
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq-question {
+    font-size: var(--question-font-size);
+  }
+  .blocky-faq-answer {
+    font-size: var(--answer-font-size);
+  }
+  .blocky-faq-icon {
+    font-size: calc(var(--question-font-size) * 1.2) !important;
+    height: calc(var(--question-font-size) * 1.2);
+    width: calc(var(--question-font-size) * 1.2);
+  }
+}
+.blocky-accordion {
+  height: fit-content;
+}
+.blocky-accordion-row .blocky-faq-item {
+  margin-bottom: 1rem;  
+}
+.blocky-accordion-none .blocky-faq-question {
+  background-color: unset;
+}
+.blocky-accordion-border .blocky-faq-question,
+.blocky-accordion-none .blocky-faq-question {
+  background-color: unset;
+}
+.blocky-accordion-border .blocky-accordion-btn,
+.blocky-accordion-none .blocky-accordion-btn,
+.blocky-accordion-border .blocky-faq-answer,
+.blocky-accordion-none .blocky-faq-answer {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+.blocky-accordion-border .blocky-faq-item {
+  border-top: solid 1px var(--question-text-color);
+}
+.blocky-accordion-border .blocky-faq-item:first-of-type {
+  border-top: none;
+}
+.blocky-accordion-border .blocky-faq-item:last-of-type {
+  border-bottom: none;
+}
+.blocky-accordion-section,
+.blocky-accordion-row .blocky-faq-item {
+  border: 1px solid var(--faq-border-color);
+}
+#blocky-faq-{{ section.id }} .blocky-accordion-section,
+#blocky-faq-{{ section.id }} .blocky-accordion-row .blocky-faq-item {
+  box-shadow: {% if section.settings.show_container_shadow %}rgba(0, 0, 0, 0.24) 0px 1px 4px, rgba(0, 0, 0, 0.16) 0px 3px 8px{% else %}none{% endif %};
+}
+.blocky-accordion-row .blocky-faq-item,
+.blocky-accordion-row .blocky-faq-question,
+.blocky-accordion-section,
+.blocky-accordion-section .blocky-faq-question {
+  background-color: var(--faq-background);     
+  border-radius: var(--faq-border-radius);
+}
+
+.blocky-faq .blocky-flex-container > .blocky-flex-child-small,
+.blocky-faq .blocky-flex-child-large + .blocky-flex-child {
+  width: 40%;
+}
+@media screen and (min-width: 750px) {
+  .blocky-faq .blocky-flex-child-extra-large + .blocky-flex-child {
+    width: 25%;
+    flex-grow: 0;
+  }
+}
+{% endstyle %}
+
+<script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
+
+<div
+  id="blocky-faq-{{ section.id }}"
+  class="blocky blocky-padding background-wrapper blocky-faq"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }};
+    --faq-background: {{ section.settings.faq_container_background }}; --question-padding: {{ section.settings.question_padding }}px; --faq-border-radius: {{ section.settings.faq_border_radius }}px;
+    --question-font-size: {{ section.settings.question_font_size }}px; --answer-font-size: {{ section.settings.answer_font_size }}px; --question-text-color: {{ section.settings.question_text_color }};
+    --answer-text-color: {{ section.settings.answer_text_color }};
+    --faq-border-color: {{ section.settings.faq_container_border_color }};
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-flex-container blocky-flex-{{ section.settings.layout }}{% if section.settings.layout == 'under-text' %} blocky-faq-table-under{% endif %} blocky-faq-flex">
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_faq_width }} blocky-justify-center">
+        <blocky-accordion class="blocky-accordion blocky-w-full blocky-accordion-{{ section.settings.faq_layout }}">
+          {% if section.settings.layout == 'under-text' and section.settings.columns > 1 %}
+            <div class="blocky-faq-columns">
+              {% assign questions = section.blocks | where: "type", "question" %}
+
+              {% assign col_count = section.settings.columns | default: 1 %}
+              {% assign total = questions.size %}
+
+              {% assign base = total | divided_by: col_count %}
+              {% assign extra = total | modulo: col_count %}
+
+              {% assign current_index = 0 %}
+
+              {% for col in (1..col_count) %}
+                {% if col <= extra %}
+                  {% assign items_in_col = base | plus: 1 %}
+                {% else %}
+                  {% assign items_in_col = base %}
+                {% endif %}
+
+                <div class="blocky-faq-column">
+                  {% assign last_index_for_col = current_index | plus: items_in_col | minus: 1 %}
+
+                  {% for i in (current_index..last_index_for_col) %}
+                    {% assign block = questions[i] %}
+                    {% if block %}
+                      <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
+                        <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                          <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
+                            {% if section.settings.chevron_position == 'front' %}
+                              {% if section.settings.chevron_style == 'plusminus' %}
+                                  <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                                    <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                                    <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                                  </svg>
+                              {% else %}
+                                <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                              {% endif %}
+                            {% endif %}
+                            <div class="blocky-faq-question-text">
+                              {% if block.settings.image != null %}
+                                <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                              {% elsif block.settings.icon_code != blank %}
+                                <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
+                              {% endif %}
+                              <span>{{ block.settings.question }}</span>
+                            </div>
+                            {% if section.settings.chevron_position != 'front' %}
+                              {% if section.settings.chevron_style == 'plusminus' %}
+                                  <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                                    <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                                    <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                                  </svg>
+                              {% else %}
+                                <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                              {% endif %}
+                            {% endif %}
+                          </div>
+                        </button>
+                        <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}">
+                          {{ block.settings.content }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                  {% assign current_index = last_index_for_col | plus: 1 %}
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            {% for block in section.blocks %}
+              <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
+                <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                  <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
+                    {% if section.settings.chevron_position == 'front' %}
+                      {% if section.settings.chevron_style == 'plusminus' %}
+                        <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                          <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                          <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                        </svg>
+                      {% else %}
+                        <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                      {% endif %}
+                    {% endif %}
+                    <div class="blocky-faq-question-text">
+                      {% if block.settings.image != null %}
+                        <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                      {% elsif block.settings.icon_code != blank %}
+                        <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
+                      {% endif %}
+                      <span>{{ block.settings.question }}</span>
+                    </div>
+                    {% if section.settings.chevron_position != 'front' %}
+                      {% if section.settings.chevron_style == 'plusminus' %}
+                        <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 16 16">
+                          <rect x="3" y="7" width="10" height="2" fill="currentColor"/>
+                          <rect class="bar-vertical" x="7" y="3" width="2" height="10" fill="currentColor"/>
+                        </svg>
+                      {% else %}
+                        <svg class="bky-accordion-carot" height="16" width="16" viewBox="0 0 10 6"><path fill="currentColor" fill-rule="evenodd" d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708" clip-rule="evenodd"/></svg>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </button>
+                <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}"> {{ block.settings.content }} </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </blocky-accordion>
+      </div>
+      {% unless section.settings.title == blank and section.settings.body_text == blank and section.settings.button_label == blank %}
+        <div class="blocky-flex-child blocky-faq-text-align-{{ section.settings.text_vertical_alignment }}">
+          <div class="blocky-media-text-container blocky-align-center blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+            {% render 'blocky-titlel', block: section %}
+            {% render 'blocky-bodyl', block: section %}
+            {% render 'blocky-buttonl', block: section %}          
+          </div>
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - FAQ",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>Frequently Asked Questions</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 40,
+      "min": 15,
+      "max": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Provide your customers with quick, easy-to-access answers, enhancing their understanding and satisfaction with your product</p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 16,
+      "min": 10,
+      "max": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Leave the text blank to hide the button.",
+      "default": "<p><b>Contact Us</b></p>"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "default": "curved",
+      "options": [
+        {
+          "value": "flat",
+          "label": "Flat"
+        },
+        {
+          "value": "curved",
+          "label": "Curved"
+        },
+        {
+          "value": "round",
+          "label": "Round"
+        },
+        {
+          "value": "extra-round",
+          "label": "Extra Round"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+
+    
+
+    {
+      "type": "header",
+      "content": "FAQ Layout",
+    },
+    {
+      "type": "select",
+      "id": "faq_layout",
+      "label": "FAQ Layout",
+      "options": [
+        {
+          "value": "none",
+          "label": "No container"
+        },
+        {
+          "value": "border",
+          "label": "No container with borders"
+        },
+        {
+          "value": "row",
+          "label": "Row container"
+        },
+        {
+          "value": "section",
+          "label": "Section container"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "question_padding",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Container padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "faq_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 15,
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    {
+      "type": "color",
+      "id": "faq_container_background",
+      "label": "Container background",
+      "default": "#FFFFFF",
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    {
+      "type": "color",
+      "id": "faq_container_border_color",
+      "label": "Container border color",
+      "default": "transparent",
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_container_shadow",
+      "label": "Show container shadow",
+      "default": true,
+      "visible_if": "{{ section.settings.faq_layout != 'none' and section.settings.faq_layout != 'border' }}"
+    },
+    
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Question font size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Answer font size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "question_text_color",
+      "label": "Question text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "answer_text_color",
+      "label": "Answer text color",
+      "default": "#606367"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "FAQ first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Text first"
+        },
+       {
+          "value": "under-text",
+          "label": "FAQ under text"
+        }
+      ],
+      "default": "row-reverse",
+      "label": "FAQ placement",
+      "info": "FAQ is placed under text for mobile"
+    },
+      {
+        "type": "range",
+        "id": "columns",
+        "label": "Columns",
+        "min": 1,
+        "max": 3,
+        "step": 1,
+        "default": 1,
+        "visible_if": "{{ section.settings.layout == 'under-text' }}"
+      },
+    {
+      "type": "select",
+      "id": "desktop_faq_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "extra-large",
+          "label": "Extra Large"
+        }
+      ],
+      "default": "large",
+      "label": "FAQ width",
+      "visible_if": "{{ section.settings.layout != 'under-text' }}"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "select",
+      "id": "text_vertical_alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "middle",
+      "label": "Text vertical alignment",
+      "visible_if": "{{ section.settings.layout != 'under-text' }}"
+    },
+    {
+      "type": "select",
+      "id": "chevron_style",
+      "label": "Chevron Style",
+      "options": [
+        { "value": "chevron", "label": "Chevron (Down/Up)" },
+        { "value": "plusminus", "label": "Plus/Minus" }
+      ],
+      "default": "chevron"
+    },
+    {
+      "type": "select",
+      "id": "chevron_position",
+      "label": "Chevron Position",
+      "options": [
+        { "value": "end", "label": "End" },
+        { "value": "front", "label": "Front" }
+      ],
+      "default": "end"
+    },
+    {
+      "type": "select",
+      "id": "text_container_gap",
+      "label": "Space between text",
+      "default": "2rem",
+      "options": [
+        {
+          "label": "None",
+          "value": "0"
+        },
+        {
+          "label": "Small",
+          "value": "0.5rem"
+        },
+        {
+          "label": "Medium",
+          "value": "1rem"
+        },
+        {
+          "label": "Large",
+          "value": "1.5rem"
+        },
+        {
+          "label": "Extra Large",
+          "value": "2rem"
+        },
+      ]
+    },  
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+         
+        {
+          "type": "inline_richtext",
+          "id": "question",
+          "default": "<b>Question</b>",
+          "label": "Question",
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>Answer</p>",
+          "label": "Answer",
+        },
+        {
+          "type": "checkbox",
+          "id": "default_open",
+          "default": false,
+          "label": "Opened by default"
+        },
+
+        {
+          "type": "header",
+          "content": "Image/Icon"
+        },
+        {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Icon",
+        },
+        {
+          "type": "text",
+          "id": "icon_code",
+          "label": "Icon Code",
+          "info": "Get icon codes from [this link](https://fonts.google.com/icons/). example: 'check_circle', 'search', 'home'. For help adding icons, you can click [here](/admin/apps/blocky-apps/icons)"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon Color",
+          "default": "#000000"
+        } 
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky FAQ",
+      "blocks": [
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "question"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

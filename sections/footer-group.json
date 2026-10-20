@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "logo_follow_EMKR6G": {
+          "type": "logo_follow",
+          "settings": {
+            "logo_image": "shopify://shop_images/Words_Logo_white.png",
+            "logo_width": 120,
+            "enable_follow_on_shop": true
+          }
+        },
+        "trust_logos_CGCTnY": {
+          "type": "trust_logos",
+          "settings": {
+            "trustpilot_enable": true,
+            "trustpilot_url": "",
+            "trustpilot_label": "Trustpilot",
+            "trustpilot_rating": "★★★★★",
+            "trustpilot_count": "13,578",
+            "dmca_enable": true,
+            "dmca_url": "",
+            "dmca_left": "DMCA",
+            "dmca_right": "PROTECTED"
+          }
+        },
+        "text_hj4qnx": {
+          "type": "text",
+          "settings": {
+            "heading": "<strong>About Us</strong>",
+            "subtext": "<p><strong>Waymelo – Travel Comfort, your way.</strong><br/>We craft premium travel essentials designed for maximum comfort, so you can enjoy every journey your way.</p><p><strong>Business Information</strong><br/>Brand: WAYMELO<br/>Legal Entity: <strong>TAY Global Commerce LLC</strong><br/>Owner: ASHLEY</p>"
+          }
+        },
+        "text_LLgkWG": {
+          "type": "text",
+          "settings": {
+            "heading": "<strong>Contact Information</strong>",
+            "subtext": "<p>Business: <strong>TAY Global Commerce LLC</strong><br/>Contact Person: ASHLEY<br/><br/><strong>Business Contact</strong><br/>Email: care@waymelo.com<br/>Phone / WhatsApp: +1 321-233-3336<br/>Support: 24/7</p>"
+          }
+        },
+        "link_list_h9iYDq": {
+          "type": "link_list",
+          "settings": {
+            "heading": "<strong>More Info</strong>",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "logo_follow_EMKR6G",
+        "trust_logos_CGCTnY",
+        "text_hj4qnx",
+        "text_LLgkWG",
+        "link_list_h9iYDq"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "newsletter_enable": false,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": true,
+        "show_social": false,
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "payment_enable": true,
+        "show_policy": false,
+        "margin_top": 0,
+        "padding_top": 44,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

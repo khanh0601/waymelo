@@ -1,0 +1,836 @@
+{%- comment -%}
+© BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+blocky-slider-1 {
+  display: block;    
+}
+.blocky-product-feature-2 {
+  overflow: hidden;
+  --item1-filter: blur(10px);
+  --item1-zIndex: 11;
+  --item1-opacity: var(--side-slide-opacity, 0.25);
+
+  --item3-filter: blur(10px);
+  --item3-zIndex: 9;
+  --item3-opacity: var(--side-slide-opacity, 0.25);
+
+  --item4-transform: translateX(55%) scale(0.5);
+  --item4-filter: blur(30px);
+  --item4-zIndex: 8;
+  --item4-opacity: 0;
+}
+.blocky-product-feature-2-slider {
+  position: relative;
+  z-index: 1;
+}
+.blocky-product-feature-2-slider.next .slide:nth-child(1) {
+  animation: transformFromPosition2 0.5s ease-in-out 1 forwards;
+}
+@keyframes transformFromPosition2{
+  from{
+      transform: translateX(0%);
+      filter: blur(0px);
+      opacity: 1;
+  }
+}
+.blocky-product-feature-2-slider.next .slide:nth-child(2){
+    animation: transformFromPosition3 0.7s ease-in-out 1 forwards;
+}
+@keyframes transformFromPosition3{
+    from{
+        transform: var(--item3-transform);
+        filter: var(--item3-filter);
+        opacity: var(--item3-opacity);
+    }
+}
+.blocky-product-feature-2-slider.next .slide:nth-child(3){
+    animation: transformFromPosition4 0.9s ease-in-out 1 forwards;
+}
+@keyframes transformFromPosition4{
+    from{
+        transform: var(--item4-transform);
+        filter: var(--item4-filter);
+        opacity: var(--item4-opacity);
+    }
+}
+.blocky-product-feature-2-slider.prev .blocky-slider-container .slide:nth-child(3){
+  animation: transformFromPosition2 0.7s ease-in-out 1 forwards;
+}
+.blocky-product-feature-2-slider.prev .blocky-slider-container .slide:nth-child(2){
+  animation: transformFromPosition1 0.65s ease-in-out 1 forwards;
+}
+.blocky-product-feature-2-slider.prev .blocky-slider-container .slide:nth-child(1){
+  animation: transformFromPosition0 0.8s ease-in-out 1 forwards;
+}
+@keyframes transformFromPosition1{
+  from{
+    transform: var(--item1-transform);
+    filter: var(--item1-filter);
+    opacity: var(--item1-opacity);        
+  }
+}
+@keyframes transformFromPosition0{
+  from{
+    transform: translateX(-60%) scale(0.6);
+    filter: blur(30px);
+    opacity: 0;        
+  }
+}
+@media screen and (max-width: 749px) {
+  .blocky-product-feature-2-arrows {
+    position: absolute;
+    top: 19rem;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+.blocky-product-feature-2-arrows-under #prev,
+.blocky-product-feature-2-arrows-under #next{
+  bottom: 2%;
+  top: unset;
+}
+@media screen and (min-width: 750px) {
+  .blocky-product-feature-2-arrows-under #prev{
+    left: 10%;
+  }
+  .blocky-product-feature-2-arrows-under #next{
+    right: 10%;
+  }
+}
+@media screen and (max-width: 749px) {
+  .blocky-product-feature-2-arrows-extra-small {
+    top: 11rem;    
+  }
+  .blocky-product-feature-2-arrows-small {
+    top: 15.5rem;        
+  }
+  .blocky-product-feature-2-arrows-medium {
+    top: 19rem;    
+  }
+  .blocky-product-feature-2-arrows-large {
+    top: 23rem;        
+  }
+  .blocky-product-feature-2-arrows {
+    z-index: 6;
+  }
+}
+@media screen and (min-width: 749px) {
+  .slide.blocky-product-feature-2-arrows-slider {
+    padding: 0px 1rem;
+  }
+}
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text{
+  opacity: 1;
+}
+.blocky-product-feature-2-img-text {
+  opacity: 0;
+}
+/* animation text in item2 */
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-title,
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-body-text,
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-button{
+    opacity: 0;
+    animation: showContent 0.5s 1s ease-in-out 1 forwards;
+}
+@keyframes showContent{
+    from{
+        transform: translateY(-30px);
+        filter: blur(10px);
+    }to{
+        transform: translateY(0);
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-title:has(+.blocky-title) {
+    animation-delay: 0.4s;
+}
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-title {
+    animation-delay: 0.6s;
+}
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-body-text{
+    animation-delay: 0.8s;
+}
+.blocky-product-feature-2-slide:nth-child(2) .blocky-product-feature-2-img-text .blocky-button{
+    animation-delay: 1.0s;
+}
+@media screen and (max-width: 749px){
+  .blocky-product-feature-2-mob-image-extra-small {
+    height: 20rem !important;
+  }
+  .blocky-product-feature-2-mob-image-small {
+    height: 30rem !important;
+  }
+  .blocky-product-feature-2-mob-image-medium {
+    height: 37.5rem !important;
+  }
+  .blocky-product-feature-2-mob-image-large {
+    height: 45rem !important;
+  }
+  .blocky-product-feature-2-mob-image {
+    margin-bottom: 2.4rem;
+  }
+}
+.blocky-product-feature-2-placeholder {
+  aspect-ratio: 9/16;
+  width: auto !important;
+}
+.blocky-product-feature-2-cover {
+  object-fit: cover;
+}
+.blocky-product-feature-2-contain {
+  object-fit: contain; 
+  height: auto; 
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.blocky-product-feature-2 .blocky-slider-arrows-center {
+  z-index: 20;
+}
+@media screen and (max-width: 749px) {
+  .blocky-slider-container {
+    height: unset !important;  
+    z-index: 5;
+  }
+  .blocky-product-feature-2-slide {
+    flex-direction: column-reverse;
+    row-gap: 0px !important;
+  }
+  .blocky-product-feature-2-slide:nth-child(2) {
+    position: unset !important;
+  }
+  .blocky-product-feature-2-slide:nth-child(3) {
+    top: 0;
+  }
+  .blocky-slider-arrows-left {
+    left: 1rem !important;
+  }
+  .blocky-slider-arrows-right {
+    right: 1rem !important;
+  }
+  .blocky-product-feature-2 {
+    --item1-opacity: 0 !important;
+    --item1-transform: translateX(-45%) scale(0.8);
+    --item3-opacity: 0 !important;
+    --item3-transform: translateX(45%) scale(0.8);
+  }
+}
+@media screen and (min-width: 749px) {
+  .blocky-slider-container.blocky-media-extra-small {
+    --item1-transform: translateX(-14%) scale(0.8);    
+    --item3-transform: translateX(26%) scale(0.8);
+  }
+  .blocky-slider-container.blocky-media-small {
+    --item1-transform: translateX(-14%) scale(0.8);    
+    --item3-transform: translateX(26%) scale(0.8);
+  }
+  .blocky-slider-container.blocky-media-medium {
+    --item1-transform: translateX(-20%) scale(0.8);
+    --item3-transform: translateX(28%) scale(0.8);
+  }
+  .blocky-slider-container.blocky-media-large {
+    --item1-transform: translateX(-22%) scale(0.8);
+    --item3-transform: translateX(32%) scale(0.8);
+  }
+  .blocky-slider-container.blocky-media-large.blocky-slide-large {
+    --item1-transform: translateX(-20%) scale(0.8);    
+  }
+  .blocky-slider-container.blocky-media-medium.blocky-slide-large {
+    --item1-transform: translateX(-14%) scale(0.8);
+  }
+  .blocky-slider-container.blocky-media-small.blocky-slide-small {
+    --item1-transform: translateX(-18%) scale(0.8);
+  }
+}
+.blocky-product-feature-2-slide {
+  position: absolute;
+}
+.blocky-product-feature-2-slider-img {
+  display: flex;
+  justify-content: center;
+}
+.blocky-product-feature-2 .blocky-button:nth-child(4) {
+  margin-top: 1rem;
+}
+.blocky-product-feature-2-slide:nth-child(n + 4){
+    opacity: 0;
+}
+.blocky-product-feature-2-slide:nth-child(1){
+  transform: var(--item1-transform);
+  filter: var(--item1-filter);
+  z-index: var(--item1-zIndex);
+  opacity: var(--item1-opacity);
+}
+.blocky-product-feature-2-slide:nth-child(2){
+  z-index: 12;  
+}
+.blocky-product-feature-2-slide:nth-child(3){
+  transform: var(--item3-transform);
+  filter: var(--item3-filter);
+  z-index: var(--item3-zIndex);
+  opacity: var(--item3-opacity);
+}
+@media screen and (min-width: 750px) {
+  .blocky-product-feature-2-slide:nth-child(1):has(svg),
+  .blocky-product-feature-2-slide:nth-child(3):has(svg) {
+    opacity: 0.8;
+  }
+}
+{% endstylesheet %}
+
+<script src="{{ 'blocky-slider-1.js' | asset_url }}" defer></script>
+
+<div class="blocky blocky-padding background-wrapper blocky-product-feature-2"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --text-container-gap: {{ section.settings.text_container_gap }};
+  --arrow-background-color: {{ section.settings.arrow-background-color }}; --arrow-color: {{ section.settings.arrow-carot-color }}; --side-slide-opacity: {{ section.settings.side-slide-opacity | divided_by: 100.0 }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;"
+>
+  <div class="blocky-page-width">
+    <blocky-slider-1 class="blocky-product-feature-2-slider">
+      <div class="blocky-slider-container blocky-media-{{ section.settings.image_height }} blocky-slide-{{ section.settings.image_width }} blocky-relative">
+        {% if section.blocks.size > 0 %}
+          {% assign last_block = section.blocks | last %}
+          <div 
+            class="slide blocky-product-feature-2-slide blocky-flex-container blocky-product-feature-2-arrows-{{ section.settings.arrows_position }} blocky-w-full"
+            style="margin-bottom: {{ section.settings.padding_bottom }}px; height: 100%; min-width: 100%;"
+          >
+            <div class="blocky-flex-child blocky-flex-child-{{ section.settings.image_width }} blocky-product-feature-2-img-text">
+              <div class="blocky-media-text-container blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+                {%- unless last_block.settings.headline == blank -%}
+                  <h2 class="blocky-title" style="--title-color: {{ last_block.settings.headline_color }}; --title-size: {{ last_block.settings.headline_size }};">
+                    {{ last_block.settings.headline }}
+                  </h2>
+                {%- endunless -%}
+                {%- unless last_block.settings.title == blank -%}
+                  <h2 class="blocky-title" style="--title-color: {{ last_block.settings.title_color }}; --title-size: {{ last_block.settings.title_size }};">
+                    {{ last_block.settings.title }}
+                  </h2>
+                {%- endunless -%}
+                {%- unless last_block.settings.body_text == blank -%}
+                  <div class="blocky-body-text" style="--body-color: {{ last_block.settings.body_color }}">
+                    {{ last_block.settings.body_text }}
+                  </div>
+                {% endunless %}
+                {%- unless last_block.settings.button_label == blank -%}
+                  <a
+                    {% if last_block.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ last_block.settings.button_link }}"
+                    {% endif %}
+                    class="blocky-button blocky-button-{{ last_block.settings.button_border_radius }}{% unless last_block.settings.button_style == "outline" %} blocky-button-regular{% endunless %}"
+                    style="--button-text-color: {{ last_block.settings.button_text_color }}; --button-background-color: {{ last_block.settings.button_background_color }};"
+                  >
+                    {{ last_block.settings.button_label }}
+                  </a>
+                {%- endunless -%}
+              </div>
+            </div>
+            <div class="blocky-flex-child blocky-justify-center blocky-media-{{ section.settings.image_height }} blocky-product-feature-2-mob-image blocky-product-feature-2-mob-image-{{ section.settings.mobile_image_height }}">
+              {% if last_block.settings.image %}
+                <img 
+                  class="blocky-product-feature-2-{{ last_block.settings.image_fit }}"
+                  style="max-width: 100%; max-height: 100%; border-radius: 15px;"
+                  src={{ last_block.settings.image | image_url: width: 1200 }}
+                />
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder blocky-media-placeholder blocky-product-feature-2-placeholder' }}
+              {% endif %}
+            </div>
+          </div> 
+          {% assign repeat = 3.0 | divided_by: section.blocks.size | ceil %}
+          {% for i in (1..repeat) %}
+            {%- for block in section.blocks -%}
+              {% if forloop.index == section.blocks.size and i == repeat %}
+                {% continue %}
+              {% endif %}
+              <div 
+                class="slide blocky-product-feature-2-slide blocky-flex-container blocky-product-feature-2-arrows-{{ section.settings.arrows_position }} blocky-w-full"
+                style="margin-bottom: {{ section.settings.padding_bottom }}px;"
+              >
+                <div class="blocky-flex-child blocky-flex-child-{{ section.settings.image_width }} blocky-product-feature-2-img-text">
+                  <div class="blocky-media-text-container blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">                    
+                    {%- unless block.settings.headline == blank -%}
+                      <h2 class="blocky-title" style="--title-color: {{ block.settings.headline_color }}; --title-size: {{ block.settings.headline_size }};">
+                        {{ block.settings.headline }}
+                      </h2>
+                    {%- endunless -%}
+                    {%- unless block.settings.title == blank -%}
+                      <h2 class="blocky-title" style="--title-color: {{ block.settings.title_color }}; --title-size: {{ block.settings.title_size }};">
+                        {{ block.settings.title }}
+                      </h2>
+                    {%- endunless -%}
+                    {%- unless block.settings.body_text == blank -%}
+                      <div class="blocky-body-text" style="--body-color: {{ block.settings.body_color }}">
+                        {{ block.settings.body_text }}
+                      </div>
+                    {% endunless %}
+                    {%- unless block.settings.button_label == blank -%}
+                      <a
+                        {% if block.settings.button_link == blank %}
+                          role="link" aria-disabled="true"
+                        {% else %}
+                          href="{{ block.settings.button_link }}"
+                        {% endif %}
+                        class="blocky-button blocky-button-{{ block.settings.button_border_radius }}{% unless block.settings.button_style == "outline" %} blocky-button-regular{% endunless %}"
+                        style="--button-text-color: {{ block.settings.button_text_color }}; --button-background-color: {{ block.settings.button_background_color }};"
+                      >
+                        {{ block.settings.button_label }}
+                      </a>
+                    {%- endunless -%}
+                  </div>
+                </div>
+                <div class="blocky-flex-child blocky-justify-center blocky-media-{{ section.settings.image_height }} blocky-product-feature-2-mob-image blocky-product-feature-2-mob-image-{{ section.settings.mobile_image_height }}">
+                  {% if block.settings.image %}
+                    <img 
+                      class="blocky-product-feature-2-{{ block.settings.image_fit }}"
+                      style="max-width: 100%; max-height: 100%; border-radius: 15px;"
+                      src={{ block.settings.image | image_url: width: 1200 }}
+                    />
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder blocky-media-placeholder blocky-product-feature-2-placeholder' }}
+                  {% endif %}
+                </div>
+              </div>    
+            {% endfor %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      {% unless section.blocks.size < 2 %}
+        <div class="blocky-product-feature-2-arrows blocky-product-feature-2-arrows-{{ section.settings.arrows_position }} blocky-product-feature-2-arrows-{{ section.settings.mobile_image_height }}">
+          <button id="prev" class="blocky-slider-arrows-center blocky-slider-arrows-left">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle class="blocky-slider-arrows-circle" cx="12" cy="12" r="11" stroke="fill"/>
+              <path class="blocky-slider-arrows-arrow" d="M13 8l-4 4 4 4" />
+            </svg>               
+          </button>
+          <button id="next" class="blocky-slider-arrows-center blocky-slider-arrows-right">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle class="blocky-slider-arrows-circle" cx="12" cy="12" r="11" stroke="fill"/>  
+              <path class="blocky-slider-arrows-arrow" d="M11 8l4 4-4 4" />
+            </svg>
+          </button>
+        </div>
+      {% endunless %}
+    </blocky-slider-1>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Product Feature",
+  "disabled_on": { "groups": [ "header", "footer" ] },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Image height"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_height",
+      "options": [
+        {
+          "value": "extra-small",
+          "label": "Extra Small"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Mobile image height"
+    },
+    {
+      "type": "select",
+      "id": "image_width",
+      "options": [
+        {
+          "value": "large",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "small",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Image width",
+      "info": "Mobile image is full screen"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Desktop content alignment"
+    },
+
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "select",
+      "id": "text_container_gap",
+      "label": "Space between content",
+      "default": "1rem",
+      "options": [
+        {
+          "label": "None",
+          "value": "0"
+        },
+        {
+          "label": "Small",
+          "value": "0.5rem"
+        },
+        {
+          "label": "Medium",
+          "value": "1rem"
+        },
+        {
+          "label": "Large",
+          "value": "1.5rem"
+        },
+        {
+          "label": "Extra Large",
+          "value": "2rem"
+        },
+      ]
+    },   
+    {
+      "type": "range",
+      "default": 25,
+      "min": 0,
+      "max": 100,
+      "label": "Side slide opacity",
+      "step": 1,
+      "info": "This is how faded the side slides are. Lower numbers fade them more.",
+      "id": "side-slide-opacity"
+    },
+    
+    {
+      "type": "header",
+      "content": "Slider Arrows",
+    },
+    {
+      "type": "color",
+      "id": "arrow-background-color",
+      "label": "Arrow background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow-carot-color",
+      "label": "Arrow color",
+      "default": "#FFFFFF"
+    },
+  {
+      "type": "select",
+      "id": "arrows_position",
+      "options": [
+        {
+          "value": "slider",
+          "label": "Over the products"
+        },
+        {
+          "value": "under",
+          "label": "Under the products"
+        }
+      ],
+      "default": "under",
+      "label": "Arrows position",
+      "info": "Arrow position is always over the product for mobile"
+    },
+
+    {
+      "type": "header",
+      "content": "Background",
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+
+    
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Image fit",
+          "default": "cover",
+          "options": [
+            {
+              "value": "contain",
+              "label": "Fit"
+            },
+            {
+              "value": "cover",
+              "label": "Zoomed in"
+            }
+          ]
+        },
+        
+        {
+          "type": "header",
+          "content": "Content",
+        },
+        {
+          "type": "inline_richtext",
+          "id": "headline",
+          "default": "<b>Product Feature</b>",
+          "label": "Headline",
+        },
+        {
+          "type": "range",
+          "id": "headline_size",
+          "label": "Headline size",
+          "default": 30,
+          "min": 10,
+          "max": 100,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "headline_color",
+          "label": "Headline color",
+          "default": "#6C6C6C"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "default": "<b>Product</b>",
+          "label": "Title",
+          "info": "Leave the text blank to hide the title."
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title size",
+          "default": 50,
+          "min": 30,
+          "max": 100,
+          "unit": "px"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title color",
+          "default": "#000000"
+        },
+    
+        {
+          "type": "richtext",
+          "id": "body_text",
+          "default": "<p>Showcase one or multiple products with a smooth sliding animation and descriptions</p>",
+          "label": "Body",
+          "info": "Leave the text blank to hide the body."
+        },
+        {
+          "type": "color",
+          "id": "body_color",
+          "label": "Body color",
+          "default": "#000000"
+        },
+        {
+          "type": "header",
+          "content": "Button",
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Button link",
+          "info": "Leave the text blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_border_radius",
+          "label": "Button border radius",
+          "default": "curved",
+          "options": [
+            {
+              "value": "flat",
+              "label": "Flat"
+            },
+            {
+              "value": "curved",
+              "label": "Curved"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "extra-round",
+              "label": "Extra Round"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "regular",
+          "options": [
+              {
+                "value": "outline",
+                "label": "Outline"
+              },
+              {
+                "value": "regular",
+                "label": "Regular"
+              }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#2065D1"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#FFFFFF"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Product Feature",
+      "blocks": [
+        {
+          "type": "slide",
+        },
+        {
+          "type": "slide",
+        },
+        {
+          "type": "slide",
+        },
+        {
+          "type": "slide",
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

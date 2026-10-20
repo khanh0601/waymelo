@@ -1,0 +1,296 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+/* Layout tweaks on mobile */
+@media screen and (max-width: 749px) {
+  .blocky-scroll-flex { row-gap: 3rem !important; }
+  .blocky-scroll-flex > * { width: 100% !important; flex-grow: 1 !important; }
+}
+
+@media screen and (min-width: 750px) {
+  #shopify-section-{{ section.id }} .blocky-flex-container { gap: 0; }
+}
+
+/* Scroller */
+.blocky-scroller {
+  position: relative;
+  height: var(--scroller-height, 100%);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom,
+    transparent 0,
+    black var(--fade-size, 12%),
+    black calc(100% - var(--fade-size, 12%)),
+    transparent 100%);
+          mask-image: linear-gradient(to bottom,
+    transparent 0,
+    black var(--fade-size, 12%),
+    black calc(100% - var(--fade-size, 12%)),
+    transparent 100%);
+}
+.blocky-scroller__track {
+  display: flex;
+  flex-direction: column;
+  gap: var(--word-gap, 0.75rem);
+  animation: blocky-scroll-up var(--scroll-speed, 18s) linear infinite;
+  will-change: transform;
+}
+.blocky-scroller__list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--word-gap, 0.75rem); }
+.blocky-scroller__word {
+  font-size: var(--word-size, 42px);
+  line-height: 1.05;
+  color: var(--word-color, #FFFFFF);
+  opacity: var(--word-opacity, 0.95);
+}
+
+/* Seamless scroll */
+@keyframes blocky-scroll-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+/* Media side retains hero styles */
+.blocky-scroll-media-has-text { position: absolute; z-index: 1; padding: 2.5rem; gap: var(--text-container-gap, 2rem); }
+@media screen and (max-width: 750px) { .blocky-scroll-media-has-text { padding: 1.5rem; } }
+.blocky-scroll .blocky-media-hero-container img,
+.blocky-scroll .blocky-media-hero-container video,
+.blocky-scroll .blocky-media-hero-text-wrap-opacity::before { border-radius: var(--border-radius); }
+.blocky-scroll .blocky-media-hero-container .blocky-video,
+.blocky-scroll .blocky-media-hero-container { position: unset; }
+
+/* Height handling for Media */
+.blocky-pair {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+.blocky-vertical-center {
+  align-items: center;
+}
+
+.blocky-pair > .blocky-flex-child { display: flex; flex-direction: column; }
+.blocky-media-fill .blocky-media-hero-container,
+.blocky-media-fill .blocky-media-hero-container > * { height: 100%; }
+
+/* Image over full height */
+#shopify-section-{{ section.id }} img { height: 100%; }
+{% endstyle %}
+
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+{%- for block in section.blocks -%}
+  {%- if block.type == 'media' -%}
+    {%- assign video_height = block.settings.height -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<div 
+  class="blocky blocky-scroll {% unless video_height == "fill" %} blocky-padding {% endunless %} background-wrapper"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --text-container-gap: 2rem;
+  "
+>
+  <div class="blocky-flex-container blocky-des-flex-{{ section.settings.layout }} blocky-mob-flex-{{ section.settings.mobile_layout }} blocky-scroll-flex {% if video_height == "fill" %} blocky-pair {% else %} blocky-vertical-center {% endif %}">
+
+    {%- assign media_block = section.blocks | where: 'type', 'media' | first -%}
+    {%- assign scroll_block = section.blocks | where: 'type', 'scrolling' | first -%}
+
+      {%- if scroll_block -%}
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_list_width }} blocky-justify-center blocky-align-center blocky-flex-col blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }} {% if video_height == "fill" %} blocky-padding {% endif %}" {{ scroll_block.shopify_attributes }}>
+        {%- unless section.settings.heading == blank -%}
+          <h2 class="blocky-title" style="--title-color: {{ section.settings.heading_color }}; --title-size: {{ section.settings.heading_size }}; margin-bottom: 24px;">{{ section.settings.heading }}</h2>
+        {%- endunless -%}
+
+        <div class="blocky-scroller"
+             style="
+               --scroller-height: {{ scroll_block.settings.scroller_height }}px;
+               --fade-size: {{ scroll_block.settings.fade_size }}%;
+               --word-size: {{ scroll_block.settings.word_size }}px;
+               --word-color: {{ scroll_block.settings.word_color }};
+               --word-gap: {{ scroll_block.settings.word_gap }}px;
+               --scroll-speed: calc( 31s - {{ scroll_block.settings.scroll_speed }}s );
+             ">
+          <div class="blocky-scroller__track">
+            {% capture scroller %}
+              <ul class="blocky-scroller__list" aria-hidden="false">
+                {%- assign words = '' -%}
+                {%- for i in (1..7) -%}
+                  {%- assign key = 'text' | append: i -%}
+                  {%- assign val = scroll_block.settings[key] -%}
+                  {%- unless val == blank -%}
+                    {%- assign words = words | append: val | append: '|||' -%}
+                  {%- endunless -%}
+                {%- endfor -%}
+                {%- assign words_array = words | split: '|||' -%}
+                {%- for w in words_array -%}
+                  {%- unless w == blank -%}
+                    <li class="blocky-scroller__word">{{ w }}</li>
+                  {%- endunless -%}
+                {%- endfor -%}
+              </ul>
+            {% endcapture %}
+            {{ scroller }}{{ scroller }}{{ scroller }}{{ scroller }}
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+
+      {%- if media_block -%}
+      <div class="blocky-flex-child blocky-relative" style="--border-radius: {{ media_block.settings.media_radius }}px; --overlay_opacity: {{ media_block.settings.overlay_opacity | divided_by: 100.0 }};" {{ media_block.shopify_attributes }}>
+        <div class="blocky-media-{{ media_block.settings.height }} blocky-w-full {% if media_block.settings.height == 'fill' %}blocky-h-full{% endif %} {% if media_block.settings.overlay_opacity != 0 %} blocky-media-hero-text-wrap-opacity{% endif %}">
+          <div class="blocky-media-hero-container">
+            {% if media_block.settings.video != blank  %}
+              {% render "blocky-video", video: media_block.settings.video, video_fit: "zoomed", fill: "#DCDCDC" %}
+            {% elsif media_block.settings.image != blank %}
+              <img class="blocky-image-cover" src="{{ media_block.settings.image | image_url: height: 750 }}" height="100%" width="100%">
+            {% else %}
+              {{ 'image' | placeholder_svg_tag: "blocky-full" }}
+            {% endif %}
+          </div>
+        </div>
+
+        {% unless media_block.settings.title == blank and media_block.settings.body_text == blank and media_block.settings.button_label == blank %}
+          <div class="blocky-media-hero-text-content blocky-scroll-media-has-text {{ media_block.settings.text_align }}">
+            {% render 'blocky-titlel', block: media_block %}
+            {% render 'blocky-bodyl', block: media_block %}
+            {% unless media_block.settings.button_label == blank %}
+              <div>
+                {% render 'blocky-buttonl', block: media_block %}
+              </div>
+            {% endunless %}
+          </div>
+        {% endunless %}
+      </div>
+      {%- endif -%}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - ScrollText + Media",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "select", "id": "layout", "label": "Desktop placement", "default": "row", "options": [
+      {"value": "row", "label": "Text first"},
+      {"value": "row-reverse", "label": "Media first"}
+    ]},
+    { "type": "select", "id": "mobile_layout", "label": "Mobile placement", "default": "col", "options": [
+      {"value": "col", "label": "Text first"},
+      {"value": "col-reverse", "label": "Media first"}
+    ]},
+    { "type": "select", "id": "desktop_list_width", "label": "Scrolling text width", "default": "medium", "options": [
+      {"value": "small", "label": "Small"},
+      {"value": "medium", "label": "Medium"},
+      {"value": "large", "label": "Large"}
+    ]},
+    { "type": "select", "id": "desktop_content_alignment", "label": "Desktop content alignment", "default": "center", "options": [
+      { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }
+    ]},
+    { "type": "select", "id": "mobile_content_alignment", "label": "Mobile content alignment", "default": "center", "options": [
+      { "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }
+    ]},
+
+    { "type": "header", "content": "Heading" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "<b>NEVER. ENDING. SCROLLER.</b>" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "default": 30, "min": 12, "max": 80, "unit": "px" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#FFFFFF" },
+
+    { "type": "header", "content": "Section size" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 36 },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#1B3C7A" }
+  ],
+  "blocks": [
+    {
+      "type": "scrolling",
+      "name": "Scrolling Text",
+      "limit": 1,
+      "settings": [
+        { "type": "range", "id": "scroller_height", "label": "Scroller height (px)", "default": 340, "min": 200, "max": 1000, "step": 10, "unit": "px" },
+        { "type": "range", "id": "scroll_speed", "label": "Scroll velocity", "default": 18, "min": 1, "max": 30, "step": 1 },
+        { "type": "range", "id": "fade_size", "label": "Edge fade size (%)", "default": 12, "min": 4, "max": 30, "step": 1, "unit": "%" },
+        { "type": "range", "id": "word_size", "label": "Word font size", "default": 48, "min": 12, "max": 80, "step": 1, "unit": "px" },
+        { "type": "color", "id": "word_color", "label": "Word color", "default": "#FFFFFF" },
+        { "type": "range", "id": "word_gap", "label": "Vertical gap (px)", "default": 12, "min": 0, "max": 40, "step": 1, "unit": "px" },
+
+        { "type": "header", "content": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text1", "label": "Text 1", "default": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text2", "label": "Text 2", "default": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text3", "label": "Text 3", "default": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text4", "label": "Text 4", "default": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text5", "label": "Text 5", "default": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text6", "label": "Text 6", "default": "Scrolling Text" },
+        { "type": "inline_richtext", "id": "text7", "label": "Text 7", "default": "Scrolling Text" }
+      ]
+    },
+    {
+      "type": "media",
+      "name": "Media",
+      "limit": 1,
+      "settings": [
+        { "type": "header", "content": "Background Media Settings" },
+        { "type": "image_picker", "id": "image", "label": "Background Image" },
+        { "type": "video", "id": "video", "label": "Background Video" },
+
+        { "type": "select", "id": "height", "label": "Media height", "default": "fill", "options": [
+          {"value": "fill", "label": "Fill column (100%)"},
+          {"value": "adapt", "label": "Adapt to media"},
+          {"value": "small", "label": "Small"},
+          {"value": "medium", "label": "Medium"},
+          {"value": "large", "label": "Large"}
+        ]},
+        { "type": "range", "id": "overlay_opacity", "label": "Background video darkness", "info": "Lower the brightness of your video to make your text easier to read", "default": 10, "min": 0, "max": 100, "step": 2, "unit": "%" },
+        { "type": "range", "id": "media_radius", "label": "Media border radius", "default": 0, "min": 0, "max": 50, "step": 1, "unit": "px" },
+
+        { "type": "header", "content": "Overlay Text on Media Settings" },
+        { "type": "select", "id": "text_align", "label": "Text alignment", "default": "vertical-bottom horizontal-left", "options": [
+          {"value": "vertical-top horizontal-left", "label": "Top left"},
+          {"value": "vertical-top horizontal-center", "label": "Top center"},
+          {"value": "vertical-top horizontal-right", "label": "Top right"},
+          {"value": "vertical-center horizontal-left", "label": "Center left"},
+          {"value": "vertical-center horizontal-center", "label": "Center"},
+          {"value": "vertical-center horizontal-right", "label": "Center right"},
+          {"value": "vertical-bottom horizontal-left", "label": "Bottom left"},
+          {"value": "vertical-bottom horizontal-center", "label": "Bottom center"},
+          {"value": "vertical-bottom horizontal-right", "label": "Bottom right"}
+        ]},
+
+        { "type": "inline_richtext", "id": "title", "default": "SCROLL ENDLESSLY", "label": "Title" },
+        { "type": "range", "id": "title_size", "label": "Title size", "default": 48, "min": 15, "max": 80, "unit": "px" },
+        { "type": "color", "id": "title_color", "label": "Title color", "default": "#FFFFFF" },
+        { "type": "richtext", "id": "body_text", "default": "<p></p>", "label": "Body" },
+        { "type": "range", "id": "body_size", "label": "Body size", "default": 18, "min": 10, "max": 40, "unit": "px" },
+        { "type": "color", "id": "body_color", "label": "Body color", "default": "#FFFFFF" },
+        { "type": "richtext", "id": "button_label", "label": "Button label", "default": "<p>Explore</p>" },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        { "type": "select", "id": "button_border_radius", "label": "Button border radius", "default": "extra-round", "options": [
+          {"value": "flat", "label": "Flat"},
+          {"value": "curved", "label": "Curved"},
+          {"value": "round", "label": "Round"},
+          {"value": "extra-round", "label": "Extra Round"}
+        ]},
+        { "type": "color", "id": "button_background_color", "label": "Button background color", "default": "#000000" },
+        { "type": "color", "id": "button_text_color", "label": "Button text color", "default": "#FFFFFF" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Scrolling Text with Media",
+      "blocks": [
+        { "type": "scrolling" },
+        { "type": "media" }
+      ]
+    }
+  ],
+  "disabled_on": { "groups": ["header", "footer"] }
+}
+{% endschema %}

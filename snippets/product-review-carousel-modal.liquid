@@ -1,0 +1,95 @@
+<div id="video-popup" class="color-{{ block.settings.color_scheme }}">
+  <span id="close-popup">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><g filter="url(#filter0_dd_3986_1781)"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.5297 10.4697C11.2368 10.1768 10.762 10.1768 10.4691 10.4697C10.1762 10.7626 10.1762 11.2374 10.4691 11.5303L20.9389 22.0001L10.4692 32.4698C10.1763 32.7627 10.1763 33.2376 10.4692 33.5305C10.7621 33.8234 11.2369 33.8234 11.5298 33.5305L21.9995 23.0608L32.4691 33.5303C32.762 33.8232 33.2368 33.8232 33.5297 33.5303C33.8226 33.2374 33.8226 32.7626 33.5297 32.4697L23.0602 22.0001L33.5298 11.5305C33.8227 11.2376 33.8227 10.7627 33.5298 10.4698C33.2369 10.1769 32.7621 10.1769 32.4692 10.4698L21.9995 20.9395L11.5297 10.4697Z" fill="white"></path></g><defs><filter id="filter0_dd_3986_1781" x="0.249512" y="0.25" width="43.5" height="43.5" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset></feOffset><feGaussianBlur stdDeviation="5"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"></feColorMatrix><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3986_1781"></feBlend><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset dy="1"></feOffset><feGaussianBlur stdDeviation="0.5"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"></feColorMatrix><feBlend mode="normal" in2="effect1_dropShadow_3986_1781" result="effect2_dropShadow_3986_1781"></feBlend><feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_3986_1781" result="shape"></feBlend></filter></defs></svg>
+  </span>
+
+  <div class="full_featured_product_wrapper">
+    <div class="view_product_wrapper">
+    <span class="view_popup_products">
+        View all products
+    </span>
+    <button class="toggle_btn">
+      <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 6L9 12L3 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+  </div>
+  <div class="popup_video_featured_product">
+    <div class="pro_wrapper">
+      {% assign popup_featured_collection = collections[block.settings.popup_featured_product] %}
+      {% for product in popup_featured_collection.products %}
+        <div class="popup_single_product" data-drawer="drawers-{{ product.handle }}-{{ section.id }}-{{ forloop.index0 }}">
+          <button class="sort_add_to_cart" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-drawer="drawers-{{ product.handle }}-{{ section.id }}-{{ forloop.index0 }}">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.25 15C7.25 15.4142 7.58579 15.75 8 15.75C8.41421 15.75 8.75 15.4142 8.75 15V8.75H15C15.4142 8.75 15.75 8.41421 15.75 8C15.75 7.58579 15.4142 7.25 15 7.25H8.75V1C8.75 0.585787 8.41421 0.25 8 0.25C7.58579 0.25 7.25 0.585787 7.25 1V7.25H1C0.585786 7.25 0.25 7.58579 0.25 8C0.25 8.41421 0.585786 8.75 1 8.75H7.25V15Z" fill="currentColor"></path></svg>
+          </button>
+          <div class="single_product_img">
+            <img src="{{ product.featured_image | img_url:'original' }}">
+          </div>
+          <div class="product_meta">
+            <h4 class="product_title_here">{{ product.title | escape }}</h4>
+            <div class="product_total_price">
+              <span class="sale_price" style="font-weight: bold;">{{ product.price | money }}</span>
+              {% if product.compare_at_price > product.price %}
+                <span class="compare_price" style="text-decoration: line-through; opacity: 0.6; margin-left: 5px; font-weight: normal;">
+                  {{ product.compare_at_price | money }}
+                </span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="drawer_modal" id="drawers-{{ product.handle }}-{{ section.id }}-{{ forloop.index0 }}">
+          {% render 'popup_add_to_cart', product: product %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div id="popup_full_wrapper">
+  <div class="left_video_thumbnail">
+    <button class="thumb_btn prev">
+      <svg width="20" height="12" viewBox="0 0 20 12">
+        <path d="M1.11089 10.4446L9.99978 1.55567L18.8887 10.4446"
+          stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <div class="thumb_view">
+      <div class="thumb_track">
+        {% render 'product-review-carousel', block: block, class: 'thumb_item' %}
+      </div>
+    </div>
+
+    <button class="thumb_btn next">
+      <svg width="20" height="12" viewBox="0 0 20 12">
+        <path d="M1.11089 1.55567L9.99978 10.4446L18.8887 1.55566"
+          stroke="white" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="right_main_video">
+    <div class="popup_main_video_wrapper" style="height: 100vh; overflow: hidden;">
+      {% render 'product-review-carousel', block: block, class:'main_video', autoplay_btn: 'yes' %}
+    </div>
+    <div class="working_dual_button">
+      <button class="speacker_button">
+        <svg class="speaker_icon" width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 16.5001H5.64304C6.22014 16.5001 6.77947 16.6997 7.22613 17.0652L15.5 23.8347V2.16542L7.22613 8.93495C6.77948 9.30039 6.22014 9.50005 5.64304 9.50005H1.5V16.5001ZM5.64304 8.00005H1C0.447716 8.00005 0 8.44777 0 9.00005V17.0001C0 17.5523 0.447716 18.0001 1 18.0001H5.64304C5.87388 18.0001 6.09761 18.0799 6.27627 18.2261L15.3668 25.6638C16.0197 26.198 17 25.7334 17 24.8898V1.1103C17 0.266669 16.0197 -0.197879 15.3668 0.336337L6.27627 7.77401C6.09761 7.92019 5.87388 8.00005 5.64304 8.00005ZM24.6488 4.33732C25.0149 4.1434 25.4688 4.28292 25.6627 4.64894C27 7.17317 27.7187 10.0536 27.7499 12.9921L27.75 13.0001L27.7499 13.008C27.7187 15.9465 27 18.8269 25.6627 21.3512C25.4688 21.7172 25.0149 21.8567 24.6488 21.6628C24.2828 21.4689 24.1433 21.015 24.3372 20.6489C25.5575 18.3456 26.2199 15.7045 26.2499 13.0001C26.2199 10.2956 25.5575 7.65448 24.3372 5.35117C24.1433 4.98515 24.2828 4.53123 24.6488 4.33732ZM21.6382 8.60612C21.4206 8.25365 20.9585 8.14427 20.606 8.36184C20.2536 8.5794 20.1442 9.0415 20.3617 9.39398C20.9677 10.3757 21.2924 11.6527 21.2455 12.9735L21.2446 13.0001L21.2455 13.0266C21.2924 14.3474 20.9677 15.6244 20.3617 16.6061C20.1442 16.9586 20.2536 17.4207 20.606 17.6383C20.9585 17.8558 21.4206 17.7465 21.6382 17.394C22.4114 16.1412 22.7965 14.576 22.7455 13.0001C22.7965 11.4241 22.4114 9.85891 21.6382 8.60612Z" fill="white"></path></svg>
+        <svg class="mute_icon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.53033 0.46967C1.23744 0.176777 0.762564 0.176777 0.469669 0.46967C0.176777 0.762563 0.176777 1.23744 0.469669 1.53033L8.06667 9.12733L7.27627 9.77401C7.09761 9.92019 6.87388 10.0001 6.64304 10.0001H2C1.44772 10.0001 1 10.4478 1 11.0001V19.0001C1 19.5523 1.44772 20.0001 2 20.0001H6.64304C6.87388 20.0001 7.09761 20.0799 7.27627 20.2261L16.3668 27.6638C17.0197 28.198 18 27.7334 18 26.8898V19.0607L28.4697 29.5303C28.7626 29.8232 29.2374 29.8232 29.5303 29.5303C29.8232 29.2374 29.8232 28.7626 29.5303 28.4697L18 16.9393V3.1103C18 2.26667 17.0197 1.80212 16.3668 2.33634L9.23339 8.17273L1.53033 0.46967ZM10.2993 9.23868L16.5 4.16542V15.4393L10.2993 9.23868ZM16.5 17.5607V25.8347L8.22613 19.0652C7.77947 18.6997 7.22014 18.5001 6.64304 18.5001H2.5V11.5001H6.64304C7.22014 11.5001 7.77948 11.3004 8.22613 10.9349L9.13262 10.1933L16.5 17.5607ZM26.6627 6.64894C26.4688 6.28292 26.0149 6.1434 25.6488 6.33732C25.2828 6.53123 25.1433 6.98515 25.3372 7.35117C26.5575 9.65448 27.2199 12.2956 27.2499 15.0001C27.2199 17.7045 26.5575 20.3456 25.3372 22.6489C25.1433 23.015 25.2828 23.4689 25.6488 23.6628C26.0149 23.8567 26.4688 23.7172 26.6627 23.3512C28 20.8269 28.7187 17.9465 28.7499 15.008L28.75 15.0001L28.7499 14.9921C28.7187 12.0536 28 9.17317 26.6627 6.64894ZM21.606 10.3618C21.9585 10.1443 22.4206 10.2536 22.6382 10.6061C23.4114 11.8589 23.7965 13.4241 23.7455 15.0001C23.7965 16.576 23.4114 18.1412 22.6382 19.394C22.4206 19.7465 21.9585 19.8558 21.606 19.6383C21.2536 19.4207 21.1442 18.9586 21.3617 18.6061C21.9677 17.6244 22.2924 16.3474 22.2455 15.0266L22.2446 15.0001L22.2455 14.9735C22.2924 13.6527 21.9677 12.3757 21.3617 11.394C21.1442 11.0415 21.2536 10.5794 21.606 10.3618Z" fill="white"></path></svg>
+      </button>
+    </div> 
+  </div> 
+  <div class="product_sidebar">
+    <div class="modal_title">
+      <svg class="close_icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11 4L2 12M2 12L11 20M2 12L22 12" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      Products in video
+    </div>       
+
+    {% for i in (1..6) %}
+      {% assign collection_key = "collection_" | append: i %}
+      {% assign selected_collection = block.settings[collection_key] %}
+      {% assign collection_value = collections[selected_collection] %}
+      <div class="collection-products">
+        {% render 'popup_products', selected_collection: collection_value, index: i %}
+      </div>
+    {% endfor %}
+  </div>
+  </div>
+</div>

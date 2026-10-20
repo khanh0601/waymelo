@@ -1,0 +1,94 @@
+<div class="modal_wrap">
+  <div class="drawer_header">
+    <button id="close_modal">
+      <span class="grid_icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.75" y="2.75" width="7.5" height="7.5" rx="1.25" stroke="black" stroke-width="1.5"></rect><rect x="2.75" y="13.75" width="7.5" height="7.5" rx="1.25" stroke="black" stroke-width="1.5"></rect><rect x="13.75" y="2.75" width="7.5" height="7.5" rx="1.25" stroke="black" stroke-width="1.5"></rect><rect x="13.75" y="13.75" width="7.5" height="7.5" rx="1.25" stroke="black" stroke-width="1.5"></rect></svg>
+      </span>
+      <span class="drawer_bar_text">
+        All products
+      </span>
+    </button>
+  </div>
+  <div class="drawer_inner">
+    <div class="drawer_slider" data-pos="0">
+      <button class="slider_arrow prev">
+        <svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#fff" fill-opacity="1"></circle><path d="M13.5 8.5L21 16L13.5 23.5" stroke="#121212" stroke-width="2" stroke-linecap="square"></path></svg>
+      </button>
+
+      <div class="slider_view">
+        <div class="slider_track {% if product.images > 1 %}{% else %}default_variant{% endif %}">
+          {% for image in product.images %}
+            <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
+          {% endfor %}
+        </div>
+      </div>
+
+      <button class="slider_arrow next">
+          <svg width="100%" height="100%" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#fff" fill-opacity="1"></circle><path d="M13.5 8.5L21 16L13.5 23.5" stroke="#121212" stroke-width="2" stroke-linecap="square"></path></svg>
+      </button>
+    </div>
+    <div class="product_meta_info">
+      <h3 class="pop_pro_title">{{ product.title }}</h3>
+      <div class="drawer_price_stock">
+        <div>
+          <span class="sale_price">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="com_price">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+        <span class="stock">
+          {% if product.available %}In stock{% else %}Out of stock{% endif %}
+        </span>
+      </div>
+
+      {% if product.variants.size > 1 %}
+        <div class="variant_selctor_popup">
+          <select class="drawer_variant">
+          {% for variant in product.variants %}
+              <option value="{{ variant.id }}">{{ variant.title }}</option>
+            {% endfor %}
+          </select>
+          <svg class="dropdown_icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 6L9 12L3 6" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>        
+        </div>
+      {% endif %}
+
+      <div class="drawer_cart_row">
+        <div class="drawer_qty_wrapper">
+          <button class="qty_btn minus">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 9H16" stroke="black" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </button>
+
+          <input type="number" min="1" value="1" class="drawer_qty">
+
+          <button class="qty_btn plus">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M8.25 16C8.25 16.4142 8.58579 16.75 9 16.75C9.41421 16.75 9.75 16.4142 9.75 16V9.75H16C16.4142 9.75 16.75 9.41421 16.75 9C16.75 8.58579 16.4142 8.25 16 8.25H9.75V2C9.75 1.58579 9.41421 1.25 9 1.25C8.58579 1.25 8.25 1.58579 8.25 2V8.25H2C1.58579 8.25 1.25 8.58579 1.25 9C1.25 9.41421 1.58579 9.75 2 9.75H8.25V16Z" fill="black"></path>
+            </svg>
+          </button>
+        </div>
+        <button class="drawer_addtocart" data-id="{{ product.variants.first.id }}">
+          <span class="add_to_cart_icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 1.125C1.08579 1.125 0.75 1.46079 0.75 1.875C0.75 2.28921 1.08579 2.625 1.5 2.625H3.15337L5.26921 11.7936C5.34774 12.1339 5.65076 12.375 6 12.375H14.25C14.5869 12.375 14.8825 12.1503 14.9726 11.8257L16.8476 5.07573C16.9104 4.84991 16.8639 4.60775 16.7221 4.42116C16.5803 4.23456 16.3594 4.125 16.125 4.125H5.03894L4.48079 1.70636C4.40226 1.36606 4.09924 1.125 3.75 1.125H1.5ZM6.59663 10.875L5.3851 5.625H15.1383L13.6799 10.875H6.59663ZM7.5 16.5C8.32843 16.5 9 15.8284 9 15C9 14.1716 8.32843 13.5 7.5 13.5C6.67157 13.5 6 14.1716 6 15C6 15.8284 6.67157 16.5 7.5 16.5ZM12.75 16.5C13.5784 16.5 14.25 15.8284 14.25 15C14.25 14.1716 13.5784 13.5 12.75 13.5C11.9216 13.5 11.25 14.1716 11.25 15C11.25 15.8284 11.9216 16.5 12.75 16.5Z" fill="#ffffff"></path></svg>
+          </span>
+          <span class="add_to_cart_txt">
+            Add to cart
+          </span>
+        </button>
+      </div>
+
+      <div class="drawer_desc"> 
+        <div class="popup_product_accordian">
+          Description
+          <svg width="18" height="18" class="popup_accordian_icon" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 6L9 12L3 6" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <div class="popup_product_content">
+          {{ product.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

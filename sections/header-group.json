@@ -1,0 +1,102 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement_bar_AqnVcT": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_Rbcw9E": {
+          "type": "announcement",
+          "settings": {
+            "text": "Call us / Whatsup: {{ metaobjects.waymelo[\"1-321-233-3336\"].phone.value }}",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_Rbcw9E"
+      ],
+      "name": "t:sections.announcement-bar.presets.name",
+      "settings": {
+        "color_scheme": "",
+        "show_line_separator": true,
+        "show_social": false,
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_position": "middle-center",
+        "menu": "main-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": false,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-3",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "blocky_scrolling_text_bar_AN79DC": {
+      "type": "blocky-scrolling-text-bar",
+      "blocks": {
+        "text_4i9d3z": {
+          "type": "text",
+          "settings": {
+            "text": "Operated by a Registered US Company"
+          }
+        },
+        "text_KkEAmF": {
+          "type": "text",
+          "settings": {
+            "text": "Easy Returns & Real Human Support"
+          }
+        },
+        "text_Ee4QEb": {
+          "type": "text",
+          "settings": {
+            "text": "Free Shipping on Every Order"
+          }
+        }
+      },
+      "block_order": [
+        "text_4i9d3z",
+        "text_KkEAmF",
+        "text_Ee4QEb"
+      ],
+      "name": "Blocky Scrolling Text Bar",
+      "settings": {
+        "text_size": "1.75",
+        "background_color": "#7A5168",
+        "text_color": "#FFFFFF",
+        "speed": 0.5,
+        "text_spacing": 3,
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    }
+  },
+  "order": [
+    "announcement_bar_AqnVcT",
+    "header",
+    "blocky_scrolling_text_bar_AN79DC"
+  ]
+}

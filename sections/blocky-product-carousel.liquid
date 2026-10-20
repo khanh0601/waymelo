@@ -1,0 +1,625 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% stylesheet %}
+.blocky-product-carousel-container {
+    animation: marquee calc(var(--marquee-speed) * 1s) linear infinite forwards;
+    display: flex;
+    flex-shrink: 0;
+    column-gap: 2rem;
+    padding-right: 2rem;
+    width: auto;
+}
+.blocky-product-carousel-container .blocky-video,
+.blocky-product-carousel-container img,
+.blocky-product-carousel-container svg {
+    width: auto;  
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    max-height: 100%;
+    height: var(--image-height);
+}
+@media screen and (max-width: 749px) {
+  .blocky-product-carousel-container .blocky-video,
+  .blocky-product-carousel-container img,
+  .blocky-product-carousel-container svg {
+    height: var(--mobile-image-height);
+  }
+  .blocky-product-carousel-container {
+    column-gap: 1.25rem;
+    padding-right: 1.25rem;
+  }   
+}
+.blocky-product-carousel-hide-shadow .bky-vid-placeholder{
+    box-shadow: unset;
+}
+{% endstylesheet %}
+
+<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+
+<div 
+  class="blocky blocky-padding background-wrapper blocky-product-carousel"
+  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }};"
+>
+  <div class="blocky-page-width">
+    <div class="blocky-flex-container blocky-des-flex-{{ section.settings.layout }} blocky-mob-flex-{{ section.settings.mobile_layout }}">
+      <div class="blocky-flex-child blocky-flex-child-{{ section.settings.desktop_table_width }} blocky-justify-center">
+        <div style="--border-radius: {{ section.settings.border_radius }}px; --image-height: {{ section.settings.image_height }}px; --mobile-image-height: {{ section.settings.mobile_image_height }}px; --marquee-speed: {{ 50 | divided_by: section.settings.speed }}; overflow-x: hidden; background-color: var(--background-color );">
+          {% assign blockCount = section.blocks | size %}
+          {%- if blockCount == 0 -%}
+              {%- assign blockCount = 1 -%}
+          {%- endif -%}
+          {%- assign upperLimit = 3 | divided_by: blockCount | ceil %}    
+          {% capture other_classes %}blocky-desktop-{{ section.settings.media_size }} blocky-mobile-{{ section.settings.mobile_media_size }}{% if section.settings.show_shadow %} blocky-shadow{% endif %}{% endcapture %}      
+          {% capture marqueeContainer %}
+            <div class="blocky-product-carousel-container"
+              style="{% if section.settings.show_shadow %}padding-top: 10px; padding-bottom: 10px;{% endif %}"  
+            >
+              {% for i in (0..upperLimit) %}
+                {%- for block in section.blocks -%}
+                  {% if block.type == "image" %}
+                    {%- if block.settings.image != blank -%}
+                      <img
+                        class="blocky-image-{{ block.settings.image_fit }} {{ other_classes }}"
+                        src="{{ block.settings.image | image_url: height: 750 }}"
+                        {{ block.shopify_attributes }}
+                      >  
+                    {% else %}
+                      <div class={{ other_classes }} {{ block.shopify_attributes }}>
+                        {{ 'image' | placeholder_svg_tag: other_classes }}
+                      </div>
+                    {%- endif -%}
+                  {% endif %}
+                  {% if block.type == "video" %}
+                    {% render "blocky-video", video: block.settings.video, video_fit: block.settings.video_fit, placeholder: 1, autoplay: true, other_classes: other_classes, block-attributes: block.shopify_attributes %} 
+                  {% endif %}
+                {%- endfor -%}
+              {% endfor %} 
+            </div>
+          {% endcapture %}
+      
+          <div style="display: flex;">
+            {{ marqueeContainer }}
+            {{ marqueeContainer }}
+          </div>
+        </div>
+      </div>
+      <div class="blocky-flex-child">
+        <div class="blocky-media-text-container blocky-align-center blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+          {% render 'blocky-titlel', block: section %}
+          {% render 'blocky-bodyl', block: section %}
+          {% render 'blocky-buttonl', block: section %}
+          {% if section.settings.rating > 0 %}
+            {% render 'blocky-review-starsl', block: section %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Product Carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "<b>Product Carousel</b>",
+      "label": "Title",
+      "info": "Leave the text blank to hide the title."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "default": 40,
+      "min": 15,
+      "max": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "default": "<p>Showcase your product with a carousel of images and video and accompanying text. </p>",
+      "label": "Body",
+      "info": "Leave the text blank to hide the body."
+    },
+   {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body size",
+      "default": 16,
+      "min": 10,
+      "max": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Leave the text blank to hide the button.",
+      "default": "Buy Now!"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "default": "curved",
+      "options": [
+        {
+          "value": "flat",
+          "label": "Flat"
+        },
+        {
+          "value": "curved",
+          "label": "Curved"
+        },
+        {
+          "value": "round",
+          "label": "Round"
+        },
+        {
+          "value": "extra-round",
+          "label": "Extra Round"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "default": "#2065D1"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Reviews"
+    },
+    {
+      "type": "range",
+      "id": "rating",
+      "label": "Rating",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 5,
+      "info": "Set the rating to 0 to hide the stars"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "default": "#ffcc00",
+      "label": "Stars color"
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Review text color",
+      "default": "#000000"
+    },
+
+    {
+      "type": "select",
+      "id": "empty_stars_style",
+      "options": [
+        {
+          "value": "outlined",
+          "label": "Outlined"
+        },
+        {
+          "value": "hidden",
+          "label": "Hidden"
+        }
+      ],
+      "label": "Empty stars style",
+      "default": "hidden"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "review_text",
+      "label": "Text",
+      "default": "Based on over <b>1000+</b> Reviews"
+    },
+    {
+      "type": "range",
+      "id": "review_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "label": "Text size"
+    },
+
+
+
+    {
+      "type": "header",
+      "content": "Desktop"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 200,
+      "max": 800,
+      "step": 25,
+      "unit": "px",
+      "label": "Image Height",
+      "default": 500
+    },
+    {
+      "type": "select",
+      "id": "media_size",
+      "options": [
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "long",
+      "label": "Media size"
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Carousel first"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Text first"
+        },
+      ],
+      "default": "row-reverse",
+      "label": "Desktop carousel placement",
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "min": 100,
+      "max": 500,
+      "step": 25,
+      "unit": "px",
+      "label": "Mobile image height",
+      "default": 300
+    },
+    {
+      "type": "select",
+      "id": "mobile_media_size",
+      "options": [
+        {
+          "value": "long",
+          "label": "Long"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ],
+      "default": "long",
+      "label": "Media size"
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Mobile content alignment"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "options": [
+        {
+          "value": "col",
+          "label": "Carousel on top"
+        },
+        {
+          "value": "col-reverse",
+          "label": "Text on top"
+        },
+      ],
+      "default": "col",
+      "label": "Mobile carousel placement",
+    },
+      
+    
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "desktop_table_width",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Carousel width",
+    },
+    {
+      "type": "select",
+      "id": "text_container_gap",
+      "label": "Space between text",
+      "default": "1rem",
+      "options": [
+        {
+          "label": "None",
+          "value": "0"
+        },
+        {
+          "label": "Small",
+          "value": "0.5rem"
+        },
+        {
+          "label": "Medium",
+          "value": "1rem"
+        },
+        {
+          "label": "Large",
+          "value": "1.5rem"
+        },
+        {
+          "label": "Extra Large",
+          "value": "2rem"
+        },
+      ]
+    },  
+
+
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius",
+      "unit": "px",
+      "min": 0,
+      "max": 40,
+      "default": 15,
+      "step": 1
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Carousel speed",
+      "min": 0,
+      "max": 5,
+      "default": 1.5,
+      "step": 0.5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shadow",
+      "label": "Show Shadow",
+      "default": true
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+
+    
+    {
+      "type": "header",
+        "content": "Section size",
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "unit": "px",
+      "step": 100,
+      "min": 800,
+      "max": 1600,
+      "default": 1200,
+      "label": "Section width",
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Image fit",
+          "default": "cover",
+          "options": [
+            {
+              "value": "contain",
+              "label": "Fit"
+            },
+            {
+              "value": "cover",
+              "label": "Zoomed in"
+            },
+            {
+              "value": "fill",
+              "label": "Fill"
+            }
+          ]
+        },
+        
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "select",
+          "id": "video_fit",
+          "options": [
+            {
+              "value": "fit",
+              "label": "Fit"
+            },
+            {
+              "value": "zoomed",
+              "label": "Zoomed in"
+            }
+          ],
+          "default": "zoomed",
+          "label": "Video fit"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Product Carousel",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

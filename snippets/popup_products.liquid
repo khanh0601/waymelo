@@ -1,0 +1,31 @@
+{% for product in selected_collection.products %}
+    <div class="product-item" data-handle="{{ product.handle }}_{{ forloop.index0 }}_{{ index }}">
+        <div class="pro_img">
+            <img class="product_pop_img"
+                src="{{ product.featured_image | img_url: 'medium' }}"
+                alt="{{ product.title }}">
+        </div>
+
+        <h3 class="popup_product_title">{{ product.title }}</h3>
+
+        <div class="sale_com_price">
+            <span class="sale_price">{{ product.price | money }}</span>
+            {% if product.compare_at_price > product.price %}
+            <span class="com_price">{{ product.compare_at_price | money }}</span>
+            {% endif %}
+        </div>
+
+        <button class="shop_now_btn" data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-drawer="drawer-{{ product.handle }}">
+            Shop Now
+        </button>
+    </div>       
+    <div class="drawer_modal" id="drawer-{{ product.handle }}_{{ forloop.index0 }}_{{ index }}">
+        {% render 'popup_add_to_cart',
+            product: product
+        %}
+    </div>
+{% endfor %}
+
+
+
+

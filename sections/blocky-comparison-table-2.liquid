@@ -1,0 +1,415 @@
+{%- comment -%}
+  © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited. 
+  Unauthorized copying, distribution, or reproduction in any form will result in legal action.
+{% endcomment %}
+
+{% style %}
+  .blocky-comparison {
+    --compare-card-radius: var(--bky-compare-card-radius, 30px);
+    --compare-card-padding: var(--bky-compare-card-padding, 24px);
+    --compare-top-bg: var(--bky-compare-top-bg, #f8edf1);
+    --compare-bottom-bg: var(--bky-compare-bottom-bg, #ffffff);
+    --compare-icon-size: var(--bky-compare-icon-size, 18px);
+  }
+
+  .blocky-comparison-layout {
+    align-items: center;
+  }
+
+  .blocky-comparison-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .blocky-comparison .blocky-media-text-container {
+    gap: var(--text-container-gap);
+  }
+
+  /* Media */
+  .blocky-comparison-image {
+    border-radius: var(--bky-compare-image-radius, 30px);
+    overflow: hidden;
+  }
+
+  .blocky-comparison-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Card */
+  .blocky-comparison-card {
+    position: relative;
+    border-radius: var(--compare-card-radius);
+    background-color: var(--compare-bottom-bg);
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .blocky-comparison-top,
+  .blocky-comparison-bottom {
+    padding: var(--compare-card-padding);
+  }
+
+  .blocky-comparison-top {
+    background-color: var(--compare-top-bg);
+  }
+
+  .blocky-comparison-heading {
+    letter-spacing: .04em;
+  }
+
+  .blocky-comparison-label {
+    font-weight: 700;
+    font-size: var(--bky-compare-label-size, 0.9rem);
+    text-transform: uppercase;
+  }
+
+  .blocky-comparison-row-text {
+    font-size: var(--bky-compare-row-text-size, 1rem);
+    line-height: 1;
+  }
+
+  .blocky-comparison-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--bky-compare-list-gap, 1rem);
+  }
+
+  .blocky-comparison-item {
+    display: flex;
+    align-items: center;
+    gap: var(--bky-compare-item-gap, 0.75rem);
+  }
+
+  .blocky-comparison-icon {
+    width: var(--compare-icon-size);
+    height: var(--compare-icon-size);
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .blocky-comparison-icon img,
+  .blocky-comparison-icon svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .blocky-comparison-icon-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .blocky-comparison-icon-circle .blocky-comparison-icon-symbol {
+    width: 60%;
+    height: 60%;
+    display: block;
+  }
+
+  .blocky-comparison-icon-circle .blocky-comparison-icon-symbol svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .blocky-comparison-vs {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: var(--bky-compare-label-size, 0.9rem);
+    border: 1px solid var(--bky-compare-vs-border-color, #000000);
+  }
+
+  @media screen and (max-width: 749px) {
+    .blocky-comparison-card {
+      margin-top: 1.5rem;
+    }
+  }
+{% endstyle %}
+
+<div
+  class="blocky blocky-padding background-wrapper blocky-comparison"
+  style="
+    --padding-top: {{ section.settings.padding_top }};
+    --padding-bottom: {{ section.settings.padding_bottom }};
+    --background-color: {{ section.settings.background_color }};
+    --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
+    --text-container-gap: {{ section.settings.text_container_gap }};
+    --title-color: {{ section.settings.title_color }};
+    --title-size: {{ section.settings.title_size }};
+    --body-color: {{ section.settings.body_color }};
+    --body-font-size: {{ section.settings.body_size }}px;
+    --bky-compare-image-radius: {{ section.settings.image_radius }}px;
+    --bky-compare-card-radius: {{ section.settings.card_radius }}px;
+    --bky-compare-card-padding: {{ section.settings.card_padding }}px;
+    --bky-compare-top-bg: {{ section.settings.top_bg }};
+    --bky-compare-bottom-bg: {{ section.settings.bottom_bg }};
+    --bky-compare-icon-size: {{ section.settings.icon_size }}px;
+    --bky-compare-label-size: {{ section.settings.label_size }}px;
+    --bky-compare-row-text-size: {{ section.settings.row_text_size }}px;
+    --bky-compare-list-gap: {{ section.settings.list_gap }}px;
+    --bky-compare-item-gap: {{ section.settings.item_gap }}px;
+    --bky-compare-vs-border-color: {{ section.settings.vs_border_color }};
+    --bky-check-icon-bg: {{ section.settings.check_icon_bg_color }};
+    --bky-check-icon-color: {{ section.settings.check_icon_color }};
+    --bky-x-icon-border: {{ section.settings.x_icon_border_color }};
+    --bky-x-icon-bg: {{ section.settings.x_icon_bg_color }};
+    --bky-x-icon-color: {{ section.settings.x_icon_color }};
+  "
+>
+  <div class="blocky-page-width">
+    <div class="blocky-comparison-header blocky-media-text-container blocky-text-container-desktop-{{ section.settings.desktop_content_alignment }} blocky-text-container-mobile-{{ section.settings.mobile_content_alignment }}">
+      {% render 'blocky-titlel', block: section %}
+      {% render 'blocky-bodyl', block: section %}
+    </div>
+
+    <div class="blocky-flex-container blocky-mob-flex-col {% if section.settings.desktop_layout == 'image_right' %}blocky-des-flex-row-reverse{% else %}blocky-des-flex-row{% endif %} blocky-comparison-layout">
+
+      <div class="blocky-flex-child blocky-justify-center blocky-align-center">
+        <div class="blocky-comparison-image blocky-media-{{ section.settings.height }}{% if section.settings.media_shadow %} blocky-shadow{% endif %}"{% if section.settings.show_border == true %} style="border: 1px solid {{ section.settings.border_color }};"{% endif %}>
+          {% if section.settings.main_image %}
+            <img
+              src="{{ section.settings.main_image | image_url: height: 750 }}"
+              alt="{{ section.settings.image_alt | escape }}"
+              loading="lazy"
+            >
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'blocky-full' }}
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="blocky-flex-child blocky-align-center">
+        <div class="blocky-comparison-card{% if section.settings.card_shadow %} blocky-shadow{% endif %}">
+          <div class="blocky-comparison-top">
+            <div class="blocky-comparison-heading">
+              <div class="blocky-comparison-label" style="color: {{ section.settings.left_label_color }};">
+                {{ section.settings.left_label }}
+              </div>
+            </div>
+
+            <ul class="blocky-comparison-list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'row' and block.settings.left_text != blank -%}
+                  <li class="blocky-comparison-item" {{ block.shopify_attributes }}>
+                    {% if section.settings.left_icon_image != blank or section.settings.show_icons == true %}
+                      <span class="blocky-comparison-icon" aria-hidden="true">
+                        {% if section.settings.left_icon_image != blank %}
+                          <img
+                            src="{{ section.settings.left_icon_image | image_url: width: 64 }}"
+                            alt=""
+                            loading="lazy"
+                          >
+                        {% else %}
+                          <span class="blocky-comparison-icon-circle" style="background-color: {{ section.settings.check_icon_bg_color }}; border: 1px solid {{ section.settings.check_icon_border_color }};">
+                            <span class="blocky-comparison-icon-symbol">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ section.settings.check_icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                            </span>
+                          </span>
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                    <span class="blocky-comparison-row-text">
+                      {{ block.settings.left_text }}
+                    </span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <div class="blocky-comparison-bottom">
+            <div class="blocky-comparison-heading">
+              <div class="blocky-comparison-label" style="color: {{ section.settings.right_label_color }};">
+                {{ section.settings.right_label }}
+              </div>
+            </div>
+
+            <ul class="blocky-comparison-list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'row' and block.settings.right_text != blank -%}
+                  <li class="blocky-comparison-item" {{ block.shopify_attributes }}>
+                    {% if section.settings.right_icon_image != blank or section.settings.show_icons == true %}
+                      <span class="blocky-comparison-icon" aria-hidden="true">
+                        {% if section.settings.right_icon_image != blank %}
+                          <img
+                            src="{{ section.settings.right_icon_image | image_url: width: 64 }}"
+                            alt=""
+                            loading="lazy"
+                          >
+                        {% else %}
+                          <span class="blocky-comparison-icon-circle" style="border: 1px solid {{ section.settings.x_icon_border_color }}; background-color: {{ section.settings.x_icon_bg_color }};">
+                            <span class="blocky-comparison-icon-symbol">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="{{ section.settings.x_icon_color }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </span>
+                          </span>
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                    <span class="blocky-comparison-row-text">
+                      {{ block.settings.right_text }}
+                    </span>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <div class="blocky-comparison-vs">
+            {{ section.settings.vs_label }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "BKY - Comparison Table 2",
+  "tag": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "header", "content": "Image" },
+    { "type": "image_picker", "id": "main_image", "label": "Image" },
+    { "type": "text", "id": "image_alt", "label": "Alt text" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "default": "medium",
+      "options": [
+        { "value": "adapt", "label": "Adapt to media" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ]
+    },
+    { "type": "checkbox", "id": "media_shadow", "label": "Show shadow", "default": false },
+    { "type": "range", "id": "image_radius", "label": "Border radius", "min": 0, "max": 50, "step": 1, "unit": "px", "default": 30 },
+    { "type": "checkbox", "id": "show_border", "label": "Show border", "default": false },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#000000", "visible_if": "{{ section.settings.show_border == true }}" },
+
+
+  { "type": "header", "content": "Heading" },
+    { "type": "inline_richtext", "id": "title", "label": "Title", "default": "Comparison Table" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 20, "max": 80, "step": 1, "unit": "px", "default": 40 },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#000000" },
+    { "type": "richtext", "id": "body_text", "label": "Subtitle", "default": "<p>Show why your product is the smarter choice for your customers</p>" },
+    { "type": "range", "id": "body_size", "label": "Body size", "min": 12, "max": 26, "step": 1, "unit": "px", "default": 16 },
+    { "type": "color", "id": "body_color", "label": "Body color", "default": "#000000" },
+    { "type": "select", "id": "text_container_gap", "label": "Space between text", "default": "1.5rem",
+      "options": [ { "label": "None", "value": "0" }, { "label": "Small", "value": "0.5rem" }, { "label": "Medium", "value": "1rem" }, { "label": "Large", "value": "1.5rem" }, { "label": "Extra Large", "value": "2rem" } ] },
+   
+
+    { "type": "header", "content": "Comparison Table Settings" },
+    { "type": "text", "id": "left_label", "label": "'Us' heading", "default": "WE" },
+    { "type": "color", "id": "left_label_color", "label": "'Us' heading color", "default": "#000000" },
+    { "type": "text", "id": "right_label", "label": "'Them' heading", "default": "THEM" },
+    { "type": "color", "id": "right_label_color", "label": "'Them' heading color", "default": "#000000" },
+    { "type": "text", "id": "vs_label", "label": "VS label", "default": "VS" },
+    { "type": "color", "id": "vs_border_color", "label": "VS border color", "default": "#000000" },
+    { "type": "range", "id": "label_size", "label": "Label font size", "min": 10, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "row_text_size", "label": "Row text font size", "min": 12, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "list_gap", "label": "Spacing between rows", "min": 4, "max": 32, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "item_gap", "label": "Spacing between icon and text", "min": 6, "max": 24, "step": 2, "unit": "px", "default": 12 },
+    { "type": "checkbox", "id": "card_shadow", "label": "Show shadow", "default": true },
+    { "type": "range", "id": "card_radius", "label": "Border radius", "min": 0, "max": 50, "step": 1, "unit": "px", "default": 28 },
+    { "type": "range", "id": "card_padding", "label": "Padding", "min": 12, "max": 40, "step": 1, "unit": "px", "default": 24 },
+    { "type": "color", "id": "top_bg", "label": "Top background color (Us)", "default": "#BCBCBC" },
+    { "type": "color", "id": "bottom_bg", "label": "Bottom background color (Them)", "default": "#FFFFFF" },
+
+    { "type": "header", "content": "Comparison Table Icon Settings" },
+    { "type": "image_picker", "id": "left_icon_image", "label": "Custom 'Us' icon image" },
+    { "type": "image_picker", "id": "right_icon_image", "label": "Custom 'Them' icon image" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 12, "max": 32, "step": 1, "unit": "px", "default": 20 },
+    { "type": "checkbox", "id": "show_icons", "label": "Show default icons", "default": true },
+    { "type": "color", "id": "check_icon_bg_color", "label": "'Us' icon background", "default": "#000000", "visible_if": "{{ section.settings.show_icons == true }}" },
+    { "type": "color", "id": "check_icon_border_color", "label": "'Us' icon border", "default": "#000000", "visible_if": "{{ section.settings.show_icons == true }}" },
+    { "type": "color", "id": "check_icon_color", "label": "'Us' icon color", "default": "#FFFFFF", "visible_if": "{{ section.settings.show_icons == true }}" },
+    { "type": "color", "id": "x_icon_border_color", "label": "'Them' icon border", "default": "#000000", "visible_if": "{{ section.settings.show_icons == true }}" },
+    { "type": "color", "id": "x_icon_bg_color", "label": "'Them' icon background", "default": "#FFFFFF", "visible_if": "{{ section.settings.show_icons == true }}" },
+    { "type": "color", "id": "x_icon_color", "label": "'Them' icon color", "default": "#000000", "visible_if": "{{ section.settings.show_icons == true }}" },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Image position",
+      "default": "image_left",
+      "options": [
+        { "value": "image_left", "label": "Image left" },
+        { "value": "image_right", "label": "Image right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "label": "Desktop content alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_content_alignment",
+      "label": "Mobile content alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    { "type": "header", "content": "Section settings" },
+    { "type": "range", "id": "page_width", "label": "Section width", "min": 800, "max": 1600, "step": 100, "unit": "px", "default": 1200 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 60 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 60 },
+    { "type": "color", "id": "background_color", "label": "Background color", "default": "#FFFFFF" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Comparison row",
+      "settings": [
+        { "type": "text", "id": "left_text", "label": "'Us' text", "default": "Why we are better" },
+        { "type": "text", "id": "right_text", "label": "'Them' text", "default": "Why not to choose them" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blocky Comparison Table 2",
+      "blocks": [
+        { "type": "row" },
+        { "type": "row" },
+        { "type": "row" },
+        { "type": "row" },
+        { "type": "row" }
+      ]
+    }
+  ]
+}
+{% endschema %}
