@@ -7,6 +7,25 @@
     background-color: var(--background-color)
 }
 
+.blocky-video {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--blocky-video-aspect-ratio, 1.7778);
+  overflow: hidden;
+  background: #f4f1f3;
+}
+
+.blocky-video > video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.blocky-video-zoomed > video {
+  object-fit: cover;
+}
+
 .blocky .material-symbols-outlined.filled {
     font-variation-settings: 'FILL' 1;
 } 

@@ -3,9 +3,6 @@
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
 {% endcomment %}
 
-<link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-<script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
 {%- assign bky_has_psr = section.blocks | where: 'type', 'product-server-rating' -%}
 {%- if bky_has_psr.size > 0 -%}
   <script src="{{ 'product-server-rating.js' | asset_url }}" defer></script>
@@ -48,7 +45,6 @@
 {%- assign bky_has_rs = section.blocks | where: 'type', 'review-stars' -%}
 {%- assign bky_has_acc = section.blocks | where: 'type', 'accordion' -%}
 {%- if bky_has_iwt.size > 0 or bky_has_comp.size > 0 or bky_has_collapsible.size > 0 or bky_has_rti.size > 0 or bky_has_rs.size > 0 or bky_has_acc.size > 0 -%}
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
 {%- endif -%}
 
 {% render 'blocky-main-product-css', section: section %}
@@ -62,7 +58,7 @@
       <div class="blocky-flex-child blocky-featured-product__media-col">
         <div>
           <div
-            class="blocky-featured-product__media-wrap blocky-media-adapt"
+            class="blocky-featured-product__media-wrap blocky-media-adapt is-loading"
             style="--bky-media-ratio: {{ media_ratio }}"
           >
             <div class="blocky-featured-product__main">
@@ -72,13 +68,26 @@
                     class="blocky-featured-product__media{% if forloop.first %} is-active{% endif %}"
                     data-blocky-product-media="{{ media.id }}"
                   >
-                    <img
-                      src="{{ media.preview_image | image_url: width: 1400 }}"
-                      alt="{{ media.alt | default: product.title | escape }}"
-                      loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                      width="{{ media.preview_image.width }}"
-                      height="{{ media.preview_image.height }}"
-                    >
+                    {%- liquid
+                      assign media_alt = media.alt | default: product.title
+                      assign media_loading = 'lazy'
+                      assign media_fetchpriority = 'low'
+                      if forloop.first
+                        assign media_loading = 'eager'
+                        assign media_fetchpriority = 'high'
+                      endif
+                    -%}
+                    {{
+                      media.preview_image
+                      | image_url: width: 1400
+                      | image_tag:
+                        widths: '480, 750, 900, 1200, 1400',
+                        sizes: '(min-width: 990px) 50vw, 100vw',
+                        alt: media_alt,
+                        loading: media_loading,
+                        fetchpriority: media_fetchpriority,
+                        preload: forloop.first
+                    }}
                   </div>
                 {%- endfor -%}
               {%- else -%}
@@ -91,15 +100,25 @@
 
           {%- if product != blank and product.media.size > 1 -%}
             {%- if section.settings.thumbnail_layout == 'carousel' -%}
-              {%- assign visible_thumbnail_count = section.settings.thumbnail_slides_per_column | default: 4 -%}
+              {%- liquid
+                assign visible_thumbnail_count = section.settings.thumbnail_slides_per_column | default: 4
+                assign rendered_thumbnail_count = visible_thumbnail_count
+                if product.media.size < rendered_thumbnail_count
+                  assign rendered_thumbnail_count = product.media.size
+                endif
+                assign thumbnail_gap = 10
+                assign thumbnail_gap_total = rendered_thumbnail_count | minus: 1 | times: thumbnail_gap
+                assign thumbnail_half_gap = thumbnail_gap | divided_by: 2.0
+              -%}
               <blocky-media-slider
-                class="blocky-featured-product__thumb-slider glide ivs-{{ section.id }}-thumbs"
+                class="blocky-featured-product__thumb-slider glide ivs-{{ section.id }}-thumbs is-loading"
                 data-id="{{ section.id }}-thumbs"
                 data-size="{{ product.media.size }}"
                 slide-size="{{ visible_thumbnail_count }}"
                 mobile-slide-size="{{ visible_thumbnail_count }}"
-                media-spacing="10"
+                media-spacing="{{ thumbnail_gap }}"
                 data-anim-duration="350"
+                style="--bky-thumb-width: calc((100% - {{ thumbnail_gap_total }}px) / {{ rendered_thumbnail_count }}); --bky-thumb-half-gap: {{ thumbnail_half_gap }}px;"
               >
                 <div class="glide__track" data-glide-el="track">
                   <ul class="glide__slides blocky-featured-product__thumbs blocky-featured-product__thumbs--carousel" aria-label="Product media thumbnails">
@@ -407,7 +426,13 @@
           {%- for block in section.blocks -%}
             {%- case block.type -%}
               {%- when '@app' -%}
-                {% render block %}
+                {%- if block.id contains 'pumper_bundles' -%}
+                  <div class="blocky-app-slot blocky-app-slot--pumper is-loading" data-blocky-pumper-slot aria-busy="true">
+                    {% render block %}
+                  </div>
+                {%- else -%}
+                  {% render block %}
+                {%- endif -%}
               {%- when 'shipping-checkpoints' -%}
                 <div
                   class="blocky blocky-shipping-checkpoints"
@@ -477,9 +502,9 @@
                 </div>
               {%- when 'product-server-rating' -%}
                 <div
-                  class="product-server-rating-wrapper"
+                  class="product-server-rating-wrapper is-pending"
                   data-product-server-rating
-                  hidden
+                  aria-hidden="true"
                   {{ block.shopify_attributes }}
                 >
                   <a class="product-server-rating" href="#trustshop-review">
@@ -500,13 +525,13 @@
                       {%- if block.settings.avatar_1 != blank or block.settings.avatar_2 != blank or block.settings.avatar_3 != blank -%}
                         <div class="blocky-rti-avatars">
                           {%- if block.settings.avatar_1 != blank -%}
-                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_1 | image_url: width: 200 }}" alt="" loading="lazy"></div>
+                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_1 | image_url: width: 200 }}" alt="" loading="lazy" width="{{ block.settings.avatar_1.width }}" height="{{ block.settings.avatar_1.height }}"></div>
                           {%- endif -%}
                           {%- if block.settings.avatar_2 != blank -%}
-                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_2 | image_url: width: 200 }}" alt="" loading="lazy"></div>
+                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_2 | image_url: width: 200 }}" alt="" loading="lazy" width="{{ block.settings.avatar_2.width }}" height="{{ block.settings.avatar_2.height }}"></div>
                           {%- endif -%}
                           {%- if block.settings.avatar_3 != blank -%}
-                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_3 | image_url: width: 200 }}" alt="" loading="lazy"></div>
+                            <div class="blocky-rti-avatar"><img src="{{ block.settings.avatar_3 | image_url: width: 200 }}" alt="" loading="lazy" width="{{ block.settings.avatar_3.width }}" height="{{ block.settings.avatar_3.height }}"></div>
                           {%- endif -%}
                         </div>
                       {%- endif -%}
@@ -537,7 +562,7 @@
                         {%- if feature_text != blank -%}
                           <div class="blocky-rti-feature">
                             {%- if icon_img != blank -%}
-                              <img class="blocky-rti-feature-icon" src="{{ icon_img | image_url: width: 100 }}" alt="" loading="lazy">
+                              <img class="blocky-rti-feature-icon" src="{{ icon_img | image_url: width: 100 }}" alt="" loading="lazy" width="{{ icon_img.width }}" height="{{ icon_img.height }}">
                             {%- elsif icon_code != blank -%}
                               <span class="blocky-rti-feature-icon-code material-icons material-symbols-outlined">{{ icon_code }}</span>
                             {%- endif -%}
@@ -1059,7 +1084,7 @@
                       <details class="blocky-acc-item">
                         <summary class="blocky-acc-summary">
                           {%- if block.settings[acc_image_key] != blank -%}
-                            <img class="blocky-acc-icon" src="{{ block.settings[acc_image_key] | image_url: width: 120 }}" alt="" loading="lazy">
+                            <img class="blocky-acc-icon" src="{{ block.settings[acc_image_key] | image_url: width: 120 }}" alt="" loading="lazy" width="{{ block.settings[acc_image_key].width }}" height="{{ block.settings[acc_image_key].height }}">
                           {%- elsif block.settings[acc_code_key] != blank -%}
                             <span class="blocky-acc-icon-code material-icons material-symbols-outlined">{{ block.settings[acc_code_key] }}</span>
                           {%- endif -%}
@@ -1720,6 +1745,9 @@
         this.moneyFormat = {{ shop.money_format | json }};
         this.mediaByVariant = {};
 
+        this.initMediaLoadingState();
+        this.initDelayedAppSlots();
+
         (this.product.variants || []).forEach((variant) => {
           const mediaId = variant.featured_media_id || variant.featured_media?.id;
           if (mediaId) {
@@ -1752,6 +1780,102 @@
 
         this.syncQuantity();
         this.updateVariant();
+      }
+
+      initMediaLoadingState() {
+        const mediaWrap = this.querySelector('.blocky-featured-product__media-wrap');
+        const activeImage = mediaWrap?.querySelector('.blocky-featured-product__media.is-active img');
+        if (!mediaWrap) return;
+
+        const markReady = () => {
+          mediaWrap.classList.remove('is-loading');
+          mediaWrap.classList.add('is-ready');
+
+          if (!document.documentElement.classList.contains('waymelo-hero-ready')) {
+            document.documentElement.classList.add('waymelo-hero-ready');
+            window.dispatchEvent(new CustomEvent('waymelo:hero-ready'));
+          }
+        };
+
+        if (!activeImage || (activeImage.complete && activeImage.naturalWidth > 0)) {
+          requestAnimationFrame(markReady);
+          return;
+        }
+
+        activeImage.addEventListener('load', markReady, { once: true });
+        activeImage.addEventListener('error', markReady, { once: true });
+      }
+
+      initDelayedAppSlots() {
+        this.querySelectorAll('[data-blocky-pumper-slot]').forEach((slot) => {
+          let mutationObserver;
+          let resizeObserver;
+          let stabilityTimer;
+          let observedWidget;
+
+          const enhanceLabels = () => {
+            slot.querySelectorAll('*').forEach((element) => {
+              const text = (element.textContent || '').replace(/\s+/g, ' ').trim();
+              if (/(most popular|best value|smart choice)/i.test(text) && text.length < 80) {
+                element.classList.add('blocky-pumper-highlight-label');
+              }
+
+              if (/^buy\s*\d+\s*:/i.test(text) && text.length < 100) {
+                const hasMatchingChild = Array.from(element.children).some((child) => {
+                  const childText = (child.textContent || '').replace(/\s+/g, ' ').trim();
+                  return /^buy\s*\d+\s*:/i.test(childText) && childText.length > 10;
+                });
+
+                if (!hasMatchingChild) element.classList.add('blocky-pumper-option-title');
+              }
+            });
+          };
+
+          const revealWhenStable = () => {
+            clearTimeout(stabilityTimer);
+            stabilityTimer = window.setTimeout(() => {
+              Promise.resolve(document.fonts?.ready).then(() => {
+                const heightBefore = observedWidget?.getBoundingClientRect().height || 0;
+                requestAnimationFrame(() => {
+                  requestAnimationFrame(() => {
+                    const heightAfter = observedWidget?.getBoundingClientRect().height || 0;
+                    if (heightAfter < 100 || Math.abs(heightAfter - heightBefore) > 1) {
+                      revealWhenStable();
+                      return;
+                    }
+
+                    enhanceLabels();
+                    slot.classList.remove('is-loading');
+                    slot.classList.add('is-ready');
+                    slot.setAttribute('aria-busy', 'false');
+                    mutationObserver?.disconnect();
+                    resizeObserver?.disconnect();
+                  });
+                });
+              });
+            }, 450);
+          };
+
+          const watchWidget = () => {
+            const widget = slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
+            if (!widget || widget.getBoundingClientRect().height < 100) return;
+
+            enhanceLabels();
+            if (widget !== observedWidget) {
+              resizeObserver?.disconnect();
+              observedWidget = widget;
+              if (window.ResizeObserver) {
+                resizeObserver = new ResizeObserver(revealWhenStable);
+                resizeObserver.observe(widget);
+              }
+            }
+            revealWhenStable();
+          };
+
+          mutationObserver = new MutationObserver(watchWidget);
+          mutationObserver.observe(slot, { childList: true, subtree: true, characterData: true });
+          watchWidget();
+        });
       }
 
       initBeforeAfterButtons() {
@@ -2269,7 +2393,21 @@
       }
 
       activateMedia(mediaId) {
-        if (!this.querySelector(`[data-blocky-product-media="${mediaId}"]`)) return;
+        const targetMedia = this.querySelector(`[data-blocky-product-media="${mediaId}"]`);
+        if (!targetMedia) return;
+
+        const targetImage = targetMedia.querySelector('img');
+        const mediaWrap = this.querySelector('.blocky-featured-product__media-wrap');
+        if (mediaWrap && targetImage && !(targetImage.complete && targetImage.naturalWidth > 0)) {
+          mediaWrap.classList.add('is-loading');
+          mediaWrap.classList.remove('is-ready');
+          const markReady = () => {
+            mediaWrap.classList.remove('is-loading');
+            mediaWrap.classList.add('is-ready');
+          };
+          targetImage.addEventListener('load', markReady, { once: true });
+          targetImage.addEventListener('error', markReady, { once: true });
+        }
 
         this.querySelectorAll('[data-blocky-product-media]').forEach((media) => {
           media.classList.toggle('is-active', media.dataset.blockyProductMedia === mediaId);

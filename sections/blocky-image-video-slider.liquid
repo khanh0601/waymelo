@@ -3,10 +3,6 @@
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
 {% endcomment %}
 
-<link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-<script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 
 <div class="blocky blocky-padding background-wrapper blocky-ivs"
   style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
@@ -35,6 +31,10 @@
                     <img
                       class="{{ other_classes }}"
                       src="{{ block.settings.image | image_url: height: 750 }}"
+                      width="{{ block.settings.image.width }}"
+                      height="{{ block.settings.image.height }}"
+                      alt="{{ block.settings.image.alt | escape }}"
+                      loading="lazy"
                       {% if block.settings.link %}class="blocky-slider-img-link" data-url={{ block.settings.link }}{% endif %}
                     >  
                   {% else %}

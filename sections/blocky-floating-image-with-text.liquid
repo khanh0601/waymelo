@@ -23,8 +23,12 @@
           <div class="blocky-fiwt-image-top">
             <img
               class="blocky-fiwt-centered-image"
-              src={{ section.settings.image | image_url: width: 200 }}
-            />
+              src="{{ section.settings.image | image_url: width: 200 }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              alt=""
+              loading="lazy"
+            >
           </div>
         {% else %}
           {% if request.design_mode or request.visual_preview_mode%}
@@ -39,8 +43,12 @@
           {% if section.settings.image2 != blank %}                 
             <img
               class="blocky-fiwt-image-center"
-              src={{ section.settings.image2 | image_url: width: 300 }}
-            />
+              src="{{ section.settings.image2 | image_url: width: 300 }}"
+              width="{{ section.settings.image2.width }}"
+              height="{{ section.settings.image2.height }}"
+              alt=""
+              loading="lazy"
+            >
           {% else %}
             {% if request.design_mode or request.visual_preview_mode %}
               <div class="blocky-fiwt-image-center blocky-fiwt-image-svg-center">
@@ -70,8 +78,12 @@
           <div class="blocky-fiwt-image-bottom">
             <img
               class="blocky-fiwt-centered-image"
-              src={{ section.settings.image3 | image_url: width: 200 }}
-            />
+              src="{{ section.settings.image3 | image_url: width: 200 }}"
+              width="{{ section.settings.image3.width }}"
+              height="{{ section.settings.image3.height }}"
+              alt=""
+              loading="lazy"
+            >
           </div>
         {% else %}
           {% if request.design_mode or request.visual_preview_mode %}

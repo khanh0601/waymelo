@@ -145,6 +145,12 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
     background-color: var(--bky-tech-accent, #E8705A);
     transform: translate(0, -40%);
   }
+
+  @media screen and (max-width: 749px) {
+    .bky-tech .blocky-desktop-hidden .blocky-flex.blocky-justify-center {
+      margin-bottom: 2.4rem;
+    }
+  }
 {% endstyle %}
 
 <div
@@ -218,6 +224,10 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
                 src="{{ section.settings.device_image | image_url: height: 700 }}"
                 alt="{{ section.settings.device_image_alt | escape }}"
                 loading="lazy"
+                fetchpriority="low"
+                decoding="async"
+                width="{{ section.settings.device_image.width }}"
+                height="{{ section.settings.device_image.height }}"
               >
             {%- endcapture -%}
 
@@ -271,6 +281,10 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
                 src="{{ section.settings.device_image | image_url: height: 600 }}"
                 alt="{{ section.settings.device_image_alt | escape }}"
                 loading="lazy"
+                fetchpriority="low"
+                decoding="async"
+                width="{{ section.settings.device_image.width }}"
+                height="{{ section.settings.device_image.height }}"
               >
             {%- endcapture -%}
 

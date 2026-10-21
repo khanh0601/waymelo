@@ -422,7 +422,9 @@
         <small class="copyright__content"
           >&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}
         </small>
-        <small class="copyright__content">{{ powered_by_link }}</small>
+        <small class="copyright__content">
+          <a href="https://www.shopify.com" target="_blank" rel="nofollow noopener" aria-label="Powered by Shopify">Powered by Shopify</a>
+        </small>
         {%- if section.settings.show_policy -%}
           <ul class="policies list-unstyled">
             {%- for policy in shop.policies -%}
@@ -592,22 +594,22 @@
           "max": 300,
           "step": 5,
           "unit": "px",
-          "label": "t:sections.footer.blocks.image_badges.settings.badge_1_height.label",
+          "label": "Height",
           "default": 40
         },
         {
           "type": "header",
-          "content": "t:sections.footer.blocks.image_badges.settings.badge_2_header.content"
+          "content": "Badge 2"
         },
         {
           "type": "image_picker",
           "id": "badge_2_image",
-          "label": "t:sections.footer.blocks.image_badges.settings.badge_2_image.label"
+          "label": "Image"
         },
         {
           "type": "url",
           "id": "badge_2_link",
-          "label": "t:sections.footer.blocks.image_badges.settings.badge_2_link.label"
+          "label": "Link"
         },
         {
           "type": "range",
@@ -616,7 +618,7 @@
           "max": 300,
           "step": 5,
           "unit": "px",
-          "label": "t:sections.footer.blocks.image_badges.settings.badge_2_width.label",
+          "label": "Width",
           "default": 120
         },
         {
@@ -626,7 +628,7 @@
           "max": 300,
           "step": 5,
           "unit": "px",
-          "label": "t:sections.footer.blocks.image_badges.settings.badge_2_height.label",
+          "label": "Height",
           "default": 40
         }
       ]

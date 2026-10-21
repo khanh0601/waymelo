@@ -36,7 +36,7 @@
                 }}
                 {% if icon == 'true' %} {{ play_icon }} {% endif %} 
             {% else %}
-                <img src="{{ fallback_image | image_url: width: 800 }}" class="video" style="width: 100%; height: 100%; object-fit: cover;" alt="Fallback Image">
+                <img src="{{ fallback_image | image_url: width: 800 }}" class="video" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ fallback_image.alt | default: 'Review image' | escape }}" width="{{ fallback_image.width }}" height="{{ fallback_image.height }}" loading="lazy">
             {% endif %}
         </div>
     {% endif %}

@@ -138,7 +138,6 @@
 {% endstyle %}
 
 <script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 
 <div 
   class="blocky blocky-padding background-wrapper"
@@ -171,7 +170,10 @@
                         alt="{{ block.settings.question }}"
                         class="blocky-faq-icon"
                         style="border-radius: 50%;"
-                      />
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        loading="lazy"
+                      >
                     {% elsif block.settings.icon_code != blank %}
                         <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
                     {% endif %}

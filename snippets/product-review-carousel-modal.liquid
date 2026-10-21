@@ -21,7 +21,7 @@
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.25 15C7.25 15.4142 7.58579 15.75 8 15.75C8.41421 15.75 8.75 15.4142 8.75 15V8.75H15C15.4142 8.75 15.75 8.41421 15.75 8C15.75 7.58579 15.4142 7.25 15 7.25H8.75V1C8.75 0.585787 8.41421 0.25 8 0.25C7.58579 0.25 7.25 0.585787 7.25 1V7.25H1C0.585786 7.25 0.25 7.58579 0.25 8C0.25 8.41421 0.585786 8.75 1 8.75H7.25V15Z" fill="currentColor"></path></svg>
           </button>
           <div class="single_product_img">
-            <img src="{{ product.featured_image | img_url:'original' }}">
+            <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}" loading="lazy">
           </div>
           <div class="product_meta">
             <h4 class="product_title_here">{{ product.title | escape }}</h4>

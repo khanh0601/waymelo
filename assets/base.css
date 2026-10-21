@@ -3575,3 +3575,6 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+.pmpr-money-text {
+  color: #a82458 !important;
+}

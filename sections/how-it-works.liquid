@@ -71,7 +71,6 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
     font-size: var(--how-block-desc-size); 
   }
 {% endstylesheet %}
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 
 <div 
   class="blocky blocky-how-it-works blocky-padding background-wrapper"
@@ -103,6 +102,10 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
               <img
                 class="blocky-media blocky-image-{{ block.settings.media_height }} {% if block.settings.media_fit == "zoomed" %} blocky-video-zoomed{% endif %}"
                 src="{{ img | image_url: height: 750 }}"
+                width="{{ img.width }}"
+                height="{{ img.height }}"
+                alt="{{ img.alt | escape }}"
+                loading="lazy"
               >  
             {% else %}
               <div class="blocky-video blocky-shadow bky-vid-placeholder" style="--play-button-color: white; --play-button-background-color: lightgrey">

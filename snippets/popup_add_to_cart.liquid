@@ -18,7 +18,7 @@
       <div class="slider_view">
         <div class="slider_track {% if product.images > 1 %}{% else %}default_variant{% endif %}">
           {% for image in product.images %}
-            <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
+            <img src="{{ image | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy">
           {% endfor %}
         </div>
       </div>

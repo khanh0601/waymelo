@@ -8,12 +8,15 @@
     --text-color: {{ section.settings.text_color }}; --text-size: {{ section.settings.text_size }}; --text-spacing: {{ section.settings.text_spacing }};
     --marquee-speed: {{ section.settings.speed }}"
 >
-  {% assign blockCount = section.blocks | size %}
-  {%- assign upperLimit = 20 | divided_by: blockCount | ceil %}
+  {% assign block_count = section.blocks | size %}
+  {%- if block_count == 0 -%}
+    {%- assign block_count = 1 -%}
+  {%- endif -%}
+  {%- assign upper_limit = 20 | divided_by: block_count | ceil %}
 
-  {% capture marqueeContainer %}
+  {% capture marquee_container %}
     <div class="blocky-announcement-bar-container" style="display: flex; flex-shrink:0;">
-      {% for i in (1..upperLimit) %}
+      {% for i in (1..upper_limit) %}
           {%- for block in section.blocks -%}
             <p class="blocky-announcement-bar-text" {{ block.shopify_attributes }}>
               {{ block.settings.text }}
@@ -24,9 +27,9 @@
   {% endcapture %}
   
   <div style="display: flex;">
-    {{ marqueeContainer }}
-    {{ marqueeContainer }}
-    {{ marqueeContainer }}
+    {{ marquee_container }}
+    {{ marquee_container }}
+    {{ marquee_container }}
   </div>
 
 </div>

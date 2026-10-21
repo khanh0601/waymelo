@@ -174,7 +174,18 @@
 
     <div class="blocky-video-showcase__media">
       {%- if section.settings.video != blank -%}
-        {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto' }}
+        <video
+          loop
+          muted
+          playsinline
+          preload="none"
+          poster="{{ section.settings.video.preview_image | image_url: width: 1200 }}"
+          aria-label="{{ section.settings.title | strip_html | default: 'Product video' | escape }}"
+        >
+          {%- for source in section.settings.video.sources -%}
+            <source data-src="{{ source.url }}" type="{{ source.mime_type }}">
+          {%- endfor -%}
+        </video>
         <button class="blocky-video-showcase__toggle" type="button" aria-label="Pause video" aria-pressed="false">Pause</button>
       {%- else -%}
         <div class="blocky-video-showcase__placeholder" role="img" aria-label="Add a video in the section settings">
@@ -198,8 +209,29 @@
 
         video.muted = true;
         video.playsInline = true;
-        var playAttempt = video.play();
-        if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(function () {});
+
+        var loadAndPlay = function () {
+          if (!video.dataset.loaded) {
+            video.querySelectorAll('source[data-src]').forEach(function (source) {
+              source.src = source.dataset.src;
+              source.removeAttribute('data-src');
+            });
+            video.dataset.loaded = 'true';
+            video.load();
+          }
+          var playAttempt = video.play();
+          if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(function () {});
+        };
+
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            if (entries.some(function (entry) { return entry.isIntersecting; })) {
+              loadAndPlay();
+              observer.disconnect();
+            }
+          }, { rootMargin: '100% 0px 100% 0px', threshold: 0.01 });
+          observer.observe(this);
+        }
 
         var setState = function (paused) {
           button.textContent = paused ? 'Play' : 'Pause';
@@ -211,8 +243,7 @@
 
         button.addEventListener('click', function () {
           if (video.paused) {
-            var attempt = video.play();
-            if (attempt && typeof attempt.catch === 'function') attempt.catch(function () {});
+            loadAndPlay();
           } else {
             video.pause();
           }

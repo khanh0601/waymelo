@@ -20,8 +20,31 @@
     border-radius: 15px;
     overflow: hidden;
   }
+  @media screen and (max-width: 749px) {
+    .blocky-video-with-text .blocky-body-text {
+      font-size: 18px !important;
+      line-height: 1.6;
+    }
+    .blocky-video-with-text .blocky-body-text p {
+      margin: 0 !important;
+    }
+    .blocky-video-with-text .blocky-body-text p + p {
+      margin-top: 8px !important;
+    }
+    .blocky-video-with-text .blocky-body-text p:has(strong):not(:first-child) {
+      margin-top: 18px !important;
+    }
+    .blocky-video-with-text .blocky-body-text strong {
+      font-size: 18px;
+    }
+    .blocky-video-with-text .button {
+      min-height: 54px;
+      padding-right: 28px;
+      padding-left: 28px;
+      font-size: 17px;
+    }
+  }
 {% endstylesheet %}
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 <div 
   class="blocky blocky-video-with-text blocky-padding background-wrapper"
   style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem; --text-container-gap: {{ section.settings.text_container_gap }}; --layout-2-background-color:{{ section.settings.layout_2_background_color }}"
@@ -40,7 +63,19 @@
               {%- when 'body' -%}
                 {% render 'blocky-bodyl', block: block %}
               {%- when 'button' -%}
-                {% render 'blocky-buttonl', block:block %}
+                {%- if block.settings.button_label != blank -%}
+                  <a
+                    {% if block.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link }}"
+                    {% endif %}
+                    class="button button--primary"
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ block.settings.button_label }}
+                  </a>
+                {%- endif -%}
               {%- when 'review-stars' -%}
                 {% render 'blocky-review-starsl', block:block %}
             {%- endcase -%}

@@ -1,6 +1,10 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'section-related-products.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
@@ -20,39 +24,119 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <product-recommendations
-    class="related-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-    data-url="{{ routes.product_recommendations_url }}?limit={{ section.settings.products_to_show }}"
-    data-section-id="{{ section.id }}"
-    data-product-id="{{ product.id }}"
+<div class="color-{{ section.settings.color_scheme }} gradient waymelo-related-products-section">
+  <div
+    class="related-products waymelo-related-products page-width section-{{ section.id }}-padding isolate{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
   >
-    {% if recommendations.performed and recommendations.products_count > 0 %}
-      <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}">
-        {{ section.settings.heading }}
-      </h2>
-      <ul
-        class="grid product-grid grid--{{ section.settings.columns_desktop }}-col-desktop grid--{{ section.settings.columns_mobile }}-col-tablet-down"
-        role="list"
-      >
-        {% assign skip_card_product_styles = false %}
-        {% for recommendation in recommendations.products %}
-          <li class="grid__item">
-            {% render 'card-product',
-              card_product: recommendation,
-              media_aspect_ratio: section.settings.image_ratio,
-              image_shape: section.settings.image_shape,
-              show_secondary_image: section.settings.show_secondary_image,
-              show_vendor: section.settings.show_vendor,
-              show_rating: section.settings.show_rating,
-              skip_styles: skip_card_product_styles
-            %}
-          </li>
-          {%- assign skip_card_product_styles = true -%}
-        {% endfor %}
-      </ul>
-    {% endif %}
-  </product-recommendations>
+      <div class="related-products__header">
+        {%- if section.settings.subheading != blank -%}
+          <p class="related-products__eyebrow">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+        <h2 class="related-products__heading inline-richtext {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h2>
+      </div>
+      <slider-component class="slider-mobile-gutter waymelo-related-products__slider">
+        <ul
+          id="Slider-{{ section.id }}"
+          class="grid product-grid contains-card contains-card--product waymelo-related-products__grid slider slider--tablet slider--desktop"
+          role="list"
+          aria-label="{{ section.settings.heading | escape }}"
+          style="--waymelo-related-columns: {{ section.settings.columns_desktop }};"
+        >
+        {%- liquid
+          assign skip_card_product_styles = false
+          assign shown_count = 0
+          assign current_product_key = '|' | append: product.id | append: '|'
+          assign seen_product_ids = current_product_key
+        -%}
+
+        {%- if shown_count < section.settings.products_to_show and product.collections.first != blank -%}
+          {%- for fallback_product in product.collections.first.products -%}
+            {%- if shown_count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
+            {%- assign fallback_product_key = '|' | append: fallback_product.id | append: '|' -%}
+            {%- unless seen_product_ids contains fallback_product_key -%}
+              <li id="Slide-{{ section.id }}-{{ fallback_product.id }}" class="grid__item slider__slide">
+                {% render 'card-product',
+                  card_product: fallback_product,
+                  media_aspect_ratio: section.settings.image_ratio,
+                  image_shape: section.settings.image_shape,
+                  show_secondary_image: section.settings.show_secondary_image,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: section.settings.show_rating,
+                  lazy_load: true,
+                  skip_styles: skip_card_product_styles,
+                  section_id: section.id,
+                  quick_add: 'standard'
+                %}
+              </li>
+              {%- liquid
+                assign skip_card_product_styles = true
+                assign shown_count = shown_count | plus: 1
+                assign seen_product_ids = seen_product_ids | append: fallback_product.id | append: '|'
+              -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- if shown_count < section.settings.products_to_show -%}
+          {%- for fallback_product in collections.all.products -%}
+            {%- if shown_count >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
+            {%- assign fallback_product_key = '|' | append: fallback_product.id | append: '|' -%}
+            {%- unless seen_product_ids contains fallback_product_key -%}
+              <li id="Slide-{{ section.id }}-{{ fallback_product.id }}" class="grid__item slider__slide">
+                {% render 'card-product',
+                  card_product: fallback_product,
+                  media_aspect_ratio: section.settings.image_ratio,
+                  image_shape: section.settings.image_shape,
+                  show_secondary_image: section.settings.show_secondary_image,
+                  show_vendor: section.settings.show_vendor,
+                  show_rating: section.settings.show_rating,
+                  lazy_load: true,
+                  skip_styles: skip_card_product_styles,
+                  section_id: section.id,
+                  quick_add: 'standard'
+                %}
+              </li>
+              {%- liquid
+                assign skip_card_product_styles = true
+                assign shown_count = shown_count | plus: 1
+                assign seen_product_ids = seen_product_ids | append: fallback_product.id | append: '|'
+              -%}
+            {%- endunless -%}
+          {%- endfor -%}
+        {%- endif -%}
+        </ul>
+        {%- if shown_count > 1 -%}
+          <div class="slider-buttons waymelo-related-products__controls">
+            <button
+              type="button"
+              class="slider-button slider-button--prev"
+              name="previous"
+              aria-label="{{ 'general.slider.previous_slide' | t }}"
+              aria-controls="Slider-{{ section.id }}"
+            >
+              {% render 'icon-caret' %}
+            </button>
+            <div class="slider-counter caption">
+              <span class="slider-counter--current">1</span>
+              <span aria-hidden="true"> / </span>
+              <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+              <span class="slider-counter--total">{{ shown_count }}</span>
+            </div>
+            <button
+              type="button"
+              class="slider-button slider-button--next"
+              name="next"
+              aria-label="{{ 'general.slider.next_slide' | t }}"
+              aria-controls="Slider-{{ section.id }}"
+            >
+              {% render 'icon-caret' %}
+            </button>
+          </div>
+        {%- endif -%}
+      </slider-component>
+  </div>
   {% if section.settings.image_shape == 'arch' %}
     {% render 'mask-arch' %}
   {%- endif -%}
@@ -101,6 +185,12 @@
       ],
       "default": "h1",
       "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "default": "Picked for you",
+      "label": "Subheading"
     },
     {
       "type": "range",

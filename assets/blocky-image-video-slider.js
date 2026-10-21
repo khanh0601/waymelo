@@ -13,7 +13,7 @@ if (!customElements.get('blocky-media-slider')) {
           this.setup()
         }
 
-        document.querySelectorAll(".blocky-slider-img-link").forEach(t => {
+        this.querySelectorAll(".blocky-slider-img-link").forEach(t => {
           const url = t.getAttribute("data-url")
           if (!url) return
           t.addEventListener("click", (event) => {
@@ -58,6 +58,11 @@ if (!customElements.get('blocky-media-slider')) {
             },
           }
         }).mount()
+
+        requestAnimationFrame(() => {
+          this.classList.remove('is-loading')
+          this.classList.add('is-ready')
+        })
       
         // Make bullet go faster
         const activeBullet = "glide__bullet--active";

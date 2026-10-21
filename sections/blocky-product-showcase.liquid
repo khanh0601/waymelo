@@ -122,7 +122,6 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
 {%- endstylesheet -%}
 
 <script src="{{ 'blocky-product-showcase.js' | asset_url }}" defer></script>
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 
 <div class="blocky blocky-showcase blocky-padding background-wrapper"
   style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
@@ -150,6 +149,10 @@ Unauthorized copying, distribution, or reproduction in any form will result in l
                   <img
                     class="blocky-full blocky-image-cover"
                     src="{{ block.settings.image | image_url: height: 750 }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    loading="lazy"
                   >  
                 {% else %}
                   {{ 'image' | placeholder_svg_tag: "blocky-full blocky-showcase-img-placeholder" }}

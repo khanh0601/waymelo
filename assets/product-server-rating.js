@@ -61,7 +61,11 @@
 
   function hideAll(teasers) {
     Array.prototype.forEach.call(teasers, function (teaser) {
-      teaser.hidden = true;
+      // Keep the row in the layout so late review data cannot push the
+      // remaining product information down the page.
+      teaser.hidden = false;
+      teaser.classList.add('is-pending');
+      teaser.setAttribute('aria-hidden', 'true');
     });
   }
 
@@ -82,6 +86,8 @@
     }
 
     teaser.hidden = false;
+    teaser.classList.remove('is-pending');
+    teaser.removeAttribute('aria-hidden');
   }
 
   function syncAll() {
@@ -140,23 +146,9 @@
     syncAll();
   }
 
-  // Re-sync later: on full load, when the theme editor re-renders a section or
-  // block, and when the DOM changes (late-rendered sections). syncAll reads the
-  // current DOM each time and binds no per-element listeners, so repeated calls
-  // are idempotent and cannot stack handlers.
+  // Re-sync at bounded lifecycle points. Avoid observing the entire document:
+  // app widgets can create thousands of mutations during startup.
   window.addEventListener('load', syncAll);
   document.addEventListener('shopify:section:load', scheduleSync);
   document.addEventListener('shopify:block:select', scheduleSync);
-
-  if (window.MutationObserver) {
-    var observer = new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i++) {
-        if (mutations[i].type === 'childList') {
-          scheduleSync();
-          return;
-        }
-      }
-    });
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-  }
 })();

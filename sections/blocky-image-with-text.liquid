@@ -32,6 +32,10 @@
           <img
             class="blocky-media blocky-image-{{ section.settings.image_fit }}{% if section.settings.shadow and section.settings.layout_style != "2" %} blocky-shadow{% endif %}"
             src="{{ section.settings.image | image_url: height: 750 }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            alt="{{ section.settings.image.alt | escape }}"
+            loading="lazy"
           >  
         {% else %}
           {% capture placeholder_class %}blocky-media blocky-image-with-text-placeholder {% if section.settings.shadow %} blocky-shadow{% endif %}{% endcapture %}

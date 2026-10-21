@@ -5,23 +5,19 @@
 {%- if video != null -%}
   <blocky-video 
     class="blocky-video{% if autoplay == false %} blocky-video-manual{% endif %}{% if video_fit == "zoomed" %} blocky-video-zoomed{% endif %}{% if other_classes != null %} {{ other_classes }}{% endif %}"
-   style="--play-button-color:{% if button_color %}{{ button_color }}{% else %}white{% endif %}; --play-button-background-color: {% if background_button_color %}{{ background_button_color }}{% else %}black{% endif %}"
+   style="--play-button-color:{% if button_color %}{{ button_color }}{% else %}white{% endif %}; --play-button-background-color: {% if background_button_color %}{{ background_button_color }}{% else %}black{% endif %}; --blocky-video-aspect-ratio: {{ video.preview_image.aspect_ratio | default: 1.7778 }};"
     {{ block-attributes }}
   >
     <video
-      preload="metadata"
-      poster="{{ video.preview_image | image_url }}"
+      preload="none"
+      data-poster="{{ video.preview_image | image_url: width: 1200 }}"
       loop
       playsinline
       {% unless autoplay == false %}autoplay muted{% endunless %}
     >
       {% for source in video.sources %}
         <source
-          {% if autoplay == false %}
-            src="{{ source.url }}"
-          {% else %}
-            data-src="{{ source.url }}"
-          {% endif %}
+          data-src="{{ source.url }}"
           type="{{ source.mime_type }}"
         >
       {% endfor %}
@@ -46,7 +42,7 @@
     </svg>
   </blocky-video>
 {% else %}
-  <div class="blocky-video blocky-shadow bky-vid-placeholder{% if other_classes != null %} {{ other_classes }}{% endif %}" style="--play-button-color:{% if button_color %}{{ button_color }}{% else %}white{% endif %}; --play-button-background-color: {% if background_button_color %}{{ background_button_color }}{% else %}lightgrey{% endif %}" {{ block-attributes }}>
+  <div class="blocky-video blocky-shadow bky-vid-placeholder{% if other_classes != null %} {{ other_classes }}{% endif %}" style="--play-button-color:{% if button_color %}{{ button_color }}{% else %}white{% endif %}; --play-button-background-color: {% if background_button_color %}{{ background_button_color }}{% else %}lightgrey{% endif %}; --blocky-video-aspect-ratio: 1.7778;" {{ block-attributes }}>
     <button class="blocky-video-play-button">
       <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 100 100">
         <circle cx="50" cy="50" r="48" stroke="fill" stroke-width="2" class="background"/>

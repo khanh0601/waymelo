@@ -34,7 +34,6 @@
   }
 </style>
 
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 <div class="blocky background-wrapper"
   style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
   --title-color: {{ section.settings.title_color }}; --description-color: {{ section.settings.body_color }}; --section-page-width: {{ section.settings.page_width | divided_by: 10 }}rem;
@@ -63,6 +62,9 @@
             <img
               src="{{ section.settings.image | image_url: height: 350 }}"
               alt="{{ section.settings.heading }}"
+              width="{{ section.settings.image.width }}"
+              height="{{ section.settings.image.height }}"
+              loading="lazy"
             >
           {% else %}
             <div class="blocky-ciwi-video">

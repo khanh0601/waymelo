@@ -22,7 +22,9 @@ class BlockyTimer extends HTMLElement {
     }
   }
 }
-customElements.define('blocky-timer', BlockyTimer);
+if (!customElements.get('blocky-timer')) {
+  customElements.define('blocky-timer', BlockyTimer);
+}
 
 class BlockyScrollTo extends HTMLElement {
   constructor() {
@@ -37,7 +39,9 @@ class BlockyScrollTo extends HTMLElement {
     })
   }
 }
-customElements.define('blocky-scroll-to', BlockyScrollTo);
+if (!customElements.get('blocky-scroll-to')) {
+  customElements.define('blocky-scroll-to', BlockyScrollTo);
+}
 
 class BlockyProductReviews extends HTMLElement {
   constructor() {
@@ -180,4 +184,6 @@ class BlockyProductReviews extends HTMLElement {
     })
   }
 }
-customElements.define('blocky-product-reviews', BlockyProductReviews);
+if (!customElements.get('blocky-product-reviews')) {
+  customElements.define('blocky-product-reviews', BlockyProductReviews);
+}

@@ -3,9 +3,6 @@
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
 {% endcomment %}
 
-<link href="https://cdn.jsdelivr.net/npm/glidejs@2.1.0/dist/css/glide.core.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-<script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
 
 <style>
 .bky-annc {
@@ -98,14 +95,14 @@
               {% if block.settings.link != blank %}
                 <a href="{{ block.settings.link }}" class="bky-annc-msg">
                   {% if block.settings.icon != blank %}
-                    <img class="bky-annc-icon" src="{{ block.settings.icon | image_url: width: 64, height: 64, crop: 'center' }}" alt="">
+                    <img class="bky-annc-icon" src="{{ block.settings.icon | image_url: width: 64, height: 64, crop: 'center' }}" alt="" width="64" height="64" loading="lazy" fetchpriority="low" decoding="async">
                   {% endif %}
                   {{ block.settings.message | escape }}
                 </a>
               {% else %}
                 <span class="bky-annc-msg">
                   {% if block.settings.icon != blank %}
-                    <img class="bky-annc-icon" src="{{ block.settings.icon | image_url: width: 64, height: 64, crop: 'center' }}" alt="">
+                    <img class="bky-annc-icon" src="{{ block.settings.icon | image_url: width: 64, height: 64, crop: 'center' }}" alt="" width="64" height="64" loading="lazy" fetchpriority="low" decoding="async">
                   {% endif %}
                   {{ block.settings.message | escape }}
                 </span>

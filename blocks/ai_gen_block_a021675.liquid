@@ -10,6 +10,7 @@
     width: 100%;
     max-width: 100%;
     margin-inline: auto;
+    padding-block: 20px;
     box-sizing: border-box;
   }
 
@@ -77,20 +78,39 @@
   }
 
   @media screen and (max-width: 749px) {
+    .ai-video-showcase-{{ ai_gen_id }} {
+      padding-inline: 1.5rem;
+    }
+
+    .ai-video-showcase-{{ ai_gen_id }}.ai-video-showcase-{{ ai_gen_id }}--wide {
+      width: 100%;
+      max-width: 100%;
+      margin-inline: 0;
+    }
+
     .ai-video-showcase-{{ ai_gen_id }}__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       width: 100%;
     }
 
     .ai-video-showcase-{{ ai_gen_id }}__item {
       aspect-ratio: {{ block.settings.mobile_aspect_ratio }};
     }
+
+    .ai-video-showcase-{{ ai_gen_id }}__toggle {
+      right: 8px;
+      bottom: 8px;
+      min-width: 0;
+      min-height: 36px;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
   }
 {% endstyle %}
 
 <video-showcase-{{ ai_gen_id }}
   class="ai-video-showcase-{{ ai_gen_id }}{% if block.settings.width_mode == 'full' %} ai-video-showcase-{{ ai_gen_id }}--wide{% endif %}"
-  {{ block.shopify_attributes }} style={padding: 20px 0}
+  {{ block.shopify_attributes }}
 >
   <div class="ai-video-showcase-{{ ai_gen_id }}__grid">
     {% for i in (1..3) %}
@@ -100,7 +120,18 @@
       %}
       <div class="ai-video-showcase-{{ ai_gen_id }}__item">
         {% if video_object != blank %}
-          {{ video_object | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'auto' }}
+          <video
+            loop
+            muted
+            playsinline
+            preload="none"
+            data-poster="{{ video_object.preview_image | image_url: width: 900 }}"
+            aria-label="Video {{ i }}"
+          >
+            {%- for source in video_object.sources -%}
+              <source data-src="{{ source.url }}" type="{{ source.mime_type }}">
+            {%- endfor -%}
+          </video>
         {% else %}
           <div class="ai-video-showcase-{{ ai_gen_id }}__empty" role="img" aria-label="Add video {{ i }} in block settings">
             <span>Add video {{ i }} in block settings</span>
@@ -143,13 +174,51 @@
 
           video.muted = true;
           video.playsInline = true;
-          const playAttempt = video.play();
-          if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+
+          const loadAndPlay = () => {
+            if (video.dataset.poster) {
+              video.poster = video.dataset.poster;
+              delete video.dataset.poster;
+            }
+
+            if (!video.dataset.loaded) {
+              video.querySelectorAll('source[data-src]').forEach((source) => {
+                source.src = source.dataset.src;
+                source.removeAttribute('data-src');
+              });
+              video.dataset.loaded = 'true';
+              video.load();
+            }
+
+            const playAttempt = video.play();
+            if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+          };
+
+          const observeAfterHero = () => {
+            if ('IntersectionObserver' in window) {
+              const observer = new IntersectionObserver((entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) {
+                  loadAndPlay();
+                  observer.disconnect();
+                }
+              }, { rootMargin: '100% 0px 100% 0px', threshold: 0.01 });
+              observer.observe(item);
+              return;
+            }
+
+            loadAndPlay();
+          };
+
+          const hero = document.querySelector('blocky-featured-product');
+          if (!hero || document.documentElement.classList.contains('waymelo-hero-ready')) {
+            observeAfterHero();
+          } else {
+            window.addEventListener('waymelo:hero-ready', observeAfterHero, { once: true });
+          }
 
           button.addEventListener('click', () => {
             if (video.paused) {
-              const attempt = video.play();
-              if (attempt && typeof attempt.catch === 'function') attempt.catch(() => {});
+              loadAndPlay();
               button.textContent = 'Pause';
               button.setAttribute('aria-label', 'Pause video');
               button.setAttribute('aria-pressed', 'false');

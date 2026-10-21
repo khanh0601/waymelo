@@ -12,8 +12,12 @@
         {% if section.settings.image %}
           <img
             class="blocky-image-hero-img blocky-image-{{ section.settings.image_fit }}"
-            src={{ section.settings.image | image_url: width: 2040 }}
-          />
+            src="{{ section.settings.image | image_url: width: 2040 }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            alt="{{ section.settings.image.alt | escape }}"
+            loading="lazy"
+          >
         {% else %}
           {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
         {% endif %}

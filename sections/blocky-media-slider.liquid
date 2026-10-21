@@ -111,7 +111,6 @@
   }
 {% endstyle %}
  
-<script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
 <script src="{{ 'blocky-slider-2.js' | asset_url }}" defer></script>
 
 <div 
@@ -148,6 +147,10 @@
                   <img
                     class="{{ other_classes }} blocky-image-cover"
                     src="{{ block.settings.image | image_url: height: 750 }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    loading="lazy"
                   >  
                 {% else %}
                   {{ 'image' | placeholder_svg_tag: other_classes }}

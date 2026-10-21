@@ -38,6 +38,9 @@
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'blocky-lys-global.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'glide.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
+    <script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
@@ -57,6 +60,7 @@
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
 
+      {% assign scheme_classes = '' %}
       {% for scheme in settings.color_schemes -%}
         {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
         {% if forloop.index == 1 -%}
@@ -260,6 +264,7 @@
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'blocky-lys.css' | asset_url | stylesheet_tag }}
+    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}
@@ -364,8 +369,7 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1" rel="stylesheet" />
+    {{ 'material-symbols.css' | asset_url | stylesheet_tag }}
 
     {% section 'help-button' %}
   </body>

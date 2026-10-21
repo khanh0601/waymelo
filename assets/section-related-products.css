@@ -2,6 +2,320 @@
   display: block;
 }
 
+.waymelo-related-products-section {
+  overflow: hidden;
+}
+
+.waymelo-related-products,
+.waymelo-related-products__slider {
+  overflow: visible;
+}
+
+.related-products__header {
+  margin: 0 auto 3rem;
+  text-align: center;
+}
+
 .related-products__heading {
-  margin: 0 0 3rem;
+  margin: 0;
+  color: #1f1720;
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.related-products__eyebrow {
+  margin: 0 0 0.8rem;
+  color: #7a5168;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.waymelo-related-products__grid {
+  display: flex;
+  gap: 1.4rem;
+  margin: 0;
+  padding: 0.2rem 0 1.2rem;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  scroll-padding-left: 0.2rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.waymelo-related-products__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.waymelo-related-products__grid > .grid__item {
+  width: min(74vw, 28rem);
+  max-width: min(74vw, 28rem);
+  flex: 0 0 min(74vw, 28rem);
+  scroll-snap-align: start;
+}
+
+/* Dawn's desktop slider offsets its first item for full-width sections.
+   This section already sits inside .page-width, so keep the first card flush. */
+.waymelo-related-products__grid.slider--desktop > .slider__slide:first-child {
+  margin-left: 0;
+  scroll-margin-left: 0;
+}
+
+.waymelo-related-products .card-wrapper {
+  height: 100%;
+  padding: 0.9rem;
+  overflow: hidden;
+  border: 0;
+  border-radius: 2rem;
+  background: #ffffff;
+  box-shadow: 0 8px 30px rgba(66, 38, 53, 0.08);
+  transition: box-shadow 0.22s ease, transform 0.22s ease;
+}
+
+.waymelo-related-products .card-wrapper:hover {
+  box-shadow: 0 14px 36px rgba(66, 38, 53, 0.12);
+  transform: translateY(-3px);
+}
+
+.waymelo-related-products .card--card,
+.waymelo-related-products .card--standard .card__inner {
+  border: 0;
+}
+
+.waymelo-related-products .card--card::after,
+.waymelo-related-products .card--standard .card__inner::after {
+  box-shadow: none;
+}
+
+.waymelo-related-products .card,
+.waymelo-related-products .card__content {
+  height: 100%;
+}
+
+.waymelo-related-products .card {
+  display: flex;
+  flex-direction: column;
+}
+
+.waymelo-related-products .card__inner {
+  overflow: hidden;
+  border-radius: 1.4rem;
+  background: #f8f5f7;
+}
+
+.waymelo-related-products .card-wrapper .media.media--hover-effect > img {
+  transition:
+    opacity 0.38s ease,
+    transform 0.48s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+
+.waymelo-related-products .card-wrapper .media.media--hover-effect > img + img {
+  opacity: 0;
+  transform: scale(1.015);
+}
+
+.waymelo-related-products .card-wrapper:hover .media.media--hover-effect > img:first-child {
+  transform: scale(1.035);
+}
+
+.waymelo-related-products .card-wrapper:hover .media.media--hover-effect > img:first-child:not(:only-child) {
+  opacity: 0;
+}
+
+.waymelo-related-products .card-wrapper:hover .media.media--hover-effect > img + img {
+  opacity: 1;
+  transform: scale(1.035);
+  transition:
+    opacity 0.38s ease,
+    transform 0.48s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+
+.waymelo-related-products .card > .card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.4rem 0.5rem 0.4rem;
+}
+
+.waymelo-related-products .card__information {
+  padding: 0;
+}
+
+.waymelo-related-products .card__heading {
+  display: -webkit-box;
+  min-height: 2.8em;
+  max-height: 2.8em;
+  margin-bottom: 0.7rem;
+  overflow: hidden;
+  color: #211820;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.waymelo-related-products .card-information > *:not(.visually-hidden:first-child) + * {
+  margin-top: 0.5rem;
+}
+
+.waymelo-related-products .price {
+  color: #7a5168;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.waymelo-related-products .price--on-sale .price-item--regular {
+  color: #8b8187;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.waymelo-related-products .badge {
+  padding: 0.6rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #7a5168;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.waymelo-related-products .quick-add {
+  margin: auto 0 0;
+  padding-top: 1.2rem;
+}
+
+.waymelo-related-products .quick-add__submit {
+  min-height: 4.4rem;
+  border: 1px solid #7a5168;
+  border-radius: 999px;
+  background: #7a5168;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.waymelo-related-products .quick-add__submit::after {
+  box-shadow: none;
+}
+
+.waymelo-related-products .quick-add__submit:hover {
+  background: #684359;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.waymelo-related-products__controls {
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 1.8rem;
+}
+
+.waymelo-related-products__controls .slider-button {
+  width: 4rem;
+  height: 4rem;
+  border: 1px solid rgba(122, 81, 104, 0.14);
+  border-radius: 50%;
+  background: #ffffff;
+  color: #7a5168;
+  box-shadow: 0 4px 14px rgba(66, 38, 53, 0.08);
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.waymelo-related-products__controls .slider-button .icon {
+  transition: transform 0.18s ease;
+}
+
+.waymelo-related-products__controls .slider-button:not([disabled]):hover {
+  border-color: #111827;
+  background: #111827;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(17, 24, 39, 0.22);
+  transform: translateY(-1px);
+}
+
+.waymelo-related-products__controls .slider-button:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 2px;
+}
+
+.waymelo-related-products__controls .slider-counter {
+  min-width: 4.8rem;
+  color: #71666c;
+}
+
+@media screen and (max-width: 749px) {
+  .waymelo-related-products__slider {
+    width: calc(100% + 3rem);
+    margin-inline: -1.5rem;
+  }
+
+  .waymelo-related-products__grid {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    scroll-padding-left: 1.5rem;
+  }
+
+  .waymelo-related-products__grid.slider--tablet::after {
+    width: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .related-products__header {
+    margin-bottom: 3.6rem;
+  }
+
+  .waymelo-related-products__grid {
+    gap: 1.8rem;
+  }
+
+  .waymelo-related-products__grid > .grid__item {
+    width: min(38vw, 32rem);
+    max-width: min(38vw, 32rem);
+    flex: 0 0 min(38vw, 32rem);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .waymelo-related-products__grid {
+    --waymelo-related-card-width: calc((100% - 5.4rem) / 4);
+    scroll-padding-inline: 0;
+  }
+
+  .waymelo-related-products__grid > .grid__item {
+    width: var(--waymelo-related-card-width);
+    min-width: var(--waymelo-related-card-width);
+    max-width: var(--waymelo-related-card-width);
+    flex: 0 0 var(--waymelo-related-card-width);
+  }
+
+  .waymelo-related-products__grid.slider--desktop::after {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waymelo-related-products .card-wrapper,
+  .waymelo-related-products .card-wrapper .media.media--hover-effect > img,
+  .waymelo-related-products .quick-add__submit,
+  .waymelo-related-products__controls .slider-button,
+  .waymelo-related-products__controls .slider-button .icon {
+    transition: none !important;
+  }
 }

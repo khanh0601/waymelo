@@ -2,8 +2,11 @@
     <div class="product-item" data-handle="{{ product.handle }}_{{ forloop.index0 }}_{{ index }}">
         <div class="pro_img">
             <img class="product_pop_img"
-                src="{{ product.featured_image | img_url: 'medium' }}"
-                alt="{{ product.title }}">
+                src="{{ product.featured_image | image_url: width: 480 }}"
+                alt="{{ product.title | escape }}"
+                width="{{ product.featured_image.width }}"
+                height="{{ product.featured_image.height }}"
+                loading="lazy">
         </div>
 
         <h3 class="popup_product_title">{{ product.title }}</h3>
@@ -25,7 +28,6 @@
         %}
     </div>
 {% endfor %}
-
 
 
 

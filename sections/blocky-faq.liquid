@@ -223,7 +223,7 @@
                             {% endif %}
                             <div class="blocky-faq-question-text">
                               {% if block.settings.image != null %}
-                                <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                                <img src="{{ block.settings.image | image_url: width: 96 }}" alt="{{ block.settings.question | strip_html | escape }}" class="blocky-faq-icon" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy" fetchpriority="low" decoding="async">
                               {% elsif block.settings.icon_code != blank %}
                                 <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
                               {% endif %}
@@ -268,7 +268,7 @@
                     {% endif %}
                     <div class="blocky-faq-question-text">
                       {% if block.settings.image != null %}
-                        <img src="{{ block.settings.image | image_url }}" alt="{{ block.settings.question }}" class="blocky-faq-icon"/>
+                        <img src="{{ block.settings.image | image_url: width: 96 }}" alt="{{ block.settings.question | strip_html | escape }}" class="blocky-faq-icon" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}" loading="lazy" fetchpriority="low" decoding="async">
                       {% elsif block.settings.icon_code != blank %}
                         <span class="material-icons material-symbols-outlined blocky-icon blocky-faq-icon"> {{ block.settings.icon_code }} </span>
                       {% endif %}

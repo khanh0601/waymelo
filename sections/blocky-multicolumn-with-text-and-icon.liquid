@@ -76,7 +76,10 @@
                 alt="{{ block.settings.heading }}"
                 class="blocky-mcti-icon"
                 style="border-radius: 50%;"
-              />
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                loading="lazy"
+              >
             {% elsif block.settings.icon_code != blank %}
               <div class="blocky-icon-container">
                 <span class="material-icons material-symbols-outlined blocky-icon blocky-mcti-icon"> {{ block.settings.icon_code }} </span>

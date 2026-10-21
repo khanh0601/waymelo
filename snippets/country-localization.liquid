@@ -35,14 +35,7 @@
     aria-describedby="{{ localPosition }}Label"
   >
     {%- if show_flag -%}
-      <img
-        class="footer__country-flag"
-        src="https://flagcdn.com/w20/{{ localization.country.iso_code | downcase }}.png"
-        srcset="https://flagcdn.com/w40/{{ localization.country.iso_code | downcase }}.png 2x"
-        width="20"
-        alt="{{ localization.country.name | escape }}"
-        loading="lazy"
-      >
+      <span class="footer__country-flag footer__country-code" aria-hidden="true">{{ localization.country.iso_code }}</span>
     {%- endif -%}
     <span>
       {{- localization.country.name }} |
