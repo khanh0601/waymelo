@@ -1,13 +1,17 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'component-slider.css' | asset_url | stylesheet_tag }}
-{{ 'section-related-products.css' | asset_url | stylesheet_tag }}
-{{ 'quick-add.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+{% render 'waymelo-deferred-style', asset: 'component-card.css' %}
+{% render 'waymelo-deferred-style', asset: 'component-price.css' %}
+{% render 'waymelo-deferred-style', asset: 'component-slider.css' %}
+{% render 'waymelo-deferred-style', asset: 'section-related-products.css' %}
+{% render 'waymelo-deferred-style', asset: 'quick-add.css' %}
+{% render 'waymelo-deferred-style', asset: 'component-rating.css' %}
+{% render 'waymelo-deferred-style', asset: 'component-volume-pricing.css' %}
+{% render 'waymelo-deferred-style', asset: 'quick-order-list.css' %}
+{% render 'waymelo-deferred-style', asset: 'quantity-popover.css' %}
+{% render 'waymelo-deferred-script', asset: 'product-form.js' %}
+{% render 'waymelo-deferred-script', asset: 'quick-add.js' %}
 
 {% if section.settings.image_shape == 'blob' %}
-  {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
+  {% render 'waymelo-deferred-style', asset: 'mask-blobs.css' %}
 {%- endif -%}
 
 {%- style -%}
@@ -45,7 +49,7 @@
           style="--waymelo-related-columns: {{ section.settings.columns_desktop }};"
         >
         {%- liquid
-          assign skip_card_product_styles = false
+          assign skip_card_product_styles = true
           assign shown_count = 0
           assign current_product_key = '|' | append: product.id | append: '|'
           assign seen_product_ids = current_product_key

@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+
+    {%- if request.page_type == 'product' and product.featured_media.preview_image != blank -%}
+      {%- assign waymelo_hero_image = product.featured_media.preview_image -%}
+      <link
+        rel="preload"
+        as="image"
+        href="{{ waymelo_hero_image | image_url: width: 1400 }}"
+        imagesrcset="{{ waymelo_hero_image | image_url: width: 480 }} 480w, {{ waymelo_hero_image | image_url: width: 750 }} 750w, {{ waymelo_hero_image | image_url: width: 900 }} 900w, {{ waymelo_hero_image | image_url: width: 1200 }} 1200w, {{ waymelo_hero_image | image_url: width: 1400 }} 1400w"
+        imagesizes="(min-width: 990px) 50vw, 100vw"
+        fetchpriority="high"
+      >
+    {%- endif -%}
 
     {% if request.page_type == 'index' %}
       <script type="text/javascript">
@@ -46,6 +60,203 @@
     {%- endif -%}
 
     {{ content_for_header }}
+
+    {%- if template.name == 'product' -%}
+      <script>
+        (function () {
+          // Discover Pumper immediately after Shopify injects its entry script so the bundle UI
+          // downloads alongside the preloaded hero image, before the large inline theme styles.
+          var entry = document.querySelector('script[src*="/assets/pumper-bundles-v2.js"]');
+          if (!entry) return;
+
+          var base = entry.src.split('?')[0].replace(/pumper-bundles-v2\.js$/, '');
+          [
+            'f-tier-cards',
+            'f-basic-tier',
+            'f-swatches',
+            'f-block-title',
+            'f-tier-tag',
+            'tool-ribbon-tag',
+            'tool-out-of-stock-message'
+          ].forEach(function (name) {
+            var href = base + 'pumper-chunk-' + name + '.js';
+            if (document.querySelector('link[href="' + href + '"]')) return;
+
+            var link = document.createElement('link');
+            link.rel = 'modulepreload';
+            link.href = href;
+            link.crossOrigin = 'anonymous';
+            link.setAttribute('fetchpriority', 'high');
+            document.head.appendChild(link);
+          });
+        })();
+      </script>
+
+      <style>
+        #MainContent > .shopify-section:not(:first-child) {
+          content-visibility: auto;
+          contain-intrinsic-size: auto 900px;
+        }
+      </style>
+
+      <script>
+        (function () {
+          var state = {
+            hero: document.documentElement.classList.contains('waymelo-hero-ready'),
+            bundle: false,
+            released: false
+          };
+
+          function loadStyle(placeholder) {
+            return new Promise(function (resolve) {
+              var href = placeholder.getAttribute('data-waymelo-style');
+              if (!href) return resolve();
+
+              var existing = document.querySelector('link[rel="stylesheet"][href="' + href + '"]');
+              if (existing) {
+                placeholder.remove();
+                return resolve();
+              }
+
+              var link = document.createElement('link');
+              link.rel = 'stylesheet';
+              link.href = href;
+              link.onload = link.onerror = resolve;
+              placeholder.replaceWith(link);
+            });
+          }
+
+          function loadScript(placeholder) {
+            return new Promise(function (resolve) {
+              var src = placeholder.getAttribute('data-src');
+              if (!src) return resolve();
+
+              var existing = document.querySelector('script[src="' + src + '"]');
+              if (existing) {
+                placeholder.remove();
+                return resolve();
+              }
+
+              var script = document.createElement('script');
+              script.src = src;
+              script.onload = script.onerror = resolve;
+              placeholder.replaceWith(script);
+            });
+          }
+
+          function hydrateAppMarkup(section) {
+            var chain = Promise.resolve();
+
+            section.querySelectorAll('template[data-waymelo-app-markup]').forEach(function (template) {
+              chain = chain.then(function () {
+                var fragment = template.content.cloneNode(true);
+                var capturedScripts = [];
+
+                fragment.querySelectorAll('script').forEach(function (source) {
+                  var marker = document.createElement('template');
+                  source.replaceWith(marker);
+                  capturedScripts.push({ source: source, marker: marker });
+                });
+
+                template.replaceWith(fragment);
+
+                var scriptChain = Promise.resolve();
+                capturedScripts.forEach(function (captured) {
+                  scriptChain = scriptChain.then(function () {
+                    return new Promise(function (resolve) {
+                      var script = document.createElement('script');
+                      Array.from(captured.source.attributes).forEach(function (attribute) {
+                        script.setAttribute(attribute.name, attribute.value);
+                      });
+                      script.textContent = captured.source.textContent;
+                      if (script.src) script.onload = script.onerror = resolve;
+                      captured.marker.replaceWith(script);
+                      if (!script.src) resolve();
+                    });
+                  });
+                });
+
+                return scriptChain;
+              });
+            });
+
+            return chain;
+          }
+
+          function loadSection(section) {
+            if (!section || section.dataset.waymeloResourcesLoaded === 'true') return;
+            section.dataset.waymeloResourcesLoaded = 'true';
+
+            var styles = Array.from(section.querySelectorAll('[data-waymelo-style]'));
+            Promise.all(styles.map(loadStyle)).then(function () {
+              return hydrateAppMarkup(section);
+            }).then(function () {
+              var chain = Promise.resolve();
+              section.querySelectorAll('template[data-waymelo-script]').forEach(function (placeholder) {
+                chain = chain.then(function () { return loadScript(placeholder); });
+              });
+            });
+          }
+
+          function startDeferredSections() {
+            var resources = document.querySelectorAll(
+              '[data-waymelo-style], template[data-waymelo-script], template[data-waymelo-app-markup]'
+            );
+            var sections = [];
+
+            resources.forEach(function (resource) {
+              var section = resource.closest('.shopify-section') || resource.parentElement;
+              if (section && sections.indexOf(section) === -1) sections.push(section);
+            });
+
+            if (document.documentElement.classList.contains('shopify-design-mode') || !('IntersectionObserver' in window)) {
+              sections.forEach(loadSection);
+              return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                observer.unobserve(entry.target);
+                loadSection(entry.target);
+              });
+            }, { rootMargin: '900px 0px', threshold: 0.01 });
+
+            sections.forEach(function (section) { observer.observe(section); });
+          }
+
+          function release(force) {
+            if (state.released || (!force && (!state.hero || !state.bundle))) return;
+            state.released = true;
+            document.documentElement.classList.add('waymelo-critical-ready');
+
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', startDeferredSections, { once: true });
+            } else {
+              startDeferredSections();
+            }
+          }
+
+          window.addEventListener('waymelo:hero-ready', function () {
+            state.hero = true;
+            release(false);
+          }, { once: true });
+
+          window.addEventListener('waymelo:bundle-ready', function () {
+            state.bundle = true;
+            release(false);
+          }, { once: true });
+
+          document.addEventListener('DOMContentLoaded', function () {
+            if (!document.querySelector('[data-blocky-pumper-slot]')) state.bundle = true;
+            release(false);
+          }, { once: true });
+
+          // A broken third-party widget must not permanently prevent the rest of the page loading.
+          window.setTimeout(function () { release(true); }, 8000);
+        })();
+      </script>
+    {%- endif -%}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
@@ -375,7 +586,11 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {{ 'material-symbols.css' | asset_url | stylesheet_tag }}
+    {%- if request.page_type == 'product' -%}
+      {% render 'waymelo-deferred-style', asset: 'material-symbols.css' %}
+    {%- else -%}
+      {{ 'material-symbols.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
 
     {% section 'help-button' %}
   </body>

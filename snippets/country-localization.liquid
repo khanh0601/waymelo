@@ -103,27 +103,15 @@
         >
           {%- for country in popular_countries -%}
             <li class="disclosure__item" tabindex="-1">
-              <a
-                class="link link--text disclosure__link caption-large focus-inset"
-                href="#"
-                {% if country.iso_code == localization.country.iso_code %}
-                  aria-current="true"
-                {% endif %}
-                data-value="{{ country.iso_code }}"
-                id="{{ country.name }}"
-              >
-                <span
-                  {% if country.iso_code != localization.country.iso_code %}
-                    class="visibility-hidden"
-                  {% endif %}
-                >
-                  {%- render 'icon-checkmark' -%}
-                </span>
-                <span class="country">{{- country.name }}</span>
-                <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
-                  {{ country.currency.iso_code }}
-                  {{ country.currency.symbol -}}
-                </span>
+              {%- if country.iso_code == localization.country.iso_code -%}
+                <a class="link link--text disclosure__link caption-large focus-inset" href="#" aria-current="true" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span>{%- render 'icon-checkmark' -%}</span>
+              {%- else -%}
+                <a class="link link--text disclosure__link caption-large focus-inset" href="#" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span class="visibility-hidden localization-check-placeholder"></span>
+              {%- endif -%}
+              <span class="country">{{ country.name }}</span>
+              {%- if show_currencies -%}
+                <span class="localization-form__currency motion-reduce">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
+              {%- endif -%}
               </a>
             </li>
           {%- endfor -%}
@@ -132,27 +120,15 @@
       <ul role="list" class="list-unstyled countries">
         {%- for country in localization.available_countries -%}
           <li class="disclosure__item" tabindex="-1">
-            <a
-              class="link link--text disclosure__link caption-large focus-inset"
-              href="#"
-              {% if country.iso_code == localization.country.iso_code %}
-                aria-current="true"
-              {% endif %}
-              data-value="{{ country.iso_code }}"
-              id="{{ country.name }}"
-            >
-              <span
-                {% if country.iso_code != localization.country.iso_code %}
-                  class="visibility-hidden"
-                {% endif %}
-              >
-                {%- render 'icon-checkmark' -%}
-              </span>
-              <span class="country">{{- country.name }}</span>
-              <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
-                {{ country.currency.iso_code }}
-                {{ country.currency.symbol -}}
-              </span>
+            {%- if country.iso_code == localization.country.iso_code -%}
+              <a class="link link--text disclosure__link caption-large focus-inset" href="#" aria-current="true" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span>{%- render 'icon-checkmark' -%}</span>
+            {%- else -%}
+              <a class="link link--text disclosure__link caption-large focus-inset" href="#" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span class="visibility-hidden localization-check-placeholder"></span>
+            {%- endif -%}
+            <span class="country">{{ country.name }}</span>
+            {%- if show_currencies -%}
+              <span class="localization-form__currency motion-reduce">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
+            {%- endif -%}
             </a>
           </li>
         {%- endfor -%}

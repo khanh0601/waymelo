@@ -860,7 +860,7 @@
   </div>
 </div>
 
-<script src="{{ 'reviews-section.js' | asset_url }}" defer></script>
+{% render 'waymelo-deferred-script', asset: 'reviews-section.js' %}
 
 {% schema %}
 {

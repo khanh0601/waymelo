@@ -167,7 +167,7 @@
 }
 {% endstyle %}
 
-<script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
+{% render 'waymelo-deferred-script', asset: 'blocky-accordion.js' %}
 
 <div
   id="blocky-faq-{{ section.id }}"

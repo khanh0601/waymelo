@@ -1851,69 +1851,175 @@
             titleTargets.forEach((element) => element.classList.add('blocky-pumper-option-title'));
           };
 
-          const revealWhenStable = () => {
-            clearTimeout(stabilityTimer);
-            stabilityTimer = window.setTimeout(() => {
-              Promise.resolve(document.fonts?.ready).then(() => {
-                const heightBefore = observedWidget?.getBoundingClientRect().height || 0;
-                requestAnimationFrame(() => {
-                  requestAnimationFrame(() => {
-                    const heightAfter = observedWidget?.getBoundingClientRect().height || 0;
-                    if (heightAfter < 100 || Math.abs(heightAfter - heightBefore) > 1) {
-                      revealWhenStable();
-                      return;
-                    }
-
-                    enhanceLabels();
-                    slot.classList.remove('is-loading');
-                    slot.classList.add('is-ready');
-                    slot.setAttribute('aria-busy', 'false');
-                    mutationObserver?.disconnect();
-                    resizeObserver?.disconnect();
-                    clearTimeout(fallbackTimer);
-                  });
-                });
-              });
-            }, 180);
+          /*
+            Readiness signals coming from the Pumper app. Pumper dispatches its events on window and
+            records performance marks, which may fire before this element connects, so buffered marks
+            are checked first and observed afterwards.
+          */
+          const signals = { mounted: false, configured: false, firstPaint: false, blockTitle: false };
+          const MOUNT_MARKS = ['pmpr:mount-done', 'pmpr:tiers-shell-mounted'];
+          const CONFIG_MARKS = ['pmpr:config-applied'];
+          const FIRST_PAINT_MARKS = ['pmpr:first-paint-done'];
+          const BLOCK_TITLE_MARKS = ['pmpr:resolve-block-title'];
+          const hasMark = (names) => {
+            try {
+              return names.some((name) => performance.getEntriesByName(name).length > 0);
+            } catch (error) {
+              return false;
+            }
+          };
+          const syncSignals = () => {
+            if (!signals.mounted && hasMark(MOUNT_MARKS)) signals.mounted = true;
+            if (!signals.configured && hasMark(CONFIG_MARKS)) signals.configured = true;
+            if (!signals.firstPaint && hasMark(FIRST_PAINT_MARKS)) signals.firstPaint = true;
+            if (!signals.blockTitle && hasMark(BLOCK_TITLE_MARKS)) signals.blockTitle = true;
           };
 
-          const fallbackTimer = window.setTimeout(() => {
-            if (slot.classList.contains('is-loading')) {
-              enhanceLabels();
-              slot.classList.remove('is-loading');
-              slot.classList.add('is-ready');
-              slot.setAttribute('aria-busy', 'false');
+          const startedAt = performance.now();
+          const EMPTY_SLOT_TIMEOUT = 15000;
+          const DOM_SETTLE_TIME = 240;
+          const TITLE_MARK_FALLBACK = 1500;
+          let firstPaintReadyAt = 0;
+          let lastMutationAt = performance.now();
+          let revealed = false;
 
-              const widget = slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
-              const isEmpty = !widget || widget.getBoundingClientRect().height < 10;
-              slot.classList.toggle('is-empty', isEmpty);
+          const getWidget = () => slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
+          const widgetHeight = () => getWidget()?.getBoundingClientRect().height || 0;
+          const cssReady = () => {
+            const links = Array.from(
+              document.querySelectorAll(
+                'link[data-pumper-css], link[rel="stylesheet"][href*="/assets/pumper-bundles-v2.css"]'
+              )
+            );
+            return links.length === 0 || links.every((link) => link.sheet || link.getAttribute('data-pumper-css') === 'loaded');
+          };
 
-              // Keep watching an empty slot so a late-loading widget can still show up
-              if (!isEmpty) {
-                mutationObserver?.disconnect();
-                resizeObserver?.disconnect();
-              }
-            }
-          }, 3000);
+          const cleanup = () => {
+            mutationObserver?.disconnect();
+            resizeObserver?.disconnect();
+            markObserver?.disconnect();
+            clearTimeout(stabilityTimer);
+            clearTimeout(safetyTimer);
+            clearInterval(pollTimer);
+            PUMPER_EVENTS.forEach((name) => window.removeEventListener(name, onPumperEvent));
+          };
+
+          const reveal = () => {
+            if (revealed) return;
+            revealed = true;
+            enhanceLabels();
+            slot.classList.remove('is-loading', 'is-empty');
+            slot.classList.add('is-ready');
+            slot.setAttribute('aria-busy', 'false');
+            window.dispatchEvent(new CustomEvent('waymelo:bundle-ready'));
+            cleanup();
+          };
+
+          const isComplete = () => {
+            syncSignals();
+            if (widgetHeight() < 100 || !cssReady()) return false;
+
+            enhanceLabels();
+            if (!signals.mounted || !signals.configured || !signals.firstPaint) return false;
+            if (!firstPaintReadyAt) firstPaintReadyAt = performance.now();
+
+            // The block title and ribbons are resolved after Pumper's first-paint mark. Wait for the
+            // title signal when available, with a compatibility fallback for older app versions.
+            const titleReady = signals.blockTitle || performance.now() - firstPaintReadyAt >= TITLE_MARK_FALLBACK;
+            const domSettled = performance.now() - lastMutationAt >= DOM_SETTLE_TIME;
+            return titleReady && domSettled;
+          };
+
+          // Reveal only once Pumper reports its paint complete and the final DOM has settled.
+          const check = () => {
+            if (revealed) return;
+            clearTimeout(stabilityTimer);
+            stabilityTimer = window.setTimeout(() => {
+              if (revealed || !isComplete()) return;
+
+              const heightBefore = widgetHeight();
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  if (revealed) return;
+                  const heightAfter = widgetHeight();
+                  if (heightAfter < 100 || Math.abs(heightAfter - heightBefore) > 1) {
+                    check();
+                    return;
+                  }
+                  reveal();
+                });
+              });
+            }, DOM_SETTLE_TIME);
+          };
 
           const watchWidget = () => {
-            const widget = slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
-            if (!widget || widget.getBoundingClientRect().height < 100) return;
+            if (revealed) return;
+            const widget = getWidget();
+            if (!widget) return;
 
-            slot.classList.remove('is-empty');
-            enhanceLabels();
+            // If an offer arrives after the empty-slot timeout, restore its skeleton before the
+            // slot becomes visible. The partially mounted app must never flash on screen.
+            if (slot.classList.contains('is-empty')) {
+              slot.classList.remove('is-ready', 'is-empty');
+              slot.classList.add('is-loading');
+              slot.setAttribute('aria-busy', 'true');
+            }
+
+            if (widget.getBoundingClientRect().height >= 100) slot.classList.remove('is-empty');
             if (widget !== observedWidget) {
               resizeObserver?.disconnect();
               observedWidget = widget;
               if (window.ResizeObserver) {
-                resizeObserver = new ResizeObserver(revealWhenStable);
+                resizeObserver = new ResizeObserver(check);
                 resizeObserver.observe(widget);
               }
             }
-            revealWhenStable();
+            check();
           };
 
-          mutationObserver = new MutationObserver(watchWidget);
+          const PUMPER_EVENTS = ['pumper-widget-ready', 'pumper:tierDomReady', 'prvw-svelte-dom-ready'];
+          const onPumperEvent = (event) => {
+            signals.mounted = true;
+            if (event.type === 'pumper:tierDomReady' || event.type === 'prvw-svelte-dom-ready') {
+              signals.firstPaint = true;
+            }
+            watchWidget();
+          };
+          PUMPER_EVENTS.forEach((name) => window.addEventListener(name, onPumperEvent));
+
+          let markObserver;
+          try {
+            markObserver = new PerformanceObserver((list) => {
+              if (list.getEntries().some((entry) => entry.name.startsWith('pmpr:'))) watchWidget();
+            });
+            markObserver.observe({ type: 'mark', buffered: true });
+          } catch (error) {
+            markObserver = null;
+          }
+
+          document.querySelectorAll('link[data-pumper-css]').forEach((link) => {
+            link.addEventListener('load', () => window.setTimeout(watchWidget, 0), { once: true });
+          });
+
+          // Low-frequency poll as a backstop for signals that do not trigger DOM mutations
+          const pollTimer = window.setInterval(watchWidget, 500);
+
+          const safetyTimer = window.setTimeout(() => {
+            if (revealed) return;
+            if (widgetHeight() >= 10) return;
+
+            // The product has no bundle. Collapse only an empty slot; never reveal a partial widget.
+            slot.classList.remove('is-loading');
+            slot.classList.add('is-ready', 'is-empty');
+            slot.setAttribute('aria-busy', 'false');
+            window.dispatchEvent(new CustomEvent('waymelo:bundle-ready'));
+            clearInterval(pollTimer);
+          }, Math.max(0, EMPTY_SLOT_TIMEOUT - (performance.now() - startedAt)));
+
+          mutationObserver = new MutationObserver(() => {
+            lastMutationAt = performance.now();
+            watchWidget();
+          });
           mutationObserver.observe(slot, { childList: true, subtree: true, characterData: true });
           watchWidget();
         });

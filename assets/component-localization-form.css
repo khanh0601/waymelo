@@ -322,6 +322,12 @@
   margin-right: 0.2rem;
 }
 
+.disclosure__link .localization-check-placeholder {
+  display: inline-block;
+  width: 1rem;
+  margin-right: 0.2rem;
+}
+
 .disclosure__link:hover .localization-form__currency,
 .disclosure__link:focus-visible .localization-form__currency,
 .disclosure__link:focus .localization-form__currency {
