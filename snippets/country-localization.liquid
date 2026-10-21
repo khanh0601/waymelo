@@ -94,46 +94,11 @@
     <div
       class="disclosure__list country-selector__list{% if show_currencies %} country-selector__list--with-multiple-currencies{% endif %}"
       id="{{ localPosition }}-country-results"
-    >
-      {% if show_popular_countries %}
-        <ul
-          role="list"
-          class="list-unstyled popular-countries"
-          aria-label="{{ 'localization.popular_countries_regions' | t }}"
-        >
-          {%- for country in popular_countries -%}
-            <li class="disclosure__item" tabindex="-1">
-              {%- if country.iso_code == localization.country.iso_code -%}
-                <a class="link link--text disclosure__link caption-large focus-inset" href="#" aria-current="true" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span>{%- render 'icon-checkmark' -%}</span>
-              {%- else -%}
-                <a class="link link--text disclosure__link caption-large focus-inset" href="#" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span class="visibility-hidden localization-check-placeholder"></span>
-              {%- endif -%}
-              <span class="country">{{ country.name }}</span>
-              {%- if show_currencies -%}
-                <span class="localization-form__currency motion-reduce">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
-              {%- endif -%}
-              </a>
-            </li>
-          {%- endfor -%}
-        </ul>
-      {% endif %}
-      <ul role="list" class="list-unstyled countries">
-        {%- for country in localization.available_countries -%}
-          <li class="disclosure__item" tabindex="-1">
-            {%- if country.iso_code == localization.country.iso_code -%}
-              <a class="link link--text disclosure__link caption-large focus-inset" href="#" aria-current="true" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span>{%- render 'icon-checkmark' -%}</span>
-            {%- else -%}
-              <a class="link link--text disclosure__link caption-large focus-inset" href="#" data-value="{{ country.iso_code }}" id="{{ country.name }}"><span class="visibility-hidden localization-check-placeholder"></span>
-            {%- endif -%}
-            <span class="country">{{ country.name }}</span>
-            {%- if show_currencies -%}
-              <span class="localization-form__currency motion-reduce">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
-            {%- endif -%}
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
-    </div>
+      data-country-options
+      data-show-popular="{{ show_popular_countries }}"
+      data-show-currencies="{{ show_currencies }}"
+      data-popular-label="{{ 'localization.popular_countries_regions' | t | escape }}"
+    ></div>
   </div>
   <div class="country-selector__overlay"></div>
 </div>

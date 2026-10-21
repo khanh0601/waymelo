@@ -1,25 +1,7 @@
-{%- liquid
-  assign waymelo_defer_app_blocks = false
-  if request.page_type == 'product'
-    assign waymelo_defer_app_blocks = true
-    if request.design_mode
-      assign waymelo_defer_app_blocks = false
-    endif
-  endif
--%}
-
 <div class="{% if section.settings.include_margins %}page-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-  {%- if waymelo_defer_app_blocks -%}
-    <template data-waymelo-app-markup>
-      {%- for block in section.blocks -%}
-        {% render block %}
-      {%- endfor -%}
-    </template>
-  {%- else -%}
-    {%- for block in section.blocks -%}
-      {% render block %}
-    {%- endfor -%}
-  {%- endif -%}
+  {%- for block in section.blocks -%}
+    {% render block %}
+  {%- endfor -%}
 </div>
 
 {% schema %}

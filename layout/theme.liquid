@@ -10,13 +10,14 @@
     <link rel="dns-prefetch" href="https://cdn.shopify.com">
 
     {%- if request.page_type == 'product' and product.featured_media.preview_image != blank -%}
-      {%- assign waymelo_hero_image = product.featured_media.preview_image -%}
+      {%- assign waymelo_hero_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+      {%- assign waymelo_hero_image = waymelo_hero_media.preview_image -%}
       <link
         rel="preload"
         as="image"
         href="{{ waymelo_hero_image | image_url: width: 1400 }}"
-        imagesrcset="{{ waymelo_hero_image | image_url: width: 480 }} 480w, {{ waymelo_hero_image | image_url: width: 750 }} 750w, {{ waymelo_hero_image | image_url: width: 900 }} 900w, {{ waymelo_hero_image | image_url: width: 1200 }} 1200w, {{ waymelo_hero_image | image_url: width: 1400 }} 1400w"
-        imagesizes="(min-width: 990px) 50vw, 100vw"
+        imagesrcset="{{ waymelo_hero_image | image_url: width: 360 }} 360w, {{ waymelo_hero_image | image_url: width: 480 }} 480w, {{ waymelo_hero_image | image_url: width: 600 }} 600w, {{ waymelo_hero_image | image_url: width: 750 }} 750w, {{ waymelo_hero_image | image_url: width: 900 }} 900w, {{ waymelo_hero_image | image_url: width: 1200 }} 1200w, {{ waymelo_hero_image | image_url: width: 1400 }} 1400w"
+        imagesizes="(min-width: 1264px) 520px, (min-width: 990px) 46vw, calc(100vw - 30px)"
         fetchpriority="high"
       >
     {%- endif -%}
@@ -64,198 +65,56 @@
     {%- if template.name == 'product' -%}
       <script>
         (function () {
-          // Discover Pumper immediately after Shopify injects its entry script so the bundle UI
-          // downloads alongside the preloaded hero image, before the large inline theme styles.
-          var entry = document.querySelector('script[src*="/assets/pumper-bundles-v2.js"]');
-          if (!entry) return;
+          var observer;
+          var timeoutId;
 
-          var base = entry.src.split('?')[0].replace(/pumper-bundles-v2\.js$/, '');
-          [
-            'f-tier-cards',
-            'f-basic-tier',
-            'f-swatches',
-            'f-block-title',
-            'f-tier-tag',
-            'tool-ribbon-tag',
-            'tool-out-of-stock-message'
-          ].forEach(function (name) {
-            var href = base + 'pumper-chunk-' + name + '.js';
-            if (document.querySelector('link[href="' + href + '"]')) return;
+          function preloadPumperFeatures() {
+            var entry = document.querySelector(
+              'script[src*="/assets/pumper-bundles-v2.js"], link[href*="/assets/pumper-bundles-v2.js"]'
+            );
+            if (!entry) return false;
 
-            var link = document.createElement('link');
-            link.rel = 'modulepreload';
-            link.href = href;
-            link.crossOrigin = 'anonymous';
-            link.setAttribute('fetchpriority', 'high');
-            document.head.appendChild(link);
-          });
-        })();
-      </script>
-
-      <style>
-        #MainContent > .shopify-section:not(:first-child) {
-          content-visibility: auto;
-          contain-intrinsic-size: auto 900px;
-        }
-      </style>
-
-      <script>
-        (function () {
-          var state = {
-            hero: document.documentElement.classList.contains('waymelo-hero-ready'),
-            bundle: false,
-            released: false
-          };
-
-          function loadStyle(placeholder) {
-            return new Promise(function (resolve) {
-              var href = placeholder.getAttribute('data-waymelo-style');
-              if (!href) return resolve();
-
-              var existing = document.querySelector('link[rel="stylesheet"][href="' + href + '"]');
-              if (existing) {
-                placeholder.remove();
-                return resolve();
-              }
+            var entryUrl = entry.src || entry.href;
+            var base = entryUrl.split('?')[0].replace(/pumper-bundles-v2\.js$/, '');
+            [
+              'f-tier-cards',
+              'f-basic-tier',
+              'f-swatches',
+              'f-block-title',
+              'f-tier-tag',
+              'tool-ribbon-tag',
+              'tool-out-of-stock-message'
+            ].forEach(function (name, index) {
+              var href = base + 'pumper-chunk-' + name + '.js';
+              if (document.querySelector('link[href="' + href + '"]')) return;
 
               var link = document.createElement('link');
-              link.rel = 'stylesheet';
+              link.rel = 'modulepreload';
               link.href = href;
-              link.onload = link.onerror = resolve;
-              placeholder.replaceWith(link);
-            });
-          }
-
-          function loadScript(placeholder) {
-            return new Promise(function (resolve) {
-              var src = placeholder.getAttribute('data-src');
-              if (!src) return resolve();
-
-              var existing = document.querySelector('script[src="' + src + '"]');
-              if (existing) {
-                placeholder.remove();
-                return resolve();
-              }
-
-              var script = document.createElement('script');
-              script.src = src;
-              script.onload = script.onerror = resolve;
-              placeholder.replaceWith(script);
-            });
-          }
-
-          function hydrateAppMarkup(section) {
-            var chain = Promise.resolve();
-
-            section.querySelectorAll('template[data-waymelo-app-markup]').forEach(function (template) {
-              chain = chain.then(function () {
-                var fragment = template.content.cloneNode(true);
-                var capturedScripts = [];
-
-                fragment.querySelectorAll('script').forEach(function (source) {
-                  var marker = document.createElement('template');
-                  source.replaceWith(marker);
-                  capturedScripts.push({ source: source, marker: marker });
-                });
-
-                template.replaceWith(fragment);
-
-                var scriptChain = Promise.resolve();
-                capturedScripts.forEach(function (captured) {
-                  scriptChain = scriptChain.then(function () {
-                    return new Promise(function (resolve) {
-                      var script = document.createElement('script');
-                      Array.from(captured.source.attributes).forEach(function (attribute) {
-                        script.setAttribute(attribute.name, attribute.value);
-                      });
-                      script.textContent = captured.source.textContent;
-                      if (script.src) script.onload = script.onerror = resolve;
-                      captured.marker.replaceWith(script);
-                      if (!script.src) resolve();
-                    });
-                  });
-                });
-
-                return scriptChain;
-              });
+              link.crossOrigin = 'anonymous';
+              if (index < 5) link.setAttribute('fetchpriority', 'high');
+              document.head.appendChild(link);
             });
 
-            return chain;
+            return true;
           }
 
-          function loadSection(section) {
-            if (!section || section.dataset.waymeloResourcesLoaded === 'true') return;
-            section.dataset.waymeloResourcesLoaded = 'true';
-
-            var styles = Array.from(section.querySelectorAll('[data-waymelo-style]'));
-            Promise.all(styles.map(loadStyle)).then(function () {
-              return hydrateAppMarkup(section);
-            }).then(function () {
-              var chain = Promise.resolve();
-              section.querySelectorAll('template[data-waymelo-script]').forEach(function (placeholder) {
-                chain = chain.then(function () { return loadScript(placeholder); });
-              });
-            });
+          function stopWatching() {
+            if (observer) observer.disconnect();
+            if (timeoutId) window.clearTimeout(timeoutId);
           }
 
-          function startDeferredSections() {
-            var resources = document.querySelectorAll(
-              '[data-waymelo-style], template[data-waymelo-script], template[data-waymelo-app-markup]'
-            );
-            var sections = [];
+          if (preloadPumperFeatures()) return;
 
-            resources.forEach(function (resource) {
-              var section = resource.closest('.shopify-section') || resource.parentElement;
-              if (section && sections.indexOf(section) === -1) sections.push(section);
-            });
-
-            if (document.documentElement.classList.contains('shopify-design-mode') || !('IntersectionObserver' in window)) {
-              sections.forEach(loadSection);
-              return;
-            }
-
-            var observer = new IntersectionObserver(function (entries) {
-              entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
-                observer.unobserve(entry.target);
-                loadSection(entry.target);
-              });
-            }, { rootMargin: '900px 0px', threshold: 0.01 });
-
-            sections.forEach(function (section) { observer.observe(section); });
-          }
-
-          function release(force) {
-            if (state.released || (!force && (!state.hero || !state.bundle))) return;
-            state.released = true;
-            document.documentElement.classList.add('waymelo-critical-ready');
-
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', startDeferredSections, { once: true });
-            } else {
-              startDeferredSections();
-            }
-          }
-
-          window.addEventListener('waymelo:hero-ready', function () {
-            state.hero = true;
-            release(false);
-          }, { once: true });
-
-          window.addEventListener('waymelo:bundle-ready', function () {
-            state.bundle = true;
-            release(false);
-          }, { once: true });
-
-          document.addEventListener('DOMContentLoaded', function () {
-            if (!document.querySelector('[data-blocky-pumper-slot]')) state.bundle = true;
-            release(false);
-          }, { once: true });
-
-          // A broken third-party widget must not permanently prevent the rest of the page loading.
-          window.setTimeout(function () { release(true); }, 8000);
+          observer = new MutationObserver(function () {
+            if (!preloadPumperFeatures()) return;
+            stopWatching();
+          });
+          observer.observe(document.documentElement, { childList: true, subtree: true });
+          timeoutId = window.setTimeout(stopWatching, 10000);
         })();
       </script>
+
     {%- endif -%}
 
     {%- liquid
@@ -520,6 +379,23 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
+    {%- if localization.available_countries.size > 1 -%}
+      {%- assign waymelo_popular_country_codes = localization.available_countries | where: 'popular?' | map: 'iso_code' -%}
+      <script id="WaymeloCountryData" type="application/json">
+        {"countries":[
+          {%- for country in localization.available_countries -%}
+            {
+              "iso": {{ country.iso_code | json }},
+              "name": {{ country.name | json }},
+              "currencyCode": {{ country.currency.iso_code | json }},
+              "currencySymbol": {{ country.currency.symbol | json }},
+              "popular": {%- if waymelo_popular_country_codes contains country.iso_code -%}true{%- else -%}false{%- endif -%}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]}
+      </script>
+    {%- endif -%}
+
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}
@@ -586,12 +462,136 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if request.page_type == 'product' -%}
-      {% render 'waymelo-deferred-style', asset: 'material-symbols.css' %}
-    {%- else -%}
-      {{ 'material-symbols.css' | asset_url | stylesheet_tag }}
-    {%- endif -%}
+    {{ 'material-symbols.css' | asset_url | stylesheet_tag }}
 
     {% section 'help-button' %}
+
+    <script>
+      (function () {
+        var scriptPromises = {};
+
+        function loadScript(marker) {
+          var src = marker.getAttribute('data-src');
+          if (!src) return Promise.resolve();
+          if (scriptPromises[src]) return scriptPromises[src];
+
+          scriptPromises[src] = new Promise(function (resolve) {
+            var existing = document.querySelector('script[src="' + src + '"]');
+            if (existing) {
+              marker.remove();
+              resolve();
+              return;
+            }
+
+            var script = document.createElement('script');
+            script.src = src;
+            script.onload = script.onerror = resolve;
+            marker.replaceWith(script);
+          });
+
+          return scriptPromises[src];
+        }
+
+        function loadRoot(root) {
+          if (!root || root.dataset.waymeloJsReady === 'true') return;
+          root.dataset.waymeloJsReady = 'true';
+
+          var chain = Promise.resolve();
+          root.querySelectorAll('template[data-waymelo-lazy-script]').forEach(function (marker) {
+            chain = chain.then(function () { return loadScript(marker); });
+          });
+        }
+
+        function observe(scope) {
+          var markers = scope.querySelectorAll
+            ? scope.querySelectorAll('template[data-waymelo-lazy-script]')
+            : [];
+          var roots = [];
+
+          markers.forEach(function (marker) {
+            var root = marker.closest('.shopify-section') || marker.parentElement;
+            if (root && roots.indexOf(root) === -1) roots.push(root);
+          });
+
+          if (document.documentElement.classList.contains('shopify-design-mode') || !('IntersectionObserver' in window)) {
+            roots.forEach(loadRoot);
+            return;
+          }
+
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              observer.unobserve(entry.target);
+              loadRoot(entry.target);
+            });
+          }, { rootMargin: '700px 0px', threshold: 0.01 });
+
+          roots.forEach(function (root) { observer.observe(root); });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function () { observe(document); }, { once: true });
+        } else {
+          observe(document);
+        }
+
+        document.addEventListener('shopify:section:load', function (event) { observe(event.target); });
+      })();
+    </script>
+
+    {%- unless request.design_mode -%}
+      <script>
+        (function () {
+          var projectId = 'z0mer9hfse';
+          var startedAt = performance.now();
+          var targetAt = Infinity;
+          var timerId;
+          var loaded = false;
+          var interactionEvents = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
+
+          function loadClarity() {
+            if (loaded) return;
+            loaded = true;
+            interactionEvents.forEach(function (name) {
+              window.removeEventListener(name, onInteraction);
+            });
+
+            (function (c, l, a, r, i, t, y) {
+              c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+              t = l.createElement(r);
+              t.async = true;
+              t.src = 'https://www.clarity.ms/tag/' + i;
+              y = l.getElementsByTagName(r)[0];
+              y.parentNode.insertBefore(t, y);
+            })(window, document, 'clarity', 'script', projectId);
+          }
+
+          function runWhenIdle() {
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(loadClarity, { timeout: 2000 });
+            } else {
+              window.setTimeout(loadClarity, 250);
+            }
+          }
+
+          function schedule(minimumDelay) {
+            var nextTarget = startedAt + minimumDelay;
+            if (nextTarget >= targetAt) return;
+            targetAt = nextTarget;
+            window.clearTimeout(timerId);
+            timerId = window.setTimeout(runWhenIdle, Math.max(0, targetAt - performance.now()));
+          }
+
+          function onInteraction() {
+            schedule(4000);
+          }
+
+          interactionEvents.forEach(function (name) {
+            window.addEventListener(name, onInteraction, { passive: true, once: true });
+          });
+          window.addEventListener('load', function () { schedule(10000); }, { once: true });
+        })();
+      </script>
+    {%- endunless -%}
   </body>
 </html>

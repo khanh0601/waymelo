@@ -22,11 +22,14 @@
     assign product = collections.all.products.first
   endif
 
+  assign current_variant = product.selected_or_first_available_variant
+  assign initial_media = current_variant.featured_media | default: product.featured_media
+
   assign media_ratio = '1 / 1'
   case section.settings.media_aspect_ratio
     when 'adapt'
-      if product != blank and product.featured_media.preview_image
-        assign media_ratio = product.featured_media.preview_image.aspect_ratio
+      if initial_media.preview_image
+        assign media_ratio = initial_media.preview_image.aspect_ratio
       endif
     when 'portrait'
       assign media_ratio = '4 / 5'
@@ -34,7 +37,6 @@
       assign media_ratio = '4 / 3'
   endcase
 
-  assign current_variant = product.selected_or_first_available_variant
   assign product_form_id = 'blocky-product-form-' | append: section.id
 -%}
 
@@ -65,28 +67,30 @@
               {%- if product != blank and product.media.size > 0 -%}
                 {%- for media in product.media -%}
                   <div
-                    class="blocky-featured-product__media{% if forloop.first %} is-active{% endif %}"
+                    class="blocky-featured-product__media{% if media.id == initial_media.id %} is-active{% endif %}"
                     data-blocky-product-media="{{ media.id }}"
                   >
                     {%- liquid
                       assign media_alt = media.alt | default: product.title
                       assign media_loading = 'lazy'
                       assign media_fetchpriority = 'low'
-                      if forloop.first
+                      assign media_preload = false
+                      if media.id == initial_media.id
                         assign media_loading = 'eager'
                         assign media_fetchpriority = 'high'
+                        assign media_preload = true
                       endif
                     -%}
                     {{
                       media.preview_image
                       | image_url: width: 1400
                       | image_tag:
-                        widths: '480, 750, 900, 1200, 1400',
-                        sizes: '(min-width: 990px) 50vw, 100vw',
+                        widths: '360, 480, 600, 750, 900, 1200, 1400',
+                        sizes: '(min-width: 1264px) 520px, (min-width: 990px) 46vw, calc(100vw - 30px)',
                         alt: media_alt,
                         loading: media_loading,
                         fetchpriority: media_fetchpriority,
-                        preload: forloop.first
+                        preload: media_preload
                     }}
                   </div>
                 {%- endfor -%}
@@ -126,10 +130,10 @@
                       <li class="glide__slide">
                         <button
                           type="button"
-                          class="blocky-featured-product__thumb{% if forloop.first %} is-active{% endif %}"
+                          class="blocky-featured-product__thumb{% if media.id == initial_media.id %} is-active{% endif %}"
                           data-blocky-product-thumb="{{ media.id }}"
                           aria-label="Show image {{ forloop.index }}"
-                          aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                          aria-current="{% if media.id == initial_media.id %}true{% else %}false{% endif %}"
                         >
                           <img
                             src="{{ media.preview_image | image_url: width: 180 }}"
@@ -155,10 +159,10 @@
                 {%- for media in product.media -%}
                   <button
                     type="button"
-                    class="blocky-featured-product__thumb{% if forloop.first %} is-active{% endif %}"
+                    class="blocky-featured-product__thumb{% if media.id == initial_media.id %} is-active{% endif %}"
                     data-blocky-product-thumb="{{ media.id }}"
                     aria-label="Show image {{ forloop.index }}"
-                    aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-current="{% if media.id == initial_media.id %}true{% else %}false{% endif %}"
                   >
                     <img
                       src="{{ media.preview_image | image_url: width: 180 }}"
@@ -1882,9 +1886,10 @@
           let firstPaintReadyAt = 0;
           let lastMutationAt = performance.now();
           let revealed = false;
+          let measuredWidgetHeight = 0;
 
           const getWidget = () => slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
-          const widgetHeight = () => getWidget()?.getBoundingClientRect().height || 0;
+          const widgetHeight = () => measuredWidgetHeight;
           const cssReady = () => {
             const links = Array.from(
               document.querySelectorAll(
@@ -1911,7 +1916,6 @@
             slot.classList.remove('is-loading', 'is-empty');
             slot.classList.add('is-ready');
             slot.setAttribute('aria-busy', 'false');
-            window.dispatchEvent(new CustomEvent('waymelo:bundle-ready'));
             cleanup();
           };
 
@@ -1919,8 +1923,8 @@
             syncSignals();
             if (widgetHeight() < 100 || !cssReady()) return false;
 
-            enhanceLabels();
             if (!signals.mounted || !signals.configured || !signals.firstPaint) return false;
+            enhanceLabels();
             if (!firstPaintReadyAt) firstPaintReadyAt = performance.now();
 
             // The block title and ribbons are resolved after Pumper's first-paint mark. Wait for the
@@ -1965,13 +1969,25 @@
               slot.setAttribute('aria-busy', 'true');
             }
 
-            if (widget.getBoundingClientRect().height >= 100) slot.classList.remove('is-empty');
             if (widget !== observedWidget) {
               resizeObserver?.disconnect();
               observedWidget = widget;
+              measuredWidgetHeight = 0;
               if (window.ResizeObserver) {
-                resizeObserver = new ResizeObserver(check);
+                resizeObserver = new ResizeObserver((entries) => {
+                  const entry = entries[0];
+                  if (!entry) return;
+                  measuredWidgetHeight = entry.borderBoxSize?.[0]?.blockSize || entry.contentRect.height || 0;
+                  if (measuredWidgetHeight >= 100) slot.classList.remove('is-empty');
+                  check();
+                });
                 resizeObserver.observe(widget);
+              } else {
+                requestAnimationFrame(() => {
+                  measuredWidgetHeight = widget.getBoundingClientRect().height || 0;
+                  if (measuredWidgetHeight >= 100) slot.classList.remove('is-empty');
+                  check();
+                });
               }
             }
             check();
@@ -2012,7 +2028,6 @@
             slot.classList.remove('is-loading');
             slot.classList.add('is-ready', 'is-empty');
             slot.setAttribute('aria-busy', 'false');
-            window.dispatchEvent(new CustomEvent('waymelo:bundle-ready'));
             clearInterval(pollTimer);
           }, Math.max(0, EMPTY_SLOT_TIMEOUT - (performance.now() - startedAt)));
 

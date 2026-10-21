@@ -1,9 +1,0 @@
-{%- comment -%}
-  Defers non-critical product-page JavaScript until its section approaches the viewport.
-  Usage: {% render 'waymelo-deferred-script', asset: 'quick-add.js' %}
-{%- endcomment -%}
-{%- if request.page_type == 'product' -%}
-  <template data-waymelo-script data-src="{{ asset | asset_url }}"></template>
-{%- else -%}
-  <script src="{{ asset | asset_url }}" defer></script>
-{%- endif -%}

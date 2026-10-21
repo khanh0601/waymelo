@@ -16,6 +16,7 @@ if (!customElements.get('localization-form')) {
           searchIcon: this.querySelector('.country-filter__search-icon'),
           liveRegion: this.querySelector('#sr-country-search-results'),
         };
+        this.countryOptionsHydrated = false;
         this.addEventListener('keyup', this.onContainerKeyUp.bind(this));
         this.addEventListener('keydown', this.onContainerKeyDown.bind(this));
         this.addEventListener('focusout', this.closeSelector.bind(this));
@@ -35,7 +36,102 @@ if (!customElements.get('localization-form')) {
           this.elements.resetButton.addEventListener('mousedown', (event) => event.preventDefault());
         }
 
-        this.querySelectorAll('a').forEach((item) => item.addEventListener('click', this.onItemClick.bind(this)));
+        this.bindCountryOptionLinks();
+      }
+
+      bindCountryOptionLinks() {
+        this.querySelectorAll('[data-country-option]').forEach((item) => {
+          if (item.dataset.countryOptionBound === 'true') return;
+          item.dataset.countryOptionBound = 'true';
+          item.addEventListener('click', this.onItemClick.bind(this));
+        });
+      }
+
+      createCountryList(countries, className, ariaLabel, selectedIso, showCurrencies, idPrefix) {
+        const list = document.createElement('ul');
+        list.className = `list-unstyled ${className}`;
+        list.setAttribute('role', 'list');
+        if (ariaLabel) list.setAttribute('aria-label', ariaLabel);
+
+        countries.forEach((country) => {
+          const item = document.createElement('li');
+          item.className = 'disclosure__item';
+          item.tabIndex = -1;
+
+          const link = document.createElement('a');
+          link.className = 'link link--text disclosure__link caption-large focus-inset';
+          link.href = '#';
+          link.dataset.value = country.iso;
+          link.dataset.countryOption = '';
+          link.id = `${idPrefix}-${country.iso}`;
+
+          const indicator = document.createElement('span');
+          if (country.iso === selectedIso) {
+            link.setAttribute('aria-current', 'true');
+            indicator.innerHTML = '<svg class="icon icon-checkmark" aria-hidden="true" focusable="false" viewBox="0 0 12 9" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M11.35.643a.5.5 0 01.006.707l-6.77 6.886a.5.5 0 01-.719-.006L.638 4.845a.5.5 0 11.724-.69l2.872 3.011 6.41-6.517a.5.5 0 01.707-.006h-.001z" fill="currentColor"/></svg>';
+          } else {
+            indicator.className = 'visibility-hidden localization-check-placeholder';
+          }
+
+          const name = document.createElement('span');
+          name.className = 'country';
+          name.textContent = country.name;
+
+          link.append(indicator, name);
+          if (showCurrencies) {
+            const currency = document.createElement('span');
+            currency.className = 'localization-form__currency motion-reduce';
+            currency.textContent = `${country.currencyCode} ${country.currencySymbol}`;
+            link.append(currency);
+          }
+
+          item.append(link);
+          list.append(item);
+        });
+
+        return list;
+      }
+
+      hydrateCountryOptions() {
+        if (this.countryOptionsHydrated) return;
+        const root = this.querySelector('[data-country-options]');
+        const dataNode = document.getElementById('WaymeloCountryData');
+        if (!root || !dataNode) return;
+
+        let countries;
+        try {
+          countries = JSON.parse(dataNode.textContent).countries || [];
+        } catch (error) {
+          countries = [];
+        }
+        if (!countries.length) return;
+
+        const selectedIso = this.elements.input?.value || '';
+        const showCurrencies = root.dataset.showCurrencies === 'true';
+        const fragment = document.createDocumentFragment();
+
+        if (root.dataset.showPopular === 'true') {
+          const popularCountries = countries.filter((country) => country.popular);
+          if (popularCountries.length) {
+            fragment.append(
+              this.createCountryList(
+                popularCountries,
+                'popular-countries',
+                root.dataset.popularLabel || '',
+                selectedIso,
+                showCurrencies,
+                `${root.id}-popular`
+              )
+            );
+          }
+        }
+
+        fragment.append(
+          this.createCountryList(countries, 'countries', '', selectedIso, showCurrencies, `${root.id}-all`)
+        );
+        root.replaceChildren(fragment);
+        this.countryOptionsHydrated = true;
+        this.bindCountryOptionLinks();
       }
 
       hidePanel() {
@@ -52,7 +148,8 @@ if (!customElements.get('localization-form')) {
       }
 
       onContainerKeyDown(event) {
-        const focusableItems = Array.from(this.querySelectorAll('a')).filter(
+        this.hydrateCountryOptions();
+        const focusableItems = Array.from(this.querySelectorAll('[data-country-option]')).filter(
           (item) => !item.parentElement.classList.contains('hidden')
         );
         let focusedItemIndex = focusableItems.findIndex((item) => item === document.activeElement);
@@ -60,12 +157,14 @@ if (!customElements.get('localization-form')) {
 
         switch (event.code.toUpperCase()) {
           case 'ARROWUP':
+            if (!focusableItems.length) return;
             event.preventDefault();
             itemToFocus =
               focusedItemIndex > 0 ? focusableItems[focusedItemIndex - 1] : focusableItems[focusableItems.length - 1];
             itemToFocus.focus();
             break;
           case 'ARROWDOWN':
+            if (!focusableItems.length) return;
             event.preventDefault();
             itemToFocus =
               focusedItemIndex < focusableItems.length - 1 ? focusableItems[focusedItemIndex + 1] : focusableItems[0];
@@ -110,6 +209,7 @@ if (!customElements.get('localization-form')) {
       }
 
       openSelector() {
+        this.hydrateCountryOptions();
         this.elements.button.focus();
         this.elements.panel.toggleAttribute('hidden');
         this.elements.button.setAttribute(
@@ -148,8 +248,8 @@ if (!customElements.get('localization-form')) {
       filterCountries() {
         const searchValue = this.normalizeString(this.elements.search.value);
         const popularCountries = this.querySelector('.popular-countries');
-        const allCountries = this.querySelectorAll('a');
-        let visibleCountries = allCountries.length;
+        const allCountries = this.querySelectorAll('[data-country-option]');
+        let visibleCountries = 0;
 
         this.elements.resetButton.classList.toggle('hidden', !searchValue);
 
@@ -164,7 +264,6 @@ if (!customElements.get('localization-form')) {
             visibleCountries++;
           } else {
             item.parentElement.classList.add('hidden');
-            visibleCountries--;
           }
         });
 

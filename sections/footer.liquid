@@ -1,9 +1,9 @@
 {% comment %}theme-check-disable UndefinedObject{% endcomment %}
-{% render 'waymelo-deferred-style', asset: 'section-footer.css' %}
-{% render 'waymelo-deferred-style', asset: 'component-newsletter.css' %}
-{% render 'waymelo-deferred-style', asset: 'component-list-menu.css' %}
-{% render 'waymelo-deferred-style', asset: 'component-list-payment.css' %}
-{% render 'waymelo-deferred-style', asset: 'component-list-social.css' %}
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .footer {

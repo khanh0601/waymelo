@@ -10,7 +10,7 @@ if (!customElements.get('blocky-media-slider')) {
 
         this.sectionId = this.getAttribute("data-id")
         if (this.sectionId) {
-          this.setup()
+          this.setupWhenVisible()
         }
 
         this.querySelectorAll(".blocky-slider-img-link").forEach(t => {
@@ -20,6 +20,27 @@ if (!customElements.get('blocky-media-slider')) {
             window.location.href = url
           })
         })
+      }
+
+      setupWhenVisible() {
+        const isHeroSlider = Boolean(this.closest('blocky-featured-product'))
+        if (isHeroSlider || !("IntersectionObserver" in window)) {
+          this.setupOnce()
+          return
+        }
+
+        this.visibilityObserver = new IntersectionObserver((entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return
+          this.visibilityObserver.disconnect()
+          this.setupOnce()
+        }, { rootMargin: '700px 0px', threshold: 0.01 })
+        this.visibilityObserver.observe(this)
+      }
+
+      setupOnce() {
+        if (this.isSetup) return
+        this.isSetup = true
+        this.setup()
       }
 
       setup() {  

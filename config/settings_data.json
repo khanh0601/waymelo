@@ -209,7 +209,7 @@
       },
       "8774941748004189772": {
         "type": "shopify://apps/upsell-com-ex-reconvert/blocks/cart-drawer/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       },
       "2200952712151285029": {
@@ -219,7 +219,7 @@
       },
       "2567389343055140935": {
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
-        "disabled": false,
+        "disabled": true,
         "settings": {}
       }
     },

@@ -1,5 +1,5 @@
-{% render 'waymelo-deferred-style', asset: 'component-newsletter.css' %}
-{% render 'waymelo-deferred-style', asset: 'newsletter-section.css' %}
+{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
+{{ 'newsletter-section.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
   .section-{{ section.id }}-padding {

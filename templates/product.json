@@ -946,6 +946,7 @@
     },
     "179260210543a1f998": {
       "type": "apps",
+      "disabled": true,
       "blocks": {
         "upsell_com_ex_reconvert_product_upsell_zr3Pwn": {
           "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-upsell/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
@@ -961,6 +962,7 @@
     },
     "1792516308479ab041": {
       "type": "apps",
+      "disabled": true,
       "blocks": {
         "upsell_com_ex_reconvert_slot_tpL9Cd": {
           "type": "shopify://apps/upsell-com-ex-reconvert/blocks/slot/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",

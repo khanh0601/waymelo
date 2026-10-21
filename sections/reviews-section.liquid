@@ -860,7 +860,7 @@
   </div>
 </div>
 
-{% render 'waymelo-deferred-script', asset: 'reviews-section.js' %}
+<template data-waymelo-lazy-script data-src="{{ 'reviews-section.js' | asset_url }}"></template>
 
 {% schema %}
 {
