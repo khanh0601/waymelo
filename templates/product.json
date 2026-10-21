@@ -943,6 +943,38 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "179260210543a1f998": {
+      "type": "apps",
+      "blocks": {
+        "upsell_com_ex_reconvert_product_upsell_zr3Pwn": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-upsell/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "upsell_com_ex_reconvert_product_upsell_zr3Pwn"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1792516308479ab041": {
+      "type": "apps",
+      "blocks": {
+        "upsell_com_ex_reconvert_slot_tpL9Cd": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/slot/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {
+            "slot_id": "1"
+          }
+        }
+      },
+      "block_order": [
+        "upsell_com_ex_reconvert_slot_tpL9Cd"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
@@ -954,10 +986,12 @@
     "blocky_product_feature_3_3LE4A8",
     "blocky_video_with_text_97hNbH",
     "reviews_section_7Waym",
+    "1792516308479ab041",
     "blocky_faq_cFeeU6",
     "newsletter_HjqpNj",
     "blocky_section_divider_7AQYYY",
     "179217406534353e97",
-    "179242884483554a12"
+    "179242884483554a12",
+    "179260210543a1f998"
   ]
 }
