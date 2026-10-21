@@ -1,0 +1,634 @@
+.waymelo-collection-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(122, 81, 104, 0.1);
+  background:
+    radial-gradient(circle at 12% 18%, rgba(205, 126, 143, 0.18), transparent 28%),
+    radial-gradient(circle at 88% 78%, rgba(122, 81, 104, 0.13), transparent 30%),
+    linear-gradient(135deg, #fffafa 0%, #f8f1f5 52%, #f1eaf4 100%);
+}
+
+.waymelo-collection-hero__glow {
+  position: absolute;
+  border: 1px solid rgba(122, 81, 104, 0.08);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.waymelo-collection-hero__glow--left {
+  bottom: -110px;
+  left: -80px;
+  width: 260px;
+  height: 260px;
+}
+
+.waymelo-collection-hero__glow--right {
+  top: -150px;
+  right: -60px;
+  width: 340px;
+  height: 340px;
+}
+
+.waymelo-collection-hero .collection-hero__inner {
+  position: relative;
+  z-index: 1;
+  min-height: 390px;
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.waymelo-collection-hero .collection-hero__text-wrapper {
+  max-width: 790px;
+}
+
+.waymelo-collection-hero__eyebrow,
+.waymelo-collection-grid__eyebrow {
+  margin: 0 0 14px;
+  color: #7a5168;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.waymelo-collection-hero .collection-hero__title {
+  max-width: 780px;
+  margin: 0;
+  color: #30243a;
+  font-size: clamp(44px, 5.4vw, 70px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.waymelo-collection-hero .collection-hero__description {
+  max-width: 660px;
+  margin: 24px 0 0;
+  color: #665b68;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.waymelo-collection-hero .collection-hero__description p {
+  margin: 0;
+}
+
+.waymelo-collection-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin-top: 30px;
+  color: #594a58;
+  font-family: var(--font-body-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.waymelo-collection-hero__count,
+.waymelo-collection-hero__benefit {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.waymelo-collection-hero__count {
+  padding: 8px 14px;
+  border: 1px solid rgba(122, 81, 104, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #7a5168;
+  font-weight: 400;
+  box-shadow: 0 4px 18px rgba(71, 43, 58, 0.05);
+}
+
+.waymelo-collection-hero__benefit {
+  gap: 7px;
+}
+
+.waymelo-collection-hero__benefit svg {
+  width: 20px;
+  height: 20px;
+  color: #7a5168;
+}
+
+.waymelo-collection-grid {
+  background: #fcfafb;
+}
+
+.waymelo-collection-grid__intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 54px;
+  padding-bottom: 28px;
+}
+
+.waymelo-collection-grid__eyebrow {
+  margin-bottom: 8px;
+}
+
+.waymelo-collection-grid__title {
+  margin: 0;
+  color: #30243a;
+  font-size: clamp(30px, 3vw, 42px);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.waymelo-collection-grid__count {
+  margin: 0 0 4px;
+  color: #776c76;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.waymelo-collection-grid .facets-wrapper {
+  margin-bottom: 32px;
+}
+
+.waymelo-collection-grid .facets-container {
+  padding-top: 0;
+}
+
+.waymelo-collection-grid .facets__form {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.waymelo-collection-grid .facets__heading,
+.waymelo-collection-grid .facet-filters__label,
+.waymelo-collection-grid .product-count__text {
+  color: #665b68;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.waymelo-collection-grid .facets__wrapper {
+  align-items: center;
+  gap: 10px;
+}
+
+.waymelo-collection-grid .facets__heading {
+  margin: 0 2px 0 0;
+}
+
+.waymelo-collection-grid .facets__disclosure {
+  margin-right: 0;
+}
+
+.waymelo-collection-grid .facets__summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin-bottom: 0;
+  padding: 9px 38px 9px 16px;
+  border: 1px solid #e9e1e6;
+  border-radius: 999px;
+  background: #fff;
+  color: #30243a;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  box-shadow: 0 4px 14px rgba(66, 38, 53, 0.04);
+}
+
+.waymelo-collection-grid .facets__summary:hover {
+  border-color: #b997ab;
+  color: #4d3143;
+}
+
+.waymelo-collection-grid .facets__summary .icon-caret {
+  right: 16px;
+}
+
+.waymelo-collection-grid .facet-filters {
+  align-items: center;
+  padding-left: 8px;
+}
+
+.waymelo-collection-grid .facet-filters__field {
+  gap: 10px;
+}
+
+.waymelo-collection-grid .facet-filters__label {
+  margin-right: 0;
+  white-space: nowrap;
+}
+
+.waymelo-collection-grid .facet-filters__field .select {
+  width: 220px;
+  min-height: 44px;
+  overflow: hidden;
+  border: 1px solid #e9e1e6;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(66, 38, 53, 0.04);
+}
+
+.waymelo-collection-grid .facet-filters__sort {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 42px 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: #30243a;
+  font-family: var(--font-body-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.waymelo-collection-grid .facet-filters__field .select .icon-caret {
+  right: 16px;
+}
+
+.waymelo-collection-grid .product-count {
+  min-width: auto;
+}
+
+.waymelo-collection-grid .product-count__text {
+  min-width: 86px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 999px;
+  background: #f3edf1;
+  color: #654b5c;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.waymelo-collection-products .product-grid {
+  column-gap: 24px;
+  row-gap: 32px;
+}
+
+.waymelo-collection-grid .pagination-wrapper {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(122, 81, 104, 0.1);
+}
+
+.waymelo-collection-grid .pagination__list {
+  gap: 8px;
+  font-family: var(--font-body-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.waymelo-collection-grid .pagination__list > li {
+  flex: 0 0 42px;
+  max-width: 42px;
+  margin-right: 0;
+}
+
+.waymelo-collection-grid .pagination__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #e7dfe4;
+  border-radius: 13px;
+  background: #fff;
+  color: #4d3e49;
+  box-shadow: 0 3px 12px rgba(66, 38, 53, 0.035);
+}
+
+.waymelo-collection-grid .pagination__item:hover {
+  border-color: #cbb7c2;
+  color: #7a5168;
+}
+
+.waymelo-collection-grid .pagination__item--current {
+  border-color: #7a5168;
+  background: #7a5168;
+  color: #fff;
+  box-shadow: 0 7px 18px rgba(122, 81, 104, 0.2);
+}
+
+.waymelo-collection-grid .pagination__item--current::after,
+.waymelo-collection-grid .pagination__item:hover::after {
+  display: none;
+}
+
+.waymelo-collection-grid .pagination__item-arrow .icon-caret {
+  width: 10px;
+  height: 6px;
+}
+
+.waymelo-collection-grid span.pagination__item {
+  border-color: transparent;
+  background: transparent;
+  color: #8c7e87;
+  box-shadow: none;
+}
+
+.waymelo-collection-products .grid__item {
+  display: flex;
+}
+
+.waymelo-collection-products .card-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(122, 81, 104, 0.1);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 32px rgba(66, 38, 53, 0.065);
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.waymelo-collection-products .card-wrapper:hover {
+  border-color: rgba(122, 81, 104, 0.2);
+  box-shadow: 0 16px 42px rgba(66, 38, 53, 0.12);
+  transform: translateY(-4px);
+}
+
+.waymelo-collection-products .card,
+.waymelo-collection-products .card__content {
+  height: 100%;
+}
+
+.waymelo-collection-products .card {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+.waymelo-collection-products .card--card,
+.waymelo-collection-products .card--standard .card__inner {
+  border: 0;
+  background: transparent;
+}
+
+.waymelo-collection-products .card--card::after,
+.waymelo-collection-products .card--standard .card__inner::after {
+  box-shadow: none;
+}
+
+.waymelo-collection-products .card__inner {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #f7f3f5;
+}
+
+.waymelo-collection-products .card__media .media img {
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.2, 0.65, 0.3, 1);
+}
+
+.waymelo-collection-products .card-wrapper:hover .card__media .media img:first-child {
+  transform: scale(1.035);
+}
+
+.waymelo-collection-products .card > .card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 16px 6px 4px;
+}
+
+.waymelo-collection-products .card__information {
+  padding: 0;
+}
+
+.waymelo-collection-products .card__heading {
+  display: -webkit-box;
+  min-height: 2.8em;
+  margin: 0 0 8px;
+  overflow: hidden;
+  color: #2f2530;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.waymelo-collection-products .card-information > * + * {
+  margin-top: 6px;
+}
+
+.waymelo-collection-products .price {
+  color: #7a5168;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.waymelo-collection-products .price--on-sale .price-item--regular {
+  color: #91878d;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.waymelo-collection-products .badge {
+  padding: 7px 11px;
+  border: 0;
+  border-radius: 999px;
+  background: #7a5168;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.waymelo-collection-products .quick-add {
+  margin: auto 0 0;
+  padding-top: 16px;
+}
+
+.waymelo-collection-products .quick-add__submit {
+  min-height: 48px;
+  border: 1px solid #7a5168;
+  border-radius: 999px;
+  background: #7a5168;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.waymelo-collection-products .quick-add__submit::after {
+  box-shadow: none;
+}
+
+.waymelo-collection-products .quick-add__submit:hover {
+  border-color: #684359;
+  background: #684359;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.waymelo-collection-grid .pagination-wrapper {
+  margin-top: 48px;
+}
+
+.waymelo-collection-grid .pagination__item {
+  border-radius: 50%;
+  color: #7a5168;
+}
+
+.waymelo-collection-grid .pagination__item--current {
+  background: #7a5168;
+  color: #ffffff;
+}
+
+@media screen and (max-width: 749px) {
+  .waymelo-collection-hero .collection-hero__inner {
+    min-height: 320px;
+    padding: 48px 20px;
+  }
+
+  .waymelo-collection-hero .collection-hero__title {
+    font-size: 38px;
+    line-height: 1.06;
+  }
+
+  .waymelo-collection-hero .collection-hero__description {
+    margin-top: 18px;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .waymelo-collection-hero__meta {
+    gap: 8px 14px;
+    margin-top: 24px;
+    font-size: 13px;
+  }
+
+  .waymelo-collection-hero__count {
+    min-height: 34px;
+    padding: 7px 12px;
+  }
+
+  .waymelo-collection-grid__intro {
+    align-items: flex-start;
+    padding: 40px 20px 22px;
+  }
+
+  .waymelo-collection-grid__title {
+    font-size: 28px;
+  }
+
+  .waymelo-collection-grid__count {
+    display: none;
+  }
+
+  .waymelo-collection-grid .facets-wrapper {
+    margin-bottom: 22px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .waymelo-collection-grid .facets-container {
+    gap: 10px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .waymelo-collection-grid .mobile-facets__open,
+  .waymelo-collection-grid .facet-filters__sort {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .waymelo-collection-grid .mobile-facets__open {
+    justify-content: center;
+    padding: 8px 14px;
+    border: 1px solid #e9e1e6;
+    border-radius: 999px;
+    color: #30243a;
+  }
+
+  .waymelo-collection-products.page-width {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .waymelo-collection-products .product-grid {
+    column-gap: 12px;
+    row-gap: 18px;
+  }
+
+  .waymelo-collection-products .card-wrapper {
+    padding: 8px;
+    border-radius: 17px;
+  }
+
+  .waymelo-collection-products .card__inner {
+    border-radius: 12px;
+  }
+
+  .waymelo-collection-products .card > .card__content {
+    padding: 12px 4px 2px;
+  }
+
+  .waymelo-collection-products .card__heading {
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .waymelo-collection-products .price {
+    font-size: 15px;
+  }
+
+  .waymelo-collection-products .quick-add {
+    padding-top: 12px;
+  }
+
+  .waymelo-collection-products .quick-add__submit {
+    min-width: 0;
+    min-height: 44px;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .waymelo-collection-grid .pagination-wrapper {
+    gap: 6px;
+    margin-top: 36px;
+    padding-top: 24px;
+  }
+
+  .waymelo-collection-grid .pagination__list {
+    gap: 6px;
+  }
+
+  .waymelo-collection-grid .pagination__list > li {
+    flex-basis: 38px;
+    max-width: 38px;
+  }
+
+  .waymelo-collection-grid .pagination__item {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waymelo-collection-products .card-wrapper,
+  .waymelo-collection-products .card__media .media img,
+  .waymelo-collection-products .quick-add__submit {
+    transition: none;
+  }
+}
