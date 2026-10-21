@@ -1,0 +1,210 @@
+@media screen and (max-width: 749px) {
+  #MainContent {
+    --pdp-font-caption: 12px;
+    --pdp-font-small: 14px;
+    --pdp-font-body: 16px;
+    --pdp-font-body-large: 18px;
+    --pdp-font-subheading: 18px;
+    --pdp-font-heading: 30px;
+    --pdp-font-product-title: 32px;
+    --pdp-space-1: 8px;
+    --pdp-space-2: 12px;
+    --pdp-space-3: 16px;
+    --pdp-space-4: 24px;
+    --pdp-space-5: 32px;
+    --pdp-space-section: 40px;
+    --pdp-page-gutter: 20px;
+  }
+
+  #MainContent .blocky-featured-product .blocky-title {
+    margin: 0;
+    font-size: var(--pdp-font-product-title) !important;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  #MainContent .blocky-featured-product .blocky-body-text {
+    font-size: var(--pdp-font-body) !important;
+    line-height: 1.6;
+  }
+
+  #MainContent .blocky-featured-product .blocky-product-collapsible summary {
+    min-height: 48px;
+    padding-top: var(--pdp-space-2);
+    padding-bottom: var(--pdp-space-2);
+  }
+
+  #MainContent .blocky-featured-product .blocky-product-collapsible__heading {
+    font-size: var(--pdp-font-body);
+    line-height: 1.4;
+  }
+
+  #MainContent .blocky-featured-product .blocky-product-collapsible__content {
+    padding-bottom: var(--pdp-space-3);
+    font-size: var(--pdp-font-body);
+    line-height: 1.6;
+  }
+
+  #MainContent .bky-tech,
+  #MainContent .blocky-video-with-text,
+  #MainContent .blocky-faq,
+  #MainContent .reviews-section {
+    padding-top: var(--pdp-space-section) !important;
+    padding-bottom: var(--pdp-space-section) !important;
+  }
+
+  #MainContent .blocky-video-with-text {
+    padding-bottom: 0 !important;
+  }
+
+  #MainContent .bky-tech > .blocky-page-width,
+  #MainContent .blocky-video-with-text > .blocky-page-width,
+  #MainContent .blocky-faq > .blocky-page-width,
+  #MainContent .reviews-section__inner {
+    padding-right: var(--pdp-page-gutter);
+    padding-left: var(--pdp-page-gutter);
+  }
+
+  #MainContent .bky-tech .blocky-title,
+  #MainContent .blocky-video-with-text .blocky-title,
+  #MainContent .blocky-faq .blocky-title {
+    margin: 0;
+    font-size: var(--pdp-font-heading) !important;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  #MainContent .bky-tech__heading-body .blocky-body-text,
+  #MainContent .blocky-faq .blocky-body-text {
+    font-size: var(--pdp-font-body) !important;
+    line-height: 1.6;
+  }
+
+  #MainContent .bky-tech__heading-title {
+    margin-bottom: var(--pdp-space-4);
+  }
+
+  #MainContent .bky-tech .blocky-desktop-hidden .blocky-flex.blocky-justify-center {
+    margin-bottom: var(--pdp-space-4);
+  }
+
+  #MainContent .bky-tech-mobile-list {
+    padding-left: 28px;
+  }
+
+  #MainContent .bky-tech-mobile-item {
+    margin-bottom: 20px;
+  }
+
+  #MainContent .bky-feature-title {
+    font-size: var(--pdp-font-subheading);
+    line-height: 1.35;
+  }
+
+  #MainContent .bky-feature-text {
+    margin-top: var(--pdp-space-1);
+    font-size: var(--pdp-font-body);
+    line-height: 1.6;
+  }
+
+  #MainContent .blocky-video-with-text .blocky-body-text {
+    font-size: var(--pdp-font-body-large) !important;
+    line-height: 1.6;
+  }
+
+  #MainContent .blocky-video-with-text .blocky-body-text p {
+    margin: 0 !important;
+  }
+
+  #MainContent .blocky-video-with-text .blocky-body-text p + p {
+    margin-top: var(--pdp-space-1) !important;
+  }
+
+  #MainContent .blocky-video-with-text .blocky-body-text p:has(strong) + p {
+    margin-top: 2px !important;
+  }
+
+  #MainContent .blocky-video-with-text .blocky-body-text p:has(strong):not(:first-child) {
+    margin-top: 18px !important;
+  }
+
+  #MainContent .blocky-video-with-text .blocky-body-text strong {
+    font-size: var(--pdp-font-body-large);
+  }
+
+  #MainContent .blocky-video-with-text .button {
+    min-height: 54px;
+    padding-right: 28px;
+    padding-left: 28px;
+    font-size: 17px;
+  }
+
+  #MainContent .blocky-faq-flex {
+    row-gap: var(--pdp-space-5) !important;
+  }
+
+  #MainContent .blocky-faq-question {
+    min-height: 48px;
+    padding: var(--pdp-space-3);
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  #MainContent .blocky-faq-answer,
+  #MainContent .blocky-faq-answer.active {
+    font-size: var(--pdp-font-body);
+    line-height: 1.6;
+  }
+
+  #MainContent .blocky-accordion-row .blocky-faq-item {
+    margin-bottom: var(--pdp-space-2);
+  }
+
+  #MainContent .related-products__header {
+    margin-bottom: var(--pdp-space-4);
+  }
+
+  #MainContent .waymelo-related-products {
+    padding: var(--pdp-space-section) var(--pdp-page-gutter) !important;
+  }
+
+  #MainContent .waymelo-related-products__slider {
+    width: calc(100% + (var(--pdp-page-gutter) * 2));
+    margin-inline: calc(var(--pdp-page-gutter) * -1);
+  }
+
+  #MainContent .waymelo-related-products__grid {
+    padding-right: var(--pdp-page-gutter);
+    padding-left: var(--pdp-page-gutter);
+    scroll-padding-left: var(--pdp-page-gutter);
+  }
+
+  #MainContent .related-products__heading {
+    font-size: 28px;
+  }
+
+  #MainContent .waymelo-related-products .card__heading,
+  #MainContent .waymelo-related-products .price {
+    font-size: var(--pdp-font-body);
+  }
+
+  #MainContent .waymelo-related-products .quick-add__submit {
+    min-height: 48px;
+    font-size: 15px;
+  }
+
+  #MainContent .newsletter__wrapper .inline-richtext {
+    font-size: var(--pdp-font-heading);
+    line-height: 1.2;
+  }
+
+  #MainContent .newsletter__wrapper {
+    padding-top: var(--pdp-space-section) !important;
+    padding-bottom: var(--pdp-space-section) !important;
+  }
+
+  #MainContent .newsletter__subheading {
+    font-size: var(--pdp-font-body);
+    line-height: 1.6;
+  }
+}

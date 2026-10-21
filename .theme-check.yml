@@ -1,0 +1,4 @@
+# Blocky sections intentionally consume shared utility classes from assets/blocky-lys.css.
+# Theme Check cannot resolve those cross-file scoped CSS references reliably.
+ValidScopedCSSClass:
+  enabled: false

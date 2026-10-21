@@ -1644,7 +1644,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -1652,6 +1652,7 @@
 
   #blocky-featured-product-{{ section.id }} .list-payment__item {
     display: inline-flex;
+    padding: 0;
   }
 
   #blocky-featured-product-{{ section.id }} .list-payment__item svg {
@@ -2790,6 +2791,10 @@
   }
 
   @media screen and (max-width: 749px) {
+    #blocky-featured-product-{{ section.id }} {
+      overflow: hidden;
+    }
+
     #blocky-featured-product-{{ section.id }} .blocky-flex-container {
       gap: {{ section.settings.mobile_content_gap }}px;
       flex-direction: column;
