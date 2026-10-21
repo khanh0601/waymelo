@@ -175,11 +175,6 @@
           "widget_type": "review-widget"
         }
       },
-      "17595556821664008138": {
-        "type": "shopify://apps/zoorix-cross-sell/blocks/zoorix-head/51fffd07-f9df-4d6a-b901-6d14b243dcad",
-        "disabled": false,
-        "settings": {}
-      },
       "144831480468751239": {
         "type": "shopify://apps/essential-upsell/blocks/app-embed/50627fd9-24fd-4250-8614-accc12826d80",
         "disabled": false,

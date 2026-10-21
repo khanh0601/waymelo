@@ -262,15 +262,9 @@
       }
     {% endstyle %}
 
-      {{ 'base.css' | asset_url | stylesheet_tag }}
-      {{ 'blocky-lys.css' | asset_url | stylesheet_tag }}
-      {%- if request.page_type == 'product' -%}
-        {{ 'product-mobile.css' | asset_url | stylesheet_tag }}
-      {%- endif -%}
-      {%- if request.page_type == 'collection' -%}
-        {{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}
-      {%- endif -%}
-      {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'blocky-lys.css' | asset_url | stylesheet_tag }}
+    {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}

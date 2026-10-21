@@ -39,19 +39,7 @@
               {%- when 'body' -%}
                 {% render 'blocky-bodyl', block: block %}
               {%- when 'button' -%}
-                {%- if block.settings.button_label != blank -%}
-                  <a
-                    {% if block.settings.button_link == blank %}
-                      role="link" aria-disabled="true"
-                    {% else %}
-                      href="{{ block.settings.button_link }}"
-                    {% endif %}
-                    class="button button--primary"
-                    {{ block.shopify_attributes }}
-                  >
-                    {{ block.settings.button_label }}
-                  </a>
-                {%- endif -%}
+                {% render 'blocky-buttonl', block:block %}
               {%- when 'review-stars' -%}
                 {% render 'blocky-review-starsl', block:block %}
             {%- endcase -%}
