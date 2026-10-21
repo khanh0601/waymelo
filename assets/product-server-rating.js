@@ -61,9 +61,9 @@
 
   function hideAll(teasers) {
     Array.prototype.forEach.call(teasers, function (teaser) {
-      // Keep the row in the layout so late review data cannot push the
-      // remaining product information down the page.
-      teaser.hidden = false;
+      // Review data is server-rendered, so once the DOM is parsed an empty
+      // aggregate is final: collapse the row instead of leaving a blank gap.
+      teaser.hidden = true;
       teaser.classList.add('is-pending');
       teaser.setAttribute('aria-hidden', 'true');
     });

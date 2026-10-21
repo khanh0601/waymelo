@@ -160,7 +160,7 @@
       },
       "6544682535036668446": {
         "type": "shopify://apps/pumper-bundles/blocks/app-embed/0856870d-2aca-4b1e-a662-cf1797f61270",
-        "disabled": true,
+        "disabled": false,
         "settings": {}
       },
       "14060646107696862457": {

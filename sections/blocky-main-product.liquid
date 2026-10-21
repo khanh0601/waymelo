@@ -1606,6 +1606,7 @@
                 </div>
               {%- when 'buy_buttons' -%}
                 <div
+                  class="blocky-buy-buttons"
                   style="margin-top: calc({{ block.settings.margin_top | default: 1.5 }}rem - var(--text-container-gap, 14px)); margin-bottom: calc({{ block.settings.margin_bottom | default: 1.5 }}rem - var(--text-container-gap, 14px)); --bky-buy-button-bg: {{ block.settings.button_background | default: 'transparent' }}; --bky-buy-button-border-color: {{ block.settings.button_border_color | default: '#000000' }}; --bky-buy-button-text-color: {{ block.settings.button_text_color | default: '#000000' }}; --bky-buy-button-height: {{ block.settings.button_height | default: 52 }}px; --bky-buy-button-text-size: {{ block.settings.button_text_size | default: 16 }}px; --bky-dynamic-button-background-color: {{ block.settings.dynamic_button_background_color | default: '#e7cdc8' }}; --bky-dynamic-button-text-color: {{ block.settings.dynamic_button_text_color | default: '#ffffff' }};{% if block.settings.dynamic_button_border_color != blank %} --bky-dynamic-button-border: 1px solid {{ block.settings.dynamic_button_border_color }};{% endif %}"
                   {{ block.shopify_attributes }}
                 >
@@ -1813,22 +1814,41 @@
           let stabilityTimer;
           let observedWidget;
 
+          const normalizeText = (element) => (element.textContent || '').replace(/\s+/g, ' ').trim();
+          const isBadgeText = (text) =>
+            /^(most popular|best value|smart choice)$/i.test(
+              text.replace(/[^\p{L}\p{N}\s]/gu, '').replace(/\s+/g, ' ').trim()
+            );
+          const isTitleText = (text) => /^buy\s*\d+\s*:/i.test(text) && text.length < 100;
+
           const enhanceLabels = () => {
+            const highlightTargets = new Set();
+            const titleTargets = new Set();
+
             slot.querySelectorAll('*').forEach((element) => {
-              const text = (element.textContent || '').replace(/\s+/g, ' ').trim();
-              if (/(most popular|best value|smart choice)/i.test(text) && text.length < 80) {
-                element.classList.add('blocky-pumper-highlight-label');
+              const text = normalizeText(element);
+              if (!text) return;
+
+              // Only tag the element whose own text is exactly the badge label (emoji allowed)
+              if (isBadgeText(text)) {
+                const childIsBadge = Array.from(element.children).some((child) => isBadgeText(normalizeText(child)));
+                if (!childIsBadge) highlightTargets.add(element);
               }
 
-              if (/^buy\s*\d+\s*:/i.test(text) && text.length < 100) {
-                const hasMatchingChild = Array.from(element.children).some((child) => {
-                  const childText = (child.textContent || '').replace(/\s+/g, ' ').trim();
-                  return /^buy\s*\d+\s*:/i.test(childText) && childText.length > 10;
-                });
-
-                if (!hasMatchingChild) element.classList.add('blocky-pumper-option-title');
+              if (isTitleText(text)) {
+                const childIsTitle = Array.from(element.children).some((child) => isTitleText(normalizeText(child)));
+                if (!childIsTitle) titleTargets.add(element);
               }
             });
+
+            slot.querySelectorAll('.blocky-pumper-highlight-label').forEach((element) => {
+              if (!highlightTargets.has(element)) element.classList.remove('blocky-pumper-highlight-label');
+            });
+            slot.querySelectorAll('.blocky-pumper-option-title').forEach((element) => {
+              if (!titleTargets.has(element)) element.classList.remove('blocky-pumper-option-title');
+            });
+            highlightTargets.forEach((element) => element.classList.add('blocky-pumper-highlight-label'));
+            titleTargets.forEach((element) => element.classList.add('blocky-pumper-option-title'));
           };
 
           const revealWhenStable = () => {
@@ -1850,16 +1870,37 @@
                     slot.setAttribute('aria-busy', 'false');
                     mutationObserver?.disconnect();
                     resizeObserver?.disconnect();
+                    clearTimeout(fallbackTimer);
                   });
                 });
               });
-            }, 450);
+            }, 180);
           };
+
+          const fallbackTimer = window.setTimeout(() => {
+            if (slot.classList.contains('is-loading')) {
+              enhanceLabels();
+              slot.classList.remove('is-loading');
+              slot.classList.add('is-ready');
+              slot.setAttribute('aria-busy', 'false');
+
+              const widget = slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
+              const isEmpty = !widget || widget.getBoundingClientRect().height < 10;
+              slot.classList.toggle('is-empty', isEmpty);
+
+              // Keep watching an empty slot so a late-loading widget can still show up
+              if (!isEmpty) {
+                mutationObserver?.disconnect();
+                resizeObserver?.disconnect();
+              }
+            }
+          }, 3000);
 
           const watchWidget = () => {
             const widget = slot.querySelector('#pumper_bundle_svelte .pumper_block, #svelte-bundle-widget');
             if (!widget || widget.getBoundingClientRect().height < 100) return;
 
+            slot.classList.remove('is-empty');
             enhanceLabels();
             if (widget !== observedWidget) {
               resizeObserver?.disconnect();

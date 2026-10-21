@@ -742,12 +742,22 @@ class SliderComponent extends HTMLElement {
     this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
     if (this.sliderItemsToShow.length < 2) return;
     this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
-    
-    this.slidesPerPage = Math.floor(
-      (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
+    if (!this.sliderItemOffset) return;
+
+    // Measure relative to the slider itself (offsetLeft may be relative to an outer offsetParent)
+    const firstItemStart =
+      this.sliderItemsToShow[0].getBoundingClientRect().left -
+      this.slider.getBoundingClientRect().left +
+      this.slider.scrollLeft;
+
+    this.slidesPerPage = Math.max(
+      1,
+      Math.floor((this.slider.clientWidth - firstItemStart) / this.sliderItemOffset)
     );
 
-    this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage + 1;
+    // Total pages = number of scroll steps actually reachable + 1 (matches currentPage formula in update())
+    const maxScroll = Math.max(0, this.slider.scrollWidth - this.slider.clientWidth);
+    this.totalPages = Math.max(1, Math.round(maxScroll / this.sliderItemOffset) + 1);
     // this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage;
 
     this.update();
@@ -765,6 +775,7 @@ class SliderComponent extends HTMLElement {
 
     const previousPage = this.currentPage;
     this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+    if (this.totalPages) this.currentPage = Math.min(this.currentPage, this.totalPages);
 
     if (this.currentPageElement && this.pageTotalElement) {
       this.currentPageElement.textContent = this.currentPage;

@@ -280,6 +280,58 @@
     #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper {
       min-height: 580px;
     }
+
+    #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-ready {
+      min-height: 0;
+    }
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-ready {
+    min-height: 0 !important;
+    overflow: visible;
+  }
+
+  /* Product has no bundle: collapse the slot and cancel its flex gap.
+     Kept in the layout (not display:none) so a late widget can still be measured. */
+  #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-empty {
+    height: 0;
+    overflow: hidden;
+    margin-top: calc(-1 * var(--text-container-gap, 14px));
+  }
+
+  /* Swatches directly followed by ADD TO CART (no bundle block in between) */
+  #blocky-featured-product-{{ section.id }} .blocky-product-options + .blocky-buy-buttons,
+  #blocky-featured-product-{{ section.id }} .blocky-product-options + .blocky-app-slot--pumper.is-empty + .blocky-buy-buttons {
+    margin-top: 10px !important;
+  }
+
+  #blocky-featured-product-{{ section.id }} .product-server-rating-wrapper[hidden] {
+    display: none !important;
+  }
+
+  /* Different Color Requests (custom_liquid block) */
+  #blocky-featured-product-{{ section.id }} label[for='color-choices'] {
+    margin-bottom: 8px !important;
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  #blocky-featured-product-{{ section.id }} #color-choices {
+    height: 48px !important;
+    padding: 10px 14px !important;
+    font-size: 15px !important;
+    border-radius: 8px !important;
+  }
+
+  #blocky-featured-product-{{ section.id }} #color-choices::placeholder {
+    font-size: 15px;
+  }
+
+  #blocky-featured-product-{{ section.id }} #color-choices + small {
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-loading::before {
@@ -673,6 +725,8 @@
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary {
     width: 100%;
+    margin-top: 20px;
+    margin-bottom: 8px;
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary[hidden] {
@@ -680,7 +734,7 @@
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary__heading {
-    margin: 0 0 12px;
+    margin: 0 0 16px;
     font-size: 18px;
     font-weight: 700;
     line-height: 1.2;
@@ -766,7 +820,7 @@
   #blocky-featured-product-{{ section.id }} .blocky-complementary__grid {
     display: grid;
     grid-template-columns: repeat(var(--bky-comp-per-page, 3), minmax(0, 1fr));
-    gap: 12px;
+    gap: 16px;
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary__card {
@@ -798,9 +852,9 @@
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary__title {
-    margin: 8px 0 2px;
+    margin: 10px 0 6px;
     font-size: 14px;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary__price {
@@ -834,7 +888,7 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin-top: 12px;
+    margin-top: 16px;
   }
 
   #blocky-featured-product-{{ section.id }} .blocky-complementary__arrow {
