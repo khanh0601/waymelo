@@ -1,0 +1,580 @@
+{%- style -%}
+  #shopify-section-{{ section.id }} .feature-cards-media {
+    --fcm-background: {{ section.settings.background_color }};
+    --fcm-heading: {{ section.settings.heading_color }};
+    --fcm-text: {{ section.settings.text_color }};
+    --fcm-accent: {{ section.settings.accent_color }};
+    --fcm-card-background: {{ section.settings.card_background }};
+    --fcm-card-border: {{ section.settings.card_border_color }};
+    --fcm-card-radius: {{ section.settings.card_radius }}px;
+    --fcm-media-radius: {{ section.settings.media_radius }}px;
+    background: var(--fcm-background);
+    color: var(--fcm-text);
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__inner {
+    max-width: {{ section.settings.content_width }}px;
+    margin: 0 auto;
+    padding: {{ section.settings.padding_top }}px 2rem {{ section.settings.padding_bottom }}px;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__eyebrow {
+    margin: 0 0 1.2rem;
+    padding: 0.7rem 1rem;
+    background: {{ section.settings.eyebrow_background }};
+    color: var(--fcm-accent);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__heading {
+    margin: 0 0 3.8rem;
+    color: var(--fcm-heading);
+    font-size: clamp(3rem, 4vw, {{ section.settings.heading_size }}px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__layout {
+    display: grid;
+    grid-template-columns: minmax(0, {{ section.settings.features_width }}fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(3rem, 5vw, 5.8rem);
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__features {
+    display: grid;
+    gap: {{ section.settings.card_gap }}px;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 1.8rem;
+    padding: 2.3rem 2.4rem;
+    border: 1px solid var(--fcm-card-border);
+    border-radius: var(--fcm-card-radius);
+    background: var(--fcm-card-background);
+    box-shadow: {% if section.settings.show_card_shadow %}0 8px 20px rgba(35, 25, 20, 0.08){% else %}none{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__icon {
+    display: grid;
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    flex: 0 0 auto;
+    place-items: center;
+    overflow: hidden;
+    border-radius: {{ section.settings.icon_radius }}px;
+    background: var(--fcm-accent);
+    color: #fff;
+    box-shadow: 0 3px 8px color-mix(in srgb, var(--fcm-accent) 30%, transparent);
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__icon .material-symbols-outlined {
+    color: inherit;
+    font-size: calc({{ section.settings.icon_size }}px * 0.58);
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__icon-image {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__card-title {
+    margin: 0 0 0.6rem;
+    color: var(--fcm-heading);
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__card-text {
+    color: var(--fcm-text);
+    font-size: 1.5rem;
+    line-height: 1.5;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__card-text > * {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__media-column {
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: {{ section.settings.media_aspect_ratio }};
+    border-radius: var(--fcm-media-radius);
+    background: rgba(0, 0, 0, 0.05);
+    box-shadow: {% if section.settings.show_media_shadow %}0 18px 36px rgba(35, 25, 20, 0.14){% else %}none{% endif %};
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__image,
+  #shopify-section-{{ section.id }} .feature-cards-media__placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__badge {
+    position: absolute;
+    bottom: 2.2rem;
+    left: 2.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    max-width: calc(100% - 4.8rem);
+    padding: 0.9rem 1.7rem;
+    border: 1px solid color-mix(in srgb, var(--fcm-accent) 45%, transparent);
+    border-radius: 999px;
+    background: {{ section.settings.badge_background }};
+    color: var(--fcm-accent);
+    font-size: 1.4rem;
+    line-height: 1.2;
+    backdrop-filter: blur(7px);
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__badge-icon {
+    font-size: 1.7rem;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__cta {
+    margin-top: 4.6rem;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .feature-cards-media__button {
+    min-height: 4.8rem;
+    padding-inline: 3rem;
+    font-weight: 700;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .feature-cards-media__inner {
+      padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+      padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.75);
+    }
+
+    #shopify-section-{{ section.id }} .feature-cards-media__heading {
+      margin-bottom: 2.6rem;
+    }
+
+    #shopify-section-{{ section.id }} .feature-cards-media__layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    #shopify-section-{{ section.id }} .feature-cards-media__media-column {
+      {% if section.settings.mobile_media_first %}order: -1;{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .feature-cards-media__card {
+      gap: 1.4rem;
+      padding: 1.8rem;
+    }
+
+    #shopify-section-{{ section.id }} .feature-cards-media__cta {
+      margin-top: 2.4rem;
+    }
+  }
+{%- endstyle -%}
+
+<section class="feature-cards-media color-{{ section.settings.color_scheme }}">
+  <div class="feature-cards-media__inner">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="feature-cards-media__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h2 class="feature-cards-media__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="feature-cards-media__layout">
+      <div class="feature-cards-media__features">
+        {%- for block in section.blocks -%}
+          <article class="feature-cards-media__card" {{ block.shopify_attributes }}>
+            <div class="feature-cards-media__icon" aria-hidden="true">
+              {%- if block.settings.icon_image != blank -%}
+                {{
+                  block.settings.icon_image
+                  | image_url: width: 120
+                  | image_tag: class: 'feature-cards-media__icon-image', loading: 'lazy', alt: ''
+                }}
+              {%- else -%}
+                <span class="material-symbols-outlined">{{ block.settings.icon | default: 'verified' }}</span>
+              {%- endif -%}
+            </div>
+            <div>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="feature-cards-media__card-title">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="feature-cards-media__card-text rte">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <div class="feature-cards-media__media-column">
+        <div class="feature-cards-media__media">
+          {%- if section.settings.image != blank -%}
+            {{
+              section.settings.image
+              | image_url: width: 1400
+              | image_tag:
+                class: 'feature-cards-media__image',
+                loading: 'lazy',
+                widths: '480, 720, 960, 1200, 1400',
+                sizes: '(min-width: 750px) 50vw, 100vw',
+                alt: section.settings.image.alt
+            }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'feature-cards-media__placeholder' }}
+          {%- endif -%}
+
+          {%- if section.settings.badge_text != blank -%}
+            <div class="feature-cards-media__badge">
+              {%- if section.settings.badge_icon != blank -%}
+                <span class="feature-cards-media__badge-icon" aria-hidden="true">{{ section.settings.badge_icon }}</span>
+              {%- endif -%}
+              <span>{{ section.settings.badge_text | escape }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="feature-cards-media__cta">
+            <a
+              {% if section.settings.button_link != blank %}
+                href="{{ section.settings.button_link }}"
+              {% else %}
+                role="link" aria-disabled="true"
+              {% endif %}
+              class="feature-cards-media__button button{% if section.settings.button_style == 'secondary' %} button--secondary{% else %} button--primary{% endif %}"
+            >
+              {{ section.settings.button_label | escape }}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Feature cards & media",
+  "tag": "section",
+  "class": "section-feature-cards-media",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "WHY CUSTOMERS CHOOSE US"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Made for the Life You Live."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 30,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 42
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "media_aspect_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "4 / 3", "label": "Landscape" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "text",
+      "id": "badge_icon",
+      "label": "Badge icon",
+      "default": "🎉"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "1,500+ Happy Customers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_media_shadow",
+      "label": "Show image shadow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_media_first",
+      "label": "Show image first on mobile",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Claim Yours →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Outline" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Button color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#FBF8F5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#2D2528"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#91329A"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_background",
+      "label": "Eyebrow background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border",
+      "default": "#E5DED9"
+    },
+    {
+      "type": "color_background",
+      "id": "badge_background",
+      "label": "Badge background",
+      "default": "rgba(255, 255, 255, 0.75)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 900,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Content width",
+      "default": 1100
+    },
+    {
+      "type": "range",
+      "id": "features_width",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Feature column width",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between cards",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_shadow",
+      "label": "Show card shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "media_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Image corner radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 36,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon size",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "icon_radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon corner radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Custom icon"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Material icon name",
+          "info": "Used when no custom icon is selected.",
+          "default": "verified"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Premium quality"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Describe this product benefit and why it matters to your customers.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature cards & media",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "casino", "heading": "Ready to enjoy" } },
+        { "type": "feature", "settings": { "icon": "fitness_center", "heading": "Built to last" } },
+        { "type": "feature", "settings": { "icon": "brush", "heading": "Thoughtful design" } },
+        { "type": "feature", "settings": { "icon": "verified", "heading": "Trusted quality" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

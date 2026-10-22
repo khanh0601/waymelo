@@ -1,0 +1,290 @@
+{{ 'section-product-showcase.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign showcase_products = section.settings.products
+  if showcase_products == blank
+    assign showcase_products = section.settings.collection.products
+  endif
+-%}
+
+<section
+  class="product-showcase color-{{ section.settings.color_scheme }} gradient"
+  style="
+    --showcase-columns: {{ section.settings.columns_desktop }};
+    --showcase-columns-mobile: {{ section.settings.columns_mobile }};
+    --showcase-mobile-card-width: {% if section.settings.columns_mobile == '2' %}calc(50% - 0.6rem){% else %}86%{% endif %};
+    --showcase-card-radius: {{ section.settings.card_radius }}px;
+    --showcase-image-radius: {{ section.settings.image_radius }}px;
+    --showcase-padding-top: {{ section.settings.padding_top }}px;
+    --showcase-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="product-showcase__inner page-width">
+    {%- if section.settings.heading != blank or section.settings.description != blank -%}
+      <div class="product-showcase__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="product-showcase__heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.description != blank -%}
+          <div class="product-showcase__description rte">{{ section.settings.description }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="product-showcase__grid" role="list">
+      {%- for showcase_product in showcase_products limit: section.settings.products_to_show -%}
+        {%- liquid
+          assign selected_variant = showcase_product.selected_or_first_available_variant
+          assign product_image = showcase_product.featured_image
+          assign on_sale = false
+          if selected_variant.compare_at_price > selected_variant.price
+            assign on_sale = true
+          endif
+          assign product_form_id = 'ProductShowcaseForm-' | append: section.id | append: '-' | append: showcase_product.id
+        -%}
+
+        <article class="product-showcase__card" role="listitem">
+          <a class="product-showcase__media" href="{{ showcase_product.url }}">
+            {%- if on_sale and section.settings.show_sale_badge -%}
+              <span class="product-showcase__badge">{{ section.settings.sale_badge_text | escape }}</span>
+            {%- endif -%}
+
+            {%- if product_image != blank -%}
+              {{
+                product_image
+                | image_url: width: 900
+                | image_tag:
+                  class: 'product-showcase__image',
+                  loading: 'lazy',
+                  widths: '240, 360, 480, 600, 750, 900',
+                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 90vw',
+                  alt: showcase_product.title
+              }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'product-showcase__image product-showcase__placeholder' }}
+            {%- endif -%}
+          </a>
+
+          <div class="product-showcase__content">
+            <h3 class="product-showcase__title">
+              <a href="{{ showcase_product.url }}">{{ showcase_product.title | escape }}</a>
+            </h3>
+
+            <div class="product-showcase__price">
+              <span class="product-showcase__current-price">{{ selected_variant.price | money }}</span>
+              {%- if on_sale -%}
+                <s class="product-showcase__compare-price">{{ selected_variant.compare_at_price | money }}</s>
+              {%- endif -%}
+            </div>
+
+            <product-form class="product-showcase__form" data-section-id="{{ section.id }}">
+              {%- form 'product', showcase_product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                <input type="hidden" name="id" value="{{ selected_variant.id }}" class="product-variant-id">
+                <div class="product-form__error-message-wrapper" role="alert" hidden>
+                  <span class="product-form__error-message"></span>
+                </div>
+                <button
+                  type="submit"
+                  name="add"
+                  class="product-showcase__button"
+                  aria-live="polite"
+                  {% unless selected_variant.available %}disabled aria-disabled="true"{% endunless %}
+                >
+                  <span>
+                    {%- if selected_variant.available -%}
+                      {{ section.settings.button_label | escape }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </span>
+                  {%- render 'loading-spinner' -%}
+                </button>
+              {%- endform -%}
+            </product-form>
+          </div>
+        </article>
+      {%- else -%}
+        {%- for i in (1..section.settings.columns_desktop) -%}
+          <article class="product-showcase__card product-showcase__card--placeholder" role="listitem">
+            <div class="product-showcase__media">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'product-showcase__image product-showcase__placeholder' }}
+            </div>
+            <div class="product-showcase__content">
+              <h3 class="product-showcase__title">Example product</h3>
+              <div class="product-showcase__price">{{ 1999 | money }}</div>
+              <span class="product-showcase__button">{{ section.settings.button_label | escape }}</span>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <div class="product-showcase__view-all">
+        <a href="{{ section.settings.collection.url }}" class="product-showcase__view-all-link">
+          {{ section.settings.view_all_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product showcase",
+  "tag": "section",
+  "class": "section-product-showcase",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover our latest products and fresh new designs.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Small" },
+        { "value": "h1", "label": "Medium" },
+        { "value": "h0", "label": "Large" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "info": "Selected products take priority over the collection.",
+      "limit": 12
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Maximum products",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Desktop columns",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Mobile columns",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sale_badge_text",
+      "label": "Sale badge text",
+      "default": "SALE"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view all link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Image corner radius",
+      "default": 0
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product showcase"
+    }
+  ]
+}
+{% endschema %}
