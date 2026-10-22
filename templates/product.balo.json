@@ -477,7 +477,7 @@
         "description": "<p>Transform your 4-in-1 Diaper Backpack into a clean, cozy travel crib in seconds! Simply unzip, insert the rods, and add the padded mat for safe, hands-free rest at the airport or on flights.</p>",
         "description_size": 16,
         "description_color": "#000000",
-        "video": "shopify://files/videos/Watch Diaper Bag Backpack with Changing Station on Amazon Live.mp4",
+            "video": "",
         "video_fit": "cover",
         "corner_radius": 12,
         "content_alignment": "center",
@@ -518,7 +518,7 @@
       ],
       "name": "Blocky Video and Text",
       "settings": {
-        "video": "shopify://files/videos/123.mp4",
+        "video": "",
         "height": "adapt",
         "desktop_video_width": "medium",
         "video_fit": "zoomed",

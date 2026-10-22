@@ -17,7 +17,7 @@
         "announcement_Rbcw9E": {
           "type": "announcement",
           "settings": {
-            "text": "Call us / Whatsup: {{ metaobjects.waymelo[\"1-321-233-3336\"].phone.value }}",
+            "text": "Call us / Whatsup: 1-321-233-3336",
             "link": ""
           }
         }

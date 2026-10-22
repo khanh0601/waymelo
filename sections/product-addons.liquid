@@ -1,0 +1,321 @@
+{{ 'section-product-addons.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-addons.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign addon_products = section.settings.products
+  assign has_addons = false
+  if addon_products != blank and addon_products.count > 0
+    assign has_addons = true
+  endif
+-%}
+
+{%- if has_addons or request.design_mode -%}
+  <product-addons
+    id="ProductAddons-{{ section.id }}"
+    class="product-addons"
+    style="
+      --addons-background: {{ section.settings.background_color }};
+      --addons-panel: {{ section.settings.panel_color }};
+      --addons-card: {{ section.settings.card_color }};
+      --addons-text: {{ section.settings.text_color }};
+      --addons-muted: {{ section.settings.muted_color }};
+      --addons-accent: {{ section.settings.accent_color }};
+      --addons-card-width: {{ section.settings.card_width }}px;
+      --addons-padding-top: {{ section.settings.padding_top }}px;
+      --addons-padding-bottom: {{ section.settings.padding_bottom }}px;
+    "
+  >
+    <div class="page-width">
+      <div class="product-addons__panel">
+        <div class="product-addons__header">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="product-addons__heading">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.subtitle != blank -%}
+            <p class="product-addons__subtitle">{{ section.settings.subtitle | escape }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if has_addons -%}
+          <div class="product-addons__slider">
+            <button
+              class="product-addons__arrow product-addons__arrow--previous"
+              type="button"
+              aria-label="Previous add-on products"
+              data-addons-previous
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4.5-5 5.5 5 5.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+            </button>
+
+            <div class="product-addons__track" data-addons-track>
+              {%- for addon_product in addon_products -%}
+                {%- liquid
+                  assign selected_variant = addon_product.selected_or_first_available_variant
+                  assign selected_image = selected_variant.featured_image | default: addon_product.featured_image
+                  assign selected_discount = 0
+                  assign selected_display_price = selected_variant.price
+                  assign selected_compare_price = selected_variant.compare_at_price
+                  if section.settings.discount_percentage > 0
+                    assign discount_multiplier = 100 | minus: section.settings.discount_percentage
+                    assign selected_display_price = selected_variant.price | times: discount_multiplier | divided_by: 100.0 | round
+                    assign selected_compare_price = selected_variant.price
+                    assign selected_discount = section.settings.discount_percentage
+                  elsif selected_variant.compare_at_price > selected_variant.price
+                    assign selected_discount = selected_variant.compare_at_price | minus: selected_variant.price | times: 100.0 | divided_by: selected_variant.compare_at_price | round
+                  endif
+                  assign addon_form_id = 'ProductAddonsForm-' | append: section.id | append: '-' | append: addon_product.id
+                -%}
+
+                <article class="product-addons__card" data-addon-card>
+                  <a class="product-addons__media" href="{{ addon_product.url }}" aria-label="{{ addon_product.title | escape }}">
+                    {%- if selected_image != blank -%}
+                      {{
+                        selected_image
+                        | image_url: width: 720
+                        | image_tag:
+                          class: 'product-addons__image',
+                          loading: 'lazy',
+                          widths: '240, 360, 480, 720',
+                          sizes: '(min-width: 990px) 240px, 70vw',
+                          alt: addon_product.title
+                      }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag: 'product-addons__image product-addons__placeholder' }}
+                    {%- endif -%}
+                  </a>
+
+                  <div class="product-addons__content">
+                    <h3 class="product-addons__title">
+                      <a href="{{ addon_product.url }}">{{ addon_product.title | escape }}</a>
+                    </h3>
+
+                    <div class="product-addons__price" aria-live="polite">
+                      <strong data-addon-price>{{ selected_display_price | money }}</strong>
+                      <s data-addon-compare-price{% unless selected_compare_price > selected_display_price %} hidden{% endunless %}>
+                        {%- if selected_compare_price > selected_display_price -%}
+                          {{ selected_compare_price | money }}
+                        {%- endif -%}
+                      </s>
+                      <span class="product-addons__discount" data-addon-discount{% if selected_discount == 0 %} hidden{% endif %}>
+                        {%- if selected_discount > 0 -%}-{{ selected_discount }}%{%- endif -%}
+                      </span>
+                    </div>
+
+                    {%- if addon_product.has_only_default_variant == false -%}
+                      <label class="visually-hidden" for="ProductAddonsVariant-{{ section.id }}-{{ addon_product.id }}">
+                        Choose an option for {{ addon_product.title | escape }}
+                      </label>
+                      <select
+                        id="ProductAddonsVariant-{{ section.id }}-{{ addon_product.id }}"
+                        class="product-addons__variant"
+                        data-addon-variant-select
+                      >
+                        {%- for addon_variant in addon_product.variants -%}
+                          {%- liquid
+                            assign variant_image = addon_variant.featured_image | default: addon_product.featured_image
+                            assign variant_discount = 0
+                            assign variant_display_price = addon_variant.price
+                            assign variant_compare_price = addon_variant.compare_at_price
+                            if section.settings.discount_percentage > 0
+                              assign discount_multiplier = 100 | minus: section.settings.discount_percentage
+                              assign variant_display_price = addon_variant.price | times: discount_multiplier | divided_by: 100.0 | round
+                              assign variant_compare_price = addon_variant.price
+                              assign variant_discount = section.settings.discount_percentage
+                            elsif addon_variant.compare_at_price > addon_variant.price
+                              assign variant_discount = addon_variant.compare_at_price | minus: addon_variant.price | times: 100.0 | divided_by: addon_variant.compare_at_price | round
+                            endif
+                          -%}
+                          <option
+                            value="{{ addon_variant.id }}"
+                            data-price="{{ variant_display_price | money | escape }}"
+                            data-compare-price="{% if variant_compare_price > variant_display_price %}{{ variant_compare_price | money | escape }}{% endif %}"
+                            data-discount="{{ variant_discount }}"
+                            data-image="{% if variant_image != blank %}{{ variant_image | image_url: width: 720 }}{% endif %}"
+                            data-available="{{ addon_variant.available }}"
+                            {% if addon_variant.id == selected_variant.id %}selected{% endif %}
+                            {% unless addon_variant.available %}disabled{% endunless %}
+                          >
+                            {{ addon_variant.title }}{% unless addon_variant.available %} — Sold out{% endunless %}
+                          </option>
+                        {%- endfor -%}
+                      </select>
+                    {%- endif -%}
+
+                    <product-form class="product-addons__form" data-section-id="{{ section.id }}">
+                      {%- form 'product', addon_product, id: addon_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                        <input
+                          type="hidden"
+                          name="id"
+                          value="{{ selected_variant.id }}"
+                          class="product-variant-id"
+                          data-addon-variant-input
+                        >
+                        <div class="product-form__error-message-wrapper" role="alert" hidden>
+                          <span class="product-form__error-message"></span>
+                        </div>
+                        <button
+                          type="submit"
+                          name="add"
+                          class="product-addons__button"
+                          aria-live="polite"
+                          data-sold-out-message="true"
+                          data-available-text="{{ section.settings.button_label | escape }}"
+                          {% unless selected_variant.available %}disabled aria-disabled="true"{% endunless %}
+                        >
+                          <span>{% if selected_variant.available %}{{ section.settings.button_label | escape }}{% else %}Sold out{% endif %}</span>
+                          <span class="sold-out-message hidden">Sold out</span>
+                          {%- render 'loading-spinner' -%}
+                        </button>
+                      {%- endform -%}
+                    </product-form>
+                  </div>
+                </article>
+              {%- endfor -%}
+            </div>
+
+            <button
+              class="product-addons__arrow product-addons__arrow--next"
+              type="button"
+              aria-label="Next add-on products"
+              data-addons-next
+            >
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 4.5 5 5.5-5 5.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/></svg>
+            </button>
+          </div>
+        {%- else -%}
+          <div class="product-addons__empty">
+            Select add-on products in this section's settings.
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </product-addons>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product add-ons",
+  "tag": "section",
+  "class": "section-product-addons",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Add These to Your Order"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Choose any. Each one is 10% off."
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Add-on products",
+      "limit": 12
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Add & Save"
+    },
+    {
+      "type": "range",
+      "id": "discount_percentage",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "%",
+      "label": "Discount percentage",
+      "info": "Display only. Create a matching automatic discount in Shopify so cart and checkout use the same price.",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "card_width",
+      "min": 180,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "Card width",
+      "default": 230
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Panel background",
+      "default": "#f7f3f8"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#24162a"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text",
+      "default": "#6f6572"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Button and accent",
+      "default": "#91329a"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product add-ons"
+    }
+  ]
+}
+{% endschema %}

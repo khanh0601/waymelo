@@ -354,6 +354,25 @@
         "padding_bottom": 60
       }
     },
+    "product_addons_waymelo": {
+      "type": "product-addons",
+      "settings": {
+        "heading": "Add These to Your Order",
+        "subtitle": "Choose any. Each one is 10% off.",
+        "products": [],
+        "button_label": "Add & Save",
+        "discount_percentage": 10,
+        "card_width": 230,
+        "background_color": "#ffffff",
+        "panel_color": "#f7f3f8",
+        "card_color": "#ffffff",
+        "text_color": "#24162a",
+        "muted_color": "#6f6572",
+        "accent_color": "#91329a",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "related_products_waymelo": {
       "type": "related-products",
       "settings": {
@@ -594,7 +613,7 @@
       ],
       "name": "Blocky Video and Text",
       "settings": {
-        "video": "shopify://files/videos/0dc875a0619941ecafe56c2dc8db073d.HD-1080p-7.2Mbps-96414420.mp4",
+        "video": "",
         "height": "adapt",
         "desktop_video_width": "medium",
         "video_fit": "zoomed",
@@ -981,6 +1000,7 @@
   },
   "order": [
     "main",
+    "product_addons_waymelo",
     "related_products_waymelo",
     "blocky_announcement_bar_H6FtGh",
     "custom_liquid_jfQF7P",

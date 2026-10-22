@@ -527,7 +527,7 @@
       "disabled": true,
       "name": "Blocky Video and Text",
       "settings": {
-        "video": "shopify://files/videos/0dc875a0619941ecafe56c2dc8db073d.HD-1080p-7.2Mbps-96414420.mp4",
+        "video": "",
         "height": "adapt",
         "desktop_video_width": "medium",
         "video_fit": "zoomed",
