@@ -593,3 +593,43 @@
     clip-path: polygon(var(--shape--blob-5));
   }
 }
+.card-product__judgeme-rating {
+  margin-top: 0.5rem;
+  line-height: 1.2;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge__stars {
+  display: none !important;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge::before {
+  content: '\2605\2605\2605\2605\2605';
+  color: #f59e0b;
+  font-family: Arial, sans-serif;
+  font-size: 1.45rem;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.card-product__judgeme-rating:has(.jdgm-prev-badge[data-number-of-reviews='0']),
+.card-product__judgeme-rating:has(.jdgm-prev-badge:not([data-number-of-reviews])) {
+  display: none;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge__text {
+  display: none;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge::after {
+  content: '(' attr(data-number-of-reviews) ') reviews';
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  line-height: 1.2;
+}

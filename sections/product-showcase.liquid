@@ -1,5 +1,10 @@
 {{ 'section-product-showcase.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign showcase_products = section.settings.products
@@ -9,13 +14,11 @@
 -%}
 
 <section
-  class="product-showcase color-{{ section.settings.color_scheme }} gradient"
+  class="product-showcase waymelo-collection-products color-{{ section.settings.color_scheme }} gradient"
   style="
     --showcase-columns: {{ section.settings.columns_desktop }};
     --showcase-columns-mobile: {{ section.settings.columns_mobile }};
     --showcase-mobile-card-width: {% if section.settings.columns_mobile == '2' %}calc(50% - 0.6rem){% else %}86%{% endif %};
-    --showcase-card-radius: {{ section.settings.card_radius }}px;
-    --showcase-image-radius: {{ section.settings.image_radius }}px;
     --showcase-padding-top: {{ section.settings.padding_top }}px;
     --showcase-padding-bottom: {{ section.settings.padding_bottom }}px;
   "
@@ -34,89 +37,29 @@
       </div>
     {%- endif -%}
 
-    <div class="product-showcase__grid" role="list">
+    <div class="product-showcase__grid product-grid" role="list">
+      {%- assign skip_card_product_styles = false -%}
       {%- for showcase_product in showcase_products limit: section.settings.products_to_show -%}
-        {%- liquid
-          assign selected_variant = showcase_product.selected_or_first_available_variant
-          assign product_image = showcase_product.featured_image
-          assign on_sale = false
-          if selected_variant.compare_at_price > selected_variant.price
-            assign on_sale = true
-          endif
-          assign product_form_id = 'ProductShowcaseForm-' | append: section.id | append: '-' | append: showcase_product.id
-        -%}
-
-        <article class="product-showcase__card" role="listitem">
-          <a class="product-showcase__media" href="{{ showcase_product.url }}">
-            {%- if on_sale and section.settings.show_sale_badge -%}
-              <span class="product-showcase__badge">{{ section.settings.sale_badge_text | escape }}</span>
-            {%- endif -%}
-
-            {%- if product_image != blank -%}
-              {{
-                product_image
-                | image_url: width: 900
-                | image_tag:
-                  class: 'product-showcase__image',
-                  loading: 'lazy',
-                  widths: '240, 360, 480, 600, 750, 900',
-                  sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 90vw',
-                  alt: showcase_product.title
-              }}
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'product-showcase__image product-showcase__placeholder' }}
-            {%- endif -%}
-          </a>
-
-          <div class="product-showcase__content">
-            <h3 class="product-showcase__title">
-              <a href="{{ showcase_product.url }}">{{ showcase_product.title | escape }}</a>
-            </h3>
-
-            <div class="product-showcase__price">
-              <span class="product-showcase__current-price">{{ selected_variant.price | money }}</span>
-              {%- if on_sale -%}
-                <s class="product-showcase__compare-price">{{ selected_variant.compare_at_price | money }}</s>
-              {%- endif -%}
-            </div>
-
-            <product-form class="product-showcase__form" data-section-id="{{ section.id }}">
-              {%- form 'product', showcase_product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-                <input type="hidden" name="id" value="{{ selected_variant.id }}" class="product-variant-id">
-                <div class="product-form__error-message-wrapper" role="alert" hidden>
-                  <span class="product-form__error-message"></span>
-                </div>
-                <button
-                  type="submit"
-                  name="add"
-                  class="product-showcase__button"
-                  aria-live="polite"
-                  {% unless selected_variant.available %}disabled aria-disabled="true"{% endunless %}
-                >
-                  <span>
-                    {%- if selected_variant.available -%}
-                      {{ section.settings.button_label | escape }}
-                    {%- else -%}
-                      {{ 'products.product.sold_out' | t }}
-                    {%- endif -%}
-                  </span>
-                  {%- render 'loading-spinner' -%}
-                </button>
-              {%- endform -%}
-            </product-form>
-          </div>
+        <article class="product-showcase__card grid__item" role="listitem">
+          {% render 'card-product',
+            card_product: showcase_product,
+            media_aspect_ratio: 'square',
+            image_shape: 'default',
+            show_secondary_image: true,
+            show_vendor: false,
+            show_rating: true,
+            lazy_load: true,
+            skip_styles: skip_card_product_styles,
+            section_id: section.id,
+            quick_add: 'standard'
+          %}
         </article>
+        {%- assign skip_card_product_styles = true -%}
       {%- else -%}
         {%- for i in (1..section.settings.columns_desktop) -%}
-          <article class="product-showcase__card product-showcase__card--placeholder" role="listitem">
-            <div class="product-showcase__media">
-              {{ 'product-' | append: i | placeholder_svg_tag: 'product-showcase__image product-showcase__placeholder' }}
-            </div>
-            <div class="product-showcase__content">
-              <h3 class="product-showcase__title">Example product</h3>
-              <div class="product-showcase__price">{{ 1999 | money }}</div>
-              <span class="product-showcase__button">{{ section.settings.button_label | escape }}</span>
-            </div>
+          {%- assign placeholder_image = 'product-' | append: i -%}
+          <article class="product-showcase__card grid__item" role="listitem">
+            {% render 'card-product', placeholder_image: placeholder_image %}
           </article>
         {%- endfor -%}
       {%- endfor -%}
@@ -205,24 +148,6 @@
       "default": "1"
     },
     {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button label",
-      "default": "Add to cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_sale_badge",
-      "label": "Show sale badge",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "sale_badge_text",
-      "label": "Sale badge text",
-      "default": "SALE"
-    },
-    {
       "type": "checkbox",
       "id": "show_view_all",
       "label": "Show view all link",
@@ -233,26 +158,6 @@
       "id": "view_all_label",
       "label": "View all label",
       "default": "View all"
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "min": 0,
-      "max": 30,
-      "step": 1,
-      "unit": "px",
-      "label": "Card corner radius",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "image_radius",
-      "min": 0,
-      "max": 24,
-      "step": 1,
-      "unit": "px",
-      "label": "Image corner radius",
-      "default": 0
     },
     {
       "type": "color_scheme",

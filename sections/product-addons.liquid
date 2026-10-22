@@ -64,6 +64,10 @@
                   elsif selected_variant.compare_at_price > selected_variant.price
                     assign selected_discount = selected_variant.compare_at_price | minus: selected_variant.price | times: 100.0 | divided_by: selected_variant.compare_at_price | round
                   endif
+                  assign addon_rating = addon_product.metafields.reviews.rating.value
+                  assign addon_rating_value = addon_rating.rating
+                  assign addon_rating_max = addon_rating.scale_max | default: 5
+                  assign addon_rating_percentage = addon_rating_value | times: 100.0 | divided_by: addon_rating_max
                   assign addon_form_id = 'ProductAddonsForm-' | append: section.id | append: '-' | append: addon_product.id
                 -%}
 
@@ -89,6 +93,27 @@
                     <h3 class="product-addons__title">
                       <a href="{{ addon_product.url }}">{{ addon_product.title | escape }}</a>
                     </h3>
+
+                    {%- if addon_product.metafields.judgeme.badge != blank -%}
+                      <div
+                        class="product-addons__rating product-addons__judgeme-rating jdgm-widget jdgm-preview-badge"
+                        data-id="{{ addon_product.id }}"
+                      >
+                        {{ addon_product.metafields.judgeme.badge }}
+                      </div>
+                    {%- elsif addon_rating != blank and addon_product.metafields.reviews.rating_count.value > 0 -%}
+                      <div
+                        class="product-addons__rating"
+                        role="img"
+                        aria-label="{{ addon_rating_value }} out of {{ addon_rating_max }} stars, {{ addon_product.metafields.reviews.rating_count }} reviews"
+                      >
+                        <span class="product-addons__stars" aria-hidden="true">
+                          <span class="product-addons__stars-empty">★★★★★</span>
+                          <span class="product-addons__stars-filled" style="width: {{ addon_rating_percentage }}%;">★★★★★</span>
+                        </span>
+                        <span>({{ addon_product.metafields.reviews.rating_count }}) reviews</span>
+                      </div>
+                    {%- endif -%}
 
                     <div class="product-addons__price" aria-live="polite">
                       <strong data-addon-price>{{ selected_display_price | money }}</strong>
