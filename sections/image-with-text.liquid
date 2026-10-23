@@ -6,6 +6,12 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  #shopify-section-{{ section.id }} .image-with-text__media,
+  #shopify-section-{{ section.id }} .image-with-text__media img,
+  #shopify-section-{{ section.id }} .image-with-text__media .placeholder-svg {
+    border-radius: var(--media-radius);
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;

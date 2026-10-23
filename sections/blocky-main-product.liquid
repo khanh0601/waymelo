@@ -431,9 +431,55 @@
             {%- case block.type -%}
               {%- when '@app' -%}
                 {%- if block.id contains 'pumper_bundles' -%}
-                  <div class="blocky-app-slot blocky-app-slot--pumper is-loading" data-blocky-pumper-slot aria-busy="true">
-                    {% render block %}
-                  </div>
+                  {%- capture pumper_block_markup -%}{% render block %}{%- endcapture -%}
+                  {%- liquid
+                    assign pumper_item_count = 0
+                    assign pumper_count_marker = 'name="prvw_length_bar"'
+
+                    if pumper_block_markup contains pumper_count_marker
+                      assign pumper_count_tail = pumper_block_markup | split: pumper_count_marker | last
+                      assign pumper_count_parts = pumper_count_tail | split: 'value="'
+                      assign pumper_item_count = pumper_count_parts[1] | split: '"' | first | plus: 0
+                    endif
+                  -%}
+                  {%- if pumper_item_count > 0 -%}
+                    <div
+                      class="blocky-app-slot blocky-app-slot--pumper is-loading"
+                      data-blocky-pumper-slot
+                      data-blocky-pumper-count="{{ pumper_item_count }}"
+                      aria-busy="true"
+                    >
+                      <div class="blocky-pumper-skeleton" aria-hidden="true">
+                        <span class="blocky-pumper-skeleton__title"></span>
+                        <div class="blocky-pumper-skeleton__items">
+                          {%- for i in (1..pumper_item_count) -%}
+                            <div class="blocky-pumper-skeleton__item">
+                              <span class="blocky-pumper-skeleton__radio"></span>
+                              <span class="blocky-pumper-skeleton__copy">
+                                <span class="blocky-pumper-skeleton__line blocky-pumper-skeleton__line--title"></span>
+                                <span class="blocky-pumper-skeleton__line blocky-pumper-skeleton__line--subtitle"></span>
+                              </span>
+                              <span class="blocky-pumper-skeleton__price"></span>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+                      {{ pumper_block_markup }}
+                      <script>
+                        (() => {
+                          const mountSelector = {{ '#blocky-featured-product-' | append: section.id | append: ' [data-blocky-pumper-slot] pumper-bundle' | json }};
+                          const formSelector = {{ '#' | append: product_form_id | json }};
+
+                          document.querySelectorAll('[id="prvw_custom_var_selector"]').forEach((input) => {
+                            input.value = mountSelector;
+                          });
+                          document.querySelectorAll('[id="prvw_custom_form_selector"]').forEach((input) => {
+                            input.value = formSelector;
+                          });
+                        })();
+                      </script>
+                    </div>
+                  {%- endif -%}
                 {%- else -%}
                   {% render block %}
                 {%- endif -%}
@@ -1412,6 +1458,38 @@
                     {%- endif -%}
                     <div data-blocky-complementary-mount></div>
                   {%- endif -%}
+                  {%- if block.settings.manual_products != blank -%}
+                    <script type="application/json" data-blocky-complementary-products>
+                      [
+                        {%- assign manual_product_count = 0 -%}
+                        {%- for manual_product in block.settings.manual_products -%}
+                          {%- unless manual_product.id == product.id -%}
+                            {%- liquid
+                              assign manual_product_image = ''
+                              if manual_product.featured_image != blank
+                                assign manual_product_image = manual_product.featured_image | image_url: width: 800
+                              endif
+                            -%}
+                            {%- if manual_product_count > 0 -%},{%- endif -%}
+                            {
+                              "id": {{ manual_product.id | json }},
+                              "title": {{ manual_product.title | json }},
+                              "url": {{ manual_product.url | json }},
+                              "featured_image": {{ manual_product_image | json }},
+                              "price": {{ manual_product.price | json }},
+                              "variants": [
+                                {%- for manual_variant in manual_product.variants -%}
+                                  {%- unless forloop.first -%},{%- endunless -%}
+                                  { "id": {{ manual_variant.id | json }}, "available": {{ manual_variant.available | json }} }
+                                {%- endfor -%}
+                              ]
+                            }
+                            {%- assign manual_product_count = manual_product_count | plus: 1 -%}
+                          {%- endunless -%}
+                        {%- endfor -%}
+                      ]
+                    </script>
+                  {%- endif -%}
                 </div>
               {%- when 'inventory' -%}
                 {%- liquid
@@ -1484,7 +1562,7 @@
                   {{ text_content }}
                 </div>
               {%- when 'title' -%}
-                <h2 class="blocky-title" style="--title-color: {{ block.settings.title_color }}; --title-size: {{ block.settings.title_size }};" {{ block.shopify_attributes }}>
+                <h2 class="blocky-title" style="--title-color: {{ block.settings.title_color }}; --title-size: {{ block.settings.title_size }}; font-weight: {{ block.settings.font_weight | default: 400 }};" {{ block.shopify_attributes }}>
                   {%- if product.title != blank -%}{{ product.title | escape }}{%- else -%}Product title{%- endif -%}
                 </h2>
               {%- when 'price' -%}
@@ -1961,7 +2039,7 @@
             const widget = getWidget();
             if (!widget) return;
 
-            // If an offer arrives after the empty-slot timeout, restore its skeleton before the
+            // If the configured offer mounts after the empty-slot timeout, restore its skeleton before the
             // slot becomes visible. The partially mounted app must never flash on screen.
             if (slot.classList.contains('is-empty')) {
               slot.classList.remove('is-ready', 'is-empty');
@@ -2024,7 +2102,7 @@
             if (revealed) return;
             if (widgetHeight() >= 10) return;
 
-            // The product has no bundle. Collapse only an empty slot; never reveal a partial widget.
+            // The configured widget did not mount. Collapse the slot; never reveal a partial widget.
             slot.classList.remove('is-loading');
             slot.classList.add('is-ready', 'is-empty');
             slot.setAttribute('aria-busy', 'false');
@@ -2233,6 +2311,16 @@
         const fallback = block.dataset.fallback === 'true';
         if (!mount || !productId) return;
 
+        const manualProductsNode = block.querySelector('[data-blocky-complementary-products]');
+        let manualProducts = [];
+        if (manualProductsNode) {
+          try {
+            manualProducts = JSON.parse(manualProductsNode.textContent);
+          } catch (error) {
+            manualProducts = [];
+          }
+        }
+
         const esc = (value) => String(value || '')
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
@@ -2297,6 +2385,11 @@
         const fetchRecs = (intent) => fetch(`/recommendations/products.json?product_id=${productId}&limit=${limit}&intent=${intent}`)
           .then((response) => (response.ok ? response.json() : { products: [] }))
           .then((data) => (data && data.products) || []);
+
+        if (manualProducts.length) {
+          render(manualProducts);
+          return;
+        }
 
         fetchRecs('complementary').then((products) => {
           if (products.length) {
@@ -3302,7 +3395,8 @@
       "name": "Complementary products",
       "limit": 1,
       "settings": [
-        { "type": "paragraph", "content": "Shows complementary products from Shopify's recommendation engine. Set complementary products with the free Shopify 'Search & Discovery' app; otherwise it falls back to related products." },
+        { "type": "paragraph", "content": "Select products manually below. If no products are selected, this block uses Shopify's recommendation engine and falls back to related products." },
+        { "type": "product_list", "id": "manual_products", "label": "Products to show", "limit": 10, "info": "Manual selections override Shopify's automatic recommendations." },
         { "type": "text", "id": "block_heading", "default": "Pairs well with", "label": "Heading" },
         { "type": "checkbox", "id": "make_collapsible_row", "default": false, "label": "Show as collapsible row" },
         { "type": "text", "id": "icon", "default": "sell", "label": "Icon", "info": "Material Symbols icon code (e.g. sell, local_shipping, lock). Shown when collapsible row is on. Leave blank to hide." },
@@ -3993,7 +4087,19 @@
       "limit": 1,
       "settings": [
         { "type": "color", "id": "title_color", "default": "#000000", "label": "Title color" },
-        { "type": "range", "id": "title_size", "min": 22, "max": 72, "step": 1, "unit": "px", "default": 42, "label": "Title size" }
+        { "type": "range", "id": "title_size", "min": 22, "max": 72, "step": 1, "unit": "px", "default": 42, "label": "Title size" },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "Font weight",
+          "options": [
+            { "value": "400", "label": "Regular" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semibold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        }
       ]
     },
     {

@@ -97,6 +97,10 @@
       aspect-ratio: {{ block.settings.mobile_aspect_ratio }};
     }
 
+    .ai-video-showcase-{{ ai_gen_id }}__item video {
+      pointer-events: none;
+    }
+
     .ai-video-showcase-{{ ai_gen_id }}__toggle {
       right: 8px;
       bottom: 8px;
@@ -121,9 +125,13 @@
       <div class="ai-video-showcase-{{ ai_gen_id }}__item">
         {% if video_object != blank %}
           <video
+            autoplay
             loop
             muted
             playsinline
+            webkit-playsinline
+            disablepictureinpicture
+            controlslist="nofullscreen nodownload noremoteplayback"
             preload="none"
             data-poster="{{ video_object.preview_image | image_url: width: 900 }}"
             aria-label="Video {{ i }}"
@@ -173,7 +181,28 @@
           if (!video || !button) return;
 
           video.muted = true;
+          video.defaultMuted = true;
+          video.autoplay = true;
           video.playsInline = true;
+          video.disablePictureInPicture = true;
+          video.setAttribute('muted', '');
+          video.setAttribute('playsinline', '');
+          video.setAttribute('webkit-playsinline', '');
+          video.setAttribute('disablepictureinpicture', '');
+          video.setAttribute('controlslist', 'nofullscreen nodownload noremoteplayback');
+
+          const userAgent = navigator.userAgent || '';
+          const isIosWebView = /iPhone|iPad|iPod/i.test(userAgent) && !/Safari/i.test(userAgent);
+          const isEmbeddedWebView = /Zalo|; wv\)|\bwv\b/i.test(userAgent) || isIosWebView;
+          let manuallyPaused = isEmbeddedWebView;
+
+          if (isEmbeddedWebView) {
+            video.autoplay = false;
+            video.removeAttribute('autoplay');
+            button.textContent = 'Play';
+            button.setAttribute('aria-label', 'Play video');
+            button.setAttribute('aria-pressed', 'true');
+          }
 
           const loadAndPlay = () => {
             if (video.dataset.poster) {
@@ -190,8 +219,16 @@
               video.load();
             }
 
+            if (manuallyPaused || document.hidden) return;
+
             const playAttempt = video.play();
-            if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+            if (playAttempt && typeof playAttempt.catch === 'function') {
+              playAttempt.catch(() => {
+                button.textContent = 'Play';
+                button.setAttribute('aria-label', 'Play video');
+                button.setAttribute('aria-pressed', 'true');
+              });
+            }
           };
 
           const observeAfterHero = () => {
@@ -218,11 +255,13 @@
 
           button.addEventListener('click', () => {
             if (video.paused) {
+              manuallyPaused = false;
               loadAndPlay();
               button.textContent = 'Pause';
               button.setAttribute('aria-label', 'Pause video');
               button.setAttribute('aria-pressed', 'false');
             } else {
+              manuallyPaused = true;
               video.pause();
               button.textContent = 'Play';
               button.setAttribute('aria-label', 'Play video');
@@ -239,6 +278,18 @@
             button.textContent = 'Play';
             button.setAttribute('aria-label', 'Play video');
             button.setAttribute('aria-pressed', 'true');
+          });
+
+          video.addEventListener('canplay', () => {
+            if (!manuallyPaused && video.paused) loadAndPlay();
+          });
+
+          window.addEventListener('pageshow', () => {
+            if (!manuallyPaused && video.paused) loadAndPlay();
+          });
+
+          document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && !manuallyPaused && video.paused) loadAndPlay();
           });
         });
       }

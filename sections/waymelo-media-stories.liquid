@@ -1,0 +1,87 @@
+<section class="wm-home wm-home__section wm-stories" aria-labelledby="WaymeloStoriesTitle-{{ section.id }}">
+  <div class="wm-home__shell">
+    <div class="wm-home__section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="wm-home__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="wm-home__heading" id="WaymeloStoriesTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      </div>
+    </div>
+
+    <div class="wm-story-grid" data-wm-swipe aria-label="Media stories">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign story_image = block.settings.image
+          if story_image == blank and block.settings.video != blank
+            assign story_image = block.settings.video.preview_image
+          endif
+          if story_image == blank and block.settings.fallback_product != blank
+            assign story_image = block.settings.fallback_product.featured_image
+          endif
+          assign story_alt = story_image.alt | default: block.settings.heading
+        -%}
+        <article class="wm-story-card" data-wm-video-card {{ block.shopify_attributes }}>
+          {%- if block.settings.video != blank -%}
+            {{ block.settings.video | video_tag: class: 'wm-story-card__video', image_size: '1000x', autoplay: false, loop: false, muted: true, controls: false, preload: 'none' }}
+          {%- elsif story_image != blank -%}
+            {{
+              story_image
+              | image_url: width: 1000
+              | image_tag:
+                class: 'wm-story-card__image',
+                widths: '320, 480, 640, 800, 1000',
+                sizes: '(min-width: 990px) 31vw, 82vw',
+                loading: 'lazy',
+                alt: story_alt
+            }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+
+          {%- if block.settings.video != blank -%}
+            <button class="wm-story-card__play" type="button" data-wm-video-button aria-label="Play {{ block.settings.heading | escape }}">▶</button>
+          {%- elsif block.settings.video_url != blank -%}
+            <a class="wm-story-card__play" href="{{ block.settings.video_url }}" aria-label="Watch {{ block.settings.heading | escape }}">▶</a>
+          {%- endif -%}
+
+          <div class="wm-story-card__overlay">
+            <h3 class="wm-story-card__title">{{ block.settings.heading | escape }}</h3>
+            {%- if block.settings.label != blank -%}<span class="wm-story-card__label">{{ block.settings.label | escape }}</span>{%- endif -%}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Waymelo media stories",
+  "tag": "section",
+  "class": "section-waymelo-stories",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "See the little details" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Made for moments like these." }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Media story",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Shopify-hosted video" },
+        { "type": "url", "id": "video_url", "label": "External video link" },
+        { "type": "image_picker", "id": "image", "label": "Cover image" },
+        { "type": "product", "id": "fallback_product", "label": "Fallback product image" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "A little comfort in the air" },
+        { "type": "text", "id": "label", "label": "Small label", "default": "Discover the details" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Waymelo media stories",
+      "blocks": [{ "type": "story" }, { "type": "story" }, { "type": "story" }]
+    }
+  ]
+}
+{% endschema %}

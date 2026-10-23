@@ -13,6 +13,9 @@
       data-poster="{{ video.preview_image | image_url: width: 1200 }}"
       loop
       playsinline
+      webkit-playsinline
+      disablepictureinpicture
+      controlslist="nofullscreen nodownload noremoteplayback"
       {% unless autoplay == false %}autoplay muted{% endunless %}
     >
       {% for source in video.sources %}

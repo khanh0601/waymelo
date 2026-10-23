@@ -22,12 +22,6 @@
       >
     {%- endif -%}
 
-    {% if request.page_type == 'index' %}
-      <script type="text/javascript">
-        window.location.href = 'products/wearable-nursing-pillow';
-      </script>
-    {% endif %}
-
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
@@ -56,6 +50,10 @@
     <script src="{{ 'glide.min.js' | asset_url }}" defer></script>
     <script src="{{ 'blocky-image-video-slider.js' | asset_url }}" defer></script>
     <script src="{{ 'blocky-video.js' | asset_url }}" defer></script>
+    {%- if request.page_type == 'index' -%}
+      {{ 'waymelo-home.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'waymelo-home.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}

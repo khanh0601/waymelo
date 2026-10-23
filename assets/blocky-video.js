@@ -9,24 +9,35 @@ if (!customElements.get('blocky-video')) {
         super()
         this.video = this.querySelector("video")
         this.isManual = this.classList.contains("blocky-video-manual")
+        const userAgent = navigator.userAgent || ''
+        const isIosWebView = /iPhone|iPad|iPod/i.test(userAgent) && !/Safari/i.test(userAgent)
+        this.isEmbeddedWebView = /Zalo|; wv\)|\bwv\b/i.test(userAgent) || isIosWebView
         if (this.video) {
+          this.prepareInlinePlayback()
+          if (!this.isManual && !this.isEmbeddedWebView) {
+            this.prepareAutoplay()
+          } else if (this.isEmbeddedWebView) {
+            this.video.autoplay = false
+            this.video.removeAttribute('autoplay')
+          }
           this.video.addEventListener('waiting', (e) => {
             if (e.target.currentTime > 0) this.showSpinner();
           });
           this.video.addEventListener('playing', this.hideSpinner.bind(this));
           this.video.addEventListener('canplaythrough', this.hideSpinner.bind(this));
           this.video.addEventListener('error', this.hideSpinner.bind(this));
+          this.video.addEventListener('playing', this.clearAutoplayFallback.bind(this));
         }
         if (this.isManual) {
           this.video.addEventListener("click", (e) => this.onClick())
           const button = this.querySelector(".blocky-video-play-button")
           button.addEventListener("click", (e) => this.onClick())
-        } else {
+        } else if (!this.isEmbeddedWebView) {
           this.video.addEventListener("pause", (event) => {
-              if (event.target.paused) event.target.play()
+              if (event.target.paused) this.tryAutoplay()
           })
           this.video.addEventListener("canplay", (event) => {
-              if (event.target.paused) event.target.play()
+              if (event.target.paused) this.tryAutoplay()
           })
         }
 
@@ -57,9 +68,9 @@ if (!customElements.get('blocky-video')) {
         }
 
         this.hydratePoster();
-        if (!this.isManual) {
+        if (!this.isManual && !this.isEmbeddedWebView) {
           if (this.hydrateSources()) this.video.load();
-          this.video.play().catch(() => {});
+          this.tryAutoplay();
         }
       }
 
@@ -84,9 +95,9 @@ if (!customElements.get('blocky-video')) {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.hydratePoster();
-            if (!this.isManual) {
+            if (!this.isManual && !this.isEmbeddedWebView) {
               if (this.hydrateSources()) this.video.load();
-              this.video.play().catch(() => {});
+              this.tryAutoplay();
             }
             this.observer.disconnect();
           }
@@ -112,6 +123,41 @@ if (!customElements.get('blocky-video')) {
           this.video.classList.remove("blocky-video-playing")
           button.classList.remove("blocky-hidden")
         }
+      }
+
+      prepareAutoplay() {
+        this.video.muted = true;
+        this.video.defaultMuted = true;
+        this.video.autoplay = true;
+        this.video.setAttribute('muted', '');
+        this.prepareInlinePlayback();
+      }
+
+      prepareInlinePlayback() {
+        this.video.playsInline = true;
+        this.video.disablePictureInPicture = true;
+        this.video.controls = false;
+        this.video.setAttribute('playsinline', '');
+        this.video.setAttribute('webkit-playsinline', '');
+        this.video.setAttribute('disablepictureinpicture', '');
+        this.video.setAttribute('controlslist', 'nofullscreen nodownload noremoteplayback');
+
+        if (window.matchMedia('(max-width: 749px)').matches) {
+          this.video.style.pointerEvents = 'none';
+        }
+      }
+
+      tryAutoplay() {
+        if (!this.video || this.isManual || document.hidden) return;
+        this.prepareAutoplay();
+        const playPromise = this.video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      }
+
+      disconnectedCallback() {
+        if (this.observer) this.observer.disconnect();
       }
 
       showSpinner() {

@@ -87,6 +87,9 @@
                     {%- else -%}
                       {{ 'product-1' | placeholder_svg_tag: 'product-addons__image product-addons__placeholder' }}
                     {%- endif -%}
+                    {%- if selected_compare_price > selected_display_price -%}
+                      <span class="product-addons__badge">Sale</span>
+                    {%- endif -%}
                   </a>
 
                   <div class="product-addons__content">
@@ -94,26 +97,28 @@
                       <a href="{{ addon_product.url }}">{{ addon_product.title | escape }}</a>
                     </h3>
 
-                    {%- if addon_product.metafields.judgeme.badge != blank -%}
-                      <div
-                        class="product-addons__rating product-addons__judgeme-rating jdgm-widget jdgm-preview-badge"
-                        data-id="{{ addon_product.id }}"
-                      >
-                        {{ addon_product.metafields.judgeme.badge }}
-                      </div>
-                    {%- elsif addon_rating != blank and addon_product.metafields.reviews.rating_count.value > 0 -%}
-                      <div
-                        class="product-addons__rating"
-                        role="img"
-                        aria-label="{{ addon_rating_value }} out of {{ addon_rating_max }} stars, {{ addon_product.metafields.reviews.rating_count }} reviews"
-                      >
-                        <span class="product-addons__stars" aria-hidden="true">
-                          <span class="product-addons__stars-empty">★★★★★</span>
-                          <span class="product-addons__stars-filled" style="width: {{ addon_rating_percentage }}%;">★★★★★</span>
-                        </span>
-                        <span>({{ addon_product.metafields.reviews.rating_count }}) reviews</span>
-                      </div>
-                    {%- endif -%}
+                    <div class="product-addons__rating-slot">
+                      {%- if addon_product.metafields.judgeme.badge != blank -%}
+                        <div
+                          class="product-addons__rating product-addons__judgeme-rating jdgm-widget jdgm-preview-badge"
+                          data-id="{{ addon_product.id }}"
+                        >
+                          {{ addon_product.metafields.judgeme.badge }}
+                        </div>
+                      {%- elsif addon_rating != blank and addon_product.metafields.reviews.rating_count.value > 0 -%}
+                        <div
+                          class="product-addons__rating"
+                          role="img"
+                          aria-label="{{ addon_rating_value }} out of {{ addon_rating_max }} stars, {{ addon_product.metafields.reviews.rating_count }} reviews"
+                        >
+                          <span class="product-addons__stars" aria-hidden="true">
+                            <span class="product-addons__stars-empty">★★★★★</span>
+                            <span class="product-addons__stars-filled" style="width: {{ addon_rating_percentage }}%;">★★★★★</span>
+                          </span>
+                          <span>({{ addon_product.metafields.reviews.rating_count }}) reviews</span>
+                        </div>
+                      {%- endif -%}
+                    </div>
 
                     <div class="product-addons__price" aria-live="polite">
                       <strong data-addon-price>{{ selected_display_price | money }}</strong>

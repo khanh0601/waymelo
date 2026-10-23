@@ -1,0 +1,175 @@
+{%- liquid
+  assign slides = section.blocks | where: 'type', 'slide'
+  assign benefits = section.blocks | where: 'type', 'benefit'
+-%}
+
+<section class="wm-home wm-hero" aria-labelledby="WaymeloHeroTitle-{{ section.id }}">
+  <div class="wm-hero__grid">
+    <div class="wm-hero__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="wm-home__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="wm-hero__title" id="WaymeloHeroTitle-{{ section.id }}">
+        {{ section.settings.heading | escape }}
+        {%- if section.settings.accent_heading != blank -%}
+          <span class="wm-hero__title-accent">{{ section.settings.accent_heading | escape }}</span>
+        {%- endif -%}
+      </h1>
+      {%- if section.settings.text != blank -%}
+        <div class="wm-hero__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="wm-home__button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          {{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div
+      class="wm-hero__media"
+      data-wm-carousel
+      data-autoplay-delay="{{ section.settings.autoplay_delay | times: 1000 }}"
+      aria-roledescription="carousel"
+      aria-label="{{ section.settings.carousel_label | escape }}"
+    >
+      {%- for block in slides -%}
+        {%- liquid
+          assign slide_image = block.settings.image
+          if slide_image == blank and block.settings.product != blank
+            assign slide_image = block.settings.product.featured_image
+          endif
+          assign slide_alt = block.settings.image_alt
+          if slide_alt == blank
+            assign slide_alt = slide_image.alt | default: block.settings.product.title | default: shop.name
+          endif
+        -%}
+        <div
+          class="wm-hero__slide{% if forloop.first %} is-active{% endif %}"
+          data-wm-slide
+          aria-hidden="{% unless forloop.first %}true{% else %}false{% endunless %}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if slide_image != blank -%}
+            {%- if forloop.first -%}
+              {{
+                slide_image
+                | image_url: width: 1800
+                | image_tag:
+                  class: 'wm-hero__image',
+                  widths: '480, 720, 960, 1200, 1500, 1800',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  loading: 'eager',
+                  fetchpriority: 'high',
+                  alt: slide_alt
+              }}
+            {%- else -%}
+              {{
+                slide_image
+                | image_url: width: 1600
+                | image_tag:
+                  class: 'wm-hero__image',
+                  widths: '480, 720, 960, 1200, 1600',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  loading: 'lazy',
+                  alt: slide_alt
+              }}
+            {%- endif -%}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'wm-hero__placeholder' }}
+          {%- endif -%}
+
+          {%- if block.settings.note_heading != blank or block.settings.note_text != blank -%}
+            <div class="wm-hero__note">
+              {%- if block.settings.note_heading != blank -%}<strong>{{ block.settings.note_heading | escape }}</strong>{%- endif -%}
+              {{ block.settings.note_text | escape }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- else -%}
+        <div class="wm-hero__slide is-active" data-wm-slide>{{ 'lifestyle-1' | placeholder_svg_tag: 'wm-hero__placeholder' }}</div>
+      {%- endfor -%}
+
+      {%- if slides.size > 1 -%}
+        <div class="wm-hero__controls">
+          {%- for block in slides -%}
+            <button
+              class="wm-hero__dot{% if forloop.first %} is-active{% endif %}"
+              type="button"
+              data-wm-dot
+              aria-label="Show slide {{ forloop.index }}"
+              aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+            ></button>
+          {%- endfor -%}
+          <button class="wm-hero__pause" type="button" data-wm-pause aria-label="Pause slideshow">Ⅱ</button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if benefits.size > 0 -%}
+    <div class="wm-benefits">
+      <div class="wm-benefits__grid wm-home__shell">
+        {%- for block in benefits -%}
+          <div class="wm-benefits__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}<span class="wm-benefits__icon" aria-hidden="true">{{ block.settings.icon }}</span>{%- endif -%}
+            <span>{{ block.settings.text | escape }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Waymelo home hero",
+  "tag": "section",
+  "class": "section-waymelo-home-hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Thoughtful essentials. Easier journeys." },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Go places." },
+    { "type": "text", "id": "accent_heading", "label": "Accent heading", "default": "Feel good." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Thoughtful essentials for easier days on the go.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Find your travel essentials" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "carousel_label", "label": "Carousel accessibility label", "default": "Waymelo highlights" },
+    { "type": "range", "id": "autoplay_delay", "min": 3, "max": 9, "step": 1, "unit": "s", "label": "Change slide every", "default": 5 }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "limit": 5,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "product", "id": "product", "label": "Product image fallback" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "note_heading", "label": "Image note heading" },
+        { "type": "text", "id": "note_text", "label": "Image note text" }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon or symbol", "default": "✧" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Comfort along the way" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Waymelo home hero",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "benefit" },
+        { "type": "benefit" },
+        { "type": "benefit" }
+      ]
+    }
+  ]
+}
+{% endschema %}

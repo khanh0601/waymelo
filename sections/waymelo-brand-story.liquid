@@ -1,0 +1,53 @@
+{%- liquid
+  assign story_image = section.settings.image
+  if story_image == blank and section.settings.product != blank
+    assign story_image = section.settings.product.featured_image
+  endif
+  assign story_alt = section.settings.image_alt | default: story_image.alt | default: section.settings.heading
+-%}
+
+<section class="wm-home wm-brand-story" aria-labelledby="WaymeloBrandTitle-{{ section.id }}">
+  <div class="wm-brand-story__media">
+    {%- if story_image != blank -%}
+      {{
+        story_image
+        | image_url: width: 1600
+        | image_tag:
+          class: 'wm-brand-story__image',
+          widths: '480, 720, 960, 1200, 1600',
+          sizes: '(min-width: 990px) 50vw, 100vw',
+          loading: 'lazy',
+          alt: story_alt
+      }}
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </div>
+  <div class="wm-brand-story__copy">
+    {%- if section.settings.eyebrow != blank -%}<p class="wm-home__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+    <h2 class="wm-home__heading" id="WaymeloBrandTitle-{{ section.id }}">{{ section.settings.heading | escape | newline_to_br }}</h2>
+    {%- if section.settings.text != blank -%}<div class="wm-brand-story__text">{{ section.settings.text }}</div>{%- endif -%}
+    {%- if section.settings.button_label != blank -%}
+      <a class="wm-home__text-link" href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Waymelo brand story",
+  "tag": "section",
+  "class": "section-waymelo-brand-story",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "product", "id": "product", "label": "Fallback product image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Waymelo way" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "More comfort.\nMore memories." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Small essentials that make getting there feel better.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Waymelo brand story" }]
+}
+{% endschema %}

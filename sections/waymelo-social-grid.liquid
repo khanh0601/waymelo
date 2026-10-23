@@ -1,0 +1,91 @@
+<section class="wm-home wm-home__section" data-wm-gallery aria-labelledby="WaymeloSocialTitle-{{ section.id }}">
+  <div class="wm-home__shell">
+    <div class="wm-home__section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}<p class="wm-home__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+        <h2 class="wm-home__heading" id="WaymeloSocialTitle-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.social_label != blank and section.settings.social_link != blank -%}
+        <a class="wm-home__text-link" href="{{ section.settings.social_link }}">{{ section.settings.social_label | escape }} <span aria-hidden="true">↗</span></a>
+      {%- endif -%}
+    </div>
+
+    <div class="wm-social-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign gallery_image = block.settings.image
+          if gallery_image == blank and block.settings.product != blank
+            assign gallery_image = block.settings.product.featured_image
+          endif
+          assign gallery_alt = block.settings.image_alt | default: gallery_image.alt | default: block.settings.product.title | default: section.settings.heading
+        -%}
+        {%- if block.settings.video != blank -%}
+          <div class="wm-social-card" {{ block.shopify_attributes }}>
+            {{ block.settings.video | video_tag: class: 'wm-social-card__video', image_size: '900x', autoplay: false, loop: false, muted: false, controls: true, preload: 'none' }}
+          </div>
+        {%- elsif gallery_image != blank -%}
+          <button
+            class="wm-social-card"
+            type="button"
+            data-wm-gallery-image="{{ gallery_image | image_url: width: 1800 }}"
+            data-wm-gallery-alt="{{ gallery_alt | escape }}"
+            aria-label="Open {{ gallery_alt | escape }}"
+            {{ block.shopify_attributes }}
+          >
+            {{
+              gallery_image
+              | image_url: width: 900
+              | image_tag:
+                class: 'wm-social-card__image',
+                widths: '240, 360, 480, 640, 900',
+                sizes: '(min-width: 990px) 24vw, 50vw',
+                loading: 'lazy',
+                alt: gallery_alt
+            }}
+            <span class="wm-social-card__icon" aria-hidden="true">＋</span>
+          </button>
+        {%- else -%}
+          <div class="wm-social-card" {{ block.shopify_attributes }}>{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <dialog class="wm-social-dialog">
+    <button class="wm-social-dialog__close" type="button" data-wm-dialog-close aria-label="Close image">×</button>
+    <img class="wm-social-dialog__image" src="" alt="" width="1800" height="1800" loading="lazy">
+  </dialog>
+</section>
+
+{% schema %}
+{
+  "name": "Waymelo social gallery",
+  "tag": "section",
+  "class": "section-waymelo-social",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "A little inspiration for the road" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "On the go with Waymelo." },
+    { "type": "text", "id": "social_label", "label": "Social link label" },
+    { "type": "url", "id": "social_link", "label": "Social profile link" }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Gallery image",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "product", "id": "product", "label": "Fallback product image" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Waymelo social gallery",
+      "blocks": [{ "type": "image" }, { "type": "image" }, { "type": "image" }, { "type": "image" }]
+    }
+  ]
+}
+{% endschema %}

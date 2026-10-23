@@ -71,9 +71,9 @@
     place-items: center;
     overflow: hidden;
     border-radius: {{ section.settings.icon_radius }}px;
-    background: var(--fcm-accent);
-    color: #fff;
-    box-shadow: 0 3px 8px color-mix(in srgb, var(--fcm-accent) 30%, transparent);
+    background: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    box-shadow: 0 3px 8px rgba(var(--color-button), 0.3);
   }
 
   #shopify-section-{{ section.id }} .feature-cards-media__icon .material-symbols-outlined {

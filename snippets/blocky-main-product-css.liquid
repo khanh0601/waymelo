@@ -271,27 +271,15 @@
 
   #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper {
     position: relative;
-    min-height: 520px;
     width: 100%;
     overflow: hidden;
   }
 
-  @media screen and (max-width: 599px) {
-    #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper {
-      min-height: 580px;
-    }
-
-    #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-ready {
-      min-height: 0;
-    }
-  }
-
   #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-ready {
-    min-height: 0 !important;
     overflow: visible;
   }
 
-  /* Product has no bundle: collapse the slot and cancel its flex gap.
+  /* Fallback for a configured widget that does not mount: collapse the slot and cancel its flex gap.
      Kept in the layout (not display:none) so a late widget can still be measured. */
   #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-empty {
     height: 0;
@@ -334,28 +322,24 @@
     line-height: 1.5 !important;
   }
 
-  #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-loading::before {
-    content: '';
-    position: absolute;
-    inset: 16px 0;
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton {
+    position: relative;
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px 22px 22px;
     border: 1px solid rgba(137, 84, 112, 0.08);
     border-radius: 20px;
-    background:
-      linear-gradient(#e9e0e5 0 0) 24px 26px / 38% 12px no-repeat,
-      linear-gradient(#f1ebee 0 0) 24px 56px / calc(100% - 48px) 98px no-repeat,
-      linear-gradient(#f1ebee 0 0) 24px 170px / calc(100% - 48px) 98px no-repeat,
-      linear-gradient(#f1ebee 0 0) 24px 284px / calc(100% - 48px) 98px no-repeat,
-      linear-gradient(#f1ebee 0 0) 24px 398px / calc(100% - 48px) 74px no-repeat,
-      #fbf9fa;
+    background: #fbf9fa;
     box-shadow: 0 10px 32px rgba(83, 51, 68, 0.04);
     animation: blocky-loading-breathe 1.8s ease-in-out infinite;
   }
 
-  #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-loading::after {
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton::after {
     content: '';
     position: absolute;
-    inset: 16px 0;
+    inset: 0;
     z-index: 3;
     border-radius: 20px;
     background: linear-gradient(105deg, transparent 36%, rgba(255, 255, 255, 0.72) 48%, transparent 60%);
@@ -364,7 +348,83 @@
     animation: blocky-loading-shimmer 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   }
 
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__title,
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__radio,
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__line,
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__price {
+    display: block;
+    background: #e9e0e5;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__title {
+    align-self: center;
+    width: min(48%, 230px);
+    height: 14px;
+    border-radius: 7px;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 98px;
+    padding: 18px 20px;
+    border: 2px solid #eadfe5;
+    border-radius: 16px;
+    background: #f5f0f3;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__radio {
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    border: 4px solid #f5f0f3;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #ded0d8;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__line {
+    height: 12px;
+    border-radius: 6px;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__line--title {
+    width: 72%;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__line--subtitle {
+    width: 44%;
+    background: #eee6ea;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton__price {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 18px;
+    border-radius: 9px;
+  }
+
+  #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper:not(.is-loading) .blocky-pumper-skeleton {
+    display: none;
+  }
+
   #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-loading > .shopify-app-block {
+    position: absolute;
+    inset: 0;
     visibility: hidden;
     opacity: 0;
   }
@@ -417,8 +477,8 @@
   @media (prefers-reduced-motion: reduce) {
     #blocky-featured-product-{{ section.id }} .blocky-featured-product__media-wrap::after,
     #blocky-featured-product-{{ section.id }} .blocky-featured-product__thumb-slider.is-loading .blocky-featured-product__thumb::after,
-    #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-loading::before,
-    #blocky-featured-product-{{ section.id }} .blocky-app-slot--pumper.is-loading::after {
+    #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton,
+    #blocky-featured-product-{{ section.id }} .blocky-pumper-skeleton::after {
       animation: none;
     }
   }
@@ -950,8 +1010,26 @@
   }
 
   @media screen and (max-width: 749px) {
+    #blocky-featured-product-{{ section.id }} .blocky-complementary__track {
+      gap: 12px;
+      padding-bottom: 6px;
+      scroll-padding-inline: 0;
+    }
+
+    #blocky-featured-product-{{ section.id }} .blocky-complementary__slide {
+      flex: 0 0 auto;
+      min-width: 0;
+    }
+
     #blocky-featured-product-{{ section.id }} .blocky-complementary__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: flex;
+      gap: 12px;
+    }
+
+    #blocky-featured-product-{{ section.id }} .blocky-complementary__card {
+      width: min(72vw, 260px);
+      flex: 0 0 min(72vw, 260px);
+      scroll-snap-align: start;
     }
   }
 
