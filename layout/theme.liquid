@@ -9,6 +9,22 @@
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.shopify.com">
 
+    {%- if request.page_type == 'index' -%}
+      {%- unless request.design_mode -%}
+        <script>
+          (() => {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.get('preview_home') === '1') return;
+
+            window.location.replace(
+              {{ routes.root_url | append: 'products/wearable-nursing-pillow' | json }}
+            );
+          })();
+        </script>
+      {%- endunless -%}
+    {%- endif -%}
+
     {%- if request.page_type == 'product' and product.featured_media.preview_image != blank -%}
       {%- assign waymelo_hero_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
       {%- assign waymelo_hero_image = waymelo_hero_media.preview_image -%}

@@ -142,6 +142,36 @@
   {% if section.settings.image_shape == 'arch' %}
     {% render 'mask-arch' %}
   {%- endif -%}
+  <script>
+    (() => {
+      const relatedSection = document.currentScript.closest('.waymelo-related-products-section');
+      if (!relatedSection || !window.MutationObserver) return;
+
+      const restorePumperWidget = () => {
+        const misplacedWidget = relatedSection.querySelector('#svelte-bundle-widget');
+        if (!misplacedWidget) return;
+
+        const appBlock = document.querySelector('[data-blocky-pumper-slot] .shopify-app-block');
+        if (!appBlock) {
+          misplacedWidget.remove();
+          return;
+        }
+
+        const mountMarker = appBlock.querySelector('pumper-bundle');
+        if (mountMarker) {
+          mountMarker.before(misplacedWidget);
+        } else {
+          appBlock.prepend(misplacedWidget);
+        }
+      };
+
+      new MutationObserver(restorePumperWidget).observe(relatedSection, {
+        childList: true,
+        subtree: true
+      });
+      restorePumperWidget();
+    })();
+  </script>
 </div>
 
 {% schema %}

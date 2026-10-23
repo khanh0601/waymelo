@@ -190,6 +190,10 @@
   height: auto;
 }
 
+.footer__logo-block__image {
+  filter: brightness(0) invert(1);
+}
+
 .footer__logo-block__follow {
   display: flex;
   justify-content: center;

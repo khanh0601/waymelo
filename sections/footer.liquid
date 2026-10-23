@@ -255,21 +255,23 @@
 
         {%- for block in logo_follow_blocks -%}
           <div class="footer__logo-block" {{ block.shopify_attributes }}>
-            {%- if block.settings.logo_image != blank -%}
-              {%- assign logo_width_2x = block.settings.logo_width | times: 2 | at_most: 5760 -%}
-              <div
-                class="footer__logo-block__image-wrapper"
-                style="max-width: min(100%, {{ block.settings.logo_width }}px);"
+            {%- liquid
+              assign footer_logo_width = block.settings.logo_width | default: settings.logo_width
+              assign footer_logo_height = footer_logo_width | times: 329 | divided_by: 1319 | round
+            -%}
+            <div
+              class="footer__logo-block__image-wrapper"
+              style="max-width: min(100%, {{ footer_logo_width }}px);"
+            >
+              <img
+                src="{{ 'waymelo-logo.png' | asset_url }}"
+                class="footer__logo-block__image"
+                alt="{{ shop.name | escape }}"
+                width="{{ footer_logo_width }}"
+                height="{{ footer_logo_height }}"
+                loading="lazy"
               >
-                <img
-                  srcset="{{ block.settings.logo_image | image_url: width: block.settings.logo_width }}, {{ block.settings.logo_image | image_url: width: logo_width_2x }} 2x"
-                  src="{{ block.settings.logo_image | image_url: width: block.settings.logo_width }}"
-                  alt="{{ block.settings.logo_image.alt | default: shop.name | escape }}"
-                  width="{{ block.settings.logo_image.width }}"
-                  height="{{ block.settings.logo_image.height }}"
-                >
-              </div>
-            {%- endif -%}
+            </div>
             {%- if block.settings.enable_follow_on_shop and shop.features.follow_on_shop? -%}
               <div class="footer__logo-block__follow">
                 {{ shop | login_button: action: 'follow' }}

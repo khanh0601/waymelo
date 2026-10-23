@@ -116,35 +116,71 @@
   document.querySelectorAll('[data-wm-swipe]').forEach((track) => {
     const items = [...track.children];
     if (items.length < 2) return;
+    const isReviewTrack = track.classList.contains('wm-review-grid');
 
     const pagination = document.createElement('div');
     pagination.className = 'wm-swipe-pagination';
+    pagination.hidden = true;
     pagination.setAttribute('aria-label', `${track.getAttribute('aria-label') || 'Carousel'} pagination`);
-
-    const dots = items.map((item, index) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = `wm-swipe-pagination__dot${index === 0 ? ' is-active' : ''}`;
-      dot.setAttribute('aria-label', `Go to item ${index + 1}`);
-      dot.setAttribute('aria-pressed', String(index === 0));
-      dot.addEventListener('click', () => {
-        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-        const left = items.length > 1 ? (maxScroll * index) / (items.length - 1) : 0;
-        track.scrollTo({ left, behavior: reducedMotion ? 'auto' : 'smooth' });
-      });
-      pagination.appendChild(dot);
-      return dot;
-    });
-
     track.insertAdjacentElement('afterend', pagination);
+
+    let dots = [];
+    let positions = [];
+
+    const getPositions = () => {
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      if (!isReviewTrack) {
+        return items.map((item, index) => (items.length > 1 ? (maxScroll * index) / (items.length - 1) : 0));
+      }
+
+      const styles = window.getComputedStyle(track);
+      const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+      const itemWidth = items[0].getBoundingClientRect().width;
+      const visibleCount = Math.max(1, Math.floor((track.clientWidth + gap + 1) / (itemWidth + gap)));
+      const pageCount = Math.ceil(items.length / visibleCount);
+
+      return Array.from({ length: pageCount }, (unused, pageIndex) => {
+        const itemIndex = Math.min(pageIndex * visibleCount, items.length - 1);
+        return Math.min(maxScroll, items[itemIndex].offsetLeft - items[0].offsetLeft);
+      });
+    };
+
+    const renderDots = () => {
+      pagination.replaceChildren();
+      dots = positions.map((position, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = `wm-swipe-pagination__dot${index === 0 ? ' is-active' : ''}`;
+        dot.setAttribute('aria-label', `Go to page ${index + 1}`);
+        dot.setAttribute('aria-pressed', String(index === 0));
+        dot.addEventListener('click', () => {
+          const currentPositions = getPositions();
+          track.scrollTo({ left: currentPositions[index] || 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+        });
+        pagination.appendChild(dot);
+        return dot;
+      });
+    };
 
     let frame;
     const updatePagination = () => {
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
         const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-        const progress = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
-        const activeIndex = Math.min(items.length - 1, Math.round(progress * (items.length - 1)));
+        const nextPositions = getPositions();
+        if (nextPositions.length !== positions.length) {
+          positions = nextPositions;
+          renderDots();
+        } else {
+          positions = nextPositions;
+        }
+
+        pagination.hidden = maxScroll <= 1 || positions.length <= 1;
+        const activeIndex = positions.reduce((closestIndex, position, index) => {
+          return Math.abs(track.scrollLeft - position) < Math.abs(track.scrollLeft - positions[closestIndex])
+            ? index
+            : closestIndex;
+        }, 0);
 
         dots.forEach((dot, index) => {
           const active = index === activeIndex;
@@ -156,6 +192,50 @@
 
     track.addEventListener('scroll', updatePagination, { passive: true });
     window.addEventListener('resize', updatePagination, { passive: true });
+
+    if (isReviewTrack) {
+      let pointerId;
+      let startX = 0;
+      let startScroll = 0;
+
+      const stopDragging = () => {
+        if (pointerId === undefined) return;
+        const releasedPointerId = pointerId;
+        pointerId = undefined;
+        if (track.hasPointerCapture(releasedPointerId)) track.releasePointerCapture(releasedPointerId);
+        track.classList.remove('is-dragging');
+
+        window.requestAnimationFrame(() => {
+          const currentPositions = getPositions();
+          const nearestPosition = currentPositions.reduce((closest, position) => {
+            return Math.abs(track.scrollLeft - position) < Math.abs(track.scrollLeft - closest) ? position : closest;
+          }, currentPositions[0] || 0);
+
+          track.scrollTo({ left: nearestPosition, behavior: reducedMotion ? 'auto' : 'smooth' });
+          updatePagination();
+        });
+      };
+
+      track.addEventListener('pointerdown', (event) => {
+        if (event.button !== 0 || event.target.closest('a, button, input, select, textarea, video')) return;
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startScroll = track.scrollLeft;
+        track.setPointerCapture(pointerId);
+        track.classList.add('is-dragging');
+      });
+
+      track.addEventListener('pointermove', (event) => {
+        if (event.pointerId !== pointerId) return;
+        track.scrollLeft = startScroll - (event.clientX - startX);
+        event.preventDefault();
+      });
+
+      track.addEventListener('pointerup', stopDragging);
+      track.addEventListener('pointercancel', stopDragging);
+      track.addEventListener('lostpointercapture', stopDragging);
+    }
+
     updatePagination();
   });
 

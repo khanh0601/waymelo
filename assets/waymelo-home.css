@@ -266,11 +266,36 @@
 
 .wm-category-grid,
 .wm-product-grid,
-.wm-story-grid,
-.wm-review-grid {
+.wm-story-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+}
+
+.wm-review-grid {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 14px;
+  cursor: grab;
+  scroll-behavior: smooth;
+  scroll-padding-inline: 1px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.wm-review-grid.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.wm-review-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .wm-category-card {
@@ -500,8 +525,11 @@
 }
 
 .wm-review-card {
+  flex: 0 0 calc((100% - 48px) / 3);
+  min-width: 0;
   border: 1px solid #e3dae5;
   background: #fff;
+  scroll-snap-align: start;
 }
 
 .wm-review-card__media {
@@ -698,7 +726,30 @@
 }
 
 .wm-swipe-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.wm-swipe-pagination[hidden] {
   display: none;
+}
+
+.wm-swipe-pagination__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #cbbfce;
+  transition: width 180ms ease, background-color 180ms ease;
+}
+
+.wm-swipe-pagination__dot.is-active {
+  width: 22px;
+  background: var(--wm-purple);
 }
 
 @media screen and (max-width: 989px) {
@@ -752,29 +803,6 @@
   .wm-story-grid::-webkit-scrollbar,
   .wm-review-grid::-webkit-scrollbar {
     display: none;
-  }
-
-  .wm-swipe-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    margin-top: 14px;
-  }
-
-  .wm-swipe-pagination__dot {
-    width: 8px;
-    height: 8px;
-    padding: 0;
-    border: 0;
-    border-radius: 999px;
-    background: #cbbfce;
-    transition: width 180ms ease, background-color 180ms ease;
-  }
-
-  .wm-swipe-pagination__dot.is-active {
-    width: 22px;
-    background: var(--wm-purple);
   }
 
   .wm-product-card,
