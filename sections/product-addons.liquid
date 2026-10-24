@@ -221,6 +221,43 @@
       </div>
     </div>
   </product-addons>
+
+  <script>
+    (() => {
+      const addonsSection = document.currentScript.closest('.section-product-addons');
+      if (!addonsSection || !window.MutationObserver) return;
+
+      const restorePumperWidget = () => {
+        const appBlock = document.querySelector('[data-blocky-pumper-slot] .shopify-app-block');
+
+        addonsSection.querySelectorAll('#svelte-bundle-widget').forEach((misplacedWidget) => {
+          if (!appBlock) {
+            misplacedWidget.remove();
+            return;
+          }
+
+          const existingWidget = appBlock.querySelector('#svelte-bundle-widget');
+          if (existingWidget && existingWidget !== misplacedWidget) {
+            misplacedWidget.remove();
+            return;
+          }
+
+          const mountMarker = appBlock.querySelector('pumper-bundle');
+          if (mountMarker) {
+            mountMarker.before(misplacedWidget);
+          } else {
+            appBlock.prepend(misplacedWidget);
+          }
+        });
+      };
+
+      new MutationObserver(restorePumperWidget).observe(addonsSection, {
+        childList: true,
+        subtree: true
+      });
+      restorePumperWidget();
+    })();
+  </script>
 {%- endif -%}
 
 {% schema %}

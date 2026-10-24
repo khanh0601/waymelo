@@ -3,8 +3,10 @@
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'quick-add.css' | asset_url | stylesheet_tag }}
 {{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}
+{{ 'waymelo-quick-choose.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'waymelo-quick-choose.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign showcase_products = section.settings.products
@@ -51,7 +53,8 @@
             lazy_load: true,
             skip_styles: skip_card_product_styles,
             section_id: section.id,
-            quick_add: 'standard'
+            quick_add: 'standard',
+            use_variant_popup: true
           %}
         </article>
         {%- assign skip_card_product_styles = true -%}

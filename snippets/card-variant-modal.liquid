@@ -101,6 +101,7 @@
         <!-- Options selection -->
         <div class="waymelo-popup-options-wrapper">
           {%- for option in card_product.options_with_values -%}
+            {%- assign option_index = forloop.index0 -%}
             {%- assign option_name_downcase = option.name | downcase -%}
             {%- assign is_color_or_style = false -%}
             {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' or option_name_downcase contains 'style' or option_name_downcase contains 'pattern' or option_name_downcase contains 'mẫu' or option_name_downcase contains 'màu' -%}
@@ -110,7 +111,7 @@
             <div class="waymelo-popup-option-group" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}">
               <div class="waymelo-popup-option-label-row">
                 <span class="option-name-label">{{ option.name }}:</span>
-                <span class="option-selected-value-text">{{ option.selected_value | default: option.values.first }}</span>
+                <span class="option-selected-value-text">{{ current_variant.options[option_index] }}</span>
               </div>
               <div class="waymelo-popup-option-pills{% if is_color_or_style %} waymelo-popup-option-pills--swatch{% endif %}">
                 {%- for value in option.values -%}
@@ -124,7 +125,7 @@
 
                   <button
                     type="button"
-                    class="waymelo-option-pill{% if forloop.first %} is-active{% endif %}"
+                    class="waymelo-option-pill{% if current_variant.options[option_index] == value %} is-active{% endif %}"
                     data-option-position="{{ option.position }}"
                     data-value="{{ value | escape }}"
                     {% if variant_for_value %}data-variant-img="{{ variant_for_value.featured_image | image_url: width: 800 }}"{% endif %}

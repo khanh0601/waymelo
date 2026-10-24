@@ -26,7 +26,6 @@ if (!customElements.get('blocky-video')) {
           this.video.addEventListener('playing', this.hideSpinner.bind(this));
           this.video.addEventListener('canplaythrough', this.hideSpinner.bind(this));
           this.video.addEventListener('error', this.hideSpinner.bind(this));
-          this.video.addEventListener('playing', this.clearAutoplayFallback.bind(this));
         }
         if (this.isManual) {
           this.video.addEventListener("click", (e) => this.onClick())

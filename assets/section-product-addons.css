@@ -374,6 +374,11 @@
   font-size: 1.2rem;
 }
 
+/* Pumper can briefly mount its bundle widget inside the first add-on form. */
+.product-addons #svelte-bundle-widget {
+  display: none !important;
+}
+
 @media screen and (max-width: 749px) {
   .product-addons__panel {
     padding: 16px 10px 12px;
