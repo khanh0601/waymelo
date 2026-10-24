@@ -211,16 +211,6 @@
         "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": false,
         "settings": {}
-      },
-      "8746983209849429782": {
-        "type": "shopify://apps/dealeasy/blocks/app-embed/e47a8634-0496-480d-9e46-6f7fafd34b30",
-        "disabled": false,
-        "settings": {
-          "dealeasy_public_access_token": "",
-          "using_translated_handles": false,
-          "bundle_cart_validation": false,
-          "custom_script_and_style": "<script></script>\n<style></style>"
-        }
       }
     },
     "color_schemes": {

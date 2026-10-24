@@ -266,38 +266,6 @@
             "letter_spacing": 0
           }
         },
-        "collapsible_tab_VBrdmj": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "How To Use",
-            "icon": "none",
-            "heading_size": 16,
-            "content": "<p>✔ <strong>Wear & Secure</strong> – Fasten the adjustable shoulder and waist straps around yourself to fit comfortably before taking your seat on the plane.<br/>✔ <strong>Position Baby</strong> – Place your baby on the pillow, resting their head on the built-in round cushion for ergonomic support during feeding or naptime.<br/>✔ <strong>Relax Hands-Free</strong> – Enjoy pain-free arms as the 3-point support system holds baby securely at the perfect height throughout the flight.<br/>✔ <strong>Care & Clean</strong> – Simply unzip the 100% cotton cover and machine wash on a gentle cycle after your trip for quick, effortless maintenance.</p>",
-            "content_size": 14,
-            "page": "",
-            "open_by_default": false,
-            "bg_color": "",
-            "text_color": "",
-            "row_padding": 14,
-            "letter_spacing": 0
-          }
-        },
-        "collapsible_tab_9jUktt": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Shipping & Delivery",
-            "icon": "none",
-            "heading_size": 16,
-            "content": "<p>📦 <strong>Fast Processing</strong> – Orders are packed and shipped within 2 business days.<br/>🚚 <strong>Reliable Shipping</strong> – We partner with trusted carriers to ensure your order arrives safely.<br/>🌍 <strong>Worldwide Delivery</strong> – We ship to most locations around the world.<br/>📩 <strong>Tracking Included</strong> – Stay updated with tracking details sent to your email.</p><p>Delivery times may vary based on your location. If you have any questions, feel free to reach out!</p>",
-            "content_size": 14,
-            "page": "",
-            "open_by_default": false,
-            "bg_color": "",
-            "text_color": "",
-            "row_padding": 14,
-            "letter_spacing": 0
-          }
-        },
         "collapsible_tab_mXtiYD": {
           "type": "collapsible_tab",
           "settings": {
@@ -336,8 +304,6 @@
         "guarantee_badge_AaBfap",
         "review_carousel_fxV7nG",
         "collapsible_tab_pnakVM",
-        "collapsible_tab_VBrdmj",
-        "collapsible_tab_9jUktt",
         "collapsible_tab_mXtiYD",
         "judge_me_reviews_preview_badge_Wz6wam"
       ],
@@ -518,9 +484,9 @@
         "ai_gen_block_a021675_mGdeCW": {
           "type": "ai_gen_block_a021675",
           "settings": {
-            "video_1": "shopify://files/videos/b0de7a670dfd47649eab19b95e4e5f64.HD-1080p-4.8Mbps-96370967.mp4",
-            "video_2": "shopify://files/videos/a09c85bbe3874fb497872c70465032c2.HD-1080p-4.8Mbps-96370965.mp4",
-            "video_3": "shopify://files/videos/15e5058885674252810d4be9ab7fa236.HD-1080p-4.8Mbps-96370960.mp4",
+            "video_1": "shopify://files/videos/Cant live without.mp4",
+            "video_2": "shopify://files/videos/Formula divider great for on the go.mp4",
+            "video_3": "shopify://files/videos/On-The-Go Formula Dispenser (1).mp4",
             "width_mode": "content",
             "desktop_width_percent": 90,
             "gap": 20,
@@ -537,54 +503,6 @@
       "custom_css": [],
       "name": "Video Showcase",
       "settings": {}
-    },
-    "image_with_text_qwjtti": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_JADT8M": {
-          "type": "heading",
-          "settings": {
-            "heading": "<strong>Comfort for Baby. Joy for Parents.</strong>",
-            "heading_size": "h1"
-          }
-        },
-        "text_Vyg3wz": {
-          "type": "text",
-          "settings": {
-            "text": "<h4>💙 Make every feeding moment more comfortable with BabyEase.</h4><h4>👶 Thoughtfully designed to support your little one and help parents enjoy precious bonding moments.</h4><h4>✈️ 🏡 Perfect for home or on the go.</h4>",
-            "text_style": "body"
-          }
-        },
-        "button_iYPkAa": {
-          "type": "button",
-          "settings": {
-            "button_label": "Make It Yours →",
-            "button_link": "shopify://collections/nursing-pillows",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_JADT8M",
-        "text_Vyg3wz",
-        "button_iYPkAa"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "image": "shopify://shop_images/Em_be_h_nh_phuc_cung_BabyEase_tren_may_bay.png",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     },
     "image_with_text_rM7AJq": {
       "type": "image-with-text",
@@ -617,6 +535,7 @@
         "text_frtURj",
         "button_TXFDAJ"
       ],
+      "disabled": true,
       "name": "t:sections.image-with-text.presets.name",
       "settings": {
         "image": "shopify://shop_images/image_1512_1.jpg",
@@ -711,144 +630,6 @@
         "padding_bottom": 48
       }
     },
-    "blocky_product_feature_3_3LE4A8": {
-      "type": "blocky-product-feature-3",
-      "blocks": {
-        "feature_JHGFRN": {
-          "type": "feature",
-          "disabled": true,
-          "settings": {
-            "side": "left",
-            "y_offset": 0,
-            "title_position": "below",
-            "title": "FEATURE",
-            "text": ""
-          }
-        },
-        "feature_JpkBCA": {
-          "type": "feature",
-          "settings": {
-            "side": "left",
-            "y_offset": 32,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🎒 Lightweight & Portable</strong>&nbsp;",
-            "text": "<p>Easy to carry at home or on the go.</p>"
-          }
-        },
-        "feature_44Kfqk": {
-          "type": "feature",
-          "settings": {
-            "side": "left",
-            "y_offset": -20,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🧵 100% Cotton Cover</strong>&nbsp;",
-            "text": "<p>Soft, breathable fabric for daily use.</p><p></p>"
-          }
-        },
-        "feature_d7iDcb": {
-          "type": "feature",
-          "settings": {
-            "side": "right",
-            "y_offset": 32,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🔗 Adjustable Straps</strong>&nbsp;",
-            "text": "<p>Easy to adjust for a personalized fit.</p>"
-          }
-        },
-        "feature_b6fVTa": {
-          "type": "feature",
-          "settings": {
-            "side": "right",
-            "y_offset": -20,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🫧 Easy-Care Design</strong>&nbsp;",
-            "text": "<p>Removable cover for convenient washing.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "feature_JHGFRN",
-        "feature_JpkBCA",
-        "feature_44Kfqk",
-        "feature_d7iDcb",
-        "feature_b6fVTa"
-      ],
-      "name": "Blocky Product Feature 2",
-      "settings": {
-        "body_text": "PRODUCT FEATURES",
-        "title": "<strong>&nbsp;Designed for Everyday Comfort&nbsp;</strong>",
-        "title_size": 40,
-        "title_color": "#000000",
-        "body_size": 13,
-        "body_color": "#000000",
-        "device_image": "shopify://shop_images/G_i_tr_em_h_ng_h_a_ti_t_dang_yeu.png",
-        "device_image_alt": "",
-        "device_link": "",
-        "device_height": 460,
-        "device_radius": 39,
-        "feature_title_size": 20,
-        "feature_title_color": "#000000",
-        "feature_body_size": 14,
-        "feature_body_color": "#7a5168",
-        "accent_color": "#7a5168",
-        "desktop_content_alignment": "center",
-        "mobile_content_alignment": "center",
-        "spacing_eyebrow_title": 12,
-        "spacing_title_media": 24,
-        "page_width": 1300,
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "background_color": "#ffffff"
-      }
-    },
-    "image_with_text_CDfmy7": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_RR4WfH": {
-          "type": "heading",
-          "settings": {
-            "heading": "<strong>Why You'll Love BabyEase</strong>",
-            "heading_size": "h1"
-          }
-        },
-        "text_xaT8cb": {
-          "type": "text",
-          "settings": {
-            "text": "<p>💗 Less Arm Fatigue – Reduces arm strain.</p><p>👶 Baby Support – Soft & comfortable.</p><p>✈️ Travel-Friendly – Comfort anywhere.</p><p>💕 Closer Bonding – More precious moments.</p>",
-            "text_style": "body"
-          }
-        },
-        "button_dKxPEk": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop BabyEase →",
-            "button_link": "shopify://products/wearable-nursing-pillow",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_RR4WfH",
-        "text_xaT8cb",
-        "button_dKxPEk"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "image": "shopify://shop_images/dsasad.jpg",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "product_showcase_DqUr4G": {
       "type": "product-showcase",
       "name": "Product showcase",
@@ -871,79 +652,6 @@
         "color_scheme": "",
         "padding_top": 48,
         "padding_bottom": 48
-      }
-    },
-    "blocky_video_with_text_97hNbH": {
-      "type": "blocky-video-with-text",
-      "blocks": {
-        "review_stars_UEiWbj": {
-          "type": "review-stars",
-          "disabled": true,
-          "settings": {
-            "rating": 5,
-            "star_color": "#ffcc00",
-            "review_text_color": "#000000",
-            "empty_stars_style": "hidden",
-            "review_text": "",
-            "review_font_size": 16
-          }
-        },
-        "title_nDYf4Y": {
-          "type": "title",
-          "settings": {
-            "title": "<strong>&nbsp;Comfortable Feeding, Wherever You Go&nbsp;</strong>",
-            "title_size": 40,
-            "title_color": "#000000"
-          }
-        },
-        "body_zYyMTy": {
-          "type": "body",
-          "settings": {
-            "body_text": "<p>👶 Gentle Baby Support – Soft & comfortable.</p><p>🔒 Adjustable Fit – Secure & easy to adjust.</p><p>☁️ Soft & Cozy – Cushioned for comfort.</p><p>✈️ Travel-Friendly – Perfect for home & travel.</p>",
-            "body_size": 16,
-            "body_color": "#000000"
-          }
-        },
-        "button_7pw4pz": {
-          "type": "button",
-          "settings": {
-            "button_label": "Make It Yours →",
-            "button_link": "shopify://products/wearable-nursing-pillow",
-            "button_border_radius": "round",
-            "button_style": "regular",
-            "button_background_color": "#7a5168",
-            "button_text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "review_stars_UEiWbj",
-        "title_nDYf4Y",
-        "body_zYyMTy",
-        "button_7pw4pz"
-      ],
-      "name": "Blocky Video and Text",
-      "settings": {
-        "video": "shopify://files/videos/0dc875a0619941ecafe56c2dc8db073d.HD-1080p-7.2Mbps-96414420.mp4",
-        "height": "adapt",
-        "desktop_video_width": "medium",
-        "video_fit": "zoomed",
-        "shadow": true,
-        "autoplay": true,
-        "play_button_color": "#ffffff",
-        "play_button_background_color": "#dcdcdc",
-        "layout_style": "1",
-        "background_color": "#ffffff",
-        "layout_2_background_color": "#fcfcfc",
-        "layout": "row-reverse",
-        "desktop_content_position": "center",
-        "desktop_content_alignment": "left",
-        "mobile_layout": "col",
-        "mobile_content_alignment": "left",
-        "text_container_gap": "2rem",
-        "page_width": 1300,
-        "padding_top": 36,
-        "padding_bottom": 36
       }
     },
     "reviews_section_7Waym": {
@@ -1298,13 +1006,9 @@
     "blocky_image_embedded_ncb4ta",
     "custom_liquid_jfQF7P",
     "179162975708a3df6e",
-    "image_with_text_qwjtti",
     "image_with_text_rM7AJq",
     "feature_cards_media_AA7YtJ",
-    "blocky_product_feature_3_3LE4A8",
-    "image_with_text_CDfmy7",
     "product_showcase_DqUr4G",
-    "blocky_video_with_text_97hNbH",
     "reviews_section_7Waym",
     "1792516308479ab041",
     "blocky_faq_cFeeU6",

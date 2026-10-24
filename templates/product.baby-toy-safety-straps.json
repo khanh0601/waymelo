@@ -266,38 +266,6 @@
             "letter_spacing": 0
           }
         },
-        "collapsible_tab_VBrdmj": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "How To Use",
-            "icon": "none",
-            "heading_size": 16,
-            "content": "<p>✔ <strong>Wear & Secure</strong> – Fasten the adjustable shoulder and waist straps around yourself to fit comfortably before taking your seat on the plane.<br/>✔ <strong>Position Baby</strong> – Place your baby on the pillow, resting their head on the built-in round cushion for ergonomic support during feeding or naptime.<br/>✔ <strong>Relax Hands-Free</strong> – Enjoy pain-free arms as the 3-point support system holds baby securely at the perfect height throughout the flight.<br/>✔ <strong>Care & Clean</strong> – Simply unzip the 100% cotton cover and machine wash on a gentle cycle after your trip for quick, effortless maintenance.</p>",
-            "content_size": 14,
-            "page": "",
-            "open_by_default": false,
-            "bg_color": "",
-            "text_color": "",
-            "row_padding": 14,
-            "letter_spacing": 0
-          }
-        },
-        "collapsible_tab_9jUktt": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Shipping & Delivery",
-            "icon": "none",
-            "heading_size": 16,
-            "content": "<p>📦 <strong>Fast Processing</strong> – Orders are packed and shipped within 2 business days.<br/>🚚 <strong>Reliable Shipping</strong> – We partner with trusted carriers to ensure your order arrives safely.<br/>🌍 <strong>Worldwide Delivery</strong> – We ship to most locations around the world.<br/>📩 <strong>Tracking Included</strong> – Stay updated with tracking details sent to your email.</p><p>Delivery times may vary based on your location. If you have any questions, feel free to reach out!</p>",
-            "content_size": 14,
-            "page": "",
-            "open_by_default": false,
-            "bg_color": "",
-            "text_color": "",
-            "row_padding": 14,
-            "letter_spacing": 0
-          }
-        },
         "collapsible_tab_mXtiYD": {
           "type": "collapsible_tab",
           "settings": {
@@ -336,8 +304,6 @@
         "guarantee_badge_AaBfap",
         "review_carousel_fxV7nG",
         "collapsible_tab_pnakVM",
-        "collapsible_tab_VBrdmj",
-        "collapsible_tab_9jUktt",
         "collapsible_tab_mXtiYD",
         "judge_me_reviews_preview_badge_Wz6wam"
       ],
