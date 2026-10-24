@@ -4,9 +4,15 @@
 {{ 'quick-add.css' | asset_url | stylesheet_tag }}
 {{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}
 {{ 'waymelo-quick-choose.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'waymelo-quick-choose.js' | asset_url }}" defer="defer"></script>
+{%- if request.page_type == 'product' -%}
+  <template data-waymelo-lazy-script data-src="{{ 'product-form.js' | asset_url }}"></template>
+  <template data-waymelo-lazy-script data-src="{{ 'quick-add.js' | asset_url }}"></template>
+  <template data-waymelo-lazy-script data-src="{{ 'waymelo-quick-choose.js' | asset_url }}"></template>
+{%- else -%}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'waymelo-quick-choose.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {%- liquid
   assign showcase_products = section.settings.products

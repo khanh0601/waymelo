@@ -1,6 +1,11 @@
 {{ 'section-product-addons.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-<script src="{{ 'product-addons.js' | asset_url }}" defer="defer"></script>
+{%- if request.page_type == 'product' -%}
+  <template data-waymelo-lazy-script data-src="{{ 'product-form.js' | asset_url }}"></template>
+  <template data-waymelo-lazy-script data-src="{{ 'product-addons.js' | asset_url }}"></template>
+{%- else -%}
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-addons.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {%- liquid
   assign addon_products = section.settings.products

@@ -167,7 +167,11 @@
 }
 {% endstyle %}
 
-<script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
+{%- if request.page_type == 'product' -%}
+  <template data-waymelo-lazy-script data-src="{{ 'blocky-accordion.js' | asset_url }}"></template>
+{%- else -%}
+  <script src="{{ 'blocky-accordion.js' | asset_url }}" defer></script>
+{%- endif -%}
 
 <div
   id="blocky-faq-{{ section.id }}"
