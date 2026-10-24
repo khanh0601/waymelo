@@ -1,0 +1,232 @@
+{% comment %}
+  Renders a popup modal for choosing product variants on product cards.
+  Accepts:
+  - card_product: {Object} Product Liquid object
+  - section_id: {String} Section ID
+  - product_form_id: {String} Form ID
+{% endcomment %}
+
+{%- liquid
+  assign current_variant = card_product.selected_or_first_available_variant
+  assign modal_id = 'QuickAdd-' | append: section_id | append: '-' | append: card_product.id
+  assign close_btn_id = 'ModalClose-' | append: section_id | append: '-' | append: card_product.id
+-%}
+
+<quick-add-modal id="{{ modal_id }}" class="quick-add-modal waymelo-variant-modal" data-product-id="{{ card_product.id }}">
+  <div
+    role="dialog"
+    aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
+    aria-modal="true"
+    class="quick-add-modal__content waymelo-variant-popup global-settings-popup"
+    tabindex="-1"
+  >
+    <button
+      id="{{ close_btn_id }}"
+      type="button"
+      class="quick-add-modal__toggle waymelo-popup-close"
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
+      {% render 'icon-close' %}
+    </button>
+
+    <waymelo-variant-selector class="waymelo-popup-container" data-product-id="{{ card_product.id }}">
+      <!-- Media column -->
+      <div class="waymelo-popup-media-col">
+        <div class="waymelo-popup-image-wrapper">
+          {%- assign featured_media = current_variant.featured_media | default: card_product.featured_media -%}
+          <img
+            class="waymelo-popup-main-image"
+            src="{{ featured_media | image_url: width: 800 }}"
+            alt="{{ featured_media.alt | default: card_product.title | escape }}"
+            loading="lazy"
+            width="600"
+            height="600"
+          >
+        </div>
+        {%- if card_product.media.size > 1 -%}
+          <div class="waymelo-popup-gallery-strip">
+            {%- for media in card_product.media limit: 6 -%}
+              <button
+                type="button"
+                class="waymelo-popup-thumb-btn{% if forloop.first %} is-active{% endif %}"
+                data-media-url="{{ media | image_url: width: 800 }}"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img
+                  src="{{ media | image_url: width: 120 }}"
+                  alt="{{ media.alt | default: card_product.title | escape }}"
+                  loading="lazy"
+                  width="60"
+                  height="60"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Info column -->
+      <div class="waymelo-popup-info-col">
+        <div class="waymelo-popup-badge-row">
+          <span class="waymelo-popup-tag">Select Options</span>
+          <div class="waymelo-popup-stock-indicator{% unless current_variant.available %} is-out{% endunless %}">
+            <span class="stock-indicator-dot"></span>
+            <span class="stock-indicator-text">
+              {%- if current_variant.available -%}In Stock{%- else -%}Sold Out{%- endif -%}
+            </span>
+          </div>
+        </div>
+
+        <h3 class="waymelo-popup-title">
+          <a href="{{ card_product.url }}">{{ card_product.title }}</a>
+        </h3>
+
+        <div class="waymelo-popup-price-container">
+          <div class="waymelo-popup-prices">
+            <span class="waymelo-popup-sale-price">
+              {{ current_variant.price | money }}
+            </span>
+            <s class="waymelo-popup-compare-price{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}">
+              {{ current_variant.compare_at_price | money }}
+            </s>
+            <span class="waymelo-popup-discount-badge{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}">
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+                {%- assign savings = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+                SAVE {{ savings }}%
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+
+        <!-- Options selection -->
+        <div class="waymelo-popup-options-wrapper">
+          {%- for option in card_product.options_with_values -%}
+            {%- assign option_name_downcase = option.name | downcase -%}
+            {%- assign is_color_or_style = false -%}
+            {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' or option_name_downcase contains 'style' or option_name_downcase contains 'pattern' or option_name_downcase contains 'mẫu' or option_name_downcase contains 'màu' -%}
+              {%- assign is_color_or_style = true -%}
+            {%- endif -%}
+
+            <div class="waymelo-popup-option-group" data-option-index="{{ forloop.index0 }}" data-option-name="{{ option.name | escape }}">
+              <div class="waymelo-popup-option-label-row">
+                <span class="option-name-label">{{ option.name }}:</span>
+                <span class="option-selected-value-text">{{ option.selected_value | default: option.values.first }}</span>
+              </div>
+              <div class="waymelo-popup-option-pills{% if is_color_or_style %} waymelo-popup-option-pills--swatch{% endif %}">
+                {%- for value in option.values -%}
+                  {%- assign variant_for_value = nil -%}
+                  {%- for v in card_product.variants -%}
+                    {%- if v.options[forloop.parentloop.index0] == value and v.featured_image != blank -%}
+                      {%- assign variant_for_value = v -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  <button
+                    type="button"
+                    class="waymelo-option-pill{% if forloop.first %} is-active{% endif %}"
+                    data-option-position="{{ option.position }}"
+                    data-value="{{ value | escape }}"
+                    {% if variant_for_value %}data-variant-img="{{ variant_for_value.featured_image | image_url: width: 800 }}"{% endif %}
+                  >
+                    {%- if is_color_or_style and variant_for_value -%}
+                      <span class="option-pill-swatch-thumb" style="background-image: url('{{ variant_for_value.featured_image | image_url: width: 80 }}');"></span>
+                    {%- endif -%}
+                    <span class="option-pill-text">{{ value }}</span>
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Add to cart form -->
+        <product-form data-section-id="{{ section.id }}" class="waymelo-popup-product-form-wrap">
+          {%- form 'product',
+            card_product,
+            id: product_form_id,
+            class: 'form waymelo-popup-form',
+            novalidate: 'novalidate',
+            data-type: 'add-to-cart-form'
+          -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ current_variant.id }}"
+              class="product-variant-id"
+            >
+
+            <div class="waymelo-popup-actions-row">
+              <div class="waymelo-popup-quantity-wrapper">
+                <span class="qty-heading">Qty:</span>
+                <quantity-input class="quantity waymelo-popup-stepper">
+                  <button class="quantity__button no-js-hidden" name="minus" type="button" aria-label="Decrease quantity">
+                    {% render 'icon-minus' %}
+                  </button>
+                  <input
+                    class="quantity__input"
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    value="1"
+                    aria-label="Quantity"
+                    id="PopupQty-{{ section_id }}-{{ card_product.id }}"
+                  >
+                  <button class="quantity__button no-js-hidden" name="plus" type="button" aria-label="Increase quantity">
+                    {% render 'icon-plus' %}
+                  </button>
+                </quantity-input>
+              </div>
+
+              <button
+                id="{{ product_form_id }}-submit"
+                type="submit"
+                name="add"
+                class="quick-add__submit button button--primary waymelo-popup-submit-btn"
+                {% if current_variant.available == false %}disabled{% endif %}
+              >
+                <span>
+                  {%- if current_variant.available -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </span>
+                <span class="sold-out-message hidden">
+                  {{ 'products.product.sold_out' | t }}
+                </span>
+                {%- render 'loading-spinner' -%}
+              </button>
+            </div>
+          {%- endform -%}
+        </product-form>
+
+        <div class="waymelo-popup-footer-links">
+          <a href="{{ card_product.url }}" class="waymelo-popup-details-link">
+            <span>View full product details</span>
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8.5 3.5M13 8L8.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+
+        <!-- Hidden JSON of all variants -->
+        <script type="application/json" class="waymelo-variant-data-json">
+          [
+            {%- for v in card_product.variants -%}
+              {
+                "id": {{ v.id }},
+                "title": {{ v.title | json }},
+                "price": {{ v.price }},
+                "price_formatted": {{ v.price | money | json }},
+                "compare_at_price": {{ v.compare_at_price | default: 0 }},
+                "compare_at_price_formatted": {{ v.compare_at_price | money | json }},
+                "available": {{ v.available }},
+                "options": {{ v.options | json }},
+                "image": {%- if v.featured_image -%}{{ v.featured_image | image_url: width: 800 | json }}{%- else -%}null{%- endif -%}
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+        </script>
+      </div>
+    </waymelo-variant-selector>
+  </div>
+</quick-add-modal>

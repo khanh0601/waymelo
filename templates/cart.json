@@ -44,11 +44,29 @@
       "settings": {
         "include_margins": true
       }
+    },
+    "1792517018219ef975": {
+      "type": "apps",
+      "blocks": {
+        "upsell_com_ex_reconvert_slot_V7DK4r": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/slot/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {
+            "slot_id": "1"
+          }
+        }
+      },
+      "block_order": [
+        "upsell_com_ex_reconvert_slot_V7DK4r"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
     "cart-items",
     "cart-footer",
-    "17924288795f7dc82c"
+    "17924288795f7dc82c",
+    "1792517018219ef975"
   ]
 }

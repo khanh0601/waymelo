@@ -17,7 +17,7 @@
         "announcement_Rbcw9E": {
           "type": "announcement",
           "settings": {
-            "text": "Call us / Whatsup: 1-321-233-3336",
+            "text": "Call us / Whatsup: {{ metaobjects.waymelo[\"1-321-233-3336\"].phone.value }}",
             "link": ""
           }
         }
@@ -73,7 +73,7 @@
         "text_Ee4QEb": {
           "type": "text",
           "settings": {
-            "text": "Free Shipping on Every Order"
+            "text": "Bundle & Enjoy Free Shipping"
           }
         }
       },
@@ -85,8 +85,8 @@
       "name": "Blocky Scrolling Text Bar",
       "settings": {
         "text_size": "1.75",
-        "background_color": "#7A5168",
-        "text_color": "#FFFFFF",
+        "background_color": "#7a5168",
+        "text_color": "#ffffff",
         "speed": 0.5,
         "text_spacing": 3,
         "padding_top": 16,

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "waymelo_hero": {
@@ -32,15 +41,24 @@
         },
         "benefit_comfort": {
           "type": "benefit",
-          "settings": { "icon": "✧", "text": "Comfort along the way" }
+          "settings": {
+            "icon": "✧",
+            "text": "Comfort along the way"
+          }
         },
         "benefit_practical": {
           "type": "benefit",
-          "settings": { "icon": "↗", "text": "Practical for life on the go" }
+          "settings": {
+            "icon": "↗",
+            "text": "Practical for life on the go"
+          }
         },
         "benefit_family": {
           "type": "benefit",
-          "settings": { "icon": "♡", "text": "Room for family moments" }
+          "settings": {
+            "icon": "♡",
+            "text": "Room for family moments"
+          }
         }
       },
       "block_order": [
@@ -72,7 +90,8 @@
             "fallback_product": "wearable-nursing-pillow",
             "title": "",
             "text": "Rest easy, wherever you go.",
-            "link_label": "Explore category"
+            "link_label": "Explore category",
+            "link": "shopify://collections/travel-comfort"
           }
         },
         "category_bags": {
@@ -82,7 +101,8 @@
             "fallback_product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
             "title": "",
             "text": "Practical essentials for feeding and family travel.",
-            "link_label": "Explore category"
+            "link_label": "Explore category",
+            "link": "shopify://collections/baby-feeding-travel-essentials"
           }
         },
         "category_family": {
@@ -92,11 +112,16 @@
             "fallback_product": "portable-diaper-changing-pad-with-wipes-pocket",
             "title": "",
             "text": "Support and comfort for everyday feeding moments.",
-            "link_label": "Explore category"
+            "link_label": "Explore category",
+            "link": "shopify://collections/nursing-pillows"
           }
         }
       },
-      "block_order": ["category_comfort", "category_bags", "category_family"],
+      "block_order": [
+        "category_comfort",
+        "category_bags",
+        "category_family"
+      ],
       "settings": {
         "eyebrow": "Find your kind of comfort",
         "heading": "Shop by category."
@@ -120,7 +145,9 @@
         "story_comfort": {
           "type": "story",
           "settings": {
-            "fallback_product": "wearable-nursing-pillow",
+            "video_url": "",
+            "image": "shopify://shop_images/dffggf.jpg",
+            "fallback_product": "",
             "heading": "A little comfort in the air",
             "label": "Discover the details"
           }
@@ -128,6 +155,7 @@
         "story_bag": {
           "type": "story",
           "settings": {
+            "video_url": "",
             "fallback_product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
             "heading": "Everything, in its place",
             "label": "Made for everyday outings"
@@ -136,13 +164,18 @@
         "story_pad": {
           "type": "story",
           "settings": {
+            "video_url": "",
             "fallback_product": "portable-diaper-changing-pad-with-wipes-pocket",
             "heading": "Ready for a day out",
             "label": "Practical by design"
           }
         }
       },
-      "block_order": ["story_comfort", "story_bag", "story_pad"],
+      "block_order": [
+        "story_comfort",
+        "story_bag",
+        "story_pad"
+      ],
       "settings": {
         "eyebrow": "See the little details",
         "heading": "Made for moments like these."
@@ -155,7 +188,9 @@
         "image_alt": "Waymelo essentials for comfortable family journeys",
         "eyebrow": "The Waymelo way",
         "heading": "More comfort.\nMore memories.",
-        "text": "<p>Small essentials that make getting there feel better.</p>"
+        "text": "<p>Small essentials that make getting there feel better.</p>",
+        "button_label": "",
+        "button_link": ""
       }
     },
     "waymelo_reviews": {
@@ -165,6 +200,19 @@
           "type": "review",
           "settings": {
             "product": "wearable-nursing-pillow",
+            "image_alt": "",
+            "rating": 5,
+            "heading": "Comfort on the go",
+            "quote": "<p>Add a genuine customer review about comfort and convenience here.</p>",
+            "author": "Verified customer",
+            "product_name": "Waymelo essential"
+          }
+        },
+        "review_FHjzUH": {
+          "type": "review",
+          "settings": {
+            "product": "wearable-nursing-pillow",
+            "image_alt": "",
             "rating": 5,
             "heading": "Comfort on the go",
             "quote": "<p>Add a genuine customer review about comfort and convenience here.</p>",
@@ -176,6 +224,7 @@
           "type": "review",
           "settings": {
             "product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
+            "image_alt": "",
             "rating": 5,
             "heading": "Packed for the day",
             "quote": "<p>Add a genuine customer review about organization and everyday use here.</p>",
@@ -187,6 +236,7 @@
           "type": "review",
           "settings": {
             "product": "portable-diaper-changing-pad-with-wipes-pocket",
+            "image_alt": "",
             "rating": 5,
             "heading": "Family adventures",
             "quote": "<p>Add a genuine customer review about family outings and travel here.</p>",
@@ -195,7 +245,12 @@
           }
         }
       },
-      "block_order": ["review_one", "review_two", "review_three"],
+      "block_order": [
+        "review_one",
+        "review_FHjzUH",
+        "review_two",
+        "review_three"
+      ],
       "settings": {
         "eyebrow": "Customer reviews",
         "heading": "From their journeys."
@@ -206,25 +261,44 @@
       "blocks": {
         "social_one": {
           "type": "image",
-          "settings": { "product": "wearable-nursing-pillow", "image_alt": "Waymelo travel inspiration" }
+          "settings": {
+            "product": "wearable-nursing-pillow",
+            "image_alt": "Waymelo travel inspiration"
+          }
         },
         "social_two": {
           "type": "image",
-          "settings": { "product": "diaper-bag-backpack-with-changing-station-25l-large-capacity", "image_alt": "Waymelo organization inspiration" }
+          "settings": {
+            "product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
+            "image_alt": "Waymelo organization inspiration"
+          }
         },
         "social_three": {
           "type": "image",
-          "settings": { "product": "portable-diaper-changing-pad-with-wipes-pocket", "image_alt": "Waymelo family outing inspiration" }
+          "settings": {
+            "product": "portable-diaper-changing-pad-with-wipes-pocket",
+            "image_alt": "Waymelo family outing inspiration"
+          }
         },
         "social_four": {
           "type": "image",
-          "settings": { "product": "wearable-nursing-pillow", "image_alt": "Waymelo comfort inspiration" }
+          "settings": {
+            "product": "wearable-nursing-pillow",
+            "image_alt": "Waymelo comfort inspiration"
+          }
         }
       },
-      "block_order": ["social_one", "social_two", "social_three", "social_four"],
+      "block_order": [
+        "social_one",
+        "social_two",
+        "social_three",
+        "social_four"
+      ],
       "settings": {
         "eyebrow": "A little inspiration for the road",
-        "heading": "On the go with Waymelo."
+        "heading": "On the go with Waymelo.",
+        "social_label": "",
+        "social_link": ""
       }
     },
     "waymelo_faq": {
@@ -242,25 +316,33 @@
           "type": "item",
           "settings": {
             "question": "Where can I check sizes and product details?",
-            "answer": "<p>Open any product page to find available options, dimensions, materials and care information.</p>"
+            "answer": "<p>Open any product page to find available options, dimensions, materials and care information.</p>",
+            "open_by_default": false
           }
         },
         "faq_delivery": {
           "type": "item",
           "settings": {
             "question": "How can I check delivery availability and cost?",
-            "answer": "<p>Enter your delivery address at checkout to review the available delivery options and charges before placing your order.</p>"
+            "answer": "<p>Enter your delivery address at checkout to review the available delivery options and charges before placing your order.</p>",
+            "open_by_default": false
           }
         },
         "faq_returns": {
           "type": "item",
           "settings": {
             "question": "Where can I find the return policy?",
-            "answer": "<p>Review our refund policy for eligibility, timeframes and the steps to request a return.</p>"
+            "answer": "<p>Review our refund policy for eligibility, timeframes and the steps to request a return.</p>",
+            "open_by_default": false
           }
         }
       },
-      "block_order": ["faq_products", "faq_details", "faq_delivery", "faq_returns"],
+      "block_order": [
+        "faq_products",
+        "faq_details",
+        "faq_delivery",
+        "faq_returns"
+      ],
       "settings": {
         "eyebrow": "A little help before you go",
         "heading": "Good to know.",

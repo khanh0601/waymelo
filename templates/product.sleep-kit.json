@@ -330,25 +330,6 @@
         "padding_bottom": 60
       }
     },
-    "related_products_waymelo": {
-      "type": "related-products",
-      "settings": {
-        "heading": "You may also like",
-        "heading_size": "h1",
-        "subheading": "Picked for you",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 48,
-        "padding_bottom": 56
-      }
-    },
     "blocky_announcement_bar_H6FtGh": {
       "type": "blocky-announcement-bar",
       "blocks": {
@@ -533,7 +514,7 @@
       ],
       "name": "Blocky Video and Text",
       "settings": {
-        "video": "",
+        "video": "shopify://files/videos/That moment you finally doze off… and your head drops and jolts you awake.  AIRWAYS straps gently to your headrest so your head stays put, while the contoured mask blocks out cabin light and the soft arm wrap gives y.mp4",
         "height": "adapt",
         "desktop_video_width": "medium",
         "video_fit": "zoomed",
@@ -817,7 +798,6 @@
   },
   "order": [
     "main",
-    "related_products_waymelo",
     "blocky_announcement_bar_H6FtGh",
     "custom_liquid_jfQF7P",
     "179162975708a3df6e",
