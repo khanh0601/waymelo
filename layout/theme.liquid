@@ -76,60 +76,6 @@
 
     {{ content_for_header }}
 
-    {%- if template.name == 'product' -%}
-      <script>
-        (function () {
-          var observer;
-          var timeoutId;
-
-          function preloadPumperFeatures() {
-            var entry = document.querySelector(
-              'script[src*="/assets/pumper-bundles-v2.js"], link[href*="/assets/pumper-bundles-v2.js"]'
-            );
-            if (!entry) return false;
-
-            var entryUrl = entry.src || entry.href;
-            var base = entryUrl.split('?')[0].replace(/pumper-bundles-v2\.js$/, '');
-            [
-              'f-tier-cards',
-              'f-basic-tier',
-              'f-swatches',
-              'f-block-title',
-              'f-tier-tag',
-              'tool-ribbon-tag',
-              'tool-out-of-stock-message'
-            ].forEach(function (name, index) {
-              var href = base + 'pumper-chunk-' + name + '.js';
-              if (document.querySelector('link[href="' + href + '"]')) return;
-
-              var link = document.createElement('link');
-              link.rel = 'modulepreload';
-              link.href = href;
-              link.crossOrigin = 'anonymous';
-              if (index < 5) link.setAttribute('fetchpriority', 'high');
-              document.head.appendChild(link);
-            });
-
-            return true;
-          }
-
-          function stopWatching() {
-            if (observer) observer.disconnect();
-            if (timeoutId) window.clearTimeout(timeoutId);
-          }
-
-          if (preloadPumperFeatures()) return;
-
-          observer = new MutationObserver(function () {
-            if (!preloadPumperFeatures()) return;
-            stopWatching();
-          });
-          observer.observe(document.documentElement, { childList: true, subtree: true });
-          timeoutId = window.setTimeout(stopWatching, 10000);
-        })();
-      </script>
-
-    {%- endif -%}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
@@ -350,11 +296,15 @@
       {{ 'blocky-lys.css' | asset_url | stylesheet_tag }}
       {%- if request.page_type == 'product' -%}
         {{ 'product-mobile.css' | asset_url | stylesheet_tag }}
+        <script src="{{ 'reconvert-widget-sync.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}
       {%- if request.page_type == 'collection' -%}
         {{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}
       {%- endif -%}
       {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
+      {%- if request.page_type == 'product' -%}
+        {{ 'blocky-main-product.css' | asset_url | stylesheet_tag }}
+      {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}
       {% comment %}theme-check-disable AssetPreload{% endcomment %}

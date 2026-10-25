@@ -1,9 +1,9 @@
-{{ 'section-product-showcase.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-{{ 'quick-add.css' | asset_url | stylesheet_tag }}
-{{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}
-{{ 'waymelo-quick-choose.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'section-product-showcase.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'section-product-showcase.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'quick-add.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'waymelo-collection.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'waymelo-quick-choose.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'waymelo-quick-choose.css' | asset_url | stylesheet_tag }}</noscript>
 {%- if request.page_type == 'product' -%}
   <template data-waymelo-lazy-script data-src="{{ 'product-form.js' | asset_url }}"></template>
   <template data-waymelo-lazy-script data-src="{{ 'quick-add.js' | asset_url }}"></template>
