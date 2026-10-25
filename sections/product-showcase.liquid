@@ -1,9 +1,10 @@
-<link rel="stylesheet" href="{{ 'section-product-showcase.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'section-product-showcase.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'quick-add.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'quick-add.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'waymelo-collection.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'waymelo-collection.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'waymelo-quick-choose.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'waymelo-quick-choose.css' | asset_url | stylesheet_tag }}</noscript>
+{%- liquid
+  assign waymelo_css_eager = false
+  if section.index == blank or section.index <= 2
+    assign waymelo_css_eager = true
+  endif
+-%}
+{% render 'waymelo-lazy-css', files: 'section-product-showcase.css,component-card.css,component-price.css,quick-add.css,waymelo-collection.css,waymelo-quick-choose.css', eager: waymelo_css_eager %}
 {%- if request.page_type == 'product' -%}
   <template data-waymelo-lazy-script data-src="{{ 'product-form.js' | asset_url }}"></template>
   <template data-waymelo-lazy-script data-src="{{ 'quick-add.js' | asset_url }}"></template>

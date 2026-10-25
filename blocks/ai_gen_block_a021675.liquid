@@ -238,7 +238,7 @@
                   loadAndPlay();
                   observer.disconnect();
                 }
-              }, { rootMargin: '100% 0px 100% 0px', threshold: 0.01 });
+              }, { rootMargin: '40% 0px 40% 0px', threshold: 0.01 });
               observer.observe(item);
               return;
             }
@@ -246,11 +246,20 @@
             loadAndPlay();
           };
 
+          // Wait for the hero image and the buy-box app widget (see blocky-featured-product.js)
+          // before the videos may start downloading; fall back after 10s if the signal never comes.
           const hero = document.querySelector('blocky-featured-product');
-          if (!hero || document.documentElement.classList.contains('waymelo-hero-ready')) {
+          let observing = false;
+          const startObserving = () => {
+            if (observing) return;
+            observing = true;
             observeAfterHero();
+          };
+          if (!hero || document.documentElement.classList.contains('waymelo-below-fold-ready')) {
+            startObserving();
           } else {
-            window.addEventListener('waymelo:hero-ready', observeAfterHero, { once: true });
+            window.addEventListener('waymelo:below-fold-ready', startObserving, { once: true });
+            window.setTimeout(startObserving, 10000);
           }
 
           button.addEventListener('click', () => {

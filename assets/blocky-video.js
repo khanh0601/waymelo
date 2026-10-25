@@ -47,12 +47,21 @@ if (!customElements.get('blocky-video')) {
         const hero = document.querySelector('blocky-featured-product');
         const start = () => this.observeVisibility();
 
-        if (!hero || document.documentElement.classList.contains('waymelo-hero-ready')) {
+        // Wait for the hero image and the buy-box app widget (see blocky-featured-product.js);
+        // fall back after 10s if the signal never comes.
+        let started = false;
+        const startOnce = () => {
+          if (started) return;
+          started = true;
           start();
+        };
+        if (!hero || document.documentElement.classList.contains('waymelo-below-fold-ready')) {
+          startOnce();
           return;
         }
 
-        window.addEventListener('waymelo:hero-ready', start, { once: true });
+        window.addEventListener('waymelo:below-fold-ready', startOnce, { once: true });
+        window.setTimeout(startOnce, 10000);
       }
 
       observeVisibility() {

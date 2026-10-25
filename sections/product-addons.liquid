@@ -1,4 +1,10 @@
-{{ 'section-product-addons.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign waymelo_css_eager = false
+  if section.index == blank or section.index <= 2
+    assign waymelo_css_eager = true
+  endif
+-%}
+{% render 'waymelo-lazy-css', files: 'section-product-addons.css', eager: waymelo_css_eager %}
 {%- if request.page_type == 'product' -%}
   <template data-waymelo-lazy-script data-src="{{ 'product-form.js' | asset_url }}"></template>
   <template data-waymelo-lazy-script data-src="{{ 'product-addons.js' | asset_url }}"></template>

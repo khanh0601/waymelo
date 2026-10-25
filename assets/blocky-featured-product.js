@@ -33,6 +33,7 @@ function blockyScrollToSection(target) {
         this.mediaByVariant = {};
 
         this.initMediaLoadingState();
+        this.initBelowFoldGate();
         this.initDelayedAppSlots();
 
         (this.product.variants || []).forEach((variant) => {
@@ -82,6 +83,7 @@ function blockyScrollToSection(target) {
             document.documentElement.classList.add('waymelo-hero-ready');
             window.dispatchEvent(new CustomEvent('waymelo:hero-ready'));
           }
+          this.maybeBelowFoldReady();
         };
 
         if (!activeImage || (activeImage.complete && activeImage.naturalWidth > 0)) {
@@ -165,6 +167,7 @@ function blockyScrollToSection(target) {
           const EMPTY_SLOT_TIMEOUT = 15000;
           const DOM_SETTLE_TIME = 240;
           const TITLE_MARK_FALLBACK = 1500;
+          const SIGNAL_FALLBACK_SETTLE = 1500;
           let firstPaintReadyAt = 0;
           let lastMutationAt = performance.now();
           let revealed = false;
@@ -199,20 +202,26 @@ function blockyScrollToSection(target) {
             slot.classList.add('is-ready');
             slot.setAttribute('aria-busy', 'false');
             cleanup();
+            this.markAppSlotSettled();
           };
 
           const isComplete = () => {
             syncSignals();
             if (widgetHeight() < 100 || !cssReady()) return false;
 
-            if (!signals.mounted || !signals.configured || !signals.firstPaint) return false;
+            const settledFor = performance.now() - lastMutationAt;
+            const signalsReady = signals.mounted && signals.configured && signals.firstPaint;
+            // Fallback: if the app's readiness signals were missed (they can fire before this script
+            // runs, e.g. when the app's JS is cached and this file is not), a fully sized widget whose
+            // DOM has been still for SIGNAL_FALLBACK_SETTLE is treated as ready instead of staying hidden.
+            if (!signalsReady && settledFor < SIGNAL_FALLBACK_SETTLE) return false;
             enhanceLabels();
             if (!firstPaintReadyAt) firstPaintReadyAt = performance.now();
 
             // The block title and ribbons are resolved after Pumper's first-paint mark. Wait for the
             // title signal when available, with a compatibility fallback for older app versions.
             const titleReady = signals.blockTitle || performance.now() - firstPaintReadyAt >= TITLE_MARK_FALLBACK;
-            const domSettled = performance.now() - lastMutationAt >= DOM_SETTLE_TIME;
+            const domSettled = settledFor >= DOM_SETTLE_TIME;
             return titleReady && domSettled;
           };
 
@@ -311,6 +320,7 @@ function blockyScrollToSection(target) {
             slot.classList.add('is-ready', 'is-empty');
             slot.setAttribute('aria-busy', 'false');
             clearInterval(pollTimer);
+            this.markAppSlotSettled();
           }, Math.max(0, EMPTY_SLOT_TIMEOUT - (performance.now() - startedAt)));
 
           mutationObserver = new MutationObserver(() => {
@@ -320,6 +330,46 @@ function blockyScrollToSection(target) {
           mutationObserver.observe(slot, { childList: true, subtree: true, characterData: true });
           watchWidget();
         });
+      }
+
+      /*
+        Below-the-fold media (video showcase, video sections) wait until both the hero image has
+        loaded and the buy-box app slots (Pumper) have settled, so they never compete for bandwidth
+        with the offer widget on a cold load. Signal: html.waymelo-below-fold-ready plus the
+        'waymelo:below-fold-ready' event. The buy box is considered settled when every Pumper slot
+        has revealed or collapsed, or after 8s at most.
+      */
+      initBelowFoldGate() {
+        this.pendingAppSlots = this.querySelectorAll('[data-blocky-pumper-slot]').length;
+        this.buyBoxSettled = false;
+        if (this.pendingAppSlots === 0) {
+          this.settleBuyBox();
+          return;
+        }
+        this.buyBoxTimer = window.setTimeout(() => this.settleBuyBox(), 8000);
+      }
+
+      markAppSlotSettled() {
+        if (this.buyBoxSettled) return;
+        this.pendingAppSlots = Math.max(0, (this.pendingAppSlots || 0) - 1);
+        if (this.pendingAppSlots === 0) this.settleBuyBox();
+      }
+
+      settleBuyBox() {
+        if (this.buyBoxSettled) return;
+        this.buyBoxSettled = true;
+        window.clearTimeout(this.buyBoxTimer);
+        document.documentElement.classList.add('waymelo-buybox-ready');
+        window.dispatchEvent(new CustomEvent('waymelo:buybox-ready'));
+        this.maybeBelowFoldReady();
+      }
+
+      maybeBelowFoldReady() {
+        const root = document.documentElement;
+        if (root.classList.contains('waymelo-below-fold-ready')) return;
+        if (!root.classList.contains('waymelo-hero-ready') || !root.classList.contains('waymelo-buybox-ready')) return;
+        root.classList.add('waymelo-below-fold-ready');
+        window.dispatchEvent(new CustomEvent('waymelo:below-fold-ready'));
       }
 
       initBeforeAfterButtons() {

@@ -1,4 +1,10 @@
-{{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign waymelo_css_eager = false
+  if section.index == blank or section.index <= 2
+    assign waymelo_css_eager = true
+  endif
+-%}
+{% render 'waymelo-lazy-css', files: 'component-image-with-text.css', eager: waymelo_css_eager %}
 
 {%- style -%}
   .section-{{ section.id }}-padding {

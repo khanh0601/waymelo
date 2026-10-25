@@ -1,0 +1,25 @@
+{%- comment -%}
+  Usage: {% render 'waymelo-lazy-css', files: 'a.css,b.css', eager: false %}
+
+  Below-the-fold sections register their stylesheets as lazy markers; the loader in
+  layout/theme.liquid turns each marker into a <link rel="stylesheet"> when the section comes
+  within ~1200px of the viewport. Pass eager: true for sections that can sit in the first
+  viewport (callers use section.index for that) so they keep a render-blocking stylesheet
+  and never flash unstyled. The theme editor always loads eagerly.
+{%- endcomment -%}
+{%- liquid
+  assign waymelo_lazy_css_list = files | split: ','
+  assign waymelo_lazy_css_now = eager
+  if request.design_mode
+    assign waymelo_lazy_css_now = true
+  endif
+-%}
+{%- for waymelo_lazy_css_name in waymelo_lazy_css_list -%}
+  {%- assign waymelo_lazy_css_file = waymelo_lazy_css_name | strip -%}
+  {%- if waymelo_lazy_css_now -%}
+    {{ waymelo_lazy_css_file | asset_url | stylesheet_tag }}
+  {%- else -%}
+    <template data-waymelo-lazy-style data-href="{{ waymelo_lazy_css_file | asset_url }}"></template>
+    <noscript>{{ waymelo_lazy_css_file | asset_url | stylesheet_tag }}</noscript>
+  {%- endif -%}
+{%- endfor -%}

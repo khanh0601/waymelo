@@ -1,9 +1,11 @@
 {% comment %}theme-check-disable UndefinedObject{% endcomment %}
-<link rel="stylesheet" href="{{ 'section-footer.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'section-footer.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'component-newsletter.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'component-list-payment.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}</noscript>
-<link rel="stylesheet" href="{{ 'component-list-social.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-list-social.css' | asset_url | stylesheet_tag }}</noscript>
+{%- liquid
+  assign waymelo_css_eager = false
+  if false
+    assign waymelo_css_eager = true
+  endif
+-%}
+{% render 'waymelo-lazy-css', files: 'section-footer.css,component-newsletter.css,component-list-menu.css,component-list-payment.css,component-list-social.css', eager: waymelo_css_eager %}
 
 {%- style -%}
   .footer {

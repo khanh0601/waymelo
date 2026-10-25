@@ -1821,7 +1821,13 @@
     currency: {{ cart.currency.iso_code | json }}
   };
 </script>
-<script src="{{ 'blocky-featured-product.js' | asset_url }}" defer="defer"></script>
+{%- comment -%}
+  No async/defer on purpose: this must run exactly where the old inline script ran, before the
+  Pumper app mounts into the slot above (its readiness events are listened for on window) and
+  before first paint of the gallery. The file is preloaded in layout/theme.liquid, so the
+  parser-blocking cost is negligible.
+{%- endcomment -%}
+<script src="{{ 'blocky-featured-product.js' | asset_url }}"></script>
 
 {% schema %}
 {

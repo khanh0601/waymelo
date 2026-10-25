@@ -304,6 +304,7 @@
       {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
       {%- if request.page_type == 'product' -%}
         {{ 'blocky-main-product.css' | asset_url | stylesheet_tag }}
+        <link rel="preload" as="script" href="{{ 'blocky-featured-product.js' | asset_url }}">
         <style>
           /* Skip layout/paint of sections below the hero until they come near the viewport.
              The HTML stays complete (SEO unchanged); only rendering work is deferred.
@@ -455,9 +456,23 @@
           return scriptPromises[src];
         }
 
+        function loadStyle(marker) {
+          var href = marker.getAttribute('data-href');
+          if (!href || document.querySelector('link[rel="stylesheet"][href="' + href + '"]')) {
+            marker.remove();
+            return;
+          }
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = href;
+          marker.replaceWith(link);
+        }
+
         function loadRoot(root) {
           if (!root || root.dataset.waymeloJsReady === 'true') return;
           root.dataset.waymeloJsReady = 'true';
+
+          root.querySelectorAll('template[data-waymelo-lazy-style]').forEach(loadStyle);
 
           var chain = Promise.resolve();
           root.querySelectorAll('template[data-waymelo-lazy-script]').forEach(function (marker) {
@@ -467,7 +482,7 @@
 
         function observe(scope) {
           var markers = scope.querySelectorAll
-            ? scope.querySelectorAll('template[data-waymelo-lazy-script]')
+            ? scope.querySelectorAll('template[data-waymelo-lazy-script], template[data-waymelo-lazy-style]')
             : [];
           var roots = [];
 
@@ -487,7 +502,7 @@
               observer.unobserve(entry.target);
               loadRoot(entry.target);
             });
-          }, { rootMargin: '700px 0px', threshold: 0.01 });
+          }, { rootMargin: '1200px 0px', threshold: 0.01 });
 
           roots.forEach(function (root) { observer.observe(root); });
         }
