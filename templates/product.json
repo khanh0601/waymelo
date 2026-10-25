@@ -417,14 +417,13 @@
         "body_text": "",
         "body_color": "#000000",
         "auto_scroll": true,
-        "autoplay_videos": true,
         "arrow-background-color": "#000000",
         "arrow-carot-color": "#ffffff",
         "dot-color": "#000000",
         "play_button_color": "#ffffff",
         "play_button_background_color": "#000000",
         "media_size": "long",
-        "slides_desktop": 3,
+        "slides_desktop": 4,
         "full_screen": false,
         "desktop_content_alignment": "center",
         "mobile_media_size": "long",
@@ -772,6 +771,21 @@
         "padding_top": 40,
         "padding_bottom": 52
       }
+    },
+    "1792860416bb0922ad": {
+      "type": "apps",
+      "blocks": {
+        "upsell_com_ex_reconvert_product_recommendations_km8QKY": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-recommendations/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "upsell_com_ex_reconvert_product_recommendations_km8QKY"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
@@ -786,6 +800,7 @@
     "product_showcase_EjKUHU",
     "blocky_faq_GWWtKj",
     "179273719320efd208",
-    "newsletter_wpX8Je"
+    "newsletter_wpX8Je",
+    "1792860416bb0922ad"
   ]
 }

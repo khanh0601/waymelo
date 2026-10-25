@@ -163,6 +163,13 @@
             "using_page_builder": false
           }
         },
+        "quantity_selector_hY639K": {
+          "type": "quantity_selector",
+          "settings": {
+            "input_text_color": "#000000",
+            "label_size": 20
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -182,6 +189,10 @@
             "margin_top": 1,
             "margin_bottom": 1.7
           }
+        },
+        "upsell_com_ex_reconvert_product_recommendations_hCQgTH": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-recommendations/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {}
         },
         "payment_badges_edFzPC": {
           "type": "payment_badges",
@@ -330,7 +341,9 @@
         "description",
         "variant_picker",
         "pumper_bundles_app_block_qb_EHeEkM",
+        "quantity_selector_hY639K",
         "buy_buttons",
+        "upsell_com_ex_reconvert_product_recommendations_hCQgTH",
         "payment_badges_edFzPC",
         "complementary_t3Vw3M",
         "guarantee_badge_AaBfap",

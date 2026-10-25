@@ -58,6 +58,10 @@
             "font_weight": "600"
           }
         },
+        "judge_me_reviews_preview_badge_BpnE3e": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "price": {
           "type": "price",
           "settings": {
@@ -291,6 +295,7 @@
       "block_order": [
         "product_reviews_2_gTgAra",
         "title",
+        "judge_me_reviews_preview_badge_BpnE3e",
         "price",
         "product_server_rating_cFNHhg",
         "delivery_jCU86n",
@@ -654,186 +659,6 @@
         "padding_bottom": 48
       }
     },
-    "reviews_section_7Waym": {
-      "type": "reviews-section",
-      "blocks": {
-        "review_Wjf7Pg": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Sarah M",
-            "date": "01/01/2026",
-            "verified": true,
-            "body": "<p><br/>Absolutely love this nursing pillow! The quality is amazing, and changing to a plastic buckle makes it so much easier and more secure to use. Highly recommended for new moms!<br/><br/></p>",
-            "image": "shopify://shop_images/vghh.jpg"
-          }
-        },
-        "review_nyBfQP": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Ashley Wilson",
-            "date": "",
-            "verified": true,
-            "body": "<p>The cushioning feels soft and supportive. It's a lovely addition to my baby's feeding essentials</p>"
-          }
-        },
-        "review_a5": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Ashley T.",
-            "date": "",
-            "verified": true,
-            "body": "<p>Feeding sessions used to leave my shoulders and neck so sore, but this pillow lifts baby to the perfect latch height effortlessly. The 3-point support really takes the pressure off my arms. The strap takes a second to adjust, but it’s a total lifesaver for long nursing sessions!</p>",
-            "image": "shopify://shop_images/https_3A_2F_2Fnuzzlenestbed.com_2Fcdn_2Fshop_2Ffiles_2FIMG_4412_246fcbed-7429-4b2b-9ee1-3d63afb91559.jpg"
-          }
-        },
-        "review_a4": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Jessica T.",
-            "date": "",
-            "verified": true,
-            "body": "<p>Super comfortable, breathable, and so easy to clean after our trip. My baby slept like a rock at 30,000 feet. Highly recommended for flying parents!</p>",
-            "image": "shopify://shop_images/dsfgf_2157dcbd-ea05-463f-9f5c-764f2a257b82.jpg"
-          }
-        },
-        "review_a2": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Laura K.",
-            "date": "",
-            "verified": true,
-            "body": "<p>The 100% cotton cover feels super gentle on my baby's sensitive skin, and the pearl cotton filling holds its shape well without flattening out. The zipper can be a bit tight to zip back on after washing, but overall it's a very solid and well-made pillow.</p>",
-            "image": "shopify://shop_images/photo_2026-10-12_17-37-59_5f7c1079-aa70-4b77-8c65-2deda147a75a.jpg"
-          }
-        },
-        "review_8XVNjh": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Sarah Thompson",
-            "date": "",
-            "verified": true,
-            "body": "<p>I love the adjustable strap. It makes the pillow easier to position during feeding</p>"
-          }
-        },
-        "review_MhztXn": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Jessica Miller",
-            "date": "",
-            "verified": true,
-            "body": "<p>The whale pattern is absolutely adorable! The colors are soft and look beautiful in person.</p>"
-          }
-        },
-        "review_Htfcha": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Emily Carter",
-            "date": "01/01/2026",
-            "verified": true,
-            "body": "<p><br/>This pillow provides extra support while I'm feeding my baby. I love how comfortable it feels!</p>"
-          }
-        },
-        "review_a1": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Emily R.",
-            "date": "",
-            "verified": true,
-            "body": "<p>We took a 12-hour flight with our 4-month-old, and this pillow saved my arms! Baby slept peacefully for hours, and I finally got to rest too.</p>"
-          }
-        },
-        "review_a3": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "David K.",
-            "date": "",
-            "verified": true,
-            "body": "<p>I used to get severe shoulder pain holding our baby during red-eye flights. With this strap system, my baby slept peacefully the whole flight and I could finally close my eyes and rest.</p>"
-          }
-        },
-        "review_wch9ap": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Megan R.",
-            "date": "",
-            "verified": true,
-            "body": "<p>The pearl cotton filling is nice and firm, so baby doesn't sink down while nursing. It holds baby securely at an angle that helped reduce spit-ups during bottle feeding too. The cotton cover is super breathable, though zipping it back on after washing is a bit tight. Very happy with it!</p>"
-          }
-        },
-        "review_cUryjU": {
-          "type": "review",
-          "settings": {
-            "rating": 4,
-            "author": "Nicole B.",
-            "date": "",
-            "verified": true,
-            "body": "<p>Having the strap keep the pillow snug against my waist means I don't have to keep readjusting it mid-feed. It gives my back much-needed relief during late-night nursing sessions. Solid quality and very soft fabric for baby's skin!</p>"
-          }
-        },
-        "review_ra6AQV": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Laura K.",
-            "date": "",
-            "verified": true,
-            "body": "<p>This pillow has been a daily lifesaver for bottle feeding at home. The 3-point support takes all the weight off my arms while sitting on the couch. The cotton cover is super soft, though zipping it back on after washing requires a little patience. Overall, a very solid purchase!</p>",
-            "image": "shopify://shop_images/Create_realistic_product_review___20261020081526.jpg"
-          }
-        }
-      },
-      "block_order": [
-        "review_Wjf7Pg",
-        "review_nyBfQP",
-        "review_a5",
-        "review_a4",
-        "review_a2",
-        "review_8XVNjh",
-        "review_MhztXn",
-        "review_Htfcha",
-        "review_a1",
-        "review_a3",
-        "review_wch9ap",
-        "review_cUryjU",
-        "review_ra6AQV"
-      ],
-      "settings": {
-        "images_heading": "<strong>Reviews with Images</strong>",
-        "list_heading": "Top reviews",
-        "all_reviews_label": "All Reviews",
-        "star_word": "Star",
-        "verified_label": "Verified Purchase",
-        "total_label": "reviews",
-        "show_summary": true,
-        "rating_decimals": 1,
-        "gallery_item_width": 180,
-        "review_image_width": 96,
-        "star_size": 18,
-        "average_value_size": 40,
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "heading_color": "#000000",
-        "star_color": "#f5a623",
-        "pill_border_color": "#e3e3e3",
-        "pill_active_border_color": "#000000",
-        "pill_text_color": "#8a8a8a",
-        "pill_active_text_color": "#000000",
-        "page_width": 1200,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "1792516308479ab041": {
       "type": "apps",
       "blocks": {
@@ -997,6 +822,26 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "1792810438af2073ca": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_gUxpDt": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_gUxpDt"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
@@ -1009,11 +854,11 @@
     "image_with_text_rM7AJq",
     "feature_cards_media_AA7YtJ",
     "product_showcase_DqUr4G",
-    "reviews_section_7Waym",
     "1792516308479ab041",
     "blocky_faq_cFeeU6",
     "newsletter_HjqpNj",
     "blocky_section_divider_7AQYYY",
-    "quick_order_list_7RBgkh"
+    "quick_order_list_7RBgkh",
+    "1792810438af2073ca"
   ]
 }

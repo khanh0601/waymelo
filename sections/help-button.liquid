@@ -1,39 +1,58 @@
 {%- liquid
   assign help_label = section.settings.label | strip
   if help_label == blank
-    assign help_label = 'Help'
+    assign help_label = 'Need Help?'
   endif
+  assign pos_desktop = section.settings.position_desktop | default: 'bottom_left'
+  assign pos_mobile = section.settings.position_mobile | default: 'bottom_left'
 -%}
 
 {%- if section.settings.link != blank -%}
   {%- style -%}
     .help-button-{{ section.id }} {
       position: fixed;
-      left: 24px;
-      bottom: 24px;
       z-index: 30;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 6px;
       margin: 0;
-      padding: 8px 16px;
+      width: auto;
+      max-width: max-content;
+      padding: 8px 18px;
       background-color: #ffffff;
       color: #7a5168;
       border: 1px solid #7a5168;
       border-radius: 9999px;
       font-family: var(--font-body-family);
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 500;
       line-height: 1.2;
-      letter-spacing: 0.06rem;
+      letter-spacing: 0.04rem;
       text-decoration: none;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+      transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+      {%- if pos_desktop == 'bottom_right' -%}
+        right: 24px;
+        left: auto;
+        bottom: 24px;
+      {%- else -%}
+        left: 24px;
+        right: auto;
+        bottom: 24px;
+      {%- endif -%}
     }
 
     .help-button-{{ section.id }}:hover {
       background-color: #7a5168;
       color: #ffffff;
+      box-shadow: 0 4px 14px rgba(122, 81, 104, 0.25);
+    }
+
+    .help-button-{{ section.id }}:active {
+      transform: scale(0.97);
     }
 
     .help-button-{{ section.id }}:focus-visible {
@@ -41,10 +60,25 @@
       outline-offset: 2px;
     }
 
+    .help-button-{{ section.id }} .help-button__icon {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
     @media screen and (max-width: 749px) {
       .help-button-{{ section.id }} {
-        right: 16px;
-        bottom: 16px;
+        padding: 6px 14px;
+        font-size: 1.3rem;
+        {%- if pos_mobile == 'bottom_right_above_chat' -%}
+          right: 16px;
+          left: auto;
+          bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+        {%- else -%}
+          left: 16px;
+          right: auto;
+          bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        {%- endif -%}
       }
     }
   {%- endstyle -%}
@@ -56,8 +90,16 @@
       target="_blank"
       rel="noopener"
     {%- endif %}
+    aria-label="{{ help_label }}"
   >
-    {{- help_label -}}
+    {%- if section.settings.show_icon -%}
+      <svg class="help-button__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+      </svg>
+    {%- endif -%}
+    <span class="help-button__text">{{- help_label -}}</span>
   </a>
 {%- endif -%}
 
@@ -69,7 +111,7 @@
       "type": "text",
       "id": "label",
       "label": "Button label",
-      "default": "Help",
+      "default": "Need Help?",
       "info": "Text shown on the button and announced to screen readers."
     },
     {
@@ -84,6 +126,44 @@
       "id": "open_in_new_tab",
       "label": "Open link in a new tab",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show question icon",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "position_mobile",
+      "label": "Mobile position",
+      "options": [
+        {
+          "value": "bottom_left",
+          "label": "Bottom Left (Separated from Chat)"
+        },
+        {
+          "value": "bottom_right_above_chat",
+          "label": "Bottom Right (Above Chat button)"
+        }
+      ],
+      "default": "bottom_left"
+    },
+    {
+      "type": "select",
+      "id": "position_desktop",
+      "label": "Desktop position",
+      "options": [
+        {
+          "value": "bottom_left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom_right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "bottom_left"
     }
   ]
 }

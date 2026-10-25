@@ -58,6 +58,10 @@
             "font_weight": "600"
           }
         },
+        "judge_me_reviews_preview_badge_CPBbNp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "price": {
           "type": "price",
           "settings": {
@@ -75,10 +79,6 @@
             "sale_badge_font_size": 14,
             "text_alignment": "flex-start"
           }
-        },
-        "product_server_rating_cFNHhg": {
-          "type": "product-server-rating",
-          "settings": {}
         },
         "delivery_jCU86n": {
           "type": "delivery",
@@ -291,8 +291,8 @@
       "block_order": [
         "product_reviews_2_gTgAra",
         "title",
+        "judge_me_reviews_preview_badge_CPBbNp",
         "price",
-        "product_server_rating_cFNHhg",
         "delivery_jCU86n",
         "text_4UAXfW",
         "description",
@@ -484,9 +484,9 @@
         "ai_gen_block_a021675_mGdeCW": {
           "type": "ai_gen_block_a021675",
           "settings": {
-            "video_1": "shopify://files/videos/b0de7a670dfd47649eab19b95e4e5f64.HD-1080p-4.8Mbps-96370967.mp4",
-            "video_2": "shopify://files/videos/a09c85bbe3874fb497872c70465032c2.HD-1080p-4.8Mbps-96370965.mp4",
-            "video_3": "shopify://files/videos/15e5058885674252810d4be9ab7fa236.HD-1080p-4.8Mbps-96370960.mp4",
+            "video_1": "shopify://files/videos/Upclose look at this pacifier holder case.mp4",
+            "video_2": "shopify://files/videos/Review and benefits of this case!.mp4",
+            "video_3": "shopify://files/videos/Silicone Pacifier Holders.mp4",
             "width_mode": "content",
             "desktop_width_percent": 90,
             "gap": 20,
@@ -503,102 +503,6 @@
       "custom_css": [],
       "name": "Video Showcase",
       "settings": {}
-    },
-    "image_with_text_qwjtti": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_JADT8M": {
-          "type": "heading",
-          "settings": {
-            "heading": "<strong>Comfort for Baby. Joy for Parents.</strong>",
-            "heading_size": "h1"
-          }
-        },
-        "text_Vyg3wz": {
-          "type": "text",
-          "settings": {
-            "text": "<h4>💙 Make every feeding moment more comfortable with BabyEase.</h4><h4>👶 Thoughtfully designed to support your little one and help parents enjoy precious bonding moments.</h4><h4>✈️ 🏡 Perfect for home or on the go.</h4>",
-            "text_style": "body"
-          }
-        },
-        "button_iYPkAa": {
-          "type": "button",
-          "settings": {
-            "button_label": "Make It Yours →",
-            "button_link": "shopify://collections/nursing-pillows",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_JADT8M",
-        "text_Vyg3wz",
-        "button_iYPkAa"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "image": "shopify://shop_images/Em_be_h_nh_phuc_cung_BabyEase_tren_may_bay.png",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "image_with_text_rM7AJq": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_THDmLm": {
-          "type": "heading",
-          "settings": {
-            "heading": "&nbsp;<strong>More Comfort, Less Arm Strain</strong>",
-            "heading_size": "h1"
-          }
-        },
-        "text_frtURj": {
-          "type": "text",
-          "settings": {
-            "text": "<p>💙 <strong>Less Arm Fatigue</strong> – Helps reduce arm strain while holding your baby.</p><p>👶 <strong>Comfortable Baby Holding</strong> – Soft cushioning supports your little one during cuddles and feeding.</p><p>🤱 <strong>Relax & Bond</strong> – Enjoy precious moments with your baby more comfortably.</p><p>✈️ <strong>Everyday & Travel Ready</strong> – Convenient for home, travel, and on-the-go use.</p>",
-            "text_style": "body"
-          }
-        },
-        "button_TXFDAJ": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop BabyEase →",
-            "button_link": "shopify://products/wearable-nursing-pillow",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_THDmLm",
-        "text_frtURj",
-        "button_TXFDAJ"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "image": "shopify://shop_images/image_1512_1.jpg",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "text_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
     },
     "feature_cards_media_AA7YtJ": {
       "type": "feature-cards-media",
@@ -677,144 +581,6 @@
         "padding_bottom": 48
       }
     },
-    "blocky_product_feature_3_3LE4A8": {
-      "type": "blocky-product-feature-3",
-      "blocks": {
-        "feature_JHGFRN": {
-          "type": "feature",
-          "disabled": true,
-          "settings": {
-            "side": "left",
-            "y_offset": 0,
-            "title_position": "below",
-            "title": "FEATURE",
-            "text": ""
-          }
-        },
-        "feature_JpkBCA": {
-          "type": "feature",
-          "settings": {
-            "side": "left",
-            "y_offset": 32,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🎒 Lightweight & Portable</strong>&nbsp;",
-            "text": "<p>Easy to carry at home or on the go.</p>"
-          }
-        },
-        "feature_44Kfqk": {
-          "type": "feature",
-          "settings": {
-            "side": "left",
-            "y_offset": -20,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🧵 100% Cotton Cover</strong>&nbsp;",
-            "text": "<p>Soft, breathable fabric for daily use.</p><p></p>"
-          }
-        },
-        "feature_d7iDcb": {
-          "type": "feature",
-          "settings": {
-            "side": "right",
-            "y_offset": 32,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🔗 Adjustable Straps</strong>&nbsp;",
-            "text": "<p>Easy to adjust for a personalized fit.</p>"
-          }
-        },
-        "feature_b6fVTa": {
-          "type": "feature",
-          "settings": {
-            "side": "right",
-            "y_offset": -20,
-            "title_position": "above",
-            "title": "&nbsp;<strong>🫧 Easy-Care Design</strong>&nbsp;",
-            "text": "<p>Removable cover for convenient washing.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "feature_JHGFRN",
-        "feature_JpkBCA",
-        "feature_44Kfqk",
-        "feature_d7iDcb",
-        "feature_b6fVTa"
-      ],
-      "name": "Blocky Product Feature 2",
-      "settings": {
-        "body_text": "PRODUCT FEATURES",
-        "title": "<strong>&nbsp;Designed for Everyday Comfort&nbsp;</strong>",
-        "title_size": 40,
-        "title_color": "#000000",
-        "body_size": 13,
-        "body_color": "#000000",
-        "device_image": "shopify://shop_images/G_i_tr_em_h_ng_h_a_ti_t_dang_yeu.png",
-        "device_image_alt": "",
-        "device_link": "",
-        "device_height": 460,
-        "device_radius": 39,
-        "feature_title_size": 20,
-        "feature_title_color": "#000000",
-        "feature_body_size": 14,
-        "feature_body_color": "#7a5168",
-        "accent_color": "#7a5168",
-        "desktop_content_alignment": "center",
-        "mobile_content_alignment": "center",
-        "spacing_eyebrow_title": 12,
-        "spacing_title_media": 24,
-        "page_width": 1300,
-        "padding_top": 48,
-        "padding_bottom": 48,
-        "background_color": "#ffffff"
-      }
-    },
-    "image_with_text_CDfmy7": {
-      "type": "image-with-text",
-      "blocks": {
-        "heading_RR4WfH": {
-          "type": "heading",
-          "settings": {
-            "heading": "<strong>Why You'll Love BabyEase</strong>",
-            "heading_size": "h1"
-          }
-        },
-        "text_xaT8cb": {
-          "type": "text",
-          "settings": {
-            "text": "<p>💗 Less Arm Fatigue – Reduces arm strain.</p><p>👶 Baby Support – Soft & comfortable.</p><p>✈️ Travel-Friendly – Comfort anywhere.</p><p>💕 Closer Bonding – More precious moments.</p>",
-            "text_style": "body"
-          }
-        },
-        "button_dKxPEk": {
-          "type": "button",
-          "settings": {
-            "button_label": "Shop BabyEase →",
-            "button_link": "shopify://products/wearable-nursing-pillow",
-            "button_style_secondary": false
-          }
-        }
-      },
-      "block_order": [
-        "heading_RR4WfH",
-        "text_xaT8cb",
-        "button_dKxPEk"
-      ],
-      "name": "t:sections.image-with-text.presets.name",
-      "settings": {
-        "image": "shopify://shop_images/dsasad.jpg",
-        "height": "adapt",
-        "desktop_image_width": "medium",
-        "layout": "image_first",
-        "desktop_content_position": "top",
-        "desktop_content_alignment": "left",
-        "content_layout": "no-overlap",
-        "section_color_scheme": "",
-        "color_scheme": "",
-        "image_behavior": "none",
-        "mobile_content_alignment": "left",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
     "product_showcase_DqUr4G": {
       "type": "product-showcase",
       "name": "Product showcase",
@@ -839,362 +605,30 @@
         "padding_bottom": 48
       }
     },
-    "blocky_video_with_text_97hNbH": {
-      "type": "blocky-video-with-text",
-      "blocks": {
-        "review_stars_UEiWbj": {
-          "type": "review-stars",
-          "disabled": true,
-          "settings": {
-            "rating": 5,
-            "star_color": "#ffcc00",
-            "review_text_color": "#000000",
-            "empty_stars_style": "hidden",
-            "review_text": "",
-            "review_font_size": 16
-          }
-        },
-        "title_nDYf4Y": {
-          "type": "title",
-          "settings": {
-            "title": "<strong>&nbsp;Comfortable Feeding, Wherever You Go&nbsp;</strong>",
-            "title_size": 40,
-            "title_color": "#000000"
-          }
-        },
-        "body_zYyMTy": {
-          "type": "body",
-          "settings": {
-            "body_text": "<p>👶 Gentle Baby Support – Soft & comfortable.</p><p>🔒 Adjustable Fit – Secure & easy to adjust.</p><p>☁️ Soft & Cozy – Cushioned for comfort.</p><p>✈️ Travel-Friendly – Perfect for home & travel.</p>",
-            "body_size": 16,
-            "body_color": "#000000"
-          }
-        },
-        "button_7pw4pz": {
-          "type": "button",
-          "settings": {
-            "button_label": "Make It Yours →",
-            "button_link": "shopify://products/wearable-nursing-pillow",
-            "button_border_radius": "round",
-            "button_style": "regular",
-            "button_background_color": "#7a5168",
-            "button_text_color": "#ffffff"
-          }
-        }
-      },
-      "block_order": [
-        "review_stars_UEiWbj",
-        "title_nDYf4Y",
-        "body_zYyMTy",
-        "button_7pw4pz"
-      ],
-      "name": "Blocky Video and Text",
-      "settings": {
-        "video": "shopify://files/videos/0dc875a0619941ecafe56c2dc8db073d.HD-1080p-7.2Mbps-96414420.mp4",
-        "height": "adapt",
-        "desktop_video_width": "medium",
-        "video_fit": "zoomed",
-        "shadow": true,
-        "autoplay": true,
-        "play_button_color": "#ffffff",
-        "play_button_background_color": "#dcdcdc",
-        "layout_style": "1",
-        "background_color": "#ffffff",
-        "layout_2_background_color": "#fcfcfc",
-        "layout": "row-reverse",
-        "desktop_content_position": "center",
-        "desktop_content_alignment": "left",
-        "mobile_layout": "col",
-        "mobile_content_alignment": "left",
-        "text_container_gap": "2rem",
-        "page_width": 1300,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "reviews_section_7Waym": {
-      "type": "reviews-section",
-      "blocks": {
-        "review_Wjf7Pg": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Sarah M",
-            "date": "01/01/2026",
-            "verified": true,
-            "body": "<p><br/>Absolutely love this nursing pillow! The quality is amazing, and changing to a plastic buckle makes it so much easier and more secure to use. Highly recommended for new moms!<br/><br/></p>",
-            "image": "shopify://shop_images/vghh.jpg"
-          }
-        },
-        "review_nyBfQP": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Ashley Wilson",
-            "date": "",
-            "verified": true,
-            "body": "<p>The cushioning feels soft and supportive. It's a lovely addition to my baby's feeding essentials</p>"
-          }
-        },
-        "review_a5": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Ashley T.",
-            "date": "",
-            "verified": true,
-            "body": "<p>Feeding sessions used to leave my shoulders and neck so sore, but this pillow lifts baby to the perfect latch height effortlessly. The 3-point support really takes the pressure off my arms. The strap takes a second to adjust, but it’s a total lifesaver for long nursing sessions!</p>",
-            "image": "shopify://shop_images/https_3A_2F_2Fnuzzlenestbed.com_2Fcdn_2Fshop_2Ffiles_2FIMG_4412_246fcbed-7429-4b2b-9ee1-3d63afb91559.jpg"
-          }
-        },
-        "review_a4": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Jessica T.",
-            "date": "",
-            "verified": true,
-            "body": "<p>Super comfortable, breathable, and so easy to clean after our trip. My baby slept like a rock at 30,000 feet. Highly recommended for flying parents!</p>",
-            "image": "shopify://shop_images/dsfgf_2157dcbd-ea05-463f-9f5c-764f2a257b82.jpg"
-          }
-        },
-        "review_a2": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Laura K.",
-            "date": "",
-            "verified": true,
-            "body": "<p>The 100% cotton cover feels super gentle on my baby's sensitive skin, and the pearl cotton filling holds its shape well without flattening out. The zipper can be a bit tight to zip back on after washing, but overall it's a very solid and well-made pillow.</p>",
-            "image": "shopify://shop_images/photo_2026-10-12_17-37-59_5f7c1079-aa70-4b77-8c65-2deda147a75a.jpg"
-          }
-        },
-        "review_8XVNjh": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Sarah Thompson",
-            "date": "",
-            "verified": true,
-            "body": "<p>I love the adjustable strap. It makes the pillow easier to position during feeding</p>"
-          }
-        },
-        "review_MhztXn": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Jessica Miller",
-            "date": "",
-            "verified": true,
-            "body": "<p>The whale pattern is absolutely adorable! The colors are soft and look beautiful in person.</p>"
-          }
-        },
-        "review_Htfcha": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Emily Carter",
-            "date": "01/01/2026",
-            "verified": true,
-            "body": "<p><br/>This pillow provides extra support while I'm feeding my baby. I love how comfortable it feels!</p>"
-          }
-        },
-        "review_a1": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Emily R.",
-            "date": "",
-            "verified": true,
-            "body": "<p>We took a 12-hour flight with our 4-month-old, and this pillow saved my arms! Baby slept peacefully for hours, and I finally got to rest too.</p>"
-          }
-        },
-        "review_a3": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "David K.",
-            "date": "",
-            "verified": true,
-            "body": "<p>I used to get severe shoulder pain holding our baby during red-eye flights. With this strap system, my baby slept peacefully the whole flight and I could finally close my eyes and rest.</p>"
-          }
-        },
-        "review_wch9ap": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Megan R.",
-            "date": "",
-            "verified": true,
-            "body": "<p>The pearl cotton filling is nice and firm, so baby doesn't sink down while nursing. It holds baby securely at an angle that helped reduce spit-ups during bottle feeding too. The cotton cover is super breathable, though zipping it back on after washing is a bit tight. Very happy with it!</p>"
-          }
-        },
-        "review_cUryjU": {
-          "type": "review",
-          "settings": {
-            "rating": 4,
-            "author": "Nicole B.",
-            "date": "",
-            "verified": true,
-            "body": "<p>Having the strap keep the pillow snug against my waist means I don't have to keep readjusting it mid-feed. It gives my back much-needed relief during late-night nursing sessions. Solid quality and very soft fabric for baby's skin!</p>"
-          }
-        },
-        "review_ra6AQV": {
-          "type": "review",
-          "settings": {
-            "rating": 5,
-            "author": "Laura K.",
-            "date": "",
-            "verified": true,
-            "body": "<p>This pillow has been a daily lifesaver for bottle feeding at home. The 3-point support takes all the weight off my arms while sitting on the couch. The cotton cover is super soft, though zipping it back on after washing requires a little patience. Overall, a very solid purchase!</p>",
-            "image": "shopify://shop_images/Create_realistic_product_review___20261020081526.jpg"
-          }
-        }
-      },
-      "block_order": [
-        "review_Wjf7Pg",
-        "review_nyBfQP",
-        "review_a5",
-        "review_a4",
-        "review_a2",
-        "review_8XVNjh",
-        "review_MhztXn",
-        "review_Htfcha",
-        "review_a1",
-        "review_a3",
-        "review_wch9ap",
-        "review_cUryjU",
-        "review_ra6AQV"
-      ],
-      "settings": {
-        "images_heading": "<strong>Reviews with Images</strong>",
-        "list_heading": "Top reviews",
-        "all_reviews_label": "All Reviews",
-        "star_word": "Star",
-        "verified_label": "Verified Purchase",
-        "total_label": "reviews",
-        "show_summary": true,
-        "rating_decimals": 1,
-        "gallery_item_width": 180,
-        "review_image_width": 96,
-        "star_size": 18,
-        "average_value_size": 40,
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "heading_color": "#000000",
-        "star_color": "#f5a623",
-        "pill_border_color": "#e3e3e3",
-        "pill_active_border_color": "#000000",
-        "pill_text_color": "#8a8a8a",
-        "pill_active_text_color": "#000000",
-        "page_width": 1200,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "1792516308479ab041": {
+    "1792810690bb2cff63": {
       "type": "apps",
       "blocks": {
-        "upsell_com_ex_reconvert_slot_tpL9Cd": {
-          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/slot/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+        "judge_me_reviews_review_widget_KGa9e4": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
-            "slot_id": "1"
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
           }
         }
       },
       "block_order": [
-        "upsell_com_ex_reconvert_slot_tpL9Cd"
+        "judge_me_reviews_review_widget_KGa9e4"
       ],
       "settings": {
         "include_margins": true
       }
     },
-    "blocky_faq_cFeeU6": {
-      "type": "blocky-faq",
-      "blocks": {
-        "question_CF8zA8": {
-          "type": "question",
-          "settings": {
-            "question": "Is BabyEase safe to use?&nbsp;",
-            "content": "<p>Yes, when used as intended and under <strong>constant adult supervision</strong>. Waymelo's Wearable Nursing Pillow is designed for feeding, cuddling, travel, and keeping your baby comfortable while they rest in your arms. Always keep your baby’s <strong>face and airway clear</strong>, and never use BabyEase as a car-seat replacement or safety restraint.</p>",
-            "default_open": false,
-            "icon_code": "",
-            "icon_color": "#000000"
-          }
-        },
-        "question_cLHAnz": {
-          "type": "question",
-          "settings": {
-            "question": "Does BabyEase fit different body sizes?&nbsp;",
-            "content": "<p>Yes. The adjustable neck strap lets you customize the fit and positioning for greater comfort.</p>",
-            "default_open": false,
-            "icon_code": "",
-            "icon_color": "#000000"
-          }
-        },
-        "question_LF7aE4": {
-          "type": "question",
-          "settings": {
-            "question": "What can I use BabyEase for?&nbsp;",
-            "content": "<p>BabyEase is designed for <strong>bottle feeding, breastfeeding, cuddling, relaxing, and travel</strong>. It helps support your baby while keeping them close and making longer holding sessions more comfortable.</p>",
-            "default_open": false,
-            "icon_code": "",
-            "icon_color": "#000000"
-          }
-        },
-        "question_KtVzDN": {
-          "type": "question",
-          "settings": {
-            "question": "&nbsp;Why choose BabyEase over a regular pillow?",
-            "content": "<p>A regular pillow can shift around and require constant adjusting. <strong>BabyEase’s curved shape and adjustable strap help keep the support in place</strong>, giving you a way more comfortable setup.</p>",
-            "default_open": false,
-            "icon_code": "",
-            "icon_color": "#000000"
-          }
-        }
-      },
-      "block_order": [
-        "question_CF8zA8",
-        "question_cLHAnz",
-        "question_LF7aE4",
-        "question_KtVzDN"
-      ],
-      "name": "Blocky FAQ",
+    "1792516308479ab041": {
+      "type": "apps",
       "settings": {
-        "title": "<strong>Frequently Asked Questions</strong>",
-        "title_size": 40,
-        "title_color": "#000000",
-        "body_text": "",
-        "body_size": 16,
-        "body_color": "#000000",
-        "button_label": "<p>Contact Us</p>",
-        "button_link": "shopify://pages/contact",
-        "button_border_radius": "extra-round",
-        "button_background_color": "#7a5168",
-        "button_text_color": "#ffffff",
-        "faq_layout": "border",
-        "question_padding": 15,
-        "faq_border_radius": 15,
-        "faq_container_background": "#ffffff",
-        "faq_container_border_color": "rgba(0,0,0,0)",
-        "show_container_shadow": true,
-        "question_font_size": 18,
-        "answer_font_size": 16,
-        "question_text_color": "#000000",
-        "answer_text_color": "#606367",
-        "layout": "row-reverse",
-        "columns": 1,
-        "desktop_faq_width": "large",
-        "desktop_content_alignment": "left",
-        "mobile_content_alignment": "left",
-        "text_vertical_alignment": "top",
-        "chevron_style": "chevron",
-        "chevron_position": "end",
-        "text_container_gap": "1.5rem",
-        "background_color": "#ffffff",
-        "page_width": 1200,
-        "padding_top": 52,
-        "padding_bottom": 52
+        "include_margins": true
       }
     },
     "newsletter_HjqpNj": {
@@ -1264,16 +698,10 @@
     "blocky_image_embedded_ncb4ta",
     "custom_liquid_jfQF7P",
     "179162975708a3df6e",
-    "image_with_text_qwjtti",
-    "image_with_text_rM7AJq",
     "feature_cards_media_AA7YtJ",
-    "blocky_product_feature_3_3LE4A8",
-    "image_with_text_CDfmy7",
     "product_showcase_DqUr4G",
-    "blocky_video_with_text_97hNbH",
-    "reviews_section_7Waym",
+    "1792810690bb2cff63",
     "1792516308479ab041",
-    "blocky_faq_cFeeU6",
     "newsletter_HjqpNj",
     "blocky_section_divider_7AQYYY",
     "quick_order_list_7RBgkh"

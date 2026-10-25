@@ -118,7 +118,7 @@
         "pumper_bundles_app_block_qb_efJJ49": {
           "type": "shopify://apps/pumper-bundles/blocks/app-block-qb/0856870d-2aca-4b1e-a662-cf1797f61270",
           "settings": {
-            "selected_product": "{{section.settings.product}}",
+            "selected_product": "{{ product }}",
             "using_page_builder": false
           }
         },
@@ -339,7 +339,6 @@
         "body_text": "",
         "body_color": "#000000",
         "auto_scroll": true,
-        "autoplay_videos": true,
         "arrow-background-color": "#000000",
         "arrow-carot-color": "#ffffff",
         "dot-color": "#000000",
