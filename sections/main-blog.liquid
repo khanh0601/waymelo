@@ -1,52 +1,160 @@
-{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 
+{%- assign mobile_padding_top = section.settings.padding_top | times: 0.75 | round: 0 | at_least: 40 -%}
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  .section-{{ section.id }}-padding .waymelo-blog__hero-inner {
+    padding-top: {{ mobile_padding_top }}px;
   }
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .section-{{ section.id }}-padding .waymelo-blog__hero-inner {
+      padding-top: {{ section.settings.padding_top | at_least: 48 }}px;
     }
   }
 {%- endstyle -%}
 
-{%- paginate blog.articles by 6 -%}
-  <div class="main-blog page-width section-{{ section.id }}-padding">
-    <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ blog.title | escape }}
-    </h1>
+{%- paginate blog.articles by section.settings.articles_per_page -%}
+  <div class="waymelo-blog section-{{ section.id }}-padding">
+    <header class="waymelo-blog__hero">
+      <span class="waymelo-blog__glow waymelo-blog__glow--left" aria-hidden="true"></span>
+      <span class="waymelo-blog__glow waymelo-blog__glow--right" aria-hidden="true"></span>
 
-    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
-      {%- for article in blog.articles -%}
-        <div
-          class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-            style="--animation-order: {{ forloop.index }};"
-          {% endif %}
-        >
-          {%- render 'article-card',
-            article: article,
-            media_height: section.settings.image_height,
-            media_aspect_ratio: article.image.aspect_ratio,
-            show_image: section.settings.show_image,
-            show_date: section.settings.show_date,
-            show_author: section.settings.show_author,
-            show_excerpt: true
-          -%}
+      <div class="waymelo-blog__hero-inner page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="waymelo-blog__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="waymelo-blog__title">{{ blog.title | escape }}</h1>
+        {%- if section.settings.subtitle != blank -%}
+          <div class="waymelo-blog__subtitle rte">{{ section.settings.subtitle }}</div>
+        {%- endif -%}
+        <p class="waymelo-blog__count">
+          {{ blog.articles_count }} {% if blog.articles_count == 1 %}article{% else %}articles{% endif %} to inspire everyday family life
+        </p>
+      </div>
+    </header>
+
+    <div class="waymelo-blog__body page-width">
+      {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+        <nav class="waymelo-blog__filters" aria-label="Blog topics">
+          <a
+            class="waymelo-blog__filter{% unless current_tags %} is-active{% endunless %}"
+            href="{{ blog.url }}"
+            {% unless current_tags %}aria-current="page"{% endunless %}
+          >
+            All stories
+          </a>
+          {%- for tag in blog.all_tags limit: 8 -%}
+            {%- assign tag_is_active = false -%}
+            {%- if current_tags contains tag -%}
+              {%- assign tag_is_active = true -%}
+            {%- endif -%}
+            <a
+              class="waymelo-blog__filter{% if tag_is_active %} is-active{% endif %}"
+              href="{{ blog.url }}/tagged/{{ tag | handle }}"
+              {% if tag_is_active %}aria-current="page"{% endif %}
+            >
+              {{ tag | escape }}
+            </a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+
+      {%- if blog.articles.size > 0 -%}
+        <div class="waymelo-blog__grid{% if section.settings.layout == 'collage' %} waymelo-blog__grid--featured{% endif %}">
+          {%- for article in blog.articles -%}
+            <article
+              class="waymelo-blog-card{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {% if settings.animations_reveal_on_scroll %}
+                data-cascade
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              {%- if section.settings.show_image -%}
+                <a
+                  class="waymelo-blog-card__media waymelo-blog-card__media--{{ section.settings.image_height }}"
+                  href="{{ article.url }}"
+                  aria-label="{{ article.title | escape }}"
+                  {% if section.settings.image_height == 'adapt' and article.image %}style="aspect-ratio: {{ article.image.aspect_ratio }};"{% endif %}
+                >
+                {%- if article.image -%}
+                  <img
+                    srcset="
+                      {%- if article.image.width >= 360 -%}{{ article.image | image_url: width: 360 }} 360w,{%- endif -%}
+                      {%- if article.image.width >= 540 -%}{{ article.image | image_url: width: 540 }} 540w,{%- endif -%}
+                      {%- if article.image.width >= 720 -%}{{ article.image | image_url: width: 720 }} 720w,{%- endif -%}
+                      {%- if article.image.width >= 960 -%}{{ article.image | image_url: width: 960 }} 960w,{%- endif -%}
+                      {{ article.image | image_url }} {{ article.image.width }}w
+                    "
+                    src="{{ article.image | image_url: width: 720 }}"
+                    sizes="(min-width: 1200px) 380px, (min-width: 750px) 50vw, 100vw"
+                    alt="{{ article.image.alt | default: article.title | escape }}"
+                    loading="lazy"
+                    width="{{ article.image.width }}"
+                    height="{{ article.image.height }}"
+                  >
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'waymelo-blog-card__placeholder' }}
+                {%- endif -%}
+                </a>
+              {%- endif -%}
+
+              <div class="waymelo-blog-card__content">
+                <div class="waymelo-blog-card__meta">
+                  {%- if article.tags.size > 0 -%}
+                    <span class="waymelo-blog-card__topic">{{ article.tags.first | escape }}</span>
+                  {%- endif -%}
+                  {%- if section.settings.show_date -%}
+                    <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+                  {%- endif -%}
+                  {%- if section.settings.show_author -%}
+                    <span>By {{ article.author | escape }}</span>
+                  {%- endif -%}
+                </div>
+
+                <h2 class="waymelo-blog-card__title">
+                  <a href="{{ article.url }}">{{ article.title | escape }}</a>
+                </h2>
+
+                {%- if article.excerpt.size > 0 or article.content.size > 0 -%}
+                  <p class="waymelo-blog-card__excerpt">
+                    {%- if article.excerpt.size > 0 -%}
+                      {{ article.excerpt | strip_html | truncatewords: 24 }}
+                    {%- else -%}
+                      {{ article.content | strip_html | truncatewords: 24 }}
+                    {%- endif -%}
+                  </p>
+                {%- endif -%}
+
+                <a class="waymelo-blog-card__link" href="{{ article.url }}">
+                  Read article
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </article>
+          {%- endfor -%}
         </div>
-      {%- endfor -%}
+      {%- else -%}
+        <div class="waymelo-blog__empty">
+          <h2>No articles yet</h2>
+          <p>New stories and helpful family guides will be published here soon.</p>
+        </div>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <div class="waymelo-blog__pagination">
+          {%- render 'pagination', paginate: paginate -%}
+        </div>
+      {%- endif -%}
     </div>
 
-    {%- if paginate.pages > 1 -%}
-      {%- render 'pagination', paginate: paginate -%}
-    {%- endif -%}
   </div>
 {%- endpaginate -%}
 
@@ -56,6 +164,33 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "WAYMELO JOURNAL"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Thoughtful tips, practical guides and little ideas to make family life feel easier.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "default": true,
+      "label": "Show topic filters"
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 6,
+      "label": "Articles per page"
+    },
     {
       "type": "header",
       "content": "t:sections.main-blog.settings.header.content"
@@ -73,7 +208,7 @@
           "label": "t:sections.main-blog.settings.layout.options__2.label"
         }
       ],
-      "default": "collage",
+      "default": "grid",
       "label": "t:sections.main-blog.settings.layout.label",
       "info": "t:sections.main-blog.settings.layout.info"
     },
@@ -136,7 +271,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_top",
-      "default": 36
+      "default": 0
     },
     {
       "type": "range",
@@ -146,7 +281,7 @@
       "step": 4,
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
-      "default": 36
+      "default": 72
     }
   ]
 }

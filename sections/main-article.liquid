@@ -1,95 +1,177 @@
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 {{ 'section-blog-post.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'article-table-of-contents.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'related-articles-carousel.js' | asset_url }}" defer="defer"></script>
 
-<article class="article-template">
-  {%- for block in section.blocks -%}
-    {%- case block.type -%}
-      {%- when '@app' -%}
-        <div class="page-width page-width--narrow">
-          {% render block %}
+{%- liquid
+  assign title_block = nil
+  assign image_block = nil
+  assign content_block = nil
+
+  for block in section.blocks
+    case block.type
+      when 'title'
+        assign title_block = block
+      when 'featured_image'
+        assign image_block = block
+      when 'content'
+        assign content_block = block
+    endcase
+  endfor
+-%}
+
+<article class="article-template waymelo-article" data-article-toc-root>
+  <div class="waymelo-article__masthead">
+    <span class="waymelo-article__glow waymelo-article__glow--left" aria-hidden="true"></span>
+    <span class="waymelo-article__glow waymelo-article__glow--right" aria-hidden="true"></span>
+
+    <header
+      class="waymelo-article__header page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+      {% if title_block %}{{ title_block.shopify_attributes }}{% endif %}
+    >
+      <nav class="waymelo-article__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="{{ blog.url }}">{{ blog.title | escape }}</a>
+      </nav>
+
+      {%- if article.tags.size > 0 -%}
+        <div class="waymelo-article__tags" aria-label="Article topics">
+          {%- for tag in article.tags limit: 3 -%}
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag | escape }}</a>
+          {%- endfor -%}
         </div>
-      {%- when 'featured_image' -%}
-        {%- if article.image -%}
-          <div
-            class="article-template__hero-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
-            {{ block.shopify_attributes }}
-          >
-            <div
-              class="article-template__hero-{{ block.settings.image_height }} media"
-              {% if block.settings.image_height == 'adapt' and article.image %}
-                style="padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;"
-              {% endif %}
-            >
-              <img
-                srcset="
-                  {% if article.image.width >= 350 %}{{ article.image | image_url: width: 350 }} 350w,{% endif %}
-                  {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
-                  {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
-                  {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
-                  {% if article.image.width >= 2200 %}{{ article.image | image_url: width: 2200 }} 2200w,{% endif %}
-                  {% if article.image.width >= 3000 %}{{ article.image | image_url: width: 3000 }} 3000w,{% endif %}
-                  {{ article.image | image_url }} {{ article.image.width }}w
-                "
-                sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), 100vw"
-                src="{{ article.image | image_url: width: 1100 }}"
-                loading="eager"
-                fetchpriority="high"
-                width="{{ article.image.width }}"
-                height="{{ article.image.height }}"
-                alt="{{ article.image.alt | escape }}"
-              >
+      {%- endif -%}
+
+      <h1 class="article-template__title">{{ article.title | escape }}</h1>
+
+      {%- if article.excerpt != blank -%}
+        <div class="waymelo-article__excerpt rte">{{ article.excerpt }}</div>
+      {%- endif -%}
+
+      <div class="waymelo-article__meta">
+        {%- if title_block == nil or title_block.settings.blog_show_date -%}
+          <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+        {%- endif -%}
+        {%- if title_block and title_block.settings.blog_show_author -%}
+          <span>By {{ article.author | escape }}</span>
+        {%- endif -%}
+        {%- if article.content != blank -%}
+          {%- assign article_words = article.content | strip_html | split: ' ' | size -%}
+          {%- assign reading_minutes = article_words | plus: 199 | divided_by: 200 -%}
+          <span>{{ reading_minutes }} min read</span>
+        {%- endif -%}
+      </div>
+    </header>
+  </div>
+
+  {%- if image_block and article.image -%}
+    <div
+      class="article-template__hero-container page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+      {{ image_block.shopify_attributes }}
+    >
+      <div
+        class="article-template__hero-{{ image_block.settings.image_height }} media"
+        {% if image_block.settings.image_height == 'adapt' %}
+          style="padding-bottom: {{ 1 | divided_by: article.image.aspect_ratio | times: 100 }}%;"
+        {% endif %}
+      >
+        <img
+          srcset="
+            {% if article.image.width >= 550 %}{{ article.image | image_url: width: 550 }} 550w,{% endif %}
+            {% if article.image.width >= 750 %}{{ article.image | image_url: width: 750 }} 750w,{% endif %}
+            {% if article.image.width >= 1100 %}{{ article.image | image_url: width: 1100 }} 1100w,{% endif %}
+            {% if article.image.width >= 1500 %}{{ article.image | image_url: width: 1500 }} 1500w,{% endif %}
+            {% if article.image.width >= 2000 %}{{ article.image | image_url: width: 2000 }} 2000w,{% endif %}
+            {{ article.image | image_url }} {{ article.image.width }}w
+          "
+          sizes="(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px) calc(100vw - 10rem), calc(100vw - 3rem)"
+          src="{{ article.image | image_url: width: 1500 }}"
+          loading="eager"
+          fetchpriority="high"
+          width="{{ article.image.width }}"
+          height="{{ article.image.height }}"
+          alt="{{ article.image.alt | default: article.title | escape }}"
+        >
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="waymelo-article__main page-width">
+    <div class="waymelo-article__content-layout">
+      <aside class="waymelo-article__toc" data-article-toc hidden>
+        <p class="waymelo-article__toc-title">In this article</p>
+        <ol class="waymelo-article__toc-list" data-article-toc-list></ol>
+      </aside>
+
+      <div class="waymelo-article__content-column">
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}
+            <div class="waymelo-article__app" {{ block.shopify_attributes }}>
+              {% render block %}
             </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if content_block -%}
+          <div
+            class="article-template__content rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            data-article-content
+            {{ content_block.shopify_attributes }}
+          >
+            {{ article.content }}
           </div>
         {%- endif -%}
 
-      {%- when 'title' -%}
-        <header
-          class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
-          {{ block.shopify_attributes }}
-        >
-          <h1
-            class="article-template__title"
-          >
-            {{ article.title | escape }}
-          </h1>
-          {%- if block.settings.blog_show_date -%}
-            <span class="circle-divider caption-with-letter-spacing">
-              {{- article.published_at | time_tag: format: 'date' -}}
-            </span>
-          {%- endif -%}
-          {%- if block.settings.blog_show_author -%}
-            <span class="caption-with-letter-spacing">
-              <span>{{ article.author }}</span>
-            </span>
-          {%- endif -%}
-        </header>
+        <footer class="waymelo-article__footer{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          <div class="article-template__social-sharing">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'share' -%}
+                {%- assign share_url = request.origin | append: article.url -%}
+                {% render 'share-button', block: block, share_link: share_url %}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
 
-      {%- when 'content' -%}
-        <div
-          class="article-template__content page-width page-width--narrow rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {{ block.shopify_attributes }}
-        >
-          {{ article.content }}
-        </div>
-
-      {%- when 'share' -%}
-        <div
-          class="article-template__social-sharing page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {{ block.shopify_attributes }}
-        >
-          {% assign share_url = request.origin | append: article.url %}
-          {% render 'share-button', block: block, share_link: share_url %}
-        </div>
-    {%- endcase -%}
-  {%- endfor -%}
-
-  <div class="article-template__back element-margin-top center{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    <a href="{{ blog.url }}" class="article-template__link link animate-arrow">
-      <span class="icon-wrap">{% render 'icon-arrow' %}</span>
-      {{ 'blogs.article.back_to_blog' | t: title: blog.title | escape }}
-    </a>
+          <a href="{{ blog.url }}" class="article-template__link">
+            <span aria-hidden="true">&larr;</span>
+            Back to {{ blog.title | escape }}
+          </a>
+        </footer>
+      </div>
+    </div>
   </div>
+
+  {%- if blog.articles_count > 1 -%}
+    <section class="waymelo-related-articles" aria-labelledby="RelatedArticles-{{ section.id }}">
+      <div class="page-width">
+        <div class="waymelo-related-articles__header">
+          <div>
+            <p class="waymelo-related-articles__eyebrow">Keep reading</p>
+            <h2 id="RelatedArticles-{{ section.id }}">More from {{ blog.title | escape }}</h2>
+          </div>
+          <a href="{{ blog.url }}">View all articles <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="waymelo-related-articles__viewport">
+          <div class="waymelo-related-articles__grid waymelo-blog__grid">
+            {%- assign related_count = 0 -%}
+            {%- for related_article in blog.articles -%}
+              {%- unless related_article.id == article.id -%}
+                {% render 'waymelo-related-article-card', article: related_article %}
+                {%- assign related_count = related_count | plus: 1 -%}
+              {%- endunless -%}
+              {%- if related_count >= 3 -%}{%- break -%}{%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        <div class="waymelo-related-articles__pagination" data-related-pagination aria-label="Related articles pagination"></div>
+      </div>
+    </section>
+  {%- endif -%}
+
   {%- if blog.comments_enabled? -%}
-    <div class="article-template__comment-wrapper background-secondary">
+    <div class="article-template__comment-wrapper">
       <div
         id="comments"
         class="page-width page-width--narrow{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -115,10 +197,7 @@
                 <article id="{{ comment.id }}" class="article-template__comments-comment">
                   {{ comment.content }}
                   <footer class="right">
-                    <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span
-                    ><span class="caption-with-letter-spacing">
-                      {{- comment.created_at | time_tag: format: 'date' -}}
-                    </span>
+                    <span class="circle-divider caption-with-letter-spacing">{{ comment.author }}</span><span class="caption-with-letter-spacing">{{ comment.created_at | time_tag: format: 'date' }}</span>
                   </footer>
                 </article>
               {%- endfor -%}
@@ -126,6 +205,7 @@
             </div>
           {% endpaginate %}
         {%- endif -%}
+
         {% form 'new_comment', article %}
           {%- liquid
             assign post_message = 'blogs.article.success'
@@ -166,11 +246,7 @@
             </div>
           {%- endif -%}
 
-          <div
-            {% if blog.moderated? == false %}
-              class="article-template__comments-fields"
-            {% endif %}
-          >
+          <div{% if blog.moderated? == false %} class="article-template__comments-fields"{% endif %}>
             <div class="article-template__comment-fields">
               <div class="field field--with-error">
                 <input
@@ -182,24 +258,12 @@
                   value="{{ form.author }}"
                   aria-required="true"
                   required
-                  {% if form.errors contains 'author' %}
-                    aria-invalid="true"
-                    aria-describedby="CommentForm-author-error"
-                  {% endif %}
+                  {% if form.errors contains 'author' %}aria-invalid="true" aria-describedby="CommentForm-author-error"{% endif %}
                   placeholder="{{ 'blogs.article.name' | t }}"
                 >
-                <label class="field__label" for="CommentForm-author">
-                  {{- 'blogs.article.name' | t }}
-                  <span aria-hidden="true">*</span></label
-                >
+                <label class="field__label" for="CommentForm-author">{{ 'blogs.article.name' | t }} <span aria-hidden="true">*</span></label>
                 {%- if form.errors contains 'author' -%}
-                  <small id="CommentForm-author-error">
-                    <span class="form__message">
-                      {%- render 'icon-error' -%}
-                      {{- 'blogs.article.name' | t }}
-                      {{ form.errors.messages.author }}.</span
-                    >
-                  </small>
+                  <small id="CommentForm-author-error"><span class="form__message">{% render 'icon-error' %} {{ 'blogs.article.name' | t }} {{ form.errors.messages.author }}.</span></small>
                 {%- endif -%}
               </div>
               <div class="field field--with-error">
@@ -214,24 +278,12 @@
                   autocapitalize="off"
                   aria-required="true"
                   required
-                  {% if form.errors contains 'email' %}
-                    aria-invalid="true"
-                    aria-describedby="CommentForm-email-error"
-                  {% endif %}
+                  {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="CommentForm-email-error"{% endif %}
                   placeholder="{{ 'blogs.article.email' | t }}"
                 >
-                <label class="field__label" for="CommentForm-email">
-                  {{- 'blogs.article.email' | t }}
-                  <span aria-hidden="true">*</span></label
-                >
+                <label class="field__label" for="CommentForm-email">{{ 'blogs.article.email' | t }} <span aria-hidden="true">*</span></label>
                 {%- if form.errors contains 'email' -%}
-                  <small id="CommentForm-email-error">
-                    <span class="form__message">
-                      {%- render 'icon-error' -%}
-                      {{- 'blogs.article.email' | t }}
-                      {{ form.errors.messages.email }}.</span
-                    >
-                  </small>
+                  <small id="CommentForm-email-error"><span class="form__message">{% render 'icon-error' %} {{ 'blogs.article.email' | t }} {{ form.errors.messages.email }}.</span></small>
                 {%- endif -%}
               </div>
             </div>
@@ -243,25 +295,13 @@
                 class="text-area field__input"
                 aria-required="true"
                 required
-                {% if form.errors contains 'body' %}
-                  aria-invalid="true"
-                  aria-describedby="CommentForm-body-error"
-                {% endif %}
+                {% if form.errors contains 'body' %}aria-invalid="true" aria-describedby="CommentForm-body-error"{% endif %}
                 placeholder="{{ 'blogs.article.message' | t }}"
               >{{ form.body }}</textarea>
-              <label class="form__label field__label" for="CommentForm-body">
-                {{- 'blogs.article.message' | t }}
-                <span aria-hidden="true">*</span></label
-              >
+              <label class="form__label field__label" for="CommentForm-body">{{ 'blogs.article.message' | t }} <span aria-hidden="true">*</span></label>
             </div>
             {%- if form.errors contains 'body' -%}
-              <small id="CommentForm-body-error">
-                <span class="form__message">
-                  {%- render 'icon-error' -%}
-                  {{- 'blogs.article.message' | t }}
-                  {{ form.errors.messages.body }}.</span
-                >
-              </small>
+              <small id="CommentForm-body-error"><span class="form__message">{% render 'icon-error' %} {{ 'blogs.article.message' | t }} {{ form.errors.messages.body }}.</span></small>
             {%- endif -%}
           </div>
           {%- if blog.moderated? -%}

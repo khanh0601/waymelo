@@ -1,0 +1,40 @@
+<article class="waymelo-blog-card">
+  <a class="waymelo-blog-card__media waymelo-blog-card__media--medium" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+    {%- if article.image -%}
+      <img
+        srcset="
+          {%- if article.image.width >= 360 -%}{{ article.image | image_url: width: 360 }} 360w,{%- endif -%}
+          {%- if article.image.width >= 540 -%}{{ article.image | image_url: width: 540 }} 540w,{%- endif -%}
+          {%- if article.image.width >= 720 -%}{{ article.image | image_url: width: 720 }} 720w,{%- endif -%}
+          {{ article.image | image_url }} {{ article.image.width }}w
+        "
+        src="{{ article.image | image_url: width: 720 }}"
+        sizes="(min-width: 1200px) 380px, (min-width: 750px) 50vw, 100vw"
+        alt="{{ article.image.alt | default: article.title | escape }}"
+        loading="lazy"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+      >
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'waymelo-blog-card__placeholder' }}
+    {%- endif -%}
+  </a>
+
+  <div class="waymelo-blog-card__content">
+    <div class="waymelo-blog-card__meta">
+      {%- if article.tags.size > 0 -%}
+        <span class="waymelo-blog-card__topic">{{ article.tags.first | escape }}</span>
+      {%- endif -%}
+      <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+    </div>
+    <h3 class="waymelo-blog-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+    <p class="waymelo-blog-card__excerpt">
+      {%- if article.excerpt.size > 0 -%}
+        {{ article.excerpt | strip_html | truncatewords: 22 }}
+      {%- else -%}
+        {{ article.content | strip_html | truncatewords: 22 }}
+      {%- endif -%}
+    </p>
+    <a class="waymelo-blog-card__link" href="{{ article.url }}">Read article <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</article>

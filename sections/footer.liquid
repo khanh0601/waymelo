@@ -277,6 +277,38 @@
                 {{ shop | login_button: action: 'follow' }}
               </div>
             {%- endif -%}
+            {%- if block.settings.show_facebook_instagram -%}
+              {%- liquid
+                assign footer_facebook_link = block.settings.facebook_link | default: settings.social_facebook_link
+                assign footer_instagram_link = block.settings.instagram_link | default: settings.social_instagram_link
+              -%}
+              {%- if footer_facebook_link != blank or footer_instagram_link != blank -%}
+                <div class="footer__logo-block__social" aria-label="Social media">
+                  {%- if footer_facebook_link != blank -%}
+                    <a
+                      href="{{ footer_facebook_link }}"
+                      class="footer__logo-block__social-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook"
+                    >
+                      {%- render 'icon-facebook' -%}
+                    </a>
+                  {%- endif -%}
+                  {%- if footer_instagram_link != blank -%}
+                    <a
+                      href="{{ footer_instagram_link }}"
+                      class="footer__logo-block__social-link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                    >
+                      {%- render 'icon-instagram' -%}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endif -%}
           </div>
         {%- endfor -%}
       </div>
@@ -659,6 +691,22 @@
           "id": "enable_follow_on_shop",
           "default": true,
           "label": "Show follow on shop button"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_facebook_instagram",
+          "default": true,
+          "label": "Show Facebook and Instagram"
+        },
+        {
+          "type": "url",
+          "id": "facebook_link",
+          "label": "Facebook link"
+        },
+        {
+          "type": "url",
+          "id": "instagram_link",
+          "label": "Instagram link"
         }
       ]
     },

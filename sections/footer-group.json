@@ -19,7 +19,10 @@
           "settings": {
             "logo_image": "shopify://shop_images/Words_Logo_white.png",
             "logo_width": 120,
-            "enable_follow_on_shop": true
+            "enable_follow_on_shop": true,
+            "show_facebook_instagram": true,
+            "facebook_link": "https://www.facebook.com/profile.php?id=100069063936706",
+            "instagram_link": "https://www.instagram.com/macorner_decor"
           }
         },
         "trust_logos_CGCTnY": {
