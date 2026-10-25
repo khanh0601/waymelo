@@ -21,6 +21,7 @@ if (!customElements.get('localization-form')) {
         this.addEventListener('keydown', this.onContainerKeyDown.bind(this));
         this.addEventListener('focusout', this.closeSelector.bind(this));
         this.elements.button.addEventListener('click', this.openSelector.bind(this));
+        this.elements.button.addEventListener('pointerenter', () => LocalizationForm.loadCountryData(), { once: true });
 
         if (this.elements.search) {
           this.elements.search.addEventListener('keyup', this.filterCountries.bind(this));
@@ -95,16 +96,59 @@ if (!customElements.get('localization-form')) {
       hydrateCountryOptions() {
         if (this.countryOptionsHydrated) return;
         const root = this.querySelector('[data-country-options]');
-        const dataNode = document.getElementById('WaymeloCountryData');
-        if (!root || !dataNode) return;
+        if (!root) return;
 
-        let countries;
-        try {
-          countries = JSON.parse(dataNode.textContent).countries || [];
-        } catch (error) {
-          countries = [];
+        const dataNode = document.getElementById('WaymeloCountryData');
+        if (dataNode) {
+          this.renderCountryOptions(root, LocalizationForm.parseCountryData(dataNode.textContent));
+          return;
         }
-        if (!countries.length) return;
+
+        if (this.countryOptionsLoading) return;
+        this.countryOptionsLoading = true;
+        root.setAttribute('aria-busy', 'true');
+        LocalizationForm.loadCountryData().then((countries) => {
+          this.countryOptionsLoading = false;
+          root.removeAttribute('aria-busy');
+          this.renderCountryOptions(root, countries);
+          if (this.elements.search && this.elements.search.value) this.filterCountries();
+        });
+      }
+
+      static parseCountryData(text) {
+        try {
+          return JSON.parse(text).countries || [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      /* The country list is no longer inlined in every page; it is fetched once, on demand,
+         from sections/waymelo-country-data.liquid via the Section Rendering API. */
+      static loadCountryData() {
+        if (!LocalizationForm.countryDataPromise) {
+          const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root) || '/';
+          LocalizationForm.countryDataPromise = fetch(`${rootUrl}?sections=waymelo-country-data`, {
+            headers: { Accept: 'application/json' },
+          })
+            .then((response) => response.json())
+            .then((json) => {
+              const html = json && json['waymelo-country-data'];
+              if (!html) return [];
+              const doc = new DOMParser().parseFromString(html, 'text/html');
+              const node = doc.getElementById('WaymeloCountryData');
+              return node ? LocalizationForm.parseCountryData(node.textContent) : [];
+            })
+            .catch(() => {
+              LocalizationForm.countryDataPromise = null;
+              return [];
+            });
+        }
+        return LocalizationForm.countryDataPromise;
+      }
+
+      renderCountryOptions(root, countries) {
+        if (this.countryOptionsHydrated || !countries.length) return;
 
         const selectedIso = this.elements.input?.value || '';
         const showCurrencies = root.dataset.showCurrencies === 'true';

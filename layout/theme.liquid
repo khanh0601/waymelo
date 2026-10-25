@@ -304,6 +304,22 @@
       {{ 'glide.core.min.css' | asset_url | stylesheet_tag }}
       {%- if request.page_type == 'product' -%}
         {{ 'blocky-main-product.css' | asset_url | stylesheet_tag }}
+        <style>
+          /* Skip layout/paint of sections below the hero until they come near the viewport.
+             The HTML stays complete (SEO unchanged); only rendering work is deferred.
+             `auto` keeps the last rendered size, so nothing shifts once a section has been seen.
+             Sections hosting fixed-position overlays opt out while the overlay is open
+             (contain:paint would trap it). html.waymelo-cv-off lifts it during programmatic scrolls. */
+          html:not(.shopify-design-mode):not(.waymelo-cv-off) #MainContent > .shopify-section:is([id*="__product_addons"], [id*="__image_with_text"], [id*="__blocky_product_feature"], [id*="__blocky_image_video_slider"], [id*="__product_showcase"], [id*="__blocky_video_with_text"], [id*="__reviews_section"], [id*="__blocky_faq"], [id*="__newsletter"], [id*="__blocky_section_divider"]):not(:has(.quick-add-modal[open], modal-dialog[open], .reviews-section__viewer:not([hidden]))) {
+            content-visibility: auto;
+            contain-intrinsic-size: auto var(--waymelo-cv-size, 700px);
+          }
+          #MainContent > [id*="__reviews_section"] { --waymelo-cv-size: 2400px; }
+          #MainContent > [id*="__product_showcase"] { --waymelo-cv-size: 1100px; }
+          #MainContent > [id*="__blocky_faq"] { --waymelo-cv-size: 900px; }
+          #MainContent > [id*="__newsletter"] { --waymelo-cv-size: 420px; }
+          #MainContent > [id*="__blocky_section_divider"] { --waymelo-cv-size: 80px; }
+        </style>
       {%- endif -%}
 
     {%- unless settings.type_body_font.system? -%}
@@ -342,23 +358,6 @@
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
-
-    {%- if localization.available_countries.size > 1 -%}
-      {%- assign waymelo_popular_country_codes = localization.available_countries | where: 'popular?' | map: 'iso_code' -%}
-      <script id="WaymeloCountryData" type="application/json">
-        {"countries":[
-          {%- for country in localization.available_countries -%}
-            {
-              "iso": {{ country.iso_code | json }},
-              "name": {{ country.name | json }},
-              "currencyCode": {{ country.currency.iso_code | json }},
-              "currencySymbol": {{ country.currency.symbol | json }},
-              "popular": {%- if waymelo_popular_country_codes contains country.iso_code -%}true{%- else -%}false{%- endif -%}
-            }{%- unless forloop.last -%},{%- endunless -%}
-          {%- endfor -%}
-        ]}
-      </script>
-    {%- endif -%}
 
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
