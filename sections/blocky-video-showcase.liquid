@@ -223,14 +223,30 @@
           if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(function () {});
         };
 
-        if ('IntersectionObserver' in window) {
-          var observer = new IntersectionObserver(function (entries) {
-            if (entries.some(function (entry) { return entry.isIntersecting; })) {
-              loadAndPlay();
-              observer.disconnect();
-            }
-          }, { rootMargin: '100% 0px 100% 0px', threshold: 0.01 });
-          observer.observe(this);
+        var element = this;
+        var observing = false;
+        var startObserving = function () {
+          if (observing) return;
+          observing = true;
+          if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function (entries) {
+              if (entries.some(function (entry) { return entry.isIntersecting; })) {
+                loadAndPlay();
+                observer.disconnect();
+              }
+            }, { rootMargin: '40% 0px 40% 0px', threshold: 0.01 });
+            observer.observe(element);
+          } else {
+            loadAndPlay();
+          }
+        };
+        // Wait for the hero image and the buy-box app widget (see blocky-featured-product.js)
+        // before the video may start downloading; fall back after 10s if the signal never comes.
+        if (!document.querySelector('blocky-featured-product') || document.documentElement.classList.contains('waymelo-below-fold-ready')) {
+          startObserving();
+        } else {
+          window.addEventListener('waymelo:below-fold-ready', startObserving, { once: true });
+          window.setTimeout(startObserving, 10000);
         }
 
         var setState = function (paused) {

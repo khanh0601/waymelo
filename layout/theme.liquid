@@ -311,7 +311,7 @@
              `auto` keeps the last rendered size, so nothing shifts once a section has been seen.
              Sections hosting fixed-position overlays opt out while the overlay is open
              (contain:paint would trap it). html.waymelo-cv-off lifts it during programmatic scrolls. */
-          html:not(.shopify-design-mode):not(.waymelo-cv-off) #MainContent > .shopify-section:is([id*="__product_addons"], [id*="__image_with_text"], [id*="__blocky_product_feature"], [id*="__blocky_image_video_slider"], [id*="__product_showcase"], [id*="__blocky_video_with_text"], [id*="__reviews_section"], [id*="__blocky_faq"], [id*="__newsletter"], [id*="__blocky_section_divider"]):not(:has(.quick-add-modal[open], modal-dialog[open], .reviews-section__viewer:not([hidden]))) {
+          html:not(.shopify-design-mode):not(.waymelo-cv-off) #MainContent > .shopify-section:is([id*="__product_addons"], [id*="__image_with_text"], [id*="__blocky_product_feature"], [id*="__blocky_image_video_slider"], [id*="__product_showcase"], [id*="__blocky_video_with_text"], [id*="__reviews_section"], [id*="__blocky_faq"], [id*="__newsletter"], [id*="__blocky_section_divider"], [id*="__blocky_announcement_bar"], [id*="__blocky_video_showcase"]):not(:has(.quick-add-modal[open], modal-dialog[open], .reviews-section__viewer:not([hidden]))) {
             content-visibility: auto;
             contain-intrinsic-size: auto var(--waymelo-cv-size, 700px);
           }
@@ -468,10 +468,29 @@
           marker.replaceWith(link);
         }
 
+        /* A section shipped as <template data-waymelo-lazy-section> (see sections/apps.liquid,
+           product-showcase.liquid, newsletter.liquid): clone its content into the page. Scripts are
+           re-created so they execute exactly once, in document order, after the markup they target. */
+        function activateSection(marker) {
+          var fragment = document.importNode(marker.content, true);
+          fragment.querySelectorAll('script').forEach(function (old) {
+            var script = document.createElement('script');
+            Array.prototype.forEach.call(old.attributes, function (attr) {
+              script.setAttribute(attr.name, attr.value);
+            });
+            script.textContent = old.textContent;
+            old.replaceWith(script);
+          });
+          var placeholder = marker.previousElementSibling;
+          if (placeholder && placeholder.hasAttribute('data-waymelo-lazy-placeholder')) placeholder.remove();
+          marker.replaceWith(fragment);
+        }
+
         function loadRoot(root) {
           if (!root || root.dataset.waymeloJsReady === 'true') return;
           root.dataset.waymeloJsReady = 'true';
 
+          root.querySelectorAll('template[data-waymelo-lazy-section]').forEach(activateSection);
           root.querySelectorAll('template[data-waymelo-lazy-style]').forEach(loadStyle);
 
           var chain = Promise.resolve();
@@ -482,7 +501,7 @@
 
         function observe(scope) {
           var markers = scope.querySelectorAll
-            ? scope.querySelectorAll('template[data-waymelo-lazy-script], template[data-waymelo-lazy-style]')
+            ? scope.querySelectorAll('template[data-waymelo-lazy-script], template[data-waymelo-lazy-style], template[data-waymelo-lazy-section]')
             : [];
           var roots = [];
 

@@ -1,8 +1,30 @@
+{%- liquid
+  # Lazy HTML: for real visitors the whole section ships inside an inert <template>, so its
+  # scripts, stylesheets and media do nothing until the loader in layout/theme.liquid activates
+  # it (when the section comes within ~1200px of the viewport). Rendered normally in the theme
+  # editor and when the section sits at the top of a page (section.index <= 2). Only sections
+  # without SEO value use this.
+  assign waymelo_lazy_html = true
+  if request.design_mode
+    assign waymelo_lazy_html = false
+  endif
+  if section.index == blank or section.index <= 2
+    assign waymelo_lazy_html = false
+  endif
+-%}
+{%- if waymelo_lazy_html -%}
+  <div data-waymelo-lazy-placeholder style="min-height: 0px" aria-hidden="true"></div>
+  <template data-waymelo-lazy-section>
+{%- endif -%}
 <div class="{% if section.settings.include_margins %}page-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
   {%- for block in section.blocks -%}
     {% render block %}
   {%- endfor -%}
 </div>
+
+{%- if waymelo_lazy_html -%}
+  </template>
+{%- endif -%}
 
 {% schema %}
 {
