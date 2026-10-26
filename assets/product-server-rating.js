@@ -96,7 +96,9 @@
       return;
     }
 
-    var root = document.querySelector('[data-rs]');
+    // The reviews section may be shipped lazily (inert <template>); until it is activated a
+    // stub carrying the same aggregate attributes ([data-rs-aggregate]) stands in for it.
+    var root = document.querySelector('[data-rs], [data-rs-aggregate]');
     if (!root) {
       hideAll(teasers);
       return;

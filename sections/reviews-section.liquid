@@ -1,3 +1,18 @@
+{%- liquid
+  # Lazy HTML (same mechanism as apps/product-showcase/newsletter): for real visitors the section
+  # ships inside an inert <template> and is activated by the loader in layout/theme.liquid when it
+  # comes within ~1200px of the viewport. A small stub with the aggregate rating stays outside the
+  # template so the buy-box rating teaser (product-server-rating.js) and its #trustshop-review
+  # anchor keep working before activation. Rendered normally in the theme editor and at the top
+  # of a page (section.index <= 2). Note: review text is not indexable while inert.
+  assign waymelo_lazy_html = true
+  if request.design_mode
+    assign waymelo_lazy_html = false
+  endif
+  if section.index == blank or section.index <= 2
+    assign waymelo_lazy_html = false
+  endif
+-%}
 {%- comment -%}
   BKY - Reviews Section
   Merchant-authored reviews: aggregate rating + star distribution, a "Reviews with
@@ -65,6 +80,11 @@
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><use href="#rs-star-full-{{ section.id }}"/></svg>
 {%- endcapture -%}
 
+{%- if waymelo_lazy_html -%}
+  <span id="trustshop-review" class="reviews-section__anchor" data-waymelo-lazy-stub data-rs-aggregate data-rs-total="{{ total }}" data-rs-avg="{{ avg_display }}" data-rs-avg-pct="{{ avg_pct }}" aria-hidden="true"></span>
+  <div data-waymelo-lazy-placeholder style="min-height: 800px" aria-hidden="true"></div>
+  <template data-waymelo-lazy-section>
+{%- endif -%}
 {% style %}
   #reviews-section-{{ section.id }} {
     --rs-bg: {{ section.settings.background_color }};
@@ -865,6 +885,10 @@
 </div>
 
 <template data-waymelo-lazy-script data-src="{{ 'reviews-section.js' | asset_url }}"></template>
+
+{%- if waymelo_lazy_html -%}
+  </template>
+{%- endif -%}
 
 {% schema %}
 {

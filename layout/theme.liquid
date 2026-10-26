@@ -481,8 +481,12 @@
             script.textContent = old.textContent;
             old.replaceWith(script);
           });
-          var placeholder = marker.previousElementSibling;
-          if (placeholder && placeholder.hasAttribute('data-waymelo-lazy-placeholder')) placeholder.remove();
+          var sibling = marker.previousElementSibling;
+          while (sibling && (sibling.hasAttribute('data-waymelo-lazy-placeholder') || sibling.hasAttribute('data-waymelo-lazy-stub'))) {
+            var prev = sibling.previousElementSibling;
+            sibling.remove();
+            sibling = prev;
+          }
           marker.replaceWith(fragment);
         }
 
