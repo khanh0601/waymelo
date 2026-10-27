@@ -4,6 +4,7 @@
   Accepts:
   - results: {Object} Collection or Search object
   - enable_filtering: {Boolean} Show filtering when true
+  - enable_collection_filter: {Boolean} Show collection navigation when true
   - enable_sorting: {Boolean} Show sorting when true
   - filter_type: {String} Type of filter
   - paginate: {Object}
@@ -52,6 +53,47 @@
               <h2 class="facets__heading caption-large text-body" id="verticalTitle" tabindex="-1">
                 {{ 'products.facets.filter_by_label' | t }}
               </h2>
+            {%- endif -%}
+            {%- if enable_collection_filter -%}
+              {%- assign collection_options = collections | sort: 'title' -%}
+              <details class="disclosure-has-popup facets__disclosure waymelo-collection-filter">
+                <summary class="facets__summary caption-large focus-offset">
+                  <span class="facets__summary-label">Collection</span>
+                  {% render 'icon-caret' %}
+                </summary>
+                <div class="facets__display waymelo-collection-filter__display">
+                  <div class="facets__header">
+                    <span>Choose a collection</span>
+                  </div>
+                  <ul class="facets__list waymelo-collection-filter__list list-unstyled" role="list">
+                    <li class="facets__item">
+                      <a
+                        href="{{ routes.all_products_collection_url }}"
+                        data-collection-filter-link
+                        class="waymelo-collection-filter__link{% if results.handle == 'all' %} is-active{% endif %}"
+                        {% if results.handle == 'all' %}aria-current="page"{% endif %}
+                      >
+                        <span>All products</span>
+                      </a>
+                    </li>
+                    {%- for collection_item in collection_options -%}
+                      {%- unless collection_item.handle == 'all' or collection_item.handle == 'frontpage' or collection_item.all_products_count == 0 -%}
+                        <li class="facets__item">
+                          <a
+                            href="{{ collection_item.url }}"
+                            data-collection-filter-link
+                            class="waymelo-collection-filter__link{% if collection_item.handle == results.handle %} is-active{% endif %}"
+                            {% if collection_item.handle == results.handle %}aria-current="page"{% endif %}
+                          >
+                            <span>{{ collection_item.title | escape }}</span>
+                            <span class="waymelo-collection-filter__count">{{ collection_item.all_products_count }}</span>
+                          </a>
+                        </li>
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </details>
             {%- endif -%}
             {% comment %} Pills are right below the title for filter type vertical {% endcomment %}
             {%- if filter_type == 'vertical' -%}
@@ -512,6 +554,54 @@
               class="mobile-facets__main has-submenu gradient"
             >
               {%- if enable_filtering -%}
+                {%- if enable_collection_filter -%}
+                  {%- assign mobile_collection_options = collections | sort: 'title' -%}
+                  <details class="mobile-facets__details waymelo-mobile-collection-filter">
+                    <summary class="mobile-facets__summary focus-inset">
+                      <div>
+                        <span>Collection</span>
+                        <span class="mobile-facets__arrow">{% render 'icon-arrow' %}</span>
+                      </div>
+                    </summary>
+                    <div class="mobile-facets__submenu gradient">
+                      <button
+                        class="mobile-facets__close-button link link--text focus-inset"
+                        aria-expanded="true"
+                        type="button"
+                      >
+                        {% render 'icon-arrow' %}
+                        <span>Collection</span>
+                      </button>
+                      <ul class="mobile-facets__list waymelo-collection-filter__list list-unstyled" role="list">
+                        <li class="mobile-facets__item list-menu__item">
+                          <a
+                            href="{{ routes.all_products_collection_url }}"
+                            data-collection-filter-link
+                            class="waymelo-collection-filter__link{% if results.handle == 'all' %} is-active{% endif %}"
+                            {% if results.handle == 'all' %}aria-current="page"{% endif %}
+                          >
+                            <span>All products</span>
+                          </a>
+                        </li>
+                        {%- for collection_item in mobile_collection_options -%}
+                          {%- unless collection_item.handle == 'all' or collection_item.handle == 'frontpage' or collection_item.all_products_count == 0 -%}
+                            <li class="mobile-facets__item list-menu__item">
+                              <a
+                                href="{{ collection_item.url }}"
+                                data-collection-filter-link
+                                class="waymelo-collection-filter__link{% if collection_item.handle == results.handle %} is-active{% endif %}"
+                                {% if collection_item.handle == results.handle %}aria-current="page"{% endif %}
+                              >
+                                <span>{{ collection_item.title | escape }}</span>
+                                <span class="waymelo-collection-filter__count">{{ collection_item.all_products_count }}</span>
+                              </a>
+                            </li>
+                          {%- endunless -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  </details>
+                {%- endif -%}
                 {%- for filter in results.filters -%}
                   {% liquid
                     assign presentation = filter.presentation | default: default_presentation

@@ -15,12 +15,45 @@ class FacetFiltersForm extends HTMLElement {
   }
 
   static setListeners() {
-    const onHistoryChange = (event) => {
-      const searchParams = event.state ? event.state.searchParams : FacetFiltersForm.searchParamsInitial;
+    const onHistoryChange = () => {
+      const searchParams = window.location.search.slice(1);
+
+      if (window.location.pathname !== FacetFiltersForm.pathnamePrev) {
+        FacetFiltersForm.renderCollection(window.location.href, false);
+        return;
+      }
+
       if (searchParams === FacetFiltersForm.searchParamsPrev) return;
       FacetFiltersForm.renderPage(searchParams, null, false);
     };
+
+    const onCollectionFilterClick = (event) => {
+      const link = event.target.closest('[data-collection-filter-link]');
+      if (
+        !link ||
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      const url = new URL(link.href, window.location.origin);
+      if (url.origin !== window.location.origin) return;
+
+      event.preventDefault();
+      const mobileDrawer = link.closest('menu-drawer');
+      if (mobileDrawer && typeof mobileDrawer.closeMenuDrawer === 'function') {
+        mobileDrawer.closeMenuDrawer(event);
+      }
+      FacetFiltersForm.renderCollection(url);
+    };
+
     window.addEventListener('popstate', onHistoryChange);
+    document.addEventListener('click', onCollectionFilterClick);
   }
 
   static toggleActiveFacets(disable = true) {
@@ -31,20 +64,9 @@ class FacetFiltersForm extends HTMLElement {
 
   static renderPage(searchParams, event, updateURLHash = true) {
     FacetFiltersForm.searchParamsPrev = searchParams;
+    FacetFiltersForm.pathnamePrev = window.location.pathname;
     const sections = FacetFiltersForm.getSections();
-    const countContainer = document.getElementById('ProductCount');
-    const countContainerDesktop = document.getElementById('ProductCountDesktop');
-    const loadingSpinners = document.querySelectorAll(
-      '.facets-container .loading__spinner, facet-filters-form .loading__spinner'
-    );
-    loadingSpinners.forEach((spinner) => spinner.classList.remove('hidden'));
-    document.getElementById('ProductGridContainer').querySelector('.collection').classList.add('loading');
-    if (countContainer) {
-      countContainer.classList.add('loading');
-    }
-    if (countContainerDesktop) {
-      countContainerDesktop.classList.add('loading');
-    }
+    FacetFiltersForm.setLoading(true);
 
     sections.forEach((section) => {
       const url = `${window.location.pathname}?section_id=${section.section}&${searchParams}`;
@@ -60,15 +82,22 @@ class FacetFiltersForm extends HTMLElement {
 
   static renderSectionFromFetch(url, event) {
     fetch(url)
-      .then((response) => response.text())
+      .then((response) => {
+        if (!response.ok) throw new Error(`Unable to load filtered products (${response.status})`);
+        return response.text();
+      })
       .then((responseText) => {
         const html = responseText;
         FacetFiltersForm.filterData = [...FacetFiltersForm.filterData, { html, url }];
         FacetFiltersForm.renderFilters(html, event);
         FacetFiltersForm.renderProductGridContainer(html);
         FacetFiltersForm.renderProductCount(html);
-        if (typeof initializeScrollAnimationTrigger === 'function') initializeScrollAnimationTrigger(html.innerHTML);
-      });
+      })
+      .catch((error) => {
+        console.error(error);
+        window.location.reload();
+      })
+      .finally(() => FacetFiltersForm.setLoading(false));
   }
 
   static renderSectionFromCache(filterDataUrl, event) {
@@ -76,7 +105,7 @@ class FacetFiltersForm extends HTMLElement {
     FacetFiltersForm.renderFilters(html, event);
     FacetFiltersForm.renderProductGridContainer(html);
     FacetFiltersForm.renderProductCount(html);
-    if (typeof initializeScrollAnimationTrigger === 'function') initializeScrollAnimationTrigger(html.innerHTML);
+    FacetFiltersForm.setLoading(false);
   }
 
   static renderProductGridContainer(html) {
@@ -84,11 +113,110 @@ class FacetFiltersForm extends HTMLElement {
       .parseFromString(html, 'text/html')
       .getElementById('ProductGridContainer').innerHTML;
 
-    document
-      .getElementById('ProductGridContainer')
+    const productGridContainer = document.getElementById('ProductGridContainer');
+
+    productGridContainer
       .querySelectorAll('.scroll-trigger')
       .forEach((element) => {
         element.classList.add('scroll-trigger--cancel');
+      });
+
+    if (typeof initializeScrollAnimationTrigger === 'function') initializeScrollAnimationTrigger(productGridContainer);
+  }
+
+  static setLoading(isLoading) {
+    const collectionGrid = document.querySelector('.waymelo-collection-grid');
+    const productGridContainer = document.getElementById('ProductGridContainer');
+    const collection = productGridContainer?.querySelector('.collection');
+    const countContainer = document.getElementById('ProductCount');
+    const countContainerDesktop = document.getElementById('ProductCountDesktop');
+    const loadingSpinners = document.querySelectorAll(
+      '.facets-container .loading__spinner, facet-filters-form .loading__spinner'
+    );
+
+    collectionGrid?.classList.toggle('is-fetching', isLoading);
+    collection?.classList.toggle('loading', isLoading);
+    productGridContainer?.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+    countContainer?.classList.toggle('loading', isLoading);
+    countContainerDesktop?.classList.toggle('loading', isLoading);
+    loadingSpinners.forEach((spinner) => spinner.classList.toggle('hidden', !isLoading));
+  }
+
+  static renderCollection(url, updateURLHash = true) {
+    const targetUrl = url instanceof URL ? url : new URL(url, window.location.origin);
+
+    if (targetUrl.origin !== window.location.origin) {
+      window.location.assign(targetUrl.href);
+      return;
+    }
+
+    FacetFiltersForm.collectionRequestController?.abort();
+    const requestController = new AbortController();
+    FacetFiltersForm.collectionRequestController = requestController;
+    FacetFiltersForm.setLoading(true);
+
+    fetch(targetUrl.href, {
+      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      signal: requestController.signal,
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Unable to load collection (${response.status})`);
+        return response.text();
+      })
+      .then((responseText) => {
+        const parsedHTML = new DOMParser().parseFromString(responseText, 'text/html');
+        const incomingProductGrid = parsedHTML.getElementById('ProductGridContainer');
+        const incomingFilters = parsedHTML.getElementById('main-collection-filters');
+        const currentProductGrid = document.getElementById('ProductGridContainer');
+        const currentFilters = document.getElementById('main-collection-filters');
+
+        if (!incomingProductGrid || !incomingFilters || !currentProductGrid || !currentFilters) {
+          throw new Error('Collection response is missing required product grid markup');
+        }
+
+        currentProductGrid.innerHTML = incomingProductGrid.innerHTML;
+        currentFilters.replaceWith(incomingFilters);
+
+        const currentIntro = document.querySelector('.waymelo-collection-grid__intro');
+        const incomingIntro = parsedHTML.querySelector('.waymelo-collection-grid__intro');
+        if (currentIntro && incomingIntro) currentIntro.innerHTML = incomingIntro.innerHTML;
+
+        const currentHero = document.querySelector('.waymelo-collection-hero');
+        const incomingHero = parsedHTML.querySelector('.waymelo-collection-hero');
+        if (currentHero && incomingHero) currentHero.replaceWith(incomingHero);
+
+        document.title = parsedHTML.title;
+        const canonical = document.querySelector('link[rel="canonical"]');
+        const incomingCanonical = parsedHTML.querySelector('link[rel="canonical"]');
+        if (canonical && incomingCanonical) canonical.href = incomingCanonical.href;
+
+        FacetFiltersForm.pathnamePrev = targetUrl.pathname;
+        FacetFiltersForm.searchParamsPrev = targetUrl.search.slice(1);
+        FacetFiltersForm.filterData = [];
+
+        if (updateURLHash) {
+          history.pushState(
+            { collectionUrl: `${targetUrl.pathname}${targetUrl.search}` },
+            '',
+            `${targetUrl.pathname}${targetUrl.search}`
+          );
+        }
+
+        currentProductGrid.querySelectorAll('.scroll-trigger').forEach((element) => {
+          element.classList.add('scroll-trigger--cancel');
+        });
+        if (typeof initializeScrollAnimationTrigger === 'function') initializeScrollAnimationTrigger(currentProductGrid);
+      })
+      .catch((error) => {
+        if (error.name === 'AbortError') return;
+        console.error(error);
+        window.location.assign(targetUrl.href);
+      })
+      .finally(() => {
+        if (FacetFiltersForm.collectionRequestController === requestController) {
+          FacetFiltersForm.collectionRequestController = null;
+          FacetFiltersForm.setLoading(false);
+        }
       });
   }
 
@@ -296,6 +424,8 @@ class FacetFiltersForm extends HTMLElement {
 FacetFiltersForm.filterData = [];
 FacetFiltersForm.searchParamsInitial = window.location.search.slice(1);
 FacetFiltersForm.searchParamsPrev = window.location.search.slice(1);
+FacetFiltersForm.pathnamePrev = window.location.pathname;
+FacetFiltersForm.collectionRequestController = null;
 customElements.define('facet-filters-form', FacetFiltersForm);
 FacetFiltersForm.setListeners();
 

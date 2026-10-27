@@ -116,6 +116,7 @@
           {% render 'facets',
             results: collection,
             enable_filtering: section.settings.enable_filtering,
+            enable_collection_filter: true,
             enable_sorting: section.settings.enable_sorting,
             filter_type: section.settings.filter_type,
             paginate: paginate
@@ -132,7 +133,10 @@
       >
         {%- if collection.products.size == 0 -%}
           <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
-            <div class="loading-overlay gradient"></div>
+            <div class="loading-overlay gradient" role="status" aria-live="polite">
+              {% render 'loading-spinner', class: 'waymelo-collection-loading__spinner' %}
+              <span class="visually-hidden">Loading products...</span>
+            </div>
             <div class="title-wrapper center">
               <h2 class="title title--primary">
                 {{ 'sections.collection_template.empty' | t -}}
@@ -148,7 +152,10 @@
           <div
             class="collection waymelo-collection-products{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
           >
-            <div class="loading-overlay gradient"></div>
+            <div class="loading-overlay gradient" role="status" aria-live="polite">
+              {% render 'loading-spinner', class: 'waymelo-collection-loading__spinner' %}
+              <span class="visually-hidden">Loading products...</span>
+            </div>
             <ul
               id="product-grid"
               data-id="{{ section.id }}"
