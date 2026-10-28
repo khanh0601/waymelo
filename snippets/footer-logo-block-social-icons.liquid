@@ -1,0 +1,66 @@
+{% comment %}
+  Renders the footer logo block's social icon row.
+
+  Reads each platform's destination from the store's social account settings
+  (settings.social_<platform>_link) and renders one circular icon button per
+  configured platform, in the fixed order of the platform list below. Platforms
+  the store has not configured are skipped, and nothing at all is rendered when
+  no social account is set.
+
+  Usage:
+  {% render 'footer-logo-block-social-icons' %}
+{% endcomment %}
+
+{%- capture logo_block_social_links -%}
+  {%- assign logo_block_platforms = 'facebook,instagram,youtube,tiktok,twitter,pinterest,snapchat,tumblr,vimeo' | split: ',' -%}
+  {%- for platform in logo_block_platforms -%}
+    {%- liquid
+      assign logo_block_setting_key = platform | prepend: 'social_' | append: '_link'
+      assign logo_block_link = settings[logo_block_setting_key]
+    -%}
+    {%- if logo_block_link != blank -%}
+      <a
+        href="{{ logo_block_link }}"
+        class="footer__logo-block__social-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="width: 3.8rem; height: 3.8rem; min-width: 3.8rem; min-height: 3.8rem; max-width: 3.8rem; max-height: 3.8rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; overflow: hidden;"
+      >
+        {%- case platform -%}
+          {%- when 'facebook' -%}
+            {%- render 'icon-facebook' -%}
+            <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+          {%- when 'instagram' -%}
+            {%- render 'icon-instagram' -%}
+            <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+          {%- when 'youtube' -%}
+            {%- render 'icon-youtube' -%}
+            <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+          {%- when 'tiktok' -%}
+            {%- render 'icon-tiktok' -%}
+            <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+          {%- when 'twitter' -%}
+            {%- render 'icon-twitter' -%}
+            <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+          {%- when 'pinterest' -%}
+            {%- render 'icon-pinterest' -%}
+            <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+          {%- when 'snapchat' -%}
+            {%- render 'icon-snapchat' -%}
+            <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
+          {%- when 'tumblr' -%}
+            {%- render 'icon-tumblr' -%}
+            <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
+          {%- when 'vimeo' -%}
+            {%- render 'icon-vimeo' -%}
+            <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
+        {%- endcase -%}
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- if logo_block_social_links != blank -%}
+  <div class="footer__logo-block__social" aria-label="Social media" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem;">
+    {{ logo_block_social_links }}
+  </div>
+{%- endif -%}

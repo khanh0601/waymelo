@@ -2,7 +2,112 @@
   assign og_title = page_title | default: shop.name
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: shop.name
+
+  # Utility pages (search results, cart, customer account) are neither indexed nor
+  # described: they get no description and a noindex robots directive.
+  assign seo_noindex_types = 'cart,search,captcha,customers/account,customers/activate_account,customers/addresses,customers/login,customers/order,customers/register,customers/reset_password' | split: ','
+
+  # Meta description: the merchant's Shopify SEO description when one is set,
+  # otherwise a description derived from the page's own content, on indexable page
+  # types only. Both paths are escaped before the length clip, so the length guard
+  # applies to the characters that actually land in the tag.
+  assign seo_description = ''
+  unless seo_noindex_types contains request.page_type
+    if page_description != blank
+      assign seo_description = page_description
+    else
+      case request.page_type
+        when 'product'
+          assign seo_description = product.description
+        when 'collection'
+          assign seo_description = collection.description
+        when 'article'
+          assign seo_description = article.excerpt_or_content
+        when 'page'
+          assign seo_description = page.content
+        when 'index', 'blog'
+          assign seo_description = shop.description
+      endcase
+      if seo_description != blank
+        assign seo_description = seo_description | strip_html | strip_newlines | strip | escape
+      endif
+    endif
+  endunless
+
+  # Clip to what search engines display without cutting mid-word: 154 characters of
+  # whole words plus an ellipsis. A description that already fits passes through
+  # untouched, so a merchant-set value reaches the tag exactly as it does today.
+  assign seo_description_limit = 154
+  if seo_description != blank
+    assign seo_description_probe = seo_description | strip_html | strip_newlines | strip
+    if seo_description_probe.size > seo_description_limit
+      assign seo_description_words = seo_description_probe | split: ' '
+      assign seo_description_selected = ''
+      assign seo_description_length = 0
+      for seo_word in seo_description_words
+        if seo_word == blank
+          continue
+        endif
+        assign seo_candidate_length = seo_description_length | plus: seo_word.size
+        if seo_description_length > 0
+          assign seo_candidate_length = seo_candidate_length | plus: 1
+        endif
+        if seo_candidate_length > seo_description_limit
+          break
+        endif
+        if seo_description_length > 0
+          assign seo_description_selected = seo_description_selected | append: ' ' | append: seo_word
+        else
+          assign seo_description_selected = seo_word
+        endif
+        assign seo_description_length = seo_candidate_length
+      endfor
+      assign seo_description = seo_description_selected | append: '…'
+    endif
+  endif
+
+  if seo_description != blank
+    assign seo_description_out = seo_description
+  else
+    assign seo_description_out = shop.description | escape | default: shop.name
+  endif
+
+  # Social preview image: the page's own image first, then the store's social sharing
+  # image, then the shop logo. `og:image` and its size tags are Shopify's own output
+  # (Decision 3a), so the theme only resolves the image for the tags the platform does
+  # not emit. Page images keep their original size; store-level images are capped at
+  # 1200px wide so a shared card never carries an oversized asset.
+  assign seo_image_source = 'none'
+  if page_image != blank
+    assign seo_image = page_image
+    assign seo_image_source = 'page'
+  elsif settings.social_sharing_image != blank
+    assign seo_image = settings.social_sharing_image
+    assign seo_image_source = 'setting'
+  elsif settings.logo != blank
+    assign seo_image = settings.logo
+    assign seo_image_source = 'setting'
+  endif
+
+  if seo_image_source != 'none'
+    if seo_image_source == 'page'
+      assign seo_image_url = seo_image | image_url | prepend: 'https:'
+    else
+      assign seo_image_url = seo_image | image_url: width: 1200 | prepend: 'https:'
+    endif
+    assign seo_image_alt = seo_image.alt | default: shop.name
+  endif
+
+  # X/Twitter site handle, only when the configured account link carries a username.
+  assign seo_x_handle = ''
+  if settings.social_twitter_link contains 'twitter.com/'
+    assign seo_x_handle = settings.social_twitter_link | split: 'twitter.com/' | last
+  elsif settings.social_twitter_link contains 'x.com/'
+    assign seo_x_handle = settings.social_twitter_link | split: 'x.com/' | last
+  elsif settings.social_twitter_link contains '@'
+    assign seo_x_handle = settings.social_twitter_link | remove: '@' | strip
+  endif
+  assign seo_x_handle = seo_x_handle | split: '?' | first | split: '/' | first | strip
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -13,17 +118,26 @@
   endif
 %}
 
+{%- if seo_noindex_types contains request.page_type -%}
+  <meta name="robots" content="noindex,follow">
+{%- endif -%}
+
+{%- if seo_description != blank -%}
+  <meta name="description" content="{{ seo_description_out }}">
+{%- endif -%}
+
 <meta property="og:site_name" content="{{ shop.name }}">
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:title" content="{{ og_title | escape }}">
 <meta property="og:type" content="{{ og_type }}">
-<meta property="og:description" content="{{ og_description | escape }}">
+<meta property="og:description" content="{{ seo_description_out }}">
 
-{%- if page_image -%}
-  <meta property="og:image" content="http:{{ page_image | image_url }}">
-  <meta property="og:image:secure_url" content="https:{{ page_image | image_url }}">
-  <meta property="og:image:width" content="{{ page_image.width }}">
-  <meta property="og:image:height" content="{{ page_image.height }}">
+{%- if seo_image_source != 'none' -%}
+  {% comment %} `og:image`, its size tags, and `og:image:alt` are all injected by
+     Shopify itself (the alt text whenever the source image has one), so the theme
+     emits only the Twitter pair, which the platform never emits. {% endcomment %}
+  <meta name="twitter:image" content="{{ seo_image_url }}">
+  <meta name="twitter:image:alt" content="{{ seo_image_alt | escape }}">
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}
@@ -31,9 +145,11 @@
   <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
 {%- endif -%}
 
-{%- if settings.social_twitter_link != blank -%}
-  <meta name="twitter:site" content="{{ settings.social_twitter_link | split: 'twitter.com/' | last | prepend: '@' }}">
+{%- if seo_x_handle != blank -%}
+  <meta name="twitter:site" content="@{{ seo_x_handle }}">
 {%- endif -%}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ og_title | escape }}">
-<meta name="twitter:description" content="{{ og_description | escape }}">
+<meta name="twitter:description" content="{{ seo_description_out }}">
+{% comment %} DMCA.com site verification token (if reissued, update here and the dmca-validation page body) {% endcomment %}
+<meta name="dmca-site-verification" content="THhQWlhFVUgyL3NRTXRnajZpUEYwZz090">

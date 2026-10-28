@@ -172,11 +172,13 @@
 
     {%- if block.settings.policy_text != blank -%}
       <p class="blocky-delivery__policy">
-        {%- if block.settings.policy_url != blank -%}
-          <a href="{{ block.settings.policy_url }}">{{ block.settings.policy_text }}</a>
-        {%- else -%}
-          {{ block.settings.policy_text }}
+        {%- assign fallback_policy_url = block.settings.policy_url -%}
+        {%- if fallback_policy_url == blank and shop.shipping_policy.url != blank -%}
+          {%- assign fallback_policy_url = shop.shipping_policy.url -%}
+        {%- elsif fallback_policy_url == blank -%}
+          {%- assign fallback_policy_url = '/policies/shipping-policy' -%}
         {%- endif -%}
+        <a href="{{ fallback_policy_url }}">{{ block.settings.policy_text }}</a>
       </p>
     {%- endif -%}
   </div>

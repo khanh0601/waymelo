@@ -74,57 +74,202 @@
         "heading": "Go places.",
         "accent_heading": "Feel good.",
         "text": "<p>Thoughtful essentials for easier days on the go.</p>",
-        "button_label": "Find your travel essentials",
-        "button_link": "shopify://collections/all",
+        "button_label_1": "Shop Now",
+        "button_link_1": "shopify://collections/all",
+        "button_label_2": "Our Story",
+        "button_link_2": "shopify://blogs/news",
         "carousel_label": "Waymelo highlights",
         "autoplay_delay": 5
       }
     },
-    "waymelo_categories": {
-      "type": "waymelo-category-grid",
+    "waymelo_best_seller": {
+      "type": "waymelo-best-seller",
       "blocks": {
-        "category_comfort": {
-          "type": "category",
+        "product_1": {
+          "type": "product",
           "settings": {
-            "collection": "travel-comfort",
-            "fallback_product": "wearable-nursing-pillow",
-            "title": "",
-            "text": "Rest easy, wherever you go.",
-            "link_label": "Explore category",
-            "link": "shopify://collections/travel-comfort"
+            "product": "wearable-nursing-pillow"
           }
         },
-        "category_bags": {
-          "type": "category",
+        "product_2": {
+          "type": "product",
           "settings": {
-            "collection": "baby-feeding-travel-essentials",
-            "fallback_product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
-            "title": "",
-            "text": "Practical essentials for feeding and family travel.",
-            "link_label": "Explore category",
-            "link": "shopify://collections/baby-feeding-travel-essentials"
+            "product": "diaper-bag-backpack-with-changing-station-25l-large-capacity"
           }
         },
-        "category_family": {
-          "type": "category",
+        "product_3": {
+          "type": "product",
           "settings": {
-            "collection": "nursing-pillows",
-            "fallback_product": "portable-diaper-changing-pad-with-wipes-pocket",
-            "title": "",
-            "text": "Support and comfort for everyday feeding moments.",
-            "link_label": "Explore category",
-            "link": "shopify://collections/nursing-pillows"
+            "product": "universal-baby-stroller-organizer-bag-with-insulated-cup-holders"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "insulated-breast-milk-cooler-bag-with-ice-pack"
           }
         }
       },
       "block_order": [
-        "category_comfort",
-        "category_bags",
-        "category_family"
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
       ],
       "settings": {
-        "eyebrow": "Find your kind of comfort",
-        "heading": "Shop by category."
+        "eyebrow": "",
+        "heading": "Best Sellers",
+        "source": "manual",
+        "columns_desktop": 4,
+        "products_to_show": 4,
+        "show_badge": true,
+        "badge_text": "SALE",
+        "badge_color": "#163e2e",
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "view_all_link": "shopify://collections/all",
+        "button_color": "#163e2e"
+      }
+    },
+    "waymelo_new_arrivals": {
+      "type": "waymelo-best-seller",
+      "blocks": {
+        "product_1": {
+          "type": "product",
+          "settings": {
+            "product": "2-pack-stroller-hooks-for-hanging-bags"
+          }
+        },
+        "product_2": {
+          "type": "product",
+          "settings": {
+            "product": "portable-diaper-changing-pad-with-wipes-pocket"
+          }
+        },
+        "product_3": {
+          "type": "product",
+          "settings": {
+            "product": "babygoal-wet-dry-bags-3-pack"
+          }
+        },
+        "product_4": {
+          "type": "product",
+          "settings": {
+            "product": "termichy-stackable-formula-dispenser-portable"
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "New Arrivals",
+        "source": "manual",
+        "columns_desktop": 4,
+        "products_to_show": 4,
+        "show_badge": true,
+        "badge_text": "SALE",
+        "badge_color": "#163e2e",
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "view_all_link": "shopify://collections/all",
+        "button_color": "#163e2e"
+      }
+    },
+    "image_with_text_h68zjW": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_q9TtyD": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Little Moments, Lifetime Memories</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_zHYtzH": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Shared parenting becomes effortless with Waymelo. Designed for both mom and dad, our ergonomic support turns feeding time into cozy bonding moments—whether you’re relaxing at home or exploring the world together. Enjoy stress-free journeys and focus on what truly matters: making sweet memories with your little one.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_BzPWPy": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Family Essentials",
+            "button_link": "shopify://collections/all",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_q9TtyD",
+        "text_zHYtzH",
+        "button_BzPWPy"
+      ],
+      "name": "Little Moments, Lifetime Memories",
+      "settings": {
+        "image": "shopify://shop_images/sss.webp",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "blocky_before_after_slider_x3NhGi": {
+      "type": "blocky-before-after-slider",
+      "blocks": {
+        "title_VnUxpg": {
+          "type": "title",
+          "settings": {
+            "title": "<strong>Before & After Using Our Product</strong>",
+            "title_size": 40,
+            "title_color": "#000000"
+          }
+        },
+        "body_d4LFnB": {
+          "type": "body",
+          "settings": {
+            "body_text": "<p>Use the before and after slider to easily show the differences with your brand and other products</p>",
+            "body_size": 16,
+            "body_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "title_VnUxpg",
+        "body_d4LFnB"
+      ],
+      "disabled": true,
+      "name": "Blocky Before & After Slider",
+      "settings": {
+        "before_image_fit": "cover",
+        "after_image_fit": "cover",
+        "slider_size": "medium",
+        "slider_shape": "square",
+        "auto_shape": false,
+        "layout": "slider_second",
+        "before_label": "Before",
+        "after_label": "After",
+        "labels_color": "#000000",
+        "line_color": "#000000",
+        "background_color": "#FFFFFF",
+        "text_align": "center",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "waymelo_products": {
@@ -139,228 +284,198 @@
         "view_all_label": "Shop all essentials"
       }
     },
-    "waymelo_stories": {
-      "type": "waymelo-media-stories",
+    "waymelo_why_us": {
+      "type": "waymelo-why-us",
       "blocks": {
-        "story_comfort": {
-          "type": "story",
+        "column_journeys": {
+          "type": "column",
           "settings": {
-            "video_url": "",
-            "image": "shopify://shop_images/dffggf.jpg",
-            "fallback_product": "",
-            "heading": "A little comfort in the air",
-            "label": "Discover the details"
+            "icon": "travel_explore",
+            "heading": "Built for real journeys",
+            "text": "Practical, portable essentials designed for the way families actually travel."
           }
         },
-        "story_bag": {
-          "type": "story",
+        "column_comfort": {
+          "type": "column",
           "settings": {
-            "video_url": "",
-            "fallback_product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
-            "heading": "Everything, in its place",
-            "label": "Made for everyday outings"
+            "icon": "favorite",
+            "heading": "Comfort you can trust",
+            "text": "Chosen for the details that make long outings feel easier."
           }
         },
-        "story_pad": {
-          "type": "story",
+        "column_carry": {
+          "type": "column",
           "settings": {
-            "video_url": "",
-            "fallback_product": "portable-diaper-changing-pad-with-wipes-pocket",
-            "heading": "Ready for a day out",
-            "label": "Practical by design"
+            "icon": "backpack",
+            "heading": "Light to carry",
+            "text": "Packs down small and stays out of the way until you need it."
+          }
+        },
+        "column_ready": {
+          "type": "column",
+          "settings": {
+            "icon": "bolt",
+            "heading": "Ready when you are",
+            "text": "Grab-and-go essentials that work the moment you arrive."
           }
         }
       },
       "block_order": [
-        "story_comfort",
-        "story_bag",
-        "story_pad"
+        "column_journeys",
+        "column_comfort",
+        "column_carry",
+        "column_ready"
       ],
       "settings": {
-        "eyebrow": "See the little details",
-        "heading": "Made for moments like these."
+        "eyebrow": "",
+        "heading": "Why Moms Choose Waymelo",
+        "columns_desktop": 4,
+        "columns_mobile": 1
       }
     },
-    "waymelo_brand": {
-      "type": "waymelo-brand-story",
-      "settings": {
-        "product": "wearable-nursing-pillow",
-        "image_alt": "Waymelo essentials for comfortable family journeys",
-        "eyebrow": "The Waymelo way",
-        "heading": "More comfort.\nMore memories.",
-        "text": "<p>Small essentials that make getting there feel better.</p>",
-        "button_label": "",
-        "button_link": ""
-      }
-    },
-    "waymelo_reviews": {
-      "type": "waymelo-reviews",
+    "blocky_faq_UcXq6N": {
+      "type": "blocky-faq",
       "blocks": {
-        "review_one": {
-          "type": "review",
+        "question_tnyG3V": {
+          "type": "question",
           "settings": {
-            "product": "wearable-nursing-pillow",
-            "image_alt": "",
-            "rating": 5,
-            "heading": "Comfort on the go",
-            "quote": "<p>Add a genuine customer review about comfort and convenience here.</p>",
-            "author": "Verified customer",
-            "product_name": "Waymelo essential"
+            "question": "<strong>What makes Waymelo products different?</strong>",
+            "content": "<p>At Waymelo, we focus on practical, portable, and easy-to-use essentials that simplify everyday life. Our products are thoughtfully selected to help you stay organized, comfortable, and prepared wherever you go.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
           }
         },
-        "review_FHjzUH": {
-          "type": "review",
+        "question_Vcb68p": {
+          "type": "question",
           "settings": {
-            "product": "wearable-nursing-pillow",
-            "image_alt": "",
-            "rating": 5,
-            "heading": "Comfort on the go",
-            "quote": "<p>Add a genuine customer review about comfort and convenience here.</p>",
-            "author": "Verified customer",
-            "product_name": "Waymelo essential"
+            "question": "<strong>Are Waymelo products suitable for travel?</strong>",
+            "content": "<p>Absolutely! Our collection focuses on convenient solutions for everyday outings, road trips, flights, and family adventures. Check each product page for specific features, dimensions, and travel suitability.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
           }
         },
-        "review_two": {
-          "type": "review",
+        "question_XhmLrM": {
+          "type": "question",
           "settings": {
-            "product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
-            "image_alt": "",
-            "rating": 5,
-            "heading": "Packed for the day",
-            "quote": "<p>Add a genuine customer review about organization and everyday use here.</p>",
-            "author": "Verified customer",
-            "product_name": "Waymelo essential"
+            "question": "<strong>Are your products easy to carry and use?</strong>",
+            "content": "<p>We prioritize convenience and simplicity. Many of our products feature compact, lightweight, or multifunctional designs, making them practical for busy lifestyles and life on the go.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
           }
         },
-        "review_three": {
-          "type": "review",
+        "question_HeC7Tr": {
+          "type": "question",
           "settings": {
-            "product": "portable-diaper-changing-pad-with-wipes-pocket",
-            "image_alt": "",
-            "rating": 5,
-            "heading": "Family adventures",
-            "quote": "<p>Add a genuine customer review about family outings and travel here.</p>",
-            "author": "Verified customer",
-            "product_name": "Waymelo essential"
+            "question": "<strong>How long does shipping take?</strong>",
+            "content": "<p>Orders typically take 2–3 business days to process, followed by an estimated 8–12 business days for shipping. Delivery times may vary depending on your location and shipping conditions.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
+          }
+        },
+        "question_A3MhCj": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>How can I contact Waymelo for help?</strong>",
+            "content": "<p>We're happy to help! If you have questions about our products, orders, or shipping, simply visit our Contact Us page and send us a message. Our support team will assist you as soon as possible.</p>",
+            "default_open": false,
+            "icon_code": "",
+            "icon_color": "#000000"
           }
         }
       },
       "block_order": [
-        "review_one",
-        "review_FHjzUH",
-        "review_two",
-        "review_three"
+        "question_tnyG3V",
+        "question_Vcb68p",
+        "question_XhmLrM",
+        "question_HeC7Tr",
+        "question_A3MhCj"
       ],
+      "name": "Blocky FAQ",
       "settings": {
-        "eyebrow": "Customer reviews",
-        "heading": "From their journeys."
-      }
-    },
-    "waymelo_social": {
-      "type": "waymelo-social-grid",
-      "blocks": {
-        "social_one": {
-          "type": "image",
-          "settings": {
-            "product": "wearable-nursing-pillow",
-            "image_alt": "Waymelo travel inspiration"
-          }
-        },
-        "social_two": {
-          "type": "image",
-          "settings": {
-            "product": "diaper-bag-backpack-with-changing-station-25l-large-capacity",
-            "image_alt": "Waymelo organization inspiration"
-          }
-        },
-        "social_three": {
-          "type": "image",
-          "settings": {
-            "product": "portable-diaper-changing-pad-with-wipes-pocket",
-            "image_alt": "Waymelo family outing inspiration"
-          }
-        },
-        "social_four": {
-          "type": "image",
-          "settings": {
-            "product": "wearable-nursing-pillow",
-            "image_alt": "Waymelo comfort inspiration"
-          }
-        }
-      },
-      "block_order": [
-        "social_one",
-        "social_two",
-        "social_three",
-        "social_four"
-      ],
-      "settings": {
-        "eyebrow": "A little inspiration for the road",
-        "heading": "On the go with Waymelo.",
-        "social_label": "",
-        "social_link": ""
-      }
-    },
-    "waymelo_faq": {
-      "type": "waymelo-faq",
-      "blocks": {
-        "faq_products": {
-          "type": "item",
-          "settings": {
-            "question": "What can I find at Waymelo?",
-            "answer": "<p>Practical essentials for life on the go, from travel comfort to smart organization and family outing must-haves.</p>",
-            "open_by_default": true
-          }
-        },
-        "faq_details": {
-          "type": "item",
-          "settings": {
-            "question": "Where can I check sizes and product details?",
-            "answer": "<p>Open any product page to find available options, dimensions, materials and care information.</p>",
-            "open_by_default": false
-          }
-        },
-        "faq_delivery": {
-          "type": "item",
-          "settings": {
-            "question": "How can I check delivery availability and cost?",
-            "answer": "<p>Enter your delivery address at checkout to review the available delivery options and charges before placing your order.</p>",
-            "open_by_default": false
-          }
-        },
-        "faq_returns": {
-          "type": "item",
-          "settings": {
-            "question": "Where can I find the return policy?",
-            "answer": "<p>Review our refund policy for eligibility, timeframes and the steps to request a return.</p>",
-            "open_by_default": false
-          }
-        }
-      },
-      "block_order": [
-        "faq_products",
-        "faq_details",
-        "faq_delivery",
-        "faq_returns"
-      ],
-      "settings": {
-        "eyebrow": "A little help before you go",
-        "heading": "Good to know.",
-        "text": "<p>A few things to help you find your next essential.</p>",
-        "button_label": "Get in touch",
+        "title": "<strong>Questions About Waymelo</strong>",
+        "title_size": 40,
+        "title_color": "#000000",
+        "body_text": "<p>Got questions? We've got answers! Discover how Waymelo makes life on the go easier.</p>",
+        "body_size": 16,
+        "body_color": "#000000",
+        "button_label": "<p><strong>Contact Us</strong></p>",
         "button_link": "shopify://pages/contact",
-        "enable_faq_schema": true
+        "button_border_radius": "curved",
+        "button_background_color": "#7A5168",
+        "button_text_color": "#FFFFFF",
+        "faq_layout": "row",
+        "question_padding": 15,
+        "faq_border_radius": 15,
+        "faq_container_background": "#FFFFFF",
+        "faq_container_border_color": "transparent",
+        "show_container_shadow": true,
+        "question_font_size": 18,
+        "answer_font_size": 16,
+        "question_text_color": "#000000",
+        "answer_text_color": "#606367",
+        "layout": "row-reverse",
+        "columns": 1,
+        "desktop_faq_width": "large",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "center",
+        "text_vertical_alignment": "middle",
+        "chevron_style": "chevron",
+        "chevron_position": "end",
+        "text_container_gap": "2rem",
+        "background_color": "#FFFFFF",
+        "page_width": 1200,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "newsletter_YPErkW": {
+      "type": "newsletter",
+      "blocks": {
+        "heading_bFHb6A": {
+          "type": "heading",
+          "settings": {
+            "heading": "&nbsp;<strong>Unlock Your 10% OFF!</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph_AQdUTw": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Be the first to know about new collections and exclusive offers.</p>"
+          }
+        },
+        "email_form_46dAKV": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading_bFHb6A",
+        "paragraph_AQdUTw",
+        "email_form_46dAKV"
+      ],
+      "name": "t:sections.newsletter.presets.name",
+      "settings": {
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
       }
     }
   },
   "order": [
     "waymelo_hero",
-    "waymelo_categories",
+    "waymelo_best_seller",
+    "waymelo_new_arrivals",
+    "image_with_text_h68zjW",
+    "blocky_before_after_slider_x3NhGi",
     "waymelo_products",
-    "waymelo_stories",
-    "waymelo_brand",
-    "waymelo_reviews",
-    "waymelo_social",
-    "waymelo_faq"
+    "waymelo_why_us",
+    "blocky_faq_UcXq6N",
+    "newsletter_YPErkW"
   ]
 }

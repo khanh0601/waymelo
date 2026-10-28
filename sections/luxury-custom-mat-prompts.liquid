@@ -1,0 +1,1117 @@
+{% comment %}theme-check-disable ExcessiveSettingsCount{% endcomment %}
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT PROMPTS
+  - 2-Column Responsive Layout:
+      * Left Column: List of inspiration cards / prompts (dynamic from blocks)
+      * Right Column: Showcase media photo + CTA button
+  - 100% Dynamic - ZERO HARDCODED DATA:
+      * All cards, texts, labels, images, and links pulled directly from Shopify settings and blocks
+      * Configurable card hover background, border, title & description colors
+      * Configurable button background, text, border & hover colors
+      * Full icon support: built-in icons, custom SVG code, or uploaded PNG/SVG images
+      * Icon styling: Solid badge, Subtle tint, or Minimal (icon only)
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #CustomMatPrompts-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};
+    padding-top: {{ section.settings.padding_top_mobile | default: 24 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile | default: 32 }}px;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    #CustomMatPrompts-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 48 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 64 }}px;
+    }
+  }
+
+  #CustomMatPrompts-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .cmprompts-container-{{ section.id }} {
+    max-width: {{ section.settings.container_max_width | default: 1140 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .cmprompts-container-{{ section.id }} {
+      padding: 0 28px;
+    }
+  }
+
+  /* Header Section */
+  .cmprompts-header-{{ section.id }} {
+    text-align: {{ section.settings.header_alignment | default: 'left' }};
+    max-width: {% if section.settings.header_alignment == 'center' %}860px{% else %}100%{% endif %};
+    margin: 0 {% if section.settings.header_alignment == 'center' %}auto{% else %}0{% endif %} 36px {% if section.settings.header_alignment == 'center' %}auto{% else %}0{% endif %};
+  }
+
+  @media (min-width: 768px) {
+    .cmprompts-header-{{ section.id }} {
+      margin-bottom: 44px;
+    }
+  }
+
+  .cmprompts-eyebrow-{{ section.id }} {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: {{ section.settings.eyebrow_color | default: section.settings.accent_color | default: '#551F3F' }};
+    margin-bottom: 10px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  }
+
+  .cmprompts-title-{{ section.id }} {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    font-weight: 600;
+    line-height: 1.22;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    margin: 0 0 12px 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .cmprompts-title-{{ section.id }} {
+      font-size: {{ section.settings.heading_size | default: 38 }}px;
+    }
+  }
+
+  .cmprompts-subtitle-{{ section.id }} {
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: 15px;
+    line-height: 1.6;
+    color: {{ section.settings.subtitle_color | default: '#55504C' }};
+    margin: 0;
+    max-width: 820px;
+  }
+
+  /* 2-Column Split Layout */
+  .cmprompts-layout-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .cmprompts-layout-{{ section.id }} {
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: {{ section.settings.column_gap | default: 48 }}px;
+    }
+  }
+
+  /* Left Column: Cards Stack */
+  .cmprompts-cards-stack-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.card_gap | default: 14 }}px;
+    width: 100%;
+  }
+
+  .cmprompts-card-{{ section.id }} {
+    background-color: {{ section.settings.card_bg | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.card_border_color | default: '#ECE7E1' }};
+    border-radius: {{ section.settings.card_radius | default: 14 }}px;
+    padding: {{ section.settings.card_padding_vertical | default: 18 }}px {{ section.settings.card_padding_horizontal | default: 22 }}px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, color 0.25s ease;
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+    position: relative;
+  }
+
+  a.cmprompts-card-{{ section.id }} {
+    cursor: pointer;
+  }
+
+  /* Card Hover State - Customizable via Shopify Theme Settings */
+  .cmprompts-card-{{ section.id }}:hover {
+    background-color: {{ section.settings.card_hover_bg | default: '#FAF8F5' }} !important;
+    border-color: {{ section.settings.card_hover_border_color | default: '#D0C7BD' }} !important;
+    {%- if section.settings.card_hover_lift != false -%}
+      transform: translateY(-2px);
+    {%- endif -%}
+    {%- if section.settings.card_hover_shadow != false -%}
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    {%- endif -%}
+  }
+
+  .cmprompts-card-{{ section.id }}:hover .cmprompts-card-title-{{ section.id }} {
+    color: {{ section.settings.card_hover_title_color | default: section.settings.card_title_color | default: '#141517' }} !important;
+  }
+
+  .cmprompts-card-{{ section.id }}:hover .cmprompts-card-desc-{{ section.id }} {
+    color: {{ section.settings.card_hover_desc_color | default: section.settings.card_desc_color | default: '#22201E' }} !important;
+  }
+
+  /* Icon Badge Container */
+  .cmprompts-icon-badge-{{ section.id }} {
+    width: {{ section.settings.icon_size | default: 44 }}px;
+    height: {{ section.settings.icon_size | default: 44 }}px;
+    border-radius: {{ section.settings.icon_radius | default: 12 }}px;
+    background-color: {{ section.settings.icon_badge_bg | default: section.settings.accent_color | default: '#551F3F' }};
+    color: {{ section.settings.icon_color | default: '#FFFFFF' }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+    overflow: hidden;
+  }
+
+  {%- if section.settings.icon_style == 'plain' -%}
+    .cmprompts-icon-badge-{{ section.id }} {
+      background-color: transparent !important;
+      color: {{ section.settings.icon_color | default: section.settings.accent_color | default: '#551F3F' }};
+      box-shadow: none !important;
+      width: auto !important;
+      height: auto !important;
+      padding: 0 !important;
+    }
+  {%- elsif section.settings.icon_style == 'subtle' -%}
+    .cmprompts-icon-badge-{{ section.id }} {
+      background-color: rgba(85, 31, 63, 0.08) !important;
+      color: {{ section.settings.icon_color | default: section.settings.accent_color | default: '#551F3F' }};
+    }
+  {%- endif -%}
+
+  .cmprompts-card-{{ section.id }}:hover .cmprompts-icon-badge-{{ section.id }} {
+    transform: scale(1.05);
+    {%- if section.settings.icon_hover_badge_bg != blank and section.settings.icon_hover_badge_bg != 'rgba(0,0,0,0)' -%}
+      background-color: {{ section.settings.icon_hover_badge_bg }} !important;
+    {%- endif -%}
+    {%- if section.settings.icon_hover_color != blank and section.settings.icon_hover_color != 'rgba(0,0,0,0)' -%}
+      color: {{ section.settings.icon_hover_color }} !important;
+    {%- endif -%}
+  }
+
+  /* SVG Rules: Supports both Stroke-based and Fill-based SVGs */
+  .cmprompts-icon-badge-{{ section.id }} svg {
+    width: 22px;
+    height: 22px;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
+
+  .cmprompts-icon-badge-{{ section.id }} svg.cmprompts-svg-stroke {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+  }
+
+  .cmprompts-icon-badge-{{ section.id }} svg.cmprompts-svg-fill,
+  .cmprompts-icon-badge-{{ section.id }} svg:not(.cmprompts-svg-stroke) {
+    fill: currentColor;
+  }
+
+  .cmprompts-icon-badge-{{ section.id }} svg:not(.cmprompts-svg-stroke) path:not([fill]):not([stroke]) {
+    fill: currentColor;
+  }
+
+  .cmprompts-icon-badge-{{ section.id }} img,
+  .cmprompts-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Content Text inside Card */
+  .cmprompts-card-content-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cmprompts-card-title-{{ section.id }} {
+    font-family: {% if section.settings.card_title_font == 'sans' %}var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif){% else %}var(--font-heading-family, "Cormorant Garamond", Georgia, serif){% endif %};
+    font-size: {{ section.settings.card_title_size | default: 18 }}px;
+    font-weight: {% if section.settings.card_title_font == 'sans' %}700{% else %}600{% endif %};
+    color: {{ section.settings.card_title_color | default: '#141517' }};
+    margin: 0 0 5px 0;
+    line-height: 1.35;
+    letter-spacing: {% if section.settings.card_title_font == 'sans' %}0{% else %}-0.01em{% endif %};
+    transition: color 0.25s ease;
+  }
+
+  .cmprompts-card-desc-{{ section.id }} {
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: {{ section.settings.card_desc_size | default: 14 }}px;
+    line-height: 1.55;
+    color: {{ section.settings.card_desc_color | default: '#635E59' }};
+    margin: 0;
+    transition: color 0.25s ease;
+  }
+
+  .cmprompts-card-desc-{{ section.id }} p {
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  /* Right Column: Visual Showcase Media & Button */
+  .cmprompts-showcase-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .cmprompts-showcase-{{ section.id }} {
+      {%- if section.settings.image_sticky != false -%}
+        position: sticky;
+        top: 100px;
+      {%- endif -%}
+    }
+  }
+
+  .cmprompts-media-box-{{ section.id }} {
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: {{ section.settings.image_aspect_ratio | default: '1/1' }};
+    border-radius: {{ section.settings.image_radius | default: 20 }}px;
+    overflow: hidden;
+    background: #F4EFEB;
+    {%- if section.settings.image_shadow != false -%}
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    {%- endif -%}
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    position: relative;
+  }
+
+  .cmprompts-media-box-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .cmprompts-media-box-{{ section.id }}:hover img {
+    transform: scale(1.03);
+  }
+
+  /* CTA Button Wrapper & Button */
+  .cmprompts-btn-wrapper-{{ section.id }} {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    justify-content: {{ section.settings.button_alignment | default: 'center' }};
+    margin-top: 24px;
+  }
+
+  .cmprompts-cta-btn-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 34px;
+    background-color: {{ section.settings.button_bg_color | default: section.settings.accent_color | default: '#551F3F' }};
+    color: {{ section.settings.button_text_color | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.button_border_color | default: 'transparent' }};
+    border-radius: {{ section.settings.button_radius | default: 8 }}px;
+    font-size: {{ section.settings.button_font_size | default: 15 }}px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* Button Hover State - Fully Customizable via Shopify Theme Settings */
+  .cmprompts-cta-btn-{{ section.id }}:hover {
+    background-color: {{ section.settings.button_hover_bg_color | default: '#3D142C' }} !important;
+    color: {{ section.settings.button_hover_text_color | default: '#FFFFFF' }} !important;
+    border-color: {{ section.settings.button_hover_border_color | default: 'transparent' }} !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  }
+
+  .cmprompts-cta-btn-{{ section.id }}:active {
+    transform: translateY(0);
+  }
+
+  {%- comment -%} Optional block-specific hover overrides {%- endcomment -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.custom_card_hover_bg != blank and block.settings.custom_card_hover_bg != 'rgba(0,0,0,0)' or block.settings.custom_card_hover_border != blank and block.settings.custom_card_hover_border != 'rgba(0,0,0,0)' -%}
+      #cmprompts-card-{{ block.id }}:hover {
+        {%- if block.settings.custom_card_hover_bg != blank and block.settings.custom_card_hover_bg != 'rgba(0,0,0,0)' -%}
+          background-color: {{ block.settings.custom_card_hover_bg }} !important;
+        {%- endif -%}
+        {%- if block.settings.custom_card_hover_border != blank and block.settings.custom_card_hover_border != 'rgba(0,0,0,0)' -%}
+          border-color: {{ block.settings.custom_card_hover_border }} !important;
+        {%- endif -%}
+      }
+    {%- endif -%}
+  {%- endfor -%}
+{%- endstyle -%}
+
+<section id="CustomMatPrompts-{{ section.id }}" class="cmprompts-section">
+  <div class="cmprompts-container-{{ section.id }}">
+    
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank or section.settings.eyebrow != blank -%}
+      <div class="cmprompts-header-{{ section.id }}">
+        {%- if section.settings.show_eyebrow and section.settings.eyebrow != blank -%}
+          <span class="cmprompts-eyebrow-{{ section.id }}">{{ section.settings.eyebrow }}</span>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="cmprompts-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="cmprompts-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="cmprompts-layout-{{ section.id }}">
+      
+      <!-- Left Column: Cards Stack (100% Dynamic Shopify Blocks) -->
+      <div class="cmprompts-cards-stack-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          {%- assign card_has_icon = false -%}
+          {%- if block.settings.icon_image != blank or block.settings.custom_icon_svg != blank -%}
+            {%- assign card_has_icon = true -%}
+          {%- elsif block.settings.icon != 'none' and block.settings.icon != blank -%}
+            {%- assign card_has_icon = true -%}
+          {%- endif -%}
+
+          {%- if block.settings.card_link != blank -%}
+            <a href="{{ block.settings.card_link }}" id="cmprompts-card-{{ block.id }}" class="cmprompts-card-{{ section.id }}" {{ block.shopify_attributes }}>
+          {%- else -%}
+            <div id="cmprompts-card-{{ block.id }}" class="cmprompts-card-{{ section.id }}" {{ block.shopify_attributes }}>
+          {%- endif -%}
+
+            {%- if section.settings.show_card_icons != false and card_has_icon -%}
+              <div class="cmprompts-icon-badge-{{ section.id }}"
+                {% if block.settings.custom_badge_color != blank and block.settings.custom_badge_color != 'rgba(0,0,0,0)' or block.settings.custom_icon_color != blank and block.settings.custom_icon_color != 'rgba(0,0,0,0)' %}
+                  style="{% if block.settings.custom_badge_color != blank and block.settings.custom_badge_color != 'rgba(0,0,0,0)' %}background-color: {{ block.settings.custom_badge_color }};{% endif %}{% if block.settings.custom_icon_color != blank and block.settings.custom_icon_color != 'rgba(0,0,0,0)' %}color: {{ block.settings.custom_icon_color }};{% endif %}"
+                {% endif %}
+              >
+                {%- if block.settings.icon_image != blank -%}
+                  {{ block.settings.icon_image | image_url: width: 80 | image_tag: class: 'cmprompts-icon-img', loading: 'lazy', alt: block.settings.heading | escape }}
+                {%- elsif block.settings.custom_icon_svg != blank -%}
+                  {%- if block.settings.custom_icon_svg contains '<svg' -%}
+                    {{ block.settings.custom_icon_svg }}
+                  {%- elsif block.settings.custom_icon_svg contains '<path' -%}
+                    <svg viewBox="0 0 512 512" fill="currentColor">{{ block.settings.custom_icon_svg }}</svg>
+                  {%- else -%}
+                    <svg viewBox="0 0 512 512" fill="currentColor"><path d="{{ block.settings.custom_icon_svg }}"></path></svg>
+                  {%- endif -%}
+                {%- else -%}
+                  {%- case block.settings.icon -%}
+                    {%- when 'users' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    {%- when 'calendar' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    {%- when 'monogram' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg>
+                    {%- when 'palette' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path></svg>
+                    {%- when 'paw' -%}
+                      <svg class="cmprompts-svg-fill" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="8.5" r="2.5"></circle><circle cx="10.5" cy="5.5" r="2.5"></circle><circle cx="15.5" cy="5.5" r="2.5"></circle><circle cx="20.5" cy="8.5" r="2.5"></circle><path d="M18.8 13.5c-.8-1.2-2.1-2-3.6-2-.9 0-1.7.3-2.4.9-.7-.6-1.5-.9-2.4-.9-1.5 0-2.8.8-3.6 2-1 1.6-1.1 3.7-.3 5.4.9 1.9 2.9 3.1 5.3 3.1h1.9c2.4 0 4.4-1.2 5.3-3.1.9-1.7.7-3.8-.2-5.4z"></path></svg>
+                    {%- when 'location' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    {%- when 'heart' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                    {%- when 'star' -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    {%- else -%}
+                      <svg class="cmprompts-svg-stroke" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                  {%- endcase -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            
+            <div class="cmprompts-card-content-{{ section.id }}">
+              {%- if block.settings.heading != blank -%}
+                <h3 class="cmprompts-card-title-{{ section.id }}">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.description != blank -%}
+                <div class="cmprompts-card-desc-{{ section.id }}">{{ block.settings.description }}</div>
+              {%- endif -%}
+            </div>
+
+          {%- if block.settings.card_link != blank -%}
+            </a>
+          {%- else -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      <!-- Right Column: Visual Showcase Media & Button -->
+      <div class="cmprompts-showcase-{{ section.id }}">
+        <div class="cmprompts-media-box-{{ section.id }}">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.heading | escape }}
+          {%- elsif section.settings.custom_image_url != blank -%}
+            <img src="{{ section.settings.custom_image_url }}" alt="{{ section.settings.heading | escape }}" loading="lazy" />
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.button_label != blank -%}
+          <div class="cmprompts-btn-wrapper-{{ section.id }}">
+            <a href="{{ section.settings.button_link | default: '#' }}" class="cmprompts-cta-btn-{{ section.id }}">
+              <span>{{ section.settings.button_label }}</span>
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Mat Idea Prompts",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Start with One Meaningful Detail"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow Color",
+      "default": "#551F3F"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Not Sure Where to Start? Most People Aren’t."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size (Desktop)",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Font Size (Mobile)",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle Text",
+      "default": "Your design can begin with something small. Choose a detail you love, and we’ll help shape the rest."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#55504C"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Icon Badges Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_icons",
+      "label": "Show Icon Badges in Cards",
+      "default": true,
+      "info": "Display icon badges next to card titles."
+    },
+    {
+      "type": "select",
+      "id": "icon_style",
+      "label": "Icon Badge Style",
+      "options": [
+        { "value": "badge", "label": "Solid Badge (Filled Box)" },
+        { "value": "subtle", "label": "Subtle Tint (Soft Box)" },
+        { "value": "plain", "label": "Minimal (Icon Only, No Box)" }
+      ],
+      "default": "badge"
+    },
+    {
+      "type": "color",
+      "id": "icon_badge_bg",
+      "label": "Icon Badge Background Color",
+      "default": "#551F3F"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_badge_bg",
+      "label": "Icon Badge Hover Background Color"
+    },
+    {
+      "type": "color",
+      "id": "icon_hover_color",
+      "label": "Icon Hover Color"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Badge Box Size",
+      "min": 32,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "icon_radius",
+      "label": "Icon Badge Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Cards Appearance & Typography"
+    },
+    {
+      "type": "select",
+      "id": "card_title_font",
+      "label": "Card Title Font Family",
+      "options": [
+        { "value": "serif", "label": "Luxury Serif (Cormorant Garamond)" },
+        { "value": "sans", "label": "Modern Sans-Serif" }
+      ],
+      "default": "serif"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Card Title Font Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_desc_size",
+      "label": "Card Description Font Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "card_padding_vertical",
+      "label": "Card Vertical Padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_padding_horizontal",
+      "label": "Card Horizontal Padding",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "card_desc_color",
+      "label": "Card Description Color",
+      "default": "#635E59"
+    },
+    {
+      "type": "header",
+      "content": "Card Hover Customization"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_bg",
+      "label": "Card Hover Background",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border_color",
+      "label": "Card Hover Border Color",
+      "default": "#D0C7BD"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_title_color",
+      "label": "Card Hover Title Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_desc_color",
+      "label": "Card Hover Description Color",
+      "default": "#22201E"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_hover_lift",
+      "label": "Lift Card on Hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "card_hover_shadow",
+      "label": "Show Soft Shadow on Hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Showcase Image (Right Column)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Showcase Photo"
+    },
+    {
+      "type": "text",
+      "id": "custom_image_url",
+      "label": "Custom Image URL (Fallback)"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "auto", "label": "Auto" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "image_shadow",
+      "label": "Enable Image Shadow",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "image_sticky",
+      "label": "Sticky on Desktop Scroll",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Call to Action Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Share My Idea →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "button_alignment",
+      "label": "Button Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "flex-start", "label": "Left" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#551F3F"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background Color",
+      "default": "#3D142C"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color (Fallback)",
+      "default": "#551F3F"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 900,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1140
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column Gap (Desktop)",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card Vertical Spacing",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "prompt",
+      "name": "Idea Prompt Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Prompt Title",
+          "default": "Your group's name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Prompt Description",
+          "default": "The name you call yourselves around the table."
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card Link (Optional)"
+        },
+        {
+          "type": "header",
+          "content": "Icon Settings"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Preset Icon",
+          "options": [
+            { "value": "users", "label": "Group / People" },
+            { "value": "calendar", "label": "Calendar / Year" },
+            { "value": "monogram", "label": "Monogram / Feather" },
+            { "value": "palette", "label": "Palette / Colors" },
+            { "value": "paw", "label": "Paw / Pet" },
+            { "value": "location", "label": "Pin / Location" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "star", "label": "Star" },
+            { "value": "custom", "label": "Custom SVG / Circle" },
+            { "value": "none", "label": "None (No Icon)" }
+          ],
+          "default": "users"
+        },
+        {
+          "type": "html",
+          "id": "custom_icon_svg",
+          "label": "Custom SVG Code",
+          "info": "Paste any <svg>...</svg> or <path> SVG markup here."
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Or Upload Custom Icon (PNG / SVG)"
+        },
+        {
+          "type": "color",
+          "id": "custom_badge_color",
+          "label": "Custom Badge Background Override"
+        },
+        {
+          "type": "color",
+          "id": "custom_icon_color",
+          "label": "Custom Icon Color Override"
+        },
+        {
+          "type": "header",
+          "content": "Hover Overrides (Optional)"
+        },
+        {
+          "type": "color",
+          "id": "custom_card_hover_bg",
+          "label": "Individual Card Hover Background"
+        },
+        {
+          "type": "color",
+          "id": "custom_card_hover_border",
+          "label": "Individual Card Hover Border Color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Custom Mat Prompts",
+      "blocks": [
+        {
+          "type": "prompt",
+          "settings": {
+            "icon": "users",
+            "heading": "Your group's name",
+            "description": "The name you call yourselves around the table."
+          }
+        },
+        {
+          "type": "prompt",
+          "settings": {
+            "icon": "calendar",
+            "heading": "A Year to Remember",
+            "description": "When your group began, or another date that matters."
+          }
+        },
+        {
+          "type": "prompt",
+          "settings": {
+            "icon": "monogram",
+            "heading": "Initials or a Family Name",
+            "description": "A personal signature in a style you love."
+          }
+        },
+        {
+          "type": "prompt",
+          "settings": {
+            "icon": "palette",
+            "heading": "Your Favorite Colors",
+            "description": "Soft and subtle, rich and dramatic, or somewhere in between."
+          }
+        },
+        {
+          "type": "prompt",
+          "settings": {
+            "icon": "paw",
+            "heading": "A Pet, Flower, or Motif",
+            "description": "A familiar detail that makes you smile."
+          }
+        },
+        {
+          "type": "prompt",
+          "settings": {
+            "icon": "location",
+            "heading": "A Special Place",
+            "description": "A garden, a coastline, or somewhere that brings back memories"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

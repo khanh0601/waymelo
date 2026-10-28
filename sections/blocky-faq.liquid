@@ -213,7 +213,7 @@
                     {% assign block = questions[i] %}
                     {% if block %}
                       <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
-                        <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                        <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}" type="button" aria-expanded="{% if block.settings.default_open %}true{% else %}false{% endif %}" aria-controls="faq-col-answer-{{ block.id }}-{{ i }}">
                           <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
                             {% if section.settings.chevron_position == 'front' %}
                               {% if section.settings.chevron_style == 'plusminus' %}
@@ -245,7 +245,7 @@
                             {% endif %}
                           </div>
                         </button>
-                        <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}">
+                        <div id="faq-col-answer-{{ block.id }}-{{ i }}" class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}" role="region">
                           {{ block.settings.content }}
                         </div>
                       </div>
@@ -258,7 +258,7 @@
           {% else %}
             {% for block in section.blocks %}
               <div class="blocky-faq-item blocky-overflow-hidden" {{ block.shopify_attributes }} style="--icon-color: {{ block.settings.icon_color }};">
-                <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}">
+                <button class="blocky-accordion-btn blocky-faq-question{% if block.settings.default_open %} active{% endif %}" type="button" aria-expanded="{% if block.settings.default_open %}true{% else %}false{% endif %}" aria-controls="faq-answer-{{ block.id }}">
                   <div class="blocky-faq-question-text" {% if section.settings.chevron_position == 'end' %}style="justify-content: space-between;"{% endif %}>
                     {% if section.settings.chevron_position == 'front' %}
                       {% if section.settings.chevron_style == 'plusminus' %}
@@ -290,7 +290,7 @@
                     {% endif %}
                   </div>
                 </button>
-                <div class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}"> {{ block.settings.content }} </div>
+                <div id="faq-answer-{{ block.id }}" class="blocky-faq-answer{% if block.settings.default_open %} active{% endif %}" role="region"> {{ block.settings.content }} </div>
               </div>
             {% endfor %}
           {% endif %}

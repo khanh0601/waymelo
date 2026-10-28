@@ -17,8 +17,8 @@
         "announcement_Rbcw9E": {
           "type": "announcement",
           "settings": {
-            "text": "Call us / Whatsup: {{ metaobjects.waymelo[\"1-321-233-3336\"].phone.value }}",
-            "link": ""
+            "text": "Call us / WhatsApp: {{ metaobjects.waymelo[\"1-321-233-3336\"].phone.value }}",
+            "link": "https://wa.me/13212333336"
           }
         }
       },
@@ -39,7 +39,7 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo_position": "middle-center",
+        "logo_position": "middle-left middle-left-2",
         "menu": "main-menu",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "on-scroll-up",
@@ -49,7 +49,7 @@
         "enable_country_selector": true,
         "enable_language_selector": true,
         "enable_customer_avatar": true,
-        "mobile_logo_position": "center",
+        "mobile_logo_position": "left",
         "margin_bottom": 0,
         "padding_top": 0,
         "padding_bottom": 0

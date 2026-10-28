@@ -36,6 +36,12 @@ if (!customElements.get('quick-add-modal')) {
             const responseHTML = new DOMParser().parseFromString(responseText, 'text/html');
             const productElement = responseHTML.querySelector('product-info');
 
+            if (!productElement) {
+              const fallbackUrl = opener.getAttribute('data-product-url');
+              if (fallbackUrl) window.location.href = fallbackUrl;
+              return;
+            }
+
             this.preprocessHTML(productElement);
             HTMLUpdateUtility.setInnerHTML(this.modalContent, productElement.outerHTML);
 
@@ -49,7 +55,8 @@ if (!customElements.get('quick-add-modal')) {
           .finally(() => {
             opener.removeAttribute('aria-disabled');
             opener.classList.remove('loading');
-            opener.querySelector('.loading__spinner').classList.add('hidden');
+            const spinner = opener.querySelector('.loading__spinner');
+            if (spinner) spinner.classList.add('hidden');
           });
       }
 

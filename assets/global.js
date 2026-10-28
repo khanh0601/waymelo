@@ -683,7 +683,14 @@ class ModalOpener extends HTMLElement {
     if (!button) return;
     button.addEventListener('click', () => {
       const modal = document.querySelector(this.getAttribute('data-modal'));
-      if (modal) modal.show(button);
+      if (modal && typeof modal.show === 'function') {
+        modal.show(button);
+      } else {
+        const fallbackUrl = button.getAttribute('data-product-url');
+        if (fallbackUrl) {
+          window.location.href = fallbackUrl;
+        }
+      }
     });
   }
 }

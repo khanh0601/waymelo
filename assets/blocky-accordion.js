@@ -11,8 +11,9 @@ if (!customElements.get('blocky-accordion')) {
         this.querySelectorAll('.blocky-accordion-btn').forEach(button => {
           button.addEventListener('click', () => {
             const answer = button.nextElementSibling;
-            button.classList.toggle('active');
-            answer.classList.toggle("active")        
+            const isActive = button.classList.toggle('active');
+            button.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+            answer.classList.toggle("active");
           });
         });
       }

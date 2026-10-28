@@ -53,20 +53,22 @@
         </ul>
       </div>
       {% unless section.settings.arrows_position == "hidden" %}
+        {% comment %}theme-check-disable ValidScopedCSSClass{% endcomment %}
         <div class="glide__arrows" data-glide-el="controls">
-          <button class="glide__arrow glide__arrow--next blocky-slider-arrows-center blocky-slider-arrows-left" data-glide-dir="<">
+          <button type="button" class="glide__arrow glide__arrow--prev blocky-slider-arrows-center blocky-slider-arrows-left" data-glide-dir="<" aria-label="Previous slide">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle class="blocky-slider-arrows-circle" cx="12" cy="12" r="11" stroke="fill"/>
               <path class="blocky-slider-arrows-arrow" d="M13 8l-4 4 4 4" />
             </svg>               
           </button>
-          <button class="glide__arrow glide__arrow--next blocky-slider-arrows-center blocky-slider-arrows-right" data-glide-dir=">">
+          <button type="button" class="glide__arrow glide__arrow--next blocky-slider-arrows-center blocky-slider-arrows-right" data-glide-dir=">" aria-label="Next slide">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle class="blocky-slider-arrows-circle" cx="12" cy="12" r="11" stroke="fill"/>  
               <path class="blocky-slider-arrows-arrow" d="M11 8l4 4-4 4" />
             </svg>
           </button>
         </div>
+        {% comment %}theme-check-enable ValidScopedCSSClass{% endcomment %}
       {% endunless %}
       {% unless section.settings.dots_position == "hidden" %}
       <div class="glide__bullets blocky-slider-dots{% if section.settings.dots_position == "slider" %} blocky-slider-dots-slider{% endif %}" data-glide-el="controls[nav]">

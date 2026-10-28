@@ -20,23 +20,7 @@
             "logo_image": "shopify://shop_images/Words_Logo_white.png",
             "logo_width": 120,
             "enable_follow_on_shop": true,
-            "show_facebook_instagram": true,
-            "facebook_link": "https://www.facebook.com/profile.php?id=100069063936706",
-            "instagram_link": "https://www.instagram.com/macorner_decor"
-          }
-        },
-        "trust_logos_CGCTnY": {
-          "type": "trust_logos",
-          "settings": {
-            "trustpilot_enable": true,
-            "trustpilot_url": "",
-            "trustpilot_label": "Trustpilot",
-            "trustpilot_rating": "★★★★★",
-            "trustpilot_count": "13,578",
-            "dmca_enable": true,
-            "dmca_url": "",
-            "dmca_left": "DMCA",
-            "dmca_right": "PROTECTED"
+            "show_social_icons": true
           }
         },
         "text_hj4qnx": {
@@ -63,7 +47,6 @@
       },
       "block_order": [
         "logo_follow_EMKR6G",
-        "trust_logos_CGCTnY",
         "text_hj4qnx",
         "text_LLgkWG",
         "link_list_h9iYDq"
@@ -77,7 +60,7 @@
         "enable_country_selector": true,
         "enable_language_selector": true,
         "payment_enable": true,
-        "show_policy": false,
+        "show_policy": true,
         "margin_top": 0,
         "padding_top": 44,
         "padding_bottom": 60

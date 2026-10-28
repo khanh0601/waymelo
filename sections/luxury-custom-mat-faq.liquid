@@ -1,0 +1,1056 @@
+{% comment %}theme-check-disable ExcessiveSettingsCount{% endcomment %}
+{%- comment -%}
+  -----------------------------------------------------------------------------
+  SECTION: LUXURY CUSTOM MAT FAQ & SPECS ("Everything Else You Might Ask")
+  - 2-Column Responsive Layout:
+      * Left Column: Interactive accordion FAQ cards (Dynamic Shopify blocks)
+      * Right Column: Showcase media photo + "Approved by you before printing" pill badge
+  - Bottom Centered Elements:
+      * Large CTA button ("Start My Design →")
+      * Trust guarantee badge ("30-day returns · Free U.S. shipping")
+  - 100% Dynamic - ZERO HARDCODED DATA:
+      * All questions, subtitles, rich answers, and links come from Theme Editor
+      * Full hover customization on cards and buttons
+  -----------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- style -%}
+  #CustomMatFaq-{{ section.id }} {
+    background-color: {{ section.settings.bg_color | default: '#FFFFFF' }};
+    padding-top: {{ section.settings.padding_top_mobile | default: 36 }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile | default: 48 }}px;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    #CustomMatFaq-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top | default: 60 }}px;
+      padding-bottom: {{ section.settings.padding_bottom | default: 72 }}px;
+    }
+  }
+
+  #CustomMatFaq-{{ section.id }} * {
+    box-sizing: border-box !important;
+  }
+
+  .cmfaq-container-{{ section.id }} {
+    max-width: {{ section.settings.container_max_width | default: 1140 }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-container-{{ section.id }} {
+      padding: 0 28px;
+    }
+  }
+
+  /* Header Section */
+  .cmfaq-header-{{ section.id }} {
+    text-align: {{ section.settings.header_alignment | default: 'center' }};
+    max-width: 860px;
+    margin: 0 auto 40px auto;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-header-{{ section.id }} {
+      margin-bottom: 52px;
+    }
+  }
+
+  .cmfaq-eyebrow-pill-{{ section.id }} {
+    display: inline-block;
+    padding: 8px 24px;
+    background-color: {{ section.settings.eyebrow_bg | default: section.settings.accent_color | default: '#7F2F68' }};
+    color: {{ section.settings.eyebrow_color | default: '#FFFFFF' }};
+    border-radius: 9999px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-bottom: 18px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    box-shadow: 0 3px 10px rgba(127, 47, 104, 0.2);
+  }
+
+  .cmfaq-title-{{ section.id }} {
+    font-family: var(--font-heading-family, "Cormorant Garamond", Georgia, serif);
+    font-size: {{ section.settings.heading_size_mobile | default: 28 }}px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-title-{{ section.id }} {
+      font-size: {{ section.settings.heading_size | default: 40 }}px;
+    }
+  }
+
+  /* 2-Column Split Layout */
+  .cmfaq-layout-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .cmfaq-layout-{{ section.id }} {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: {{ section.settings.column_gap | default: 48 }}px;
+    }
+  }
+
+  /* Left Column: Accordion Stack */
+  .cmfaq-accordion-stack-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.card_gap | default: 12 }}px;
+    width: 100%;
+  }
+
+  .cmfaq-item-{{ section.id }} {
+    background-color: {{ section.settings.card_bg | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.card_border_color | default: '#ECE7E1' }};
+    border-radius: {{ section.settings.card_radius | default: 14 }}px;
+    padding: {{ section.settings.card_padding_vertical | default: 18 }}px {{ section.settings.card_padding_horizontal | default: 22 }}px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    overflow: hidden;
+  }
+
+  .cmfaq-item-{{ section.id }}:hover {
+    background-color: {{ section.settings.card_hover_bg | default: '#FAF8F5' }};
+    border-color: {{ section.settings.card_hover_border_color | default: '#D0C7BD' }};
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  .cmfaq-item--open.cmfaq-item-{{ section.id }} {
+    border-color: {{ section.settings.card_active_border_color | default: section.settings.card_hover_border_color | default: '#D0C7BD' }};
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Item Header: Question & Toggle */
+  .cmfaq-item-header-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+  }
+
+  .cmfaq-question-wrap-{{ section.id }} {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cmfaq-question-title-{{ section.id }} {
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: {{ section.settings.question_font_size | default: 16 }}px;
+    font-weight: 600;
+    color: {{ section.settings.question_color | default: '#141517' }};
+    margin: 0;
+    line-height: 1.35;
+    transition: color 0.2s ease;
+  }
+
+  .cmfaq-item-{{ section.id }}:hover .cmfaq-question-title-{{ section.id }},
+  .cmfaq-item--open .cmfaq-question-title-{{ section.id }} {
+    color: {{ section.settings.question_hover_color | default: section.settings.question_color | default: '#141517' }};
+  }
+
+  .cmfaq-question-subtitle-{{ section.id }} {
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: 13px;
+    color: {{ section.settings.subtitle_color | default: '#635E59' }};
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* Plus / Minus Morphing Icon */
+  .cmfaq-toggle-icon-{{ section.id }} {
+    width: 22px;
+    height: 22px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: {{ section.settings.accent_icon_color | default: section.settings.accent_color | default: '#7F2F68' }};
+    transition: transform 0.25s ease;
+  }
+
+  .cmfaq-toggle-icon-{{ section.id }}::before,
+  .cmfaq-toggle-icon-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    background-color: currentColor;
+    border-radius: 2px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  }
+
+  /* Horizontal bar (always visible as minus) */
+  .cmfaq-toggle-icon-{{ section.id }}::before {
+    width: 14px;
+    height: 2px;
+  }
+
+  /* Vertical bar (hidden when open to become minus) */
+  .cmfaq-toggle-icon-{{ section.id }}::after {
+    width: 2px;
+    height: 14px;
+  }
+
+  .cmfaq-item--open .cmfaq-toggle-icon-{{ section.id }}::after {
+    transform: rotate(90deg) scale(0);
+    opacity: 0;
+  }
+
+  /* Smooth Grid Animation for Content */
+  .cmfaq-answer-wrapper-{{ section.id }} {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .cmfaq-item--open .cmfaq-answer-wrapper-{{ section.id }} {
+    grid-template-rows: 1fr;
+  }
+
+  .cmfaq-answer-inner-{{ section.id }} {
+    overflow: hidden;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} {
+    padding-top: 14px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-size: {{ section.settings.answer_font_size | default: 14 }}px;
+    line-height: 1.65;
+    color: {{ section.settings.answer_color | default: '#44403C' }};
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+    margin-top: 12px;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} p {
+    margin: 0 0 10px 0;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .cmfaq-answer-content-{{ section.id }} strong {
+    color: {{ section.settings.heading_color | default: '#141517' }};
+    font-weight: 700;
+  }
+
+  /* Right Column: Visual Showcase Media & Pill */
+  .cmfaq-showcase-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .cmfaq-showcase-{{ section.id }} {
+      position: sticky;
+      top: 100px;
+    }
+  }
+
+  .cmfaq-media-box-{{ section.id }} {
+    width: 100%;
+    max-width: 480px;
+    aspect-ratio: {{ section.settings.image_aspect_ratio | default: '1/1' }};
+    border-radius: {{ section.settings.image_radius | default: 20 }}px;
+    overflow: hidden;
+    background: #F4EFEB;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    position: relative;
+  }
+
+  .cmfaq-media-box-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .cmfaq-media-box-{{ section.id }}:hover img {
+    transform: scale(1.025);
+  }
+
+  /* Pill Badge Under Image */
+  .cmfaq-image-pill-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    background-color: {{ section.settings.image_badge_bg | default: section.settings.accent_color | default: '#7F2F68' }};
+    color: {{ section.settings.image_badge_color | default: '#FFFFFF' }};
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    margin-top: 20px;
+    box-shadow: 0 4px 14px rgba(127, 47, 104, 0.28);
+    text-align: center;
+  }
+
+  /* Bottom Centered CTA Area */
+  .cmfaq-bottom-cta-{{ section.id }} {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 48px;
+  }
+
+  @media (min-width: 768px) {
+    .cmfaq-bottom-cta-{{ section.id }} {
+      margin-top: 56px;
+    }
+  }
+
+  .cmfaq-cta-btn-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 44px;
+    background-color: {{ section.settings.button_bg_color | default: section.settings.accent_color | default: '#7F2F68' }};
+    color: {{ section.settings.button_text_color | default: '#FFFFFF' }};
+    border: 1px solid {{ section.settings.button_border_color | default: 'transparent' }};
+    border-radius: 9999px;
+    font-size: {{ section.settings.button_font_size | default: 15.5 }}px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(127, 47, 104, 0.32);
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .cmfaq-cta-btn-{{ section.id }}:hover {
+    background-color: {{ section.settings.button_hover_bg_color | default: '#641D4F' }} !important;
+    color: {{ section.settings.button_hover_text_color | default: '#FFFFFF' }} !important;
+    border-color: {{ section.settings.button_hover_border_color | default: 'transparent' }} !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(127, 47, 104, 0.42);
+  }
+
+  .cmfaq-cta-btn-{{ section.id }}:active {
+    transform: translateY(0);
+  }
+
+  /* Trust Guarantee */
+  .cmfaq-trust-bar-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    color: {{ section.settings.trust_color | default: '#736D66' }};
+    font-size: 13.5px;
+    font-family: var(--font-body-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  }
+
+  .cmfaq-trust-icon-{{ section.id }} {
+    width: 16px;
+    height: 16px;
+    display: block;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+  }
+{%- endstyle -%}
+
+<section id="CustomMatFaq-{{ section.id }}" class="cmfaq-section" data-allow-multiple="{{ section.settings.allow_multiple_open }}">
+  <div class="cmfaq-container-{{ section.id }}">
+    
+    <!-- Top Header -->
+    <div class="cmfaq-header-{{ section.id }}">
+      {%- if section.settings.show_eyebrow and section.settings.eyebrow != blank -%}
+        <div class="cmfaq-eyebrow-pill-{{ section.id }}">{{ section.settings.eyebrow }}</div>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="cmfaq-title-{{ section.id }}">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    <!-- 2-Column Split Layout -->
+    <div class="cmfaq-layout-{{ section.id }}">
+      
+      <!-- Left Column: Interactive Accordion Cards -->
+      <div class="cmfaq-accordion-stack-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          <div 
+            id="cmfaq-item-{{ block.id }}" 
+            class="cmfaq-item-{{ section.id }}{% if block.settings.is_open_by_default %} cmfaq-item--open{% endif %}" 
+            {{ block.shopify_attributes }}
+          >
+            <div 
+              class="cmfaq-item-header-{{ section.id }}" 
+              role="button" 
+              tabindex="0" 
+              aria-expanded="{% if block.settings.is_open_by_default %}true{% else %}false{% endif %}"
+            >
+              <div class="cmfaq-question-wrap-{{ section.id }}">
+                <h3 class="cmfaq-question-title-{{ section.id }}">{{ block.settings.question }}</h3>
+                {%- if block.settings.subtitle != blank -%}
+                  <div class="cmfaq-question-subtitle-{{ section.id }}">{{ block.settings.subtitle }}</div>
+                {%- endif -%}
+              </div>
+              
+              <div class="cmfaq-toggle-icon-{{ section.id }}" aria-hidden="true"></div>
+            </div>
+
+            <div class="cmfaq-answer-wrapper-{{ section.id }}">
+              <div class="cmfaq-answer-inner-{{ section.id }}">
+                <div class="cmfaq-answer-content-{{ section.id }}">
+                  {{ block.settings.answer }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Right Column: Visual Showcase Media & Verification Pill -->
+      <div class="cmfaq-showcase-{{ section.id }}">
+        <div class="cmfaq-media-box-{{ section.id }}">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', alt: section.settings.heading | escape }}
+          {%- elsif section.settings.custom_image_url != blank -%}
+            <img src="{{ section.settings.custom_image_url }}" alt="{{ section.settings.heading | escape }}" loading="lazy" />
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.image_badge_text != blank -%}
+          <div class="cmfaq-image-pill-{{ section.id }}">
+            {{ section.settings.image_badge_text }}
+          </div>
+        {%- endif -%}
+      </div>
+
+    </div>
+
+    <!-- Bottom Centered CTA Area -->
+    {%- if section.settings.button_label != blank -%}
+      <div class="cmfaq-bottom-cta-{{ section.id }}">
+        <a href="{{ section.settings.button_link | default: '#' }}" class="cmfaq-cta-btn-{{ section.id }}">
+          <span>{{ section.settings.button_label }}</span>
+        </a>
+
+        {%- if section.settings.show_trust_badge and section.settings.trust_text != blank -%}
+          <div class="cmfaq-trust-bar-{{ section.id }}">
+            <svg class="cmfaq-trust-icon-{{ section.id }}" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              <polyline points="9 12 11 14 15 10"></polyline>
+            </svg>
+            <span>{{ section.settings.trust_text }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initCustomMatFaq(container) {
+      if (!container) return;
+      var items = container.querySelectorAll('.cmfaq-item-{{ section.id }}');
+      var allowMultiple = container.dataset.allowMultiple === 'true';
+
+      items.forEach(function(item) {
+        var header = item.querySelector('.cmfaq-item-header-{{ section.id }}');
+        if (!header) return;
+
+        function toggle() {
+          var isOpen = item.classList.contains('cmfaq-item--open');
+
+          if (!allowMultiple && !isOpen) {
+            items.forEach(function(otherItem) {
+              if (otherItem !== item) {
+                otherItem.classList.remove('cmfaq-item--open');
+                var otherHeader = otherItem.querySelector('.cmfaq-item-header-{{ section.id }}');
+                if (otherHeader) otherHeader.setAttribute('aria-expanded', 'false');
+              }
+            });
+          }
+
+          if (isOpen) {
+            item.classList.remove('cmfaq-item--open');
+            header.setAttribute('aria-expanded', 'false');
+          } else {
+            item.classList.add('cmfaq-item--open');
+            header.setAttribute('aria-expanded', 'true');
+          }
+        }
+
+        header.addEventListener('click', toggle);
+        header.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggle();
+          }
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initCustomMatFaq(document.getElementById('CustomMatFaq-{{ section.id }}'));
+      });
+    } else {
+      initCustomMatFaq(document.getElementById('CustomMatFaq-{{ section.id }}'));
+    }
+
+    if (Shopify && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', function(e) {
+        if (e.target.id === 'CustomMatFaq-{{ section.id }}') {
+          initCustomMatFaq(e.target);
+        }
+      });
+      document.addEventListener('shopify:block:select', function(e) {
+        var blockItem = document.getElementById('cmfaq-item-' + e.detail.blockId);
+        if (blockItem) {
+          blockItem.classList.add('cmfaq-item--open');
+          var h = blockItem.querySelector('.cmfaq-item-header-{{ section.id }}');
+          if (h) h.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Mat FAQ & Specs",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_eyebrow",
+      "label": "Show Eyebrow Pill",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Specs, limits and the honest small print — all in one place."
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_bg",
+      "label": "Eyebrow Background Color",
+      "default": "#7F2F68"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Everything Else You Might Ask"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size (Desktop)",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Font Size (Mobile)",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#141517"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "center", "label": "Center" },
+        { "value": "left", "label": "Left" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Accordion Behavior & Colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open",
+      "label": "Allow Multiple Items Open at Once",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "label": "Question Font Size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "label": "Answer Font Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#ECE7E1"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_bg",
+      "label": "Card Hover Background Color",
+      "default": "#FAF8F5"
+    },
+    {
+      "type": "color",
+      "id": "card_hover_border_color",
+      "label": "Card Hover Border Color",
+      "default": "#D0C7BD"
+    },
+    {
+      "type": "color",
+      "id": "card_active_border_color",
+      "label": "Card Active/Open Border Color",
+      "default": "#D0C7BD"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question Text Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question Hover Color",
+      "default": "#141517"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#635E59"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer Text Color",
+      "default": "#44403C"
+    },
+    {
+      "type": "color",
+      "id": "accent_icon_color",
+      "label": "Toggle Icon (+/-) Color",
+      "default": "#7F2F68"
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "card_padding_vertical",
+      "label": "Card Vertical Padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_padding_horizontal",
+      "label": "Card Horizontal Padding",
+      "min": 12,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Showcase Image (Right Column)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Showcase Photo"
+    },
+    {
+      "type": "text",
+      "id": "custom_image_url",
+      "label": "Custom Image URL (Fallback)"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        { "value": "1 / 1", "label": "Square (1:1)" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "3 / 4", "label": "Portrait (3:4)" },
+        { "value": "auto", "label": "Auto" }
+      ],
+      "default": "1 / 1"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "image_badge_text",
+      "label": "Badge Text Under Image",
+      "default": "Approved by you before printing"
+    },
+    {
+      "type": "color",
+      "id": "image_badge_bg",
+      "label": "Badge Background Color",
+      "default": "#7F2F68"
+    },
+    {
+      "type": "color",
+      "id": "image_badge_color",
+      "label": "Badge Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Bottom CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Start My Design →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#7F2F68"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background Color",
+      "default": "#641D4F"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 0.5,
+      "unit": "px",
+      "default": 15.5
+    },
+    {
+      "type": "header",
+      "content": "Trust Guarantee"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badge",
+      "label": "Show Trust Guarantee",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_text",
+      "label": "Trust Text",
+      "default": "30-day returns · Free U.S. shipping"
+    },
+    {
+      "type": "color",
+      "id": "trust_color",
+      "label": "Trust Text Color",
+      "default": "#736D66"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Spacing"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#7F2F68"
+    },
+    {
+      "type": "range",
+      "id": "container_max_width",
+      "label": "Container Max Width",
+      "min": 900,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "default": 1140
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column Gap (Desktop)",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card Vertical Gap",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (Desktop)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding Top (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom (Mobile)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Question Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question Title",
+          "default": "What we can draw — and what we can't"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle Note (Optional)",
+          "default": "Read this before you order"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer Content",
+          "default": "<p><strong>We can draw:</strong> names, group names, initials and monograms · dates and years · any colour palette you describe · flowers, birds, pets, places and patterns · a style you point us to.</p><p><strong>We can't:</strong> copy a logo, brand or licensed character · reproduce someone else's artwork · print a portrait from a blurry photo · change the mat's size, it is 31.5\" square · print the full NMJL card layout.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_open_by_default",
+          "label": "Open by Default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Custom Mat FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What we can draw — and what we can't",
+            "subtitle": "Read this before you order",
+            "answer": "<p><strong>We can draw:</strong> names, group names, initials and monograms · dates and years · any colour palette you describe · flowers, birds, pets, places and patterns · a style you point us to.</p><p><strong>We can't:</strong> copy a logo, brand or licensed character · reproduce someone else's artwork · print a portrait from a blurry photo · change the mat's size, it is 31.5\" square · print the full NMJL card layout.</p>",
+            "is_open_by_default": true
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Size, material and care",
+            "subtitle": "31.5\" square, natural rubber",
+            "answer": "<p>Our mats measure exactly 31.5\" x 31.5\" (80cm x 80cm) — the tournament standard for American Mahjong. Crafted with a premium natural rubber non-slip base and an ultra-smooth, spill-resistant fabric surface. Clean easily with a damp cloth or mild soap.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does the whole thing take?",
+            "subtitle": "",
+            "answer": "<p>You'll receive your first custom design preview within 2–3 business days. Once approved, production and careful hand-finishing take 3–5 business days before expedited shipping to your door.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if none of the three feel right?",
+            "subtitle": "",
+            "answer": "<p>We work with you until it's perfect! You receive unlimited revisions on your design concept. If you still don't feel in love with the proofs before printing, you are backed by our 100% money-back guarantee.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can you draw my cat, my dog, my garden?",
+            "subtitle": "",
+            "answer": "<p>Yes, absolutely! Our bespoke illustrators love incorporating beloved pets, favorite garden flowers, vacation homes, and personalized crests. Simply share your ideas or reference photos when placing your order.</p>",
+            "is_open_by_default": false
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Shipping and returns",
+            "subtitle": "",
+            "answer": "<p>We offer free standard U.S. shipping on all custom mat orders. Because each mat is made uniquely for you, we guarantee full approval before printing. If there is any print defect or damage in transit, we replace it immediately.</p>",
+            "is_open_by_default": false
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

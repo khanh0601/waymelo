@@ -1,0 +1,118 @@
+{%- comment -%}
+  Waymelo home page — "why choose us" band.
+
+  Renders an optional eyebrow and section heading above a configurable row of
+  icon + label + description columns. Every colour, spacing value, and heading
+  treatment comes from assets/waymelo-home.css under `.wm-why-us`, which is
+  loaded on the home page by layout/theme.liquid; the section carries no
+  client-side JavaScript and no scoped style block, matching the other
+  waymelo-* sections.
+{%- endcomment -%}
+
+<section
+  class="wm-home wm-home__section wm-why-us"
+  aria-labelledby="WaymeloWhyUsTitle-{{ section.id }}"
+  style="--wm-why-us-columns-desktop: {{ section.settings.columns_desktop }}; --wm-why-us-columns-mobile: {{ section.settings.columns_mobile }};"
+>
+  <div class="wm-home__shell">
+    {%- if section.settings.eyebrow != blank or section.settings.heading != blank -%}
+      <div class="wm-home__section-head">
+        <div class="wm-why-us__head">
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="wm-home__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="wm-home__heading" id="WaymeloWhyUsTitle-{{ section.id }}">{{ section.settings.heading | escape | newline_to_br }}</h2>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="wm-why-us__grid">
+      {%- for block in section.blocks -%}
+        <article class="wm-why-us__column" {{ block.shopify_attributes }}>
+          <span class="wm-why-us__icon">
+            {%- if block.settings.icon_image != blank -%}
+              {{
+                block.settings.icon_image
+                | image_url: width: 120
+                | image_tag: class: 'wm-why-us__icon-image', loading: 'lazy', alt: ''
+              }}
+            {%- elsif block.settings.icon != blank -%}
+              <span class="material-symbols-outlined" aria-hidden="true">{{ block.settings.icon | escape }}</span>
+            {%- else -%}
+              <span class="wm-why-us__icon-placeholder" aria-hidden="true"></span>
+            {%- endif -%}
+          </span>
+
+          {%- if block.settings.heading != blank -%}
+            <h3 class="wm-why-us__label">{{ block.settings.heading | escape }}</h3>
+          {%- endif -%}
+          {%- if block.settings.text != blank -%}
+            <p class="wm-why-us__text">{{ block.settings.text | escape }}</p>
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Waymelo why us",
+  "tag": "section",
+  "class": "section-waymelo-why-us",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Why Waymelo" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Made for easier journeys." },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Material icon name",
+          "info": "A Material Symbols name, for example travel_explore, favorite, backpack or bolt. Ignored when a custom icon image is set, and shown as an empty slot when left blank.",
+          "default": "verified"
+        },
+        { "type": "image_picker", "id": "icon_image", "label": "Custom icon image" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Reason to choose Waymelo" },
+        { "type": "text", "id": "text", "label": "Description", "default": "What makes this reason matter." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Waymelo why us",
+      "blocks": [
+        { "type": "column" },
+        { "type": "column" },
+        { "type": "column" },
+        { "type": "column" }
+      ]
+    }
+  ]
+}
+{% endschema %}

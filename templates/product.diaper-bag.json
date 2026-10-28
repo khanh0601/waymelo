@@ -50,7 +50,7 @@
             "modal_note": "Select your shipping country",
             "save_button_text": "Save & Continue",
             "policy_text": "Learn more about our <strong>Shipping Policy</strong>",
-            "policy_url": "",
+            "policy_url": "shopify://policies/shipping-policy",
             "arrival_text": "Order today, get it as early as: [DATE]",
             "earliest_days": 7,
             "latest_days": 10,
@@ -145,10 +145,10 @@
         "guarantee_badge_EPnTJn": {
           "type": "guarantee_badge",
           "settings": {
-            "heading": "60-day money-back guarantee",
-            "body": "<p>If you don't love it, return it within 60 days for a full refund.</p>",
+            "heading": "30-day money-back guarantee",
+            "body": "<p>If you don't love it, return it within 30 days for a full refund.</p>",
             "ring_text": "MONEY-BACK GUARANTEE",
-            "days_number": "60",
+            "days_number": "30",
             "day_label": "Day",
             "bg_color": "#f5f1e8",
             "accent_color": "#a0522d",
@@ -164,6 +164,10 @@
             "line_height": 0,
             "letter_spacing": 0
           }
+        },
+        "upsell_com_ex_reconvert_product_recommendations_rpc3FU": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-recommendations/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {}
         },
         "review_carousel_4GyGbL": {
           "type": "review_carousel",
@@ -227,6 +231,7 @@
         "pumper_bundles_app_block_qb_efJJ49",
         "buy_buttons_GdRPbT",
         "guarantee_badge_EPnTJn",
+        "upsell_com_ex_reconvert_product_recommendations_rpc3FU",
         "review_carousel_4GyGbL",
         "collapsible_tab_fCRPAE",
         "collapsible_tab_zQYhnn"
@@ -498,6 +503,27 @@
         "padding_bottom": 48
       }
     },
+    "179273719320efd208": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_xn8BCH": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_xn8BCH"
+      ],
+      "name": "Judge.me Reviews",
+      "settings": {
+        "include_margins": true
+      }
+    },
     "blocky_faq_GWWtKj": {
       "type": "blocky-faq",
       "blocks": {
@@ -597,26 +623,6 @@
         "padding_bottom": 36
       }
     },
-    "179273719320efd208": {
-      "type": "apps",
-      "blocks": {
-        "judge_me_reviews_review_widget_xn8BCH": {
-          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "review_data": "sample_data",
-            "max_width": 1200,
-            "show_shop_reviews": false,
-            "empty_state": "empty_widget"
-          }
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_xn8BCH"
-      ],
-      "settings": {
-        "include_margins": true
-      }
-    },
     "newsletter_wpX8Je": {
       "type": "newsletter",
       "blocks": {
@@ -660,8 +666,8 @@
     "image_with_text_jzngim",
     "image_with_text_B3jyr7",
     "product_showcase_EjKUHU",
-    "blocky_faq_GWWtKj",
     "179273719320efd208",
+    "blocky_faq_GWWtKj",
     "newsletter_wpX8Je"
   ]
 }

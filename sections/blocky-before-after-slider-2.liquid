@@ -202,6 +202,7 @@
               {% endunless %}
               {% capture placeholder_class %}placeholder-svg placeholder blocky-{{ section.settings.slider_shape}} blocky-h-full{% endcapture %}
               {% capture image_class %}blocky-{{ section.settings.slider_shape}} blocky-h-full{% endcapture %}
+              {% comment %}theme-check-disable ValidScopedCSSClass{% endcomment %}
               <div 
                 class="blocky-absolute blocky-full blocky-before-after-before-image blocky-before-after-slider-{{ section.settings.before_image_fit }}"
                 style="background: {{ section.settings.background_color }}"
@@ -222,6 +223,7 @@
                   {{ 'collection-4' | placeholder_svg_tag: placeholder_class }}
                 {%- endif -%}
               </div>
+              {% comment %}theme-check-enable ValidScopedCSSClass{% endcomment %}
               <div class="blocky-before-after-slider-line slider-line">
                 <div class="blocky-before-after-slider-arrow-left slider-line"></div>
                 <div class="blocky-before-after-slider-arrow-right slider-line"></div>

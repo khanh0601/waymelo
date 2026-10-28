@@ -11,15 +11,27 @@
   if section.index == blank or section.index <= 2
     assign waymelo_lazy_html = false
   endif
+  # Judge.me initialises its review widget once, when its embed script runs at page load.
+  # A widget that is cloned into the page later is never styled and its spinner never
+  # stops, so a section holding a Judge.me block is always rendered eagerly.
+-%}
+{%- capture waymelo_app_blocks -%}
+  {%- for block in section.blocks -%}
+    {% render block %}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- liquid
+  # App blocks report block.type as '@app', so the rendered markup is inspected instead.
+  if waymelo_app_blocks contains 'jdgm-'
+    assign waymelo_lazy_html = false
+  endif
 -%}
 {%- if waymelo_lazy_html -%}
   <div data-waymelo-lazy-placeholder style="min-height: 0px" aria-hidden="true"></div>
   <template data-waymelo-lazy-section>
 {%- endif -%}
 <div class="{% if section.settings.include_margins %}page-width{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-  {%- for block in section.blocks -%}
-    {% render block %}
-  {%- endfor -%}
+  {{ waymelo_app_blocks }}
 </div>
 
 {%- if waymelo_lazy_html -%}

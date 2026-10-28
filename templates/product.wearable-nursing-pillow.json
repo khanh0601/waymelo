@@ -88,7 +88,7 @@
             "modal_note": "Select your shipping country",
             "save_button_text": "Save & Continue",
             "policy_text": "Learn more about our <strong>Shipping Policy</strong>",
-            "policy_url": "",
+            "policy_url": "shopify://policies/shipping-policy",
             "arrival_text": "Order today, get it as early as: [DATE]",
             "earliest_days": 7,
             "latest_days": 15,
@@ -163,13 +163,6 @@
             "using_page_builder": false
           }
         },
-        "quantity_selector_hY639K": {
-          "type": "quantity_selector",
-          "settings": {
-            "input_text_color": "#000000",
-            "label_size": 20
-          }
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -190,10 +183,6 @@
             "margin_bottom": 1.7
           }
         },
-        "upsell_com_ex_reconvert_product_recommendations_hCQgTH": {
-          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-recommendations/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
-          "settings": {}
-        },
         "payment_badges_edFzPC": {
           "type": "payment_badges",
           "settings": {
@@ -201,32 +190,13 @@
             "alignment": "center"
           }
         },
-        "complementary_t3Vw3M": {
-          "type": "complementary",
-          "disabled": true,
-          "settings": {
-            "manual_products": [
-              "diaper-bag-backpack-with-changing-station-25l-large-capacity",
-              "insulated-breast-milk-cooler-bag-with-ice-pack",
-              "little-hugs-toy-straps-for-baby-5pcs"
-            ],
-            "block_heading": "Pairs well with",
-            "make_collapsible_row": false,
-            "icon": "sell",
-            "product_list_limit": 10,
-            "products_per_page": 3,
-            "pagination_style": "counter",
-            "image_ratio": "square",
-            "enable_quick_add": false
-          }
-        },
         "guarantee_badge_AaBfap": {
           "type": "guarantee_badge",
           "settings": {
-            "heading": "60-day money-back guarantee",
-            "body": "<p>If you don’t love it, return it within 60 days for a full refund.</p>",
+            "heading": "30-day money-back guarantee",
+            "body": "<p>If you don’t love it, return it within 30 days for a full refund.</p>",
             "ring_text": "MONEY-BACK GUARANTEE",
-            "days_number": "60",
+            "days_number": "30",
             "day_label": "Day",
             "bg_color": "#f5f1e8",
             "accent_color": "#a0522d",
@@ -242,6 +212,10 @@
             "line_height": 0,
             "letter_spacing": 0
           }
+        },
+        "upsell_com_ex_reconvert_product_recommendations_hCQgTH": {
+          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-recommendations/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
+          "settings": {}
         },
         "review_carousel_fxV7nG": {
           "type": "review_carousel",
@@ -324,11 +298,6 @@
             "row_padding": 14,
             "letter_spacing": 0
           }
-        },
-        "judge_me_reviews_preview_badge_Wz6wam": {
-          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "disabled": true,
-          "settings": {}
         }
       },
       "block_order": [
@@ -341,18 +310,15 @@
         "description",
         "variant_picker",
         "pumper_bundles_app_block_qb_EHeEkM",
-        "quantity_selector_hY639K",
         "buy_buttons",
-        "upsell_com_ex_reconvert_product_recommendations_hCQgTH",
         "payment_badges_edFzPC",
-        "complementary_t3Vw3M",
         "guarantee_badge_AaBfap",
+        "upsell_com_ex_reconvert_product_recommendations_hCQgTH",
         "review_carousel_fxV7nG",
         "collapsible_tab_pnakVM",
         "collapsible_tab_VBrdmj",
         "collapsible_tab_9jUktt",
-        "collapsible_tab_mXtiYD",
-        "judge_me_reviews_preview_badge_Wz6wam"
+        "collapsible_tab_mXtiYD"
       ],
       "custom_css": [
         ".alert-text + .product__text {margin: 1rem 0;}",
@@ -460,59 +426,6 @@
         "show_arrows": false,
         "anim_duration": 300,
         "anim_easing": "ease-out"
-      }
-    },
-    "blocky_image_embedded_ncb4ta": {
-      "type": "blocky-image-embedded",
-      "blocks": {
-        "title_pjUA33": {
-          "type": "title",
-          "settings": {
-            "title": "<b>Image Embed</b>",
-            "title_size": 60
-          }
-        },
-        "body_VfEDCW": {
-          "type": "body",
-          "settings": {
-            "body_text": "<p>Grab your customers attention with ease</p>",
-            "body_size": 16
-          }
-        },
-        "button_HaKgQd": {
-          "type": "button",
-          "settings": {
-            "button_label": "VIEW MORE",
-            "button_link": "shopify://collections",
-            "button_style": "regular"
-          }
-        }
-      },
-      "block_order": [
-        "title_pjUA33",
-        "body_VfEDCW",
-        "button_HaKgQd"
-      ],
-      "disabled": true,
-      "name": "Blocky Image Embed",
-      "settings": {
-        "image": "shopify://shop_images/Gemini_Generated_Image_c0n7fxc0n7fxc0n7_1.png",
-        "section_height": "550px",
-        "mobile_height": "500px",
-        "image_fit": "cover",
-        "border_radius": 0,
-        "show_border": false,
-        "border_color": "#000000",
-        "overlay_opacity": 52,
-        "text_align": "vertical-center horizontal-center",
-        "heading_color": "#ffffff",
-        "text_color": "#ffffff",
-        "color_scheme": "",
-        "full_screen": true,
-        "background_color": "#ffffff",
-        "page_width": 1200,
-        "padding_top": 50,
-        "padding_bottom": 50
       }
     },
     "custom_liquid_jfQF7P": {
@@ -862,30 +775,6 @@
         "padding_bottom": 36
       }
     },
-    "product_showcase_DqUr4G": {
-      "type": "product-showcase",
-      "name": "Product showcase",
-      "settings": {
-        "heading": "<strong>New Arrivals</strong>",
-        "description": "<p>Discover our latest products and fresh new designs.</p>",
-        "heading_size": "h1",
-        "collection": "",
-        "products": [
-          "insulated-breast-milk-cooler-bag-with-ice-pack",
-          "babyease-wearable-nursing-pillow-for-moms-copy",
-          "portable-baby-sound-machine-sleep-soother",
-          "portable-diaper-changing-pad-with-wipes-pocket"
-        ],
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "columns_mobile": "1",
-        "show_view_all": true,
-        "view_all_label": "View all",
-        "color_scheme": "",
-        "padding_top": 48,
-        "padding_bottom": 48
-      }
-    },
     "blocky_video_with_text_97hNbH": {
       "type": "blocky-video-with-text",
       "blocks": {
@@ -1139,21 +1028,28 @@
         "padding_bottom": 36
       }
     },
-    "1792516308479ab041": {
-      "type": "apps",
-      "blocks": {
-        "upsell_com_ex_reconvert_slot_tpL9Cd": {
-          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/slot/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
-          "settings": {
-            "slot_id": "1"
-          }
-        }
-      },
-      "block_order": [
-        "upsell_com_ex_reconvert_slot_tpL9Cd"
-      ],
+    "product_showcase_DqUr4G": {
+      "type": "product-showcase",
+      "name": "Product showcase",
       "settings": {
-        "include_margins": true
+        "heading": "<strong>New Arrivals</strong>",
+        "description": "<p>Discover our latest products and fresh new designs.</p>",
+        "heading_size": "h1",
+        "collection": "",
+        "products": [
+          "2-pack-stroller-hooks-for-hanging-bags",
+          "portable-diaper-changing-pad-with-wipes-pocket",
+          "babygoal-wet-dry-bags-3-pack",
+          "termichy-stackable-formula-dispenser-portable"
+        ],
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "1",
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "color_scheme": "",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
     "blocky_faq_cFeeU6": {
@@ -1308,7 +1204,6 @@
     "main",
     "product_addons_qXzngH",
     "blocky_announcement_bar_H6FtGh",
-    "blocky_image_embedded_ncb4ta",
     "custom_liquid_jfQF7P",
     "179162975708a3df6e",
     "image_with_text_qwjtti",
@@ -1316,10 +1211,9 @@
     "feature_cards_media_AA7YtJ",
     "blocky_product_feature_3_3LE4A8",
     "image_with_text_CDfmy7",
-    "product_showcase_DqUr4G",
     "blocky_video_with_text_97hNbH",
     "reviews_section_7Waym",
-    "1792516308479ab041",
+    "product_showcase_DqUr4G",
     "blocky_faq_cFeeU6",
     "newsletter_HjqpNj",
     "blocky_section_divider_7AQYYY",

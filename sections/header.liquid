@@ -25,6 +25,36 @@
     margin-left: -1.2rem;
   }
 
+  .header {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .header__heading-logo-wrapper {
+    max-width: {{ settings.logo_width | default: 130 }}px;
+    width: 100%;
+    display: inline-block;
+  }
+
+  .header__heading-logo {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .header {
+      grid-template-columns: minmax(4.4rem, auto) minmax(0, 1fr) minmax(4.4rem, auto);
+      column-gap: 0.8rem;
+    }
+
+    .header__heading-logo-wrapper {
+      max-width: clamp(95px, 28vw, 125px);
+    }
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
@@ -168,13 +198,18 @@
         <h1 class="header__heading">
       {%- endif -%}
           <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-            <div class="header__heading-logo-wrapper">
-              {%- assign logo_height = settings.logo_width | times: 329 | divided_by: 1319 | round -%}
+            {%- assign header_logo_width = settings.logo_width | default: 130 -%}
+            {%- if header_logo_width == blank or header_logo_width == 0 -%}
+              {%- assign header_logo_width = 130 -%}
+            {%- endif -%}
+            {%- assign logo_height = header_logo_width | times: 329 | divided_by: 1319 | round -%}
+            <div class="header__heading-logo-wrapper" style="max-width: {{ header_logo_width }}px; width: 100%;">
               <img
                 src="{{ 'waymelo-logo.png' | asset_url }}"
                 class="header__heading-logo motion-reduce"
-                width="{{ settings.logo_width }}"
+                width="{{ header_logo_width }}"
                 height="{{ logo_height }}"
+                style="max-width: {{ header_logo_width }}px; width: 100%; height: auto;"
                 alt="{{ shop.name | escape }}"
                 loading="eager"
                 fetchpriority="high"
@@ -201,13 +236,18 @@
         <h1 class="header__heading">
       {%- endif -%}
           <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-            <div class="header__heading-logo-wrapper">
-              {%- assign logo_height = settings.logo_width | times: 329 | divided_by: 1319 | round -%}
+            {%- assign header_logo_width = settings.logo_width | default: 130 -%}
+            {%- if header_logo_width == blank or header_logo_width == 0 -%}
+              {%- assign header_logo_width = 130 -%}
+            {%- endif -%}
+            {%- assign logo_height = header_logo_width | times: 329 | divided_by: 1319 | round -%}
+            <div class="header__heading-logo-wrapper" style="max-width: {{ header_logo_width }}px; width: 100%;">
               <img
                 src="{{ 'waymelo-logo.png' | asset_url }}"
                 class="header__heading-logo"
-                width="{{ settings.logo_width }}"
+                width="{{ header_logo_width }}"
                 height="{{ logo_height }}"
+                style="max-width: {{ header_logo_width }}px; width: 100%; height: auto;"
                 alt="{{ shop.name | escape }}"
                 loading="eager"
                 fetchpriority="high"
@@ -277,7 +317,7 @@
         {%- endcase -%}
       {%- endfor -%}
 
-      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble" onclick="if(document.querySelector('cart-drawer')){event.preventDefault();document.querySelector('cart-drawer').open(this);}">
         {%- liquid
           if cart == empty
             render 'icon-cart-empty'
@@ -316,7 +356,7 @@
     connectedCallback() {
       this.header = document.querySelector('.section-header');
       this.headerIsAlwaysSticky = this.getAttribute('data-sticky-type') === 'always' || this.getAttribute('data-sticky-type') === 'reduce-logo-size';
-      this.headerBounds = {};
+      this.headerBounds = { top: 0, bottom: (this.header ? this.header.offsetHeight : 80) || 80 };
 
       this.setHeaderHeight();
 
@@ -326,7 +366,7 @@
         this.header.classList.add('shopify-section-header-sticky');
       };
 
-      this.currentScrollTop = 0;
+      this.currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
       this.preventReveal = false;
       this.predictiveSearch = this.querySelector('predictive-search');
 
@@ -361,6 +401,24 @@
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
       if (this.predictiveSearch && this.predictiveSearch.isOpen) return;
+      if (document.body.classList.contains('overflow-hidden')) {
+        this.currentScrollTop = scrollTop;
+        return;
+      }
+      const searchModal = this.header.querySelector('details-modal');
+      if (searchModal && typeof searchModal.isOpen === 'function' && searchModal.isOpen()) {
+        this.currentScrollTop = scrollTop;
+        return;
+      }
+      const cartDrawer = document.querySelector('cart-drawer');
+      if (cartDrawer && cartDrawer.classList.contains('active')) {
+        this.currentScrollTop = scrollTop;
+        return;
+      }
+
+      if (!this.headerBounds || typeof this.headerBounds.bottom === 'undefined') {
+        this.headerBounds = { top: 0, bottom: (this.header ? this.header.offsetHeight : 80) || 80 };
+      }
 
       if (scrollTop > this.currentScrollTop && scrollTop > this.headerBounds.bottom) {
         this.header.classList.add('scrolled-past-header');
@@ -412,13 +470,46 @@
 
     closeSearchModal() {
       this.searchModal = this.searchModal || this.header.querySelector('details-modal');
-      this.searchModal.close(false);
+      if (this.searchModal && typeof this.searchModal.close === 'function') {
+        this.searchModal.close(false);
+      }
     }
   }
 
   customElements.define('sticky-header', StickyHeader);
 {% endjavascript %}
 
+{%- liquid
+  assign organization_same_as = ''
+  if settings.social_twitter_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_twitter_link | append: ','
+  endif
+  if settings.social_facebook_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_facebook_link | append: ','
+  endif
+  if settings.social_pinterest_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_pinterest_link | append: ','
+  endif
+  if settings.social_instagram_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_instagram_link | append: ','
+  endif
+  if settings.social_tiktok_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_tiktok_link | append: ','
+  endif
+  if settings.social_tumblr_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_tumblr_link | append: ','
+  endif
+  if settings.social_snapchat_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_snapchat_link | append: ','
+  endif
+  if settings.social_youtube_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_youtube_link | append: ','
+  endif
+  if settings.social_vimeo_link != blank
+    assign organization_same_as = organization_same_as | append: settings.social_vimeo_link | append: ','
+  endif
+  assign organization_same_as = organization_same_as | remove_last: ','
+-%}
 <script type="application/ld+json">
   {
     "@context": "http://schema.org",
@@ -427,18 +518,15 @@
     {% if settings.logo %}
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
     {% endif %}
-    "sameAs": [
-      {{ settings.social_twitter_link | json }},
-      {{ settings.social_facebook_link | json }},
-      {{ settings.social_pinterest_link | json }},
-      {{ settings.social_instagram_link | json }},
-      {{ settings.social_tiktok_link | json }},
-      {{ settings.social_tumblr_link | json }},
-      {{ settings.social_snapchat_link | json }},
-      {{ settings.social_youtube_link | json }},
-      {{ settings.social_vimeo_link | json }}
-    ],
-    "url": {{ request.origin | append: page.url | json }}
+    {% if organization_same_as != blank %}
+      "sameAs": [
+        {%- assign organization_urls = organization_same_as | split: ',' -%}
+        {%- for organization_url in organization_urls -%}
+          {{ organization_url | json }}{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+    {% endif %}
+    "url": {{ request.origin | json }}
   }
 </script>
 

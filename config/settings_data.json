@@ -11,7 +11,7 @@
   "current": {
     "logo": "shopify://shop_images/logo_waymelo_copy.png",
     "logo_width": 155,
-    "favicon": "shopify://shop_images/Gemini_Generated_Image_ssyoqwssyoqwssyo.png",
+    "favicon": "shopify://shop_images/wamelo-favicon.png",
     "type_header_font": "inter_n4",
     "heading_scale": 100,
     "type_body_font": "inter_n4",
@@ -110,13 +110,13 @@
     "brand_headline": "",
     "brand_description": "<p></p>",
     "brand_image_width": 100,
-    "social_facebook_link": "https://www.facebook.com/profile.php?id=100069063936706",
-    "social_instagram_link": "https://www.instagram.com/macorner_decor",
+    "social_facebook_link": "https://www.facebook.com/profile.php?id=61595560401560",
+    "social_instagram_link": "https://www.instagram.com/waymeloofficial?obrf=MzF4ZXFzM2FwdzBp&utm_source=qr",
     "social_youtube_link": "",
-    "social_tiktok_link": "https://www.tiktok.com/@macorner_official",
+    "social_tiktok_link": "",
     "social_twitter_link": "",
     "social_snapchat_link": "",
-    "social_pinterest_link": "https://www.pinterest.com/macorner_official",
+    "social_pinterest_link": "",
     "social_tumblr_link": "",
     "social_vimeo_link": "",
     "predictive_search_enabled": true,
@@ -147,7 +147,10 @@
         "settings": {
           "label": "Need Help?",
           "link": "/pages/contact",
-          "open_in_new_tab": true
+          "open_in_new_tab": true,
+          "show_icon": false,
+          "position_mobile": "bottom_left",
+          "position_desktop": "bottom_left"
         }
       }
     },
@@ -216,7 +219,7 @@
     "color_schemes": {
       "scheme-1": {
         "settings": {
-          "background": "#ffffff",
+          "background": "#FFFFFF",
           "background_gradient": "",
           "text": "#000000",
           "button": "#7a5168",

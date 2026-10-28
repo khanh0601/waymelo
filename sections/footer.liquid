@@ -1,9 +1,6 @@
 {% comment %}theme-check-disable UndefinedObject{% endcomment %}
 {%- liquid
-  assign waymelo_css_eager = false
-  if false
-    assign waymelo_css_eager = true
-  endif
+  assign waymelo_css_eager = true
 -%}
 {% render 'waymelo-lazy-css', files: 'section-footer.css,component-newsletter.css,component-list-menu.css,component-list-payment.css,component-list-social.css', eager: waymelo_css_eager %}
 
@@ -26,6 +23,91 @@
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
+  }
+
+  .footer__logo-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    margin-top: 4rem;
+  }
+
+  .footer__logo-block__image-wrapper {
+    max-width: 100%;
+  }
+
+  .footer__logo-block__image-wrapper img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .footer__logo-block__social {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: -0.2rem;
+  }
+
+  .footer__logo-block__social-link {
+    display: inline-flex;
+    width: 3.8rem;
+    height: 3.8rem;
+    min-width: 3.8rem;
+    min-height: 3.8rem;
+    max-width: 3.8rem;
+    max-height: 3.8rem;
+    align-items: center;
+    justify-content: center;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.24);
+    border-radius: 50%;
+    background: rgba(var(--color-foreground), 0.08);
+    color: rgb(var(--color-foreground));
+    overflow: hidden;
+  }
+
+  .footer__logo-block__social-link .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    max-width: 1.8rem;
+    max-height: 1.8rem;
+  }
+
+  .list-social {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .list-social__item .icon {
+    width: 2.2rem;
+    height: 2.2rem;
+    max-width: 2.2rem;
+    max-height: 2.2rem;
+  }
+
+  .list-payment {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+    padding-left: 0;
+  }
+
+  .list-payment__item {
+    align-items: center;
+    display: flex;
+    padding: 0.25rem;
+  }
+
+  .list-payment__item > svg {
+    max-height: 2.5rem;
+    width: auto;
+    max-width: 5rem;
   }
 {%- endstyle -%}
 
@@ -279,37 +361,8 @@
                 {{ shop | login_button: action: 'follow' }}
               </div>
             {%- endif -%}
-            {%- if block.settings.show_facebook_instagram -%}
-              {%- liquid
-                assign footer_facebook_link = block.settings.facebook_link | default: settings.social_facebook_link
-                assign footer_instagram_link = block.settings.instagram_link | default: settings.social_instagram_link
-              -%}
-              {%- if footer_facebook_link != blank or footer_instagram_link != blank -%}
-                <div class="footer__logo-block__social" aria-label="Social media">
-                  {%- if footer_facebook_link != blank -%}
-                    <a
-                      href="{{ footer_facebook_link }}"
-                      class="footer__logo-block__social-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Facebook"
-                    >
-                      {%- render 'icon-facebook' -%}
-                    </a>
-                  {%- endif -%}
-                  {%- if footer_instagram_link != blank -%}
-                    <a
-                      href="{{ footer_instagram_link }}"
-                      class="footer__logo-block__social-link"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Instagram"
-                    >
-                      {%- render 'icon-instagram' -%}
-                    </a>
-                  {%- endif -%}
-                </div>
-              {%- endif -%}
+            {%- if block.settings.show_social_icons and has_social_icons -%}
+              {%- render 'footer-logo-block-social-icons' -%}
             {%- endif -%}
           </div>
         {%- endfor -%}
@@ -417,9 +470,9 @@
         {%- if trust_logos_blocks.size > 0 -%}
           <div class="footer-trust-logos-simple" {{ trust_logos_blocks.first.shopify_attributes }}>
             {%- for block in trust_logos_blocks -%}
-              {%- if block.settings.trustpilot_enable -%}
+              {%- if block.settings.trustpilot_enable and block.settings.trustpilot_url != blank and block.settings.trustpilot_url != 'https://www.trustpilot.com' -%}
                 <a
-                  href="{{ block.settings.trustpilot_url | default: 'https://www.trustpilot.com' }}"
+                  href="{{ block.settings.trustpilot_url }}"
                   target="_blank"
                   rel="noopener"
                   class="simple-trustpilot-line"
@@ -696,19 +749,9 @@
         },
         {
           "type": "checkbox",
-          "id": "show_facebook_instagram",
+          "id": "show_social_icons",
           "default": true,
-          "label": "Show Facebook and Instagram"
-        },
-        {
-          "type": "url",
-          "id": "facebook_link",
-          "label": "Facebook link"
-        },
-        {
-          "type": "url",
-          "id": "instagram_link",
-          "label": "Instagram link"
+          "label": "Show social icons"
         }
       ]
     },

@@ -730,3 +730,9 @@
   height: 48px;
   min-height: 48px;
 }
+
+
+/* Ensure steppers and buttons work smoothly on touch & desktop */
+.waymelo-popup-stepper .quantity__button * {
+  pointer-events: none !important;
+}

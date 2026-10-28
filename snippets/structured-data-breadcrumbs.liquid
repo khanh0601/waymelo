@@ -1,0 +1,81 @@
+{% comment %}
+  Renders BreadcrumbList structured data for hierarchical pages.
+  Accepts:
+  - (no arguments) the trail is derived from the page type:
+    - collection: the shop root, then the collection
+    - product: the shop root, the product's first collection (omitted when it has none), then the product
+    - article: the shop root, the blog, then the article
+    - any other page type: nothing
+  Usage:
+  {% render 'structured-data-breadcrumbs' %}
+{% endcomment %}
+
+{%- liquid
+  # Each step's title and URL is precomputed, and each value is JSON-encoded where it
+  # is emitted, so names with quotes or non-ASCII characters stay valid JSON.
+  assign breadcrumb_count = 1
+  assign breadcrumb_middle_title = ''
+  assign breadcrumb_middle_url = ''
+  assign breadcrumb_leaf_title = ''
+  assign breadcrumb_leaf_url = ''
+
+  case request.page_type
+    when 'collection'
+      if collection != blank
+        assign breadcrumb_count = 2
+        assign breadcrumb_middle_title = collection.title
+        assign breadcrumb_middle_url = request.origin | append: collection.url
+      endif
+    when 'product'
+      assign breadcrumb_collection = product.collections.first
+      if breadcrumb_collection != blank
+        assign breadcrumb_count = 3
+        assign breadcrumb_middle_title = breadcrumb_collection.title
+        assign breadcrumb_middle_url = request.origin | append: breadcrumb_collection.url
+        assign breadcrumb_leaf_title = product.title
+        assign breadcrumb_leaf_url = request.origin | append: product.url
+      elsif product != blank
+        assign breadcrumb_count = 2
+        assign breadcrumb_middle_title = product.title
+        assign breadcrumb_middle_url = request.origin | append: product.url
+      endif
+    when 'article'
+      if blog != blank and article != blank
+        assign breadcrumb_count = 3
+        assign breadcrumb_middle_title = blog.title
+        assign breadcrumb_middle_url = request.origin | append: blog.url
+        assign breadcrumb_leaf_title = article.title
+        assign breadcrumb_leaf_url = request.origin | append: article.url
+      endif
+  endcase
+-%}
+{%- if breadcrumb_count > 1 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": {{ shop.name | json }},
+          "item": {{ request.origin | json }}
+        }{%- if breadcrumb_count > 1 %},{% endif %}
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": {{ breadcrumb_middle_title | json }},
+          "item": {{ breadcrumb_middle_url | json }}
+        }{%- if breadcrumb_count > 2 %},{% endif %}
+        {%- if breadcrumb_count > 2 -%}
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": {{ breadcrumb_leaf_title | json }},
+          "item": {{ breadcrumb_leaf_url | json }}
+        }
+        {%- endif -%}
+      ]
+    }
+  </script>
+{%- endif -%}

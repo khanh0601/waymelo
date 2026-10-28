@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
              try {
                 cartDrawer.renderContents(data);
              } catch(e) {
-                 window.location.reload();
+                 if (typeof cartDrawer.open === 'function') cartDrawer.open();
              }
          } else {
              window.location.href = window.Shopify.routes.root + `products/${data.handle}`;

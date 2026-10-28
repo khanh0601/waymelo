@@ -49,7 +49,7 @@
             "modal_note": "Select your shipping country",
             "save_button_text": "Save & Continue",
             "policy_text": "Learn more about our <strong>Shipping Policy</strong>",
-            "policy_url": "",
+            "policy_url": "shopify://policies/shipping-policy",
             "arrival_text": "Order today, get it as early as: [DATE]",
             "earliest_days": 7,
             "latest_days": 15,

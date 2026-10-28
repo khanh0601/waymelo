@@ -1362,6 +1362,12 @@
         "id": "social_vimeo_link",
         "label": "t:settings_schema.social-media.settings.social_vimeo_link.label",
         "placeholder": "t:settings_schema.social-media.settings.social_vimeo_link.info"
+      },
+      {
+        "type": "image_picker",
+        "id": "social_sharing_image",
+        "label": "Social sharing image",
+        "info": "Used when a page has no image of its own. 1200px or larger, landscape."
       }
     ]
   },

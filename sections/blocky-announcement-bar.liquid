@@ -112,10 +112,12 @@
         </ul>
       </div>
       {% if section.settings.show_arrows %}
+      {% comment %}theme-check-disable ValidScopedCSSClass{% endcomment %}
       <div class="glide__arrows" data-glide-el="controls" aria-label="Announcement navigation">
-        <button class="glide__arrow glide__arrow--prev blocky-slider-arrows-center blocky-slider-arrows-left" data-glide-dir="<" aria-label="Previous">‹</button>
-        <button class="glide__arrow glide__arrow--next  blocky-slider-arrows-center blocky-slider-arrows-right" data-glide-dir=">" aria-label="Next">›</button>
+        <button type="button" class="glide__arrow glide__arrow--prev blocky-slider-arrows-center blocky-slider-arrows-left" data-glide-dir="<" aria-label="Previous">‹</button>
+        <button type="button" class="glide__arrow glide__arrow--next blocky-slider-arrows-center blocky-slider-arrows-right" data-glide-dir=">" aria-label="Next">›</button>
       </div>
+      {% comment %}theme-check-enable ValidScopedCSSClass{% endcomment %}
       {% endif %}
     </blocky-media-slider>
   </div>

@@ -1,4 +1,5 @@
 {%- comment -%}
+  theme-check-disable ValidScopedCSSClass, LiquidComplexity
   © BlockyApps. You are permitted to use this content within your store. Redistribution or use in any other application is strictly prohibited.
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
 {% endcomment %}
@@ -1827,7 +1828,9 @@
   before first paint of the gallery. The file is preloaded in layout/theme.liquid, so the
   parser-blocking cost is negligible.
 {%- endcomment -%}
-<script src="{{ 'blocky-featured-product.js' | asset_url }}"></script>
+<script src="{{ 'blocky-featured-product.js' | asset_url }}" defer="defer"></script>
+
+{% render 'structured-data-breadcrumbs' %}
 
 {% schema %}
 {

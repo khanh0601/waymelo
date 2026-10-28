@@ -22,6 +22,29 @@
     <div class="wm-product-grid" data-wm-swipe aria-label="Products">
       {%- for product in featured_collection.products limit: section.settings.products_to_show -%}
         {%- assign product_image_alt = product.featured_image.alt | default: product.title -%}
+        {%- liquid
+          assign badge_text = ''
+          if product.compare_at_price > product.price
+            assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+            assign badge_text = 'Save ' | append: savings | append: '%'
+          endif
+
+          if section.settings.show_tag
+            for tag in product.tags
+              assign tag_downcase = tag | downcase
+              if tag_downcase == 'bestseller' or tag_downcase == 'best-seller' or tag_downcase == 'best seller'
+                assign badge_text = 'Bestseller'
+                break
+              elsif tag_downcase == 'new' or tag_downcase == 'trending'
+                assign badge_text = tag | capitalize
+                break
+              elsif tag_downcase contains 'badge:'
+                assign badge_text = tag | split: ':' | last | strip
+                break
+              endif
+            endfor
+          endif
+        -%}
         <a class="wm-product-card" href="{{ product.url }}">
           <div class="wm-product-card__media">
             {%- if product.featured_image != blank -%}
@@ -29,23 +52,40 @@
                 product.featured_image
                 | image_url: width: 1000
                 | image_tag:
-                  class: 'wm-product-card__image',
+                  class: 'wm-product-card__image wm-product-card__image--primary',
                   widths: '320, 480, 640, 800, 1000',
                   sizes: '(min-width: 990px) 31vw, (min-width: 750px) 50vw, 100vw',
                   loading: 'lazy',
                   alt: product_image_alt
               }}
+              {%- if product.media.size > 1 and section.settings.show_secondary_image -%}
+                {{
+                  product.media[1]
+                  | image_url: width: 1000
+                  | image_tag:
+                    class: 'wm-product-card__image wm-product-card__image--secondary',
+                    widths: '320, 480, 640, 800, 1000',
+                    sizes: '(min-width: 990px) 31vw, (min-width: 750px) 50vw, 100vw',
+                    loading: 'lazy',
+                    alt: product_image_alt
+                }}
+              {%- endif -%}
             {%- else -%}
               {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
             {%- endif -%}
-            {%- if product.tags.first != blank and section.settings.show_tag -%}
-              <span class="wm-product-card__badge">{{ product.tags.first | escape }}</span>
-            {%- elsif product.compare_at_price > product.price -%}
-              <span class="wm-product-card__badge">Sale</span>
+            {%- if badge_text != blank -%}
+              <span class="wm-product-card__badge">{{ badge_text | escape }}</span>
             {%- endif -%}
           </div>
           <div class="wm-product-card__info">
-            <h3 class="wm-product-card__title">{{ product.title | escape }}</h3>
+            <div class="wm-product-card__text-group">
+              <h3 class="wm-product-card__title">{{ product.title | escape }}</h3>
+              {%- if product.metafields.judgeme.badge != blank -%}
+                <div class="card-product__judgeme-rating jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+                  {{ product.metafields.judgeme.badge }}
+                </div>
+              {%- endif -%}
+            </div>
             <span class="wm-product-card__price">
               {%- if product.compare_at_price > product.price -%}<s class="wm-product-card__compare">{{ product.compare_at_price | money }}</s>{%- endif -%}
               {{ product.price | money }}
@@ -74,7 +114,8 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Your next go-to essentials." },
     { "type": "collection", "id": "collection", "label": "Collection" },
     { "type": "range", "id": "products_to_show", "min": 3, "max": 12, "step": 3, "label": "Products to show", "default": 3 },
-    { "type": "checkbox", "id": "show_tag", "label": "Show first product tag", "default": true },
+    { "type": "checkbox", "id": "show_secondary_image", "label": "Show secondary image on hover", "default": true },
+    { "type": "checkbox", "id": "show_tag", "label": "Show curated badge (Bestseller, New, Sale)", "default": true },
     { "type": "checkbox", "id": "show_view_all", "label": "Show view all link", "default": true },
     { "type": "text", "id": "view_all_label", "label": "View all label", "default": "Shop all essentials" }
   ],

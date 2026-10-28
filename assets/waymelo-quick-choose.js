@@ -34,9 +34,12 @@ if (!customElements.get('waymelo-variant-selector')) {
 
         this.initPills();
         this.initThumbs();
+        this.initCloseButtons();
       }
 
       initPills() {
+        if (this._pillsInitialized) return;
+        this._pillsInitialized = true;
         this.querySelectorAll('.waymelo-option-pill').forEach((pill) => {
           pill.addEventListener('click', (e) => {
             e.preventDefault();
@@ -145,7 +148,32 @@ if (!customElements.get('waymelo-variant-selector')) {
         }
       }
 
+      initCloseButtons() {
+        const modal = this.closest('quick-add-modal');
+        if (!modal) return;
+
+        const closeBtn = modal.querySelector('.waymelo-popup-close');
+        if (closeBtn && !closeBtn._hasCloseBound) {
+          closeBtn._hasCloseBound = true;
+          closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.hide();
+          });
+        }
+
+        if (!modal._hasBackdropBound) {
+          modal._hasBackdropBound = true;
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.hide();
+            }
+          });
+        }
+      }
+
       initThumbs() {
+        if (this._thumbsInitialized) return;
+        this._thumbsInitialized = true;
         const thumbBtns = this.querySelectorAll('.waymelo-popup-thumb-btn');
         thumbBtns.forEach((btn) => {
           btn.addEventListener('click', (e) => {

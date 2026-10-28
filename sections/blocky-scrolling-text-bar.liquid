@@ -3,35 +3,131 @@
   Unauthorized copying, distribution, or reproduction in any form will result in legal action.
 {% endcomment %}
 
-<div class="blocky blocky-announcement-bar blocky-padding background-wrapper"
-  style="--padding-top: {{ section.settings.padding_top }}; --padding-bottom: {{ section.settings.padding_bottom }}; --background-color: {{ section.settings.background_color }};
-    --text-color: {{ section.settings.text_color }}; --text-size: {{ section.settings.text_size }}; --text-spacing: {{ section.settings.text_spacing }};
-    --marquee-speed: {{ section.settings.speed }}"
->
-  {% assign block_count = section.blocks | size %}
-  {%- if block_count == 0 -%}
-    {%- assign block_count = 1 -%}
-  {%- endif -%}
-  {%- assign upper_limit = 20 | divided_by: block_count | ceil %}
+{%- style -%}
+  .blocky-scrolling-text-bar-{{ section.id }} {
+    --bg-color: {{ section.settings.background_color | default: '#7a5168' }};
+    --color: {{ section.settings.text_color | default: '#ffffff' }};
+    --pad-top: {{ section.settings.padding_top | default: 16 }}px;
+    --pad-bottom: {{ section.settings.padding_bottom | default: 16 }}px;
+    --font-size: {{ section.settings.text_size | default: '1.75' }}rem;
+    --space: {{ section.settings.text_spacing | default: 3 }};
+    --ticker-duration: {% if section.settings.speed > 0 %}{{ 30 | divided_by: section.settings.speed }}{% else %}45{% endif %}s;
 
-  {% capture marquee_container %}
-    <div class="blocky-announcement-bar-container" style="display: flex; flex-shrink:0;">
-      {% for i in (1..upper_limit) %}
-          {%- for block in section.blocks -%}
-            <p class="blocky-announcement-bar-text" {{ block.shopify_attributes }}>
-              {{ block.settings.text }}
-            </p>
-          {%- endfor -%}
-      {% endfor %}
+    background-color: var(--bg-color);
+    color: var(--color);
+    padding-top: var(--pad-top);
+    padding-bottom: var(--pad-bottom);
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    line-height: 1.2;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .blocky-scrolling-text-bar-{{ section.id }}::-webkit-scrollbar,
+  .blocky-scrolling-text-bar-{{ section.id }} *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .blocky-scrolling-text-bar-{{ section.id }} .blocky-announcement-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: blockyMarquee-{{ section.id }} var(--ticker-duration) linear infinite;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .blocky-scrolling-text-bar-{{ section.id }}:hover .blocky-announcement-track {
+    animation-play-state: paused;
+  }
+
+  .blocky-scrolling-text-bar-{{ section.id }} .blocky-announcement-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .blocky-scrolling-text-bar-{{ section.id }} .blocky-announcement-bar-text {
+    margin: 0;
+    padding: 0 calc(var(--space) * 0.75rem);
+    font-size: var(--font-size);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  @keyframes blockyMarquee-{{ section.id }} {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .blocky-scrolling-text-bar-{{ section.id }} {
+      padding-top: clamp(6px, 1.8vw, 10px);
+      padding-bottom: clamp(6px, 1.8vw, 10px);
+    }
+    .blocky-scrolling-text-bar-{{ section.id }} .blocky-announcement-bar-text {
+      font-size: clamp(0.78rem, 3.2vw, 0.95rem);
+      padding: 0 clamp(0.85rem, 2.5vw, 1.35rem);
+      font-weight: 600;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blocky-scrolling-text-bar-{{ section.id }} .blocky-announcement-track {
+      animation: blockyMarquee-{{ section.id }} calc(var(--ticker-duration) * 2.5) linear infinite;
+      overflow: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign block_count = section.blocks.size
+  if block_count == 0
+    assign block_count = 1
+  endif
+  assign repeat_count = 12 | divided_by: block_count | ceil
+  if repeat_count < 2
+    assign repeat_count = 2
+  endif
+-%}
+
+{% comment %}theme-check-disable ValidScopedCSSClass{% endcomment %}
+<div class="blocky blocky-announcement-bar blocky-scrolling-text-bar-{{ section.id }}" role="region" aria-label="Announcement ticker">
+  <div class="blocky-announcement-track">
+    <div class="blocky-announcement-group" aria-hidden="false">
+      {%- for i in (1..repeat_count) -%}
+        {%- for block in section.blocks -%}
+          <p class="blocky-announcement-bar-text" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </p>
+        {%- endfor -%}
+      {%- endfor -%}
     </div>
-  {% endcapture %}
-  
-  <div style="display: flex;">
-    {{ marquee_container }}
-    {{ marquee_container }}
-    {{ marquee_container }}
+    <div class="blocky-announcement-group" aria-hidden="true">
+      {%- for i in (1..repeat_count) -%}
+        {%- for block in section.blocks -%}
+          <p class="blocky-announcement-bar-text">
+            {{ block.settings.text }}
+          </p>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
   </div>
-
 </div>
 
 {% schema %}

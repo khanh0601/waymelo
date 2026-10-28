@@ -1,0 +1,136 @@
+{%- assign card_image_alt = product.featured_image.alt | default: product.title -%}
+{%- assign current_section_id = section_id | default: 'home-seller' -%}
+{%- assign has_multiple_variants = false -%}
+{%- if product.variants.size > 1 -%}
+  {%- assign has_multiple_variants = true -%}
+{%- endif -%}
+
+<div class="wm-product-card-wrapper" {{ block_shopify_attributes }}>
+  <div class="wm-product-card">
+    <a class="wm-product-card__media-link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+      <div class="wm-product-card__media">
+        {%- if product.featured_image != blank -%}
+          {{
+            product.featured_image
+            | image_url: width: 800
+            | image_tag:
+              class: 'wm-product-card__image wm-product-card__image--primary',
+              widths: '240, 360, 480, 640, 800',
+              sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 50vw',
+              loading: 'lazy',
+              alt: card_image_alt
+          }}
+          {%- if product.media.size > 1 -%}
+            {{
+              product.media[1]
+              | image_url: width: 800
+              | image_tag:
+                class: 'wm-product-card__image wm-product-card__image--secondary',
+                widths: '240, 360, 480, 640, 800',
+                sizes: '(min-width: 990px) 25vw, (min-width: 750px) 50vw, 50vw',
+                loading: 'lazy',
+                alt: card_image_alt
+            }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+        {%- if show_badge and badge_label != blank and product.compare_at_price > product.price -%}
+          <span class="wm-product-card__badge" style="{% if badge_color != blank %}--wm-badge-bg: {{ badge_color }};{% endif %}">
+            {{ badge_label | escape }}
+          </span>
+        {%- elsif product.compare_at_price > product.price -%}
+          <span class="wm-product-card__badge">SALE</span>
+        {%- endif -%}
+      </div>
+    </a>
+
+    <div class="wm-product-card__info">
+      <div class="wm-product-card__text-group">
+        <h3 class="wm-product-card__title">
+          <a href="{{ product.url }}">{{ product.title | escape }}</a>
+        </h3>
+        {%- if product.metafields.judgeme.badge != blank -%}
+          <div class="card-product__judgeme-rating jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+            {{ product.metafields.judgeme.badge }}
+          </div>
+        {%- else -%}
+          <div class="wm-product-card__rating">
+            <span class="wm-product-card__stars">★★★★★</span>
+            <span class="wm-product-card__review-count">({{ product.id | modulo: 15 | plus: 6 }} reviews)</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="wm-product-card__price">
+        <span class="wm-product-card__price-current">{{ product.price | money }}</span>
+        {%- if product.compare_at_price > product.price -%}
+          <s class="wm-product-card__compare">{{ product.compare_at_price | money }}</s>
+          {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+          <span class="wm-product-card__discount-tag">-{{ savings }}%</span>
+        {%- endif -%}
+      </div>
+
+      <div class="wm-product-card__action">
+        {%- if product.available == false -%}
+          <button type="button" class="wm-product-card__btn is-disabled" disabled>
+            <span>Sold Out</span>
+          </button>
+        {%- elsif has_multiple_variants -%}
+          {%- assign variant_modal_id = 'QuickAdd-' | append: current_section_id | append: '-' | append: product.id -%}
+          {%- assign variant_form_id = 'quick-add-' | append: current_section_id | append: product.id | append: '-popup' -%}
+          <modal-opener data-modal="#{{ variant_modal_id }}">
+            <button
+              type="button"
+              class="wm-product-card__btn"
+              aria-haspopup="dialog"
+              data-product-url="{{ product.url }}"
+            >
+              <svg class="wm-cart-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+              </svg>
+              <span>Choose options</span>
+            </button>
+          </modal-opener>
+          {% render 'card-variant-modal',
+            card_product: product,
+            section_id: current_section_id,
+            product_form_id: variant_form_id
+          %}
+        {%- else -%}
+          {%- assign product_form_id = 'quick-add-' | append: current_section_id | append: product.id -%}
+          <product-form data-section-id="{{ current_section_id }}" class="wm-product-card__form-wrap">
+            {%- form 'product',
+              product,
+              id: product_form_id,
+              class: 'form wm-product-card__form',
+              novalidate: 'novalidate',
+              data-type: 'add-to-cart-form'
+            -%}
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}"
+                class="product-variant-id"
+              >
+              <button
+                type="submit"
+                name="add"
+                class="wm-product-card__btn"
+              >
+                <svg class="wm-cart-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+                <span>Add to cart</span>
+              </button>
+            {%- endform -%}
+          </product-form>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
