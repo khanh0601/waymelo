@@ -50,16 +50,7 @@
         <h3 class="wm-product-card__title">
           <a href="{{ product.url }}">{{ product.title | escape }}</a>
         </h3>
-        {%- if product.metafields.judgeme.badge != blank -%}
-          <div class="card-product__judgeme-rating jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
-            {{ product.metafields.judgeme.badge }}
-          </div>
-        {%- else -%}
-          <div class="wm-product-card__rating">
-            <span class="wm-product-card__stars">★★★★★</span>
-            <span class="wm-product-card__review-count">({{ product.id | modulo: 15 | plus: 6 }} reviews)</span>
-          </div>
-        {%- endif -%}
+        {% render 'card-product-rating', product: product %}
       </div>
 
       <div class="wm-product-card__price">

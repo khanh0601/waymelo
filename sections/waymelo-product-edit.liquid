@@ -80,11 +80,7 @@
           <div class="wm-product-card__info">
             <div class="wm-product-card__text-group">
               <h3 class="wm-product-card__title">{{ product.title | escape }}</h3>
-              {%- if product.metafields.judgeme.badge != blank -%}
-                <div class="card-product__judgeme-rating jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
-                  {{ product.metafields.judgeme.badge }}
-                </div>
-              {%- endif -%}
+              {% render 'card-product-rating', product: product, link: false %}
             </div>
             <span class="wm-product-card__price">
               {%- if product.compare_at_price > product.price -%}<s class="wm-product-card__compare">{{ product.compare_at_price | money }}</s>{%- endif -%}

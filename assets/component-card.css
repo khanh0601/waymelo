@@ -634,6 +634,31 @@
   line-height: 1.2;
 }
 
+.card-product__detail-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.card-product__detail-rating-stars {
+  color: transparent;
+  background: linear-gradient(90deg, #f59e0b 0 var(--rating-percent), #d1d5db var(--rating-percent) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-family: Arial, sans-serif;
+  font-size: 1.45rem;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.card-product__detail-rating-count {
+  font-size: 1.3rem;
+}
+
 /* Ensure all product grid cards have equal heights and aligned buttons */
 /* Do not force display here: Dawn's .grid already lays .product-grid out as a wrapping flex row,
    while product-showcase / best-seller use their own CSS grid or horizontal scroller. */

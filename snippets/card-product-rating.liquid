@@ -1,0 +1,90 @@
+{% comment %}
+  Renders the rating used by product cards.
+
+  The custom product-detail reviews live in each product JSON template, so they
+  are not exposed on a product object outside that product page. Keep the
+  aggregates below aligned with the first reviews-section in each template;
+  that is the same source used by product-server-rating.js on product detail.
+
+  Accepts:
+  - product: {Object} Product Liquid object
+  - rating_class: {String} Optional extra class for the rendered aggregate
+  - judgeme_class: {String} Optional extra class for the Judge.me fallback
+  - link: {Boolean} Link the aggregate to the product reviews. Default: true
+{% endcomment %}
+
+{%- liquid
+  assign detail_rating = blank
+  assign detail_rating_percent = blank
+  assign detail_rating_count = 0
+
+  case product.template_suffix
+    when 'baby-sound'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 97.8
+      assign detail_rating_count = 9
+    when 'balo'
+      assign detail_rating = 4.8
+      assign detail_rating_percent = 96
+      assign detail_rating_count = 10
+    when 'binh-s-a'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 97.5
+      assign detail_rating_count = 8
+    when 'little-hugs-toy-straps'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 98.5
+      assign detail_rating_count = 13
+    when 'sleep-kit'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 97.5
+      assign detail_rating_count = 8
+    when 'tham-thay-ta'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 97.5
+      assign detail_rating_count = 8
+    when 'wearable-nursing-pillow'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 98.5
+      assign detail_rating_count = 13
+  endcase
+
+  if detail_rating_count == 0 and product.metafields.judgeme.badge == blank and product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count.value > 0
+    assign detail_rating = product.metafields.reviews.rating.value.rating
+    assign detail_rating_max = product.metafields.reviews.rating.value.scale_max | default: 5
+    assign detail_rating_percent = detail_rating | times: 100.0 | divided_by: detail_rating_max
+    assign detail_rating_count = product.metafields.reviews.rating_count.value
+  endif
+-%}
+
+{%- if detail_rating_count > 0 -%}
+  {%- capture rating_content -%}
+    <span
+      class="card-product__detail-rating-stars"
+      style="--rating-percent: {{ detail_rating_percent }}%;"
+      aria-hidden="true"
+    >&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+    <span class="card-product__detail-rating-count" aria-hidden="true">({{ detail_rating_count }}) reviews</span>
+  {%- endcapture -%}
+  {%- if link == false -%}
+    <div
+      class="card-product__detail-rating{% if rating_class != blank %} {{ rating_class }}{% endif %}"
+      role="img"
+      aria-label="{{ detail_rating }} out of 5 stars, {{ detail_rating_count }} reviews"
+    >
+      {{- rating_content -}}
+    </div>
+  {%- else -%}
+    <a
+      class="card-product__detail-rating{% if rating_class != blank %} {{ rating_class }}{% endif %}"
+      href="{{ product.url }}#trustshop-review"
+      aria-label="{{ detail_rating }} out of 5 stars, {{ detail_rating_count }} reviews"
+    >
+      {{- rating_content -}}
+    </a>
+  {%- endif -%}
+{%- elsif product.metafields.judgeme.badge != blank -%}
+  <div class="card-product__judgeme-rating{% if judgeme_class != blank %} {{ judgeme_class }}{% endif %} jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+    {{ product.metafields.judgeme.badge }}
+  </div>
+{%- endif -%}
