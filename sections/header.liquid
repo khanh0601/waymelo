@@ -180,21 +180,6 @@
     white-space: nowrap;
   }
 
-  .header__inline-menu .list-menu__item:hover,
-  .header__inline-menu details[open] > .header__menu-item {
-    color: #764f65 !important;
-    text-decoration: none !important;
-  }
-
-  .header__inline-menu .list-menu__item span {
-    text-decoration: none !important;
-    transition: color 0.2s ease;
-  }
-
-  .header__inline-menu .list-menu__item:hover span {
-    text-decoration: none !important;
-  }
-
   {%- assign active_menu_color = section.settings.menu_active_color | default: '#764f65' -%}
   {%- if active_menu_color == blank or active_menu_color == 'rgba(0,0,0,0)' -%}
     {%- assign active_menu_color = '#764f65' -%}
@@ -204,11 +189,29 @@
     --header-active-menu-color: {{ active_menu_color }};
   }
 
+  .header__inline-menu .list-menu__item:hover,
+  .header__inline-menu details[open] > .header__menu-item {
+    color: {{ active_menu_color }} !important;
+    text-decoration: none !important;
+  }
+
+  .header__inline-menu .list-menu__item span {
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+  }
+
+  .header__inline-menu .list-menu__item:hover span {
+    color: {{ active_menu_color }} !important;
+    text-decoration: none !important;
+  }
+
   .header__inline-menu .header__active-menu-item,
   .header__inline-menu a[aria-current="page"],
   .header__inline-menu a[aria-current="page"] span,
   .header__inline-menu summary:has(.header__active-menu-item),
-  .menu-drawer__menu-item--active {
+  .header__inline-menu .list-menu__item--active,
+  .menu-drawer__menu-item--active,
+  .menu-drawer__menu-item--active span {
     color: {{ active_menu_color }} !important;
     font-weight: 700 !important;
     text-decoration: none !important;
@@ -217,6 +220,7 @@
   .header__inline-menu .header__active-menu-item:hover,
   .header__inline-menu a[aria-current="page"]:hover,
   .header__inline-menu a[aria-current="page"]:hover span,
+  .header__inline-menu .list-menu__item--active:hover,
   .menu-drawer__menu-item--active:hover {
     color: {{ active_menu_color }} !important;
     opacity: 0.85;

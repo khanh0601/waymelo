@@ -3697,7 +3697,7 @@ details-disclosure > details {
 
 .header__inline-menu .list-menu__item:hover,
 .header__inline-menu details[open] > .header__menu-item {
-  color: #764f65 !important; /* Waymelo brand plum */
+  color: var(--header-active-menu-color, #764f65) !important;
   text-decoration: none !important;
 }
 
@@ -3707,6 +3707,7 @@ details-disclosure > details {
 }
 
 .header__inline-menu .list-menu__item:hover span {
+  color: var(--header-active-menu-color, #764f65) !important;
   text-decoration: none !important;
 }
 
@@ -3717,7 +3718,7 @@ details-disclosure > details {
 }
 
 .header__inline-menu .header__active-menu-item:hover {
-  color: #764f65 !important;
+  color: var(--header-active-menu-color, #764f65) !important;
 }
 
 .header__inline-menu .icon-caret {
