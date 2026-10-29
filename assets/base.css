@@ -246,7 +246,7 @@ body:has(.section-header .drawer-menu) .announcement-bar-section .page-width {
 
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -2345,6 +2345,11 @@ input[type='checkbox'] {
 .shopify-section-header-sticky {
   position: sticky;
   top: 0;
+}
+
+.scrolled-past-header .header-wrapper {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
 }
 
 .shopify-section-header-hidden {

@@ -2890,8 +2890,9 @@
   @media screen and (min-width: 750px) {
     :is(#blocky-featured-product-static, .blocky-featured-product-scope) .blocky-featured-product__media-col {
       position: sticky;
-      top: 30px;
+      top: calc(var(--header-height, 75px) + 20px);
       align-self: flex-start;
+      z-index: 2;
     }
 
     /* Top-align the content column instead of vertically centering it, so the
