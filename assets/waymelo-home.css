@@ -1311,22 +1311,41 @@
   }
 
   .wm-why-us__grid {
-    grid-template-columns: repeat(var(--wm-why-us-columns-mobile, 1), minmax(0, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 14px;
+    margin-top: 24px;
+  }
+
+  .wm-why-us__column {
+    gap: 10px;
   }
 
   .wm-why-us__icon {
-    --wm-why-us-icon-size: 40px;
-
-    margin-bottom: 14px;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 0;
   }
 
-  .wm-why-us__icon.material-symbols-outlined {
-    font-size: var(--wm-why-us-icon-size, 40px);
+  .wm-why-us__icon.material-symbols-outlined,
+  .wm-why-us__icon .material-symbols-outlined {
+    font-size: 26px;
+  }
+
+  .wm-why-us__icon-image {
+    width: 26px;
+    height: 26px;
   }
 
   .wm-why-us__label {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .wm-why-us__text {
+    font-size: 1.05rem;
+    line-height: 1.4;
   }
 }
 
@@ -1339,69 +1358,106 @@
   }
 }
 
+.wm-why-us {
+  padding-block: clamp(40px, 5.5vw, 76px);
+}
+
+.wm-why-us__section-head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
 .wm-why-us__head {
+  text-align: center;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.wm-why-us__heading {
+  margin: 0;
+  color: #1f1625;
+  font-family: var(--font-heading-family);
+  font-size: clamp(2.4rem, 3.4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   text-align: center;
 }
 
 .wm-why-us__grid {
   display: grid;
-  margin-top: clamp(34px, 4vw, 54px);
-  grid-template-columns: repeat(var(--wm-why-us-columns-desktop, 4), minmax(0, 1fr));
-  gap: clamp(28px, 3vw, 48px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 3.5vw, 46px) clamp(22px, 3.5vw, 50px);
+  max-width: 960px;
+  margin-inline: auto;
+  margin-top: 0;
 }
 
 .wm-why-us__column {
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 14px;
   min-width: 0;
-  flex-direction: column;
 }
 
 .wm-why-us__icon {
-  display: flex;
-  width: var(--wm-why-us-icon-size, 48px);
-  height: var(--wm-why-us-icon-size, 48px);
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  margin-bottom: 18px;
-  color: var(--wm-purple);
-  font-size: var(--wm-why-us-icon-size, 48px);
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  color: #7a5168;
+  margin-top: 2px;
 }
 
-/* Loaded after this stylesheet, so the Material Symbols font needs the extra
-   specificity to take this section's icon size over its own default. */
-.wm-why-us__icon.material-symbols-outlined {
-  font-size: var(--wm-why-us-icon-size, 48px);
+.wm-why-us__icon.material-symbols-outlined,
+.wm-why-us__icon .material-symbols-outlined {
+  font-size: 34px;
   line-height: 1;
+  color: #7a5168;
 }
 
 .wm-why-us__icon-image {
-  width: 100%;
-  height: 100%;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 
 .wm-why-us__icon-placeholder {
-  width: 100%;
-  height: 100%;
+  width: 34px;
+  height: 34px;
   border: 1px dashed var(--wm-line);
+  border-radius: 4px;
+}
+
+.wm-why-us__content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
 }
 
 .wm-why-us__label {
-  margin: 0 0 8px;
-  color: var(--wm-ink);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1.4;
+  margin: 0 0 6px;
+  color: #1f1625;
+  font-family: var(--font-heading-family);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
   text-transform: uppercase;
 }
 
 .wm-why-us__text {
   margin: 0;
-  color: var(--wm-muted);
-  font-size: 1.35rem;
-  line-height: 1.6;
+  color: #554e5b;
+  font-size: 1.3rem;
+  line-height: 1.5;
 }
 
 .wm-best-seller {
