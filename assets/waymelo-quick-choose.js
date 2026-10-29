@@ -130,10 +130,21 @@ if (!customElements.get('waymelo-variant-selector')) {
           }
 
           // Update image
-          if (currentVariant.image) {
-            this.updateImage(currentVariant.image);
-          } else if (clickedPill && clickedPill.dataset.variantImg) {
-            this.updateImage(clickedPill.dataset.variantImg);
+          const targetImg = currentVariant.image || (clickedPill && clickedPill.dataset.variantImg);
+          if (targetImg) {
+            this.updateImage(targetImg);
+
+            // Sync active thumbnail in popup gallery strip
+            const imgFilename = targetImg.split('?')[0].split('/').pop();
+            const matchingThumb = Array.from(this.querySelectorAll('.waymelo-popup-thumb-btn')).find((btn) => {
+              const url = btn.dataset.mediaUrl;
+              return url && url.includes(imgFilename);
+            });
+            if (matchingThumb) {
+              this.querySelectorAll('.waymelo-popup-thumb-btn').forEach((b) => b.classList.remove('is-active'));
+              matchingThumb.classList.add('is-active');
+              matchingThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            }
           }
         } else {
           // Combination does not exist

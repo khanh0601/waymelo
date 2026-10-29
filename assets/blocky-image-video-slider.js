@@ -44,6 +44,19 @@ if (!customElements.get('blocky-media-slider')) {
       }
 
       setup() {  
+        if (typeof Glide === 'undefined') {
+          const checkGlide = () => {
+            if (typeof Glide !== 'undefined') {
+              this.setup();
+            } else {
+              setTimeout(checkGlide, 40);
+            }
+          };
+          this.isSetup = false;
+          setTimeout(checkGlide, 40);
+          return;
+        }
+
         const isDesktop = window.innerWidth >= 768
       
         const size = parseInt(this.getAttribute("data-size"))  
@@ -60,30 +73,44 @@ if (!customElements.get('blocky-media-slider')) {
         const animEasing = this.getAttribute("data-anim-easing") || "ease-out";
         const autoplayInterval = this.hasAttribute("data-auto-interval") ? parseInt(this.getAttribute("data-auto-interval")) : 2000;
 
-        window[glideId] = new Glide(`.${ glideId }`, {
-          type: size >= viewSize ? 'carousel' : "slider",
-          perView: viewSize,
-          focusAt: 0,
-          peek: peek,
-          hoverpause: true,
-          autoplay: allowAutoplay && size > 1 ? autoplayInterval : false,
-          gap: isDesktop ? spacing : mobileSpacing,
-          animationDuration: animDuration,
-          animationTimingFunc: animEasing,
-          breakpoints: {
-            750: {
-              perView: size >= viewSize ? viewSize : size,
-            },
-            500: {
-              perView: size >= mobileViewSize ? mobileViewSize : size,
-            },
-          }
-        }).mount()
+        try {
+          const instance = new Glide(`.${ glideId }`, {
+            type: size >= viewSize ? 'carousel' : "slider",
+            perView: viewSize,
+            focusAt: 0,
+            peek: peek,
+            hoverpause: true,
+            autoplay: allowAutoplay && size > 1 ? autoplayInterval : false,
+            gap: isDesktop ? spacing : mobileSpacing,
+            animationDuration: animDuration,
+            animationTimingFunc: animEasing,
+            breakpoints: {
+              750: {
+                perView: size >= viewSize ? viewSize : size,
+              },
+              500: {
+                perView: size >= mobileViewSize ? mobileViewSize : size,
+              },
+            }
+          }).mount();
 
-        requestAnimationFrame(() => {
-          this.classList.remove('is-loading')
-          this.classList.add('is-ready')
-        })
+          window[glideId] = instance;
+          this.glide = instance;
+
+          requestAnimationFrame(() => {
+            this.classList.remove('is-loading');
+            this.classList.add('is-ready');
+            this.dispatchEvent(new CustomEvent('blocky:media-slider-ready', {
+              bubbles: true,
+              detail: { glide: instance }
+            }));
+            window.dispatchEvent(new CustomEvent('blocky:media-slider-ready:' + this.sectionId, {
+              detail: { glide: instance }
+            }));
+          });
+        } catch (e) {
+          console.warn('[blocky-media-slider] Failed to mount Glide:', e);
+        }
       
         // Make bullet go faster
         const activeBullet = "glide__bullet--active";

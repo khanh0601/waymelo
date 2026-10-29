@@ -48,6 +48,13 @@ function blockyScrollToSection(target) {
           if (thumb) this.activateMedia(thumb.dataset.blockyProductThumb);
         });
 
+        this.addEventListener('blocky:media-slider-ready', (event) => {
+          const activeThumb = this.querySelector('[data-blocky-product-thumb].is-active');
+          if (activeThumb?.dataset.blockyProductThumb) {
+            this.syncThumbSlider(event.detail?.glide, activeThumb.dataset.blockyProductThumb);
+          }
+        });
+
         this.initBeforeAfterButtons();
         this.initScrollToButtons();
         this.initReviewCarouselModals();
@@ -68,6 +75,7 @@ function blockyScrollToSection(target) {
 
         this.syncQuantity();
         this.updateVariant();
+        this.initMainMediaSwipe();
       }
 
       initMediaLoadingState() {
@@ -927,6 +935,84 @@ function blockyScrollToSection(target) {
           thumb.classList.toggle('is-active', active);
           thumb.setAttribute('aria-current', active ? 'true' : 'false');
         });
+
+        const slider = this.querySelector('blocky-media-slider');
+        const glide = slider?.glide || (slider && slider.dataset.id ? window['ivs-' + slider.dataset.id] : null);
+        if (glide) {
+          this.syncThumbSlider(glide, mediaId);
+        }
+      }
+
+      syncThumbSlider(glide, mediaId) {
+        if (!glide || !mediaId) return;
+        const slider = this.querySelector('blocky-media-slider');
+        if (!slider) return;
+
+        const originalSlides = Array.from(slider.querySelectorAll('.glide__slides > .glide__slide:not(.glide__slide--clone)'));
+        const targetIndex = originalSlides.findIndex((slide) => slide.querySelector(`[data-blocky-product-thumb="${mediaId}"]`));
+        if (targetIndex < 0) return;
+
+        const track = slider.querySelector('.glide__track');
+        const targetThumb = originalSlides[targetIndex].querySelector('[data-blocky-product-thumb]');
+        let isInView = false;
+        if (track && targetThumb) {
+          const trackRect = track.getBoundingClientRect();
+          const thumbRect = targetThumb.getBoundingClientRect();
+          isInView = (thumbRect.left >= trackRect.left - 4) && (thumbRect.right <= trackRect.right + 4);
+        }
+
+        if (!isInView) {
+          try {
+            glide.go('=' + targetIndex);
+          } catch (e) {
+            // Glide may still be mounting or animating
+          }
+        }
+      }
+
+      initMainMediaSwipe() {
+        const mediaWrap = this.querySelector('.blocky-featured-product__media-wrap');
+        if (!mediaWrap || mediaWrap._hasSwipeBound) return;
+        mediaWrap._hasSwipeBound = true;
+
+        let startX = 0;
+        let startY = 0;
+        let isSwiping = false;
+
+        mediaWrap.addEventListener('touchstart', (e) => {
+          if (e.touches.length !== 1) return;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          isSwiping = true;
+        }, { passive: true });
+
+        mediaWrap.addEventListener('touchend', (e) => {
+          if (!isSwiping || e.changedTouches.length !== 1) return;
+          isSwiping = false;
+
+          const diffX = e.changedTouches[0].clientX - startX;
+          const diffY = e.changedTouches[0].clientY - startY;
+
+          if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+            const mediaList = Array.from(this.querySelectorAll('.blocky-featured-product__main > [data-blocky-product-media]'));
+            if (mediaList.length <= 1) return;
+
+            const currentIndex = mediaList.findIndex((m) => m.classList.contains('is-active'));
+            if (currentIndex < 0) return;
+
+            let nextIndex;
+            if (diffX < 0) {
+              nextIndex = (currentIndex + 1) % mediaList.length;
+            } else {
+              nextIndex = (currentIndex - 1 + mediaList.length) % mediaList.length;
+            }
+
+            const nextMediaId = mediaList[nextIndex]?.dataset.blockyProductMedia;
+            if (nextMediaId) {
+              this.activateMedia(nextMediaId);
+            }
+          }
+        }, { passive: true });
       }
 
       changeQuantity(delta) {
