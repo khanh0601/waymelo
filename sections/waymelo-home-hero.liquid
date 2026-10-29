@@ -34,7 +34,13 @@
                 class="wm-home__button"
                 href="{{ section.settings[hero_link_key] | default: routes.all_products_collection_url }}"
               >
-                {{ hero_label | escape }} <span aria-hidden="true">↗</span>
+                <span>{{ hero_label | escape }}</span>
+                <span class="wm-home__button-arrow" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </span>
               </a>
             {%- endif -%}
           {%- endfor -%}
@@ -117,7 +123,12 @@
               aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
             ></button>
           {%- endfor -%}
-          <button class="wm-hero__pause" type="button" data-wm-pause aria-label="Pause slideshow">Ⅱ</button>
+          <button class="wm-hero__pause" type="button" data-wm-pause aria-label="Pause slideshow">
+            <svg class="wm-hero__pause-icon" width="10" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <rect x="4" y="3" width="5" height="18" rx="1.5"></rect>
+              <rect x="15" y="3" width="5" height="18" rx="1.5"></rect>
+            </svg>
+          </button>
         </div>
       {%- endif -%}
     </div>
@@ -128,7 +139,27 @@
       <div class="wm-benefits__grid wm-home__shell">
         {%- for block in benefits -%}
           <div class="wm-benefits__item" {{ block.shopify_attributes }}>
-            {%- if block.settings.icon != blank -%}<span class="wm-benefits__icon" aria-hidden="true">{{ block.settings.icon }}</span>{%- endif -%}
+            {%- if block.settings.icon != blank -%}
+              <span class="wm-benefits__icon" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when '↗' or 'arrow' -%}
+                    <svg class="wm-benefit-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                  {%- when '✧' or 'star' -%}
+                    <svg class="wm-benefit-svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/>
+                    </svg>
+                  {%- when '♡' or 'heart' -%}
+                    <svg class="wm-benefit-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                  {%- else -%}
+                    {{ block.settings.icon }}
+                {%- endcase -%}
+              </span>
+            {%- endif -%}
             <span>{{ block.settings.text | escape }}</span>
           </div>
         {%- endfor -%}
