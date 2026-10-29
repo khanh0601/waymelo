@@ -282,11 +282,21 @@
       "settings": {
         "eyebrow": "The Waymelo edit",
         "heading": "Your next go-to essentials.",
+        "header_alignment": "left",
+        "source": "collection",
         "collection": "all",
         "products_to_show": 3,
+        "columns_desktop": 3,
+        "columns_mobile": "1",
+        "enable_mobile_slider": false,
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
         "show_tag": true,
         "show_view_all": true,
-        "view_all_label": "Shop all essentials"
+        "view_all_label": "Shop all essentials",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     },
     "waymelo_why_us": {
