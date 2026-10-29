@@ -3687,9 +3687,9 @@ details-disclosure > details {
   text-decoration: none !important;
   text-transform: uppercase;
   font-size: 1.3rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.12rem;
-  color: #1b1b1b;
+  color: #121212;
   position: relative;
   transition: color 0.2s ease, opacity 0.2s ease;
   line-height: 1.4;
@@ -3711,8 +3711,8 @@ details-disclosure > details {
 }
 
 .header__inline-menu .header__active-menu-item {
-  color: #1b1b1b;
-  font-weight: 600;
+  color: #121212;
+  font-weight: 700;
   text-decoration: none !important;
 }
 
@@ -3750,7 +3750,7 @@ details-disclosure > details {
   background-color: #ffffff !important;
   color: #121212 !important;
   font-size: 1.25rem !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   letter-spacing: 0.02rem !important;
   line-height: 1 !important;
   text-decoration: none !important;
@@ -3789,7 +3789,7 @@ details-disclosure > details {
 
 .header-localization .desktop-localization-wrapper .localization-form__currency-text {
   font-size: 1.25rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #121212;
   white-space: nowrap;
 }
