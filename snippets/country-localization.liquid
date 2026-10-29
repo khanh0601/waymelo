@@ -34,14 +34,31 @@
     aria-controls="{{ localPosition }}-country-results"
     aria-describedby="{{ localPosition }}Label"
   >
-    {%- if show_flag -%}
-      <span class="footer__country-flag footer__country-code" aria-hidden="true">{{ localization.country.iso_code }}</span>
+    {%- if localPosition == 'HeaderCountry' -%}
+      <span class="localization-form__flag-wrapper" aria-hidden="true">
+        <img
+          src="https://flagcdn.com/w40/{{ localization.country.iso_code | downcase }}.png"
+          width="18"
+          height="13"
+          alt="{{ localization.country.name }}"
+          class="localization-form__flag-img"
+          loading="eager"
+          onerror="this.style.display='none'"
+        >
+      </span>
+      <span class="localization-form__currency-text">
+        {{ localization.country.currency.iso_code }} ({{ localization.country.currency.symbol }})
+      </span>
+    {%- else -%}
+      {%- if show_flag -%}
+        <span class="footer__country-flag footer__country-code" aria-hidden="true">{{ localization.country.iso_code }}</span>
+      {%- endif -%}
+      <span>
+        {{- localization.country.name }} |
+        {{ localization.country.currency.iso_code }}
+        {{ localization.country.currency.symbol -}}
+      </span>
     {%- endif -%}
-    <span>
-      {{- localization.country.name }} |
-      {{ localization.country.currency.iso_code }}
-      {{ localization.country.currency.symbol -}}
-    </span>
     {% render 'icon-caret' %}
   </button>
   <div class="disclosure__list-wrapper country-selector" hidden>
