@@ -195,14 +195,31 @@
     text-decoration: none !important;
   }
 
-  .header__inline-menu .header__active-menu-item {
-    color: #121212 !important;
+  {%- assign active_menu_color = section.settings.menu_active_color | default: '#764f65' -%}
+  {%- if active_menu_color == blank or active_menu_color == 'rgba(0,0,0,0)' -%}
+    {%- assign active_menu_color = '#764f65' -%}
+  {%- endif -%}
+
+  :root {
+    --header-active-menu-color: {{ active_menu_color }};
+  }
+
+  .header__inline-menu .header__active-menu-item,
+  .header__inline-menu a[aria-current="page"],
+  .header__inline-menu a[aria-current="page"] span,
+  .header__inline-menu summary:has(.header__active-menu-item),
+  .menu-drawer__menu-item--active {
+    color: {{ active_menu_color }} !important;
     font-weight: 700 !important;
     text-decoration: none !important;
   }
 
-  .header__inline-menu .header__active-menu-item:hover {
-    color: #764f65 !important;
+  .header__inline-menu .header__active-menu-item:hover,
+  .header__inline-menu a[aria-current="page"]:hover,
+  .header__inline-menu a[aria-current="page"]:hover span,
+  .menu-drawer__menu-item--active:hover {
+    color: {{ active_menu_color }} !important;
+    opacity: 0.85;
   }
 
   .header__inline-menu .icon-caret {
@@ -870,6 +887,12 @@
       "default": 13,
       "unit": "px",
       "label": "Menu font size (Cỡ chữ menu)"
+    },
+    {
+      "type": "color",
+      "id": "menu_active_color",
+      "label": "Màu menu trang hiện tại (Active menu color)",
+      "default": "#764f65"
     },
     {
       "type": "select",

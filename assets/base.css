@@ -3711,7 +3711,7 @@ details-disclosure > details {
 }
 
 .header__inline-menu .header__active-menu-item {
-  color: #121212;
+  color: var(--header-active-menu-color, #764f65);
   font-weight: 700;
   text-decoration: none !important;
 }

@@ -39,10 +39,11 @@
     "header": {
       "type": "header",
       "settings": {
-        "logo_width": 130,
+        "logo_width": 80,
         "logo_position": "middle-left",
         "menu": "main-menu",
-        "menu_font_size": 13,
+        "menu_font_size": 15,
+        "menu_active_color": "#764f65",
         "menu_type_desktop": "dropdown",
         "sticky_header_type": "always",
         "show_line_separator": false,
