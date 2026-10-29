@@ -81,9 +81,9 @@
   min-height: 44px;
   padding: 0 14px;
   border-radius: 999px;
-  background: #7a5168 !important;
+  background: #163e2e !important;
   color: #ffffff !important;
-  border: 1px solid #7a5168 !important;
+  border: 1px solid #163e2e !important;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -92,14 +92,14 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(122, 81, 104, 0.22);
+  box-shadow: 0 4px 14px rgba(22, 62, 46, 0.22);
 }
 
 .card-single-add-btn:hover {
-  background: #623e52 !important;
-  border-color: #623e52 !important;
+  background: #0f2c20 !important;
+  border-color: #0f2c20 !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(122, 81, 104, 0.32);
+  box-shadow: 0 6px 18px rgba(22, 62, 46, 0.32);
 }
 
 .card-single-add-btn[disabled] {
@@ -189,7 +189,7 @@
 }
 
 .waymelo-popup-close:hover {
-  background: #7a5168 !important;
+  background: #163e2e !important;
   color: #ffffff !important;
   transform: rotate(90deg) !important;
 }
@@ -286,8 +286,8 @@
 }
 
 .waymelo-popup-thumb-btn.is-active {
-  border-color: #7a5168;
-  box-shadow: 0 0 0 2px rgba(122, 81, 104, 0.12);
+  border-color: #163e2e;
+  box-shadow: 0 0 0 2px rgba(22, 62, 46, 0.15);
 }
 
 .waymelo-popup-thumb-btn img {
@@ -323,8 +323,8 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7a5168;
-  background: #f5edf1;
+  color: #163e2e;
+  background: #eef4f0;
   padding: 6px 11px;
   border-radius: 999px;
 }
@@ -371,7 +371,7 @@
 }
 
 .waymelo-popup-title a:hover {
-  color: #7a5168;
+  color: #163e2e;
 }
 
 .waymelo-popup-price-container {
@@ -442,7 +442,7 @@
 
 .option-selected-value-text {
   font-weight: 500;
-  color: #7a5168;
+  color: #163e2e;
 }
 
 .waymelo-popup-option-pills {
@@ -459,8 +459,8 @@
   padding: 9px 15px;
   border-radius: 999px;
   background: #ffffff;
-  border: 1.5px solid #e5dbe1;
-  color: #30243a;
+  border: 1.5px solid #dbe5de;
+  color: #182d24;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -469,15 +469,15 @@
 }
 
 .waymelo-option-pill:hover {
-  border-color: #7a5168;
-  background: #fcf9fb;
+  border-color: #163e2e;
+  background: #f4f8f5;
 }
 
 .waymelo-option-pill.is-active {
-  border-color: #7a5168;
-  background: #f2e8ee;
-  color: #5d384c;
-  box-shadow: 0 3px 10px rgba(122, 81, 104, 0.12);
+  border-color: #163e2e;
+  background: #e7efe9;
+  color: #163e2e;
+  box-shadow: 0 3px 10px rgba(22, 62, 46, 0.12);
 }
 
 .option-pill-swatch-thumb {
@@ -578,9 +578,9 @@
   height: 52px;
   min-height: 52px;
   border-radius: 999px;
-  background: #7a5168 !important;
+  background: #163e2e !important;
   color: #ffffff !important;
-  border: 1px solid #7a5168 !important;
+  border: 1px solid #163e2e !important;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -589,14 +589,14 @@
   justify-content: center;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 6px 18px rgba(122, 81, 104, 0.28);
+  box-shadow: 0 6px 18px rgba(22, 62, 46, 0.28);
 }
 
 .waymelo-popup-submit-btn:hover {
-  background: #623e52 !important;
-  border-color: #623e52 !important;
+  background: #0f2c20 !important;
+  border-color: #0f2c20 !important;
   transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(122, 81, 104, 0.38);
+  box-shadow: 0 8px 22px rgba(22, 62, 46, 0.38);
 }
 
 .waymelo-popup-submit-btn[disabled] {
@@ -618,13 +618,13 @@
   gap: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: #7a5168;
+  color: #163e2e;
   text-decoration: none;
   transition: gap 0.2s ease, color 0.2s ease;
 }
 
 .waymelo-popup-details-link:hover {
-  color: #553347;
+  color: #0f2c20;
   gap: 9px;
 }
 

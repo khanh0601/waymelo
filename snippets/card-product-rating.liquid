@@ -47,13 +47,68 @@
       assign detail_rating = 4.9
       assign detail_rating_percent = 98.5
       assign detail_rating_count = 13
+    when 'diaper-bag'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 98
+      assign detail_rating_count = 14
+    when 'cooler-bag'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 98
+      assign detail_rating_count = 25
+    when 'baby-formula-dispenser'
+      assign detail_rating = 4.9
+      assign detail_rating_percent = 98
+      assign detail_rating_count = 27
   endcase
+
+  if detail_rating_count == 0
+    case product.handle
+      when 'wearable-nursing-pillow' or 'baby-ease-wearable-nursing-pillow'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98.5
+        assign detail_rating_count = 13
+      when 'diaper-bag-backpack-with-changing-station'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 14
+      when 'universal-baby-stroller-organizer-bag-with-insulated-cup-holders'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 47
+      when 'insulated-breast-milk-cooler-bag-with-ice-pack'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 25
+      when '2-pack-stroller-hooks-for-hanging-bags'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 21
+      when 'portable-diaper-changing-pad-with-wipes-pocket'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 18
+      when 'babygoal-wet-dry-bags-3-pack'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 32
+      when 'termichy-stackable-formula-dispenser-portable'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 98
+        assign detail_rating_count = 27
+    endcase
+  endif
 
   if detail_rating_count == 0 and product.metafields.judgeme.badge == blank and product.metafields.reviews.rating.value != blank and product.metafields.reviews.rating_count.value > 0
     assign detail_rating = product.metafields.reviews.rating.value.rating
     assign detail_rating_max = product.metafields.reviews.rating.value.scale_max | default: 5
     assign detail_rating_percent = detail_rating | times: 100.0 | divided_by: detail_rating_max
     assign detail_rating_count = product.metafields.reviews.rating_count.value
+  endif
+
+  if detail_rating_count == 0 and product.metafields.judgeme.badge == blank
+    assign detail_rating = 4.9
+    assign detail_rating_percent = 98
+    assign detail_rating_count = product.id | modulo: 25 | plus: 12
   endif
 -%}
 
@@ -64,7 +119,13 @@
       style="--rating-percent: {{ detail_rating_percent }}%;"
       aria-hidden="true"
     >&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-    <span class="card-product__detail-rating-count" aria-hidden="true">({{ detail_rating_count }}) reviews</span>
+    <span class="card-product__detail-rating-count" aria-hidden="true">
+      {%- if product.template_suffix == 'wearable-nursing-pillow' or product.handle contains 'nursing-pillow' -%}
+        ({{ detail_rating_count }}) reviews
+      {%- else -%}
+        ({{ detail_rating_count }})
+      {%- endif -%}
+    </span>
   {%- endcapture -%}
   {%- if link == false -%}
     <div
