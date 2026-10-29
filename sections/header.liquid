@@ -131,6 +131,18 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .header__heading-logo-wrapper {
+    max-width: {{ section.settings.logo_width | default: settings.logo_width | default: 130 }}px !important;
+  }
+
+  .header__heading-logo {
+    max-width: {{ section.settings.logo_width | default: settings.logo_width | default: 130 }}px !important;
+  }
+
+  .header__inline-menu .list-menu__item {
+    font-size: {{ section.settings.menu_font_size | default: 13 }}px !important;
+  }
 {%- endstyle -%}
 
 <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
@@ -198,22 +210,35 @@
         <h1 class="header__heading">
       {%- endif -%}
           <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-            {%- assign header_logo_width = settings.logo_width | default: 130 -%}
+            {%- assign header_logo_width = section.settings.logo_width | default: settings.logo_width | default: 130 -%}
             {%- if header_logo_width == blank or header_logo_width == 0 -%}
               {%- assign header_logo_width = 130 -%}
             {%- endif -%}
             {%- assign logo_height = header_logo_width | times: 329 | divided_by: 1319 | round -%}
             <div class="header__heading-logo-wrapper" style="max-width: {{ header_logo_width }}px; width: 100%;">
-              <img
-                src="{{ 'waymelo-logo.png' | asset_url }}"
-                class="header__heading-logo motion-reduce"
-                width="{{ header_logo_width }}"
-                height="{{ logo_height }}"
-                style="max-width: {{ header_logo_width }}px; width: 100%; height: auto;"
-                alt="{{ shop.name | escape }}"
-                loading="eager"
-                fetchpriority="high"
-              >
+              {%- if section.settings.logo != blank -%}
+                {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+                {{
+                  section.settings.logo
+                  | image_url: width: 600
+                  | image_tag:
+                    class: 'header__heading-logo motion-reduce',
+                    width: header_logo_width,
+                    alt: logo_alt,
+                    preload: true
+                }}
+              {%- else -%}
+                <img
+                  src="{{ 'waymelo-logo.png' | asset_url }}"
+                  class="header__heading-logo motion-reduce"
+                  width="{{ header_logo_width }}"
+                  height="{{ logo_height }}"
+                  style="max-width: {{ header_logo_width }}px; width: 100%; height: auto;"
+                  alt="{{ shop.name | escape }}"
+                  loading="eager"
+                  fetchpriority="high"
+                >
+              {%- endif -%}
             </div>
           </a>
       {%- if request.page_type == 'index' -%}
@@ -236,22 +261,35 @@
         <h1 class="header__heading">
       {%- endif -%}
           <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-            {%- assign header_logo_width = settings.logo_width | default: 130 -%}
+            {%- assign header_logo_width = section.settings.logo_width | default: settings.logo_width | default: 130 -%}
             {%- if header_logo_width == blank or header_logo_width == 0 -%}
               {%- assign header_logo_width = 130 -%}
             {%- endif -%}
             {%- assign logo_height = header_logo_width | times: 329 | divided_by: 1319 | round -%}
             <div class="header__heading-logo-wrapper" style="max-width: {{ header_logo_width }}px; width: 100%;">
-              <img
-                src="{{ 'waymelo-logo.png' | asset_url }}"
-                class="header__heading-logo"
-                width="{{ header_logo_width }}"
-                height="{{ logo_height }}"
-                style="max-width: {{ header_logo_width }}px; width: 100%; height: auto;"
-                alt="{{ shop.name | escape }}"
-                loading="eager"
-                fetchpriority="high"
-              >
+              {%- if section.settings.logo != blank -%}
+                {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+                {{
+                  section.settings.logo
+                  | image_url: width: 600
+                  | image_tag:
+                    class: 'header__heading-logo',
+                    width: header_logo_width,
+                    alt: logo_alt,
+                    preload: true
+                }}
+              {%- else -%}
+                <img
+                  src="{{ 'waymelo-logo.png' | asset_url }}"
+                  class="header__heading-logo"
+                  width="{{ header_logo_width }}"
+                  height="{{ logo_height }}"
+                  style="max-width: {{ header_logo_width }}px; width: 100%; height: auto;"
+                  alt="{{ shop.name | escape }}"
+                  loading="eager"
+                  fetchpriority="high"
+                >
+              {%- endif -%}
             </div>
           </a>
       {%- if request.page_type == 'index' -%}
@@ -555,6 +593,25 @@
   "max_blocks": 3,
   "settings": [
     {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 5,
+      "default": 130,
+      "unit": "px",
+      "label": "Logo width (Kích thước logo)"
+    },
+    {
       "type": "select",
       "id": "logo_position",
       "options": [
@@ -584,10 +641,24 @@
       "info": "t:sections.header.settings.logo_help.content"
     },
     {
+      "type": "header",
+      "content": "Navigation (Menu điều hướng)"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
       "label": "t:sections.header.settings.menu.label"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "default": 13,
+      "unit": "px",
+      "label": "Menu font size (Cỡ chữ menu)"
     },
     {
       "type": "select",

@@ -3686,7 +3686,7 @@ details-disclosure > details {
   padding: 0.8rem 1.6rem;
   text-decoration: none !important;
   text-transform: uppercase;
-  font-size: 1.3rem;
+  font-size: var(--header-menu-font-size, 1.3rem);
   font-weight: 600;
   letter-spacing: 0.12rem;
   color: #121212;
