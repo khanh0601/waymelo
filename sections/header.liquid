@@ -19,25 +19,86 @@
   <link rel="stylesheet" href="{{ 'component-discounts.css' | asset_url }}" media="print" onload="this.media='all'"><noscript>{{ 'component-discounts.css' | asset_url | stylesheet_tag }}</noscript>
 {%- endif -%}
 
-<style>
+{%- style -%}
   header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
   }
 
   .header {
+    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 1.5rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 1.5rem;
     max-width: 100%;
     overflow-x: clip;
   }
 
+  .section-header {
+    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
+    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-header {
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+    }
+  }
+
+  /* Header wrapper subtle bottom border & scroll shadow */
+  .header-wrapper {
+    border-bottom: 1px solid rgba(var(--color-foreground, 18, 18, 18), 0.06);
+    background-color: #ffffff;
+  }
+
+  .scrolled-past-header .header-wrapper {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+    .scrolled-past-header .header__heading-logo-wrapper {
+      width: 75%;
+    }
+  {%- endif -%}
+
+  /* Desktop Header Layout & Spacing */
+  @media screen and (min-width: 990px) {
+    .header {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+
+    .header.header--middle-left {
+      grid-template-areas: 'heading navigation icons';
+      grid-template-columns: auto 1fr auto;
+      column-gap: 4rem;
+      align-items: center;
+      padding-top: 1.4rem;
+      padding-bottom: 1.4rem;
+    }
+
+    .header--middle-left .header__heading {
+      margin: 0;
+    }
+
+    .header--middle-left .header__inline-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    {%- if section.settings.menu_type_desktop != "drawer" -%}
+      header-drawer {
+        display: none;
+      }
+    {%- endif -%}
+  }
+
+  /* Logo Sizing */
   .header__heading-logo-wrapper {
-    max-width: {{ settings.logo_width | default: 130 }}px;
+    max-width: {{ section.settings.logo_width | default: settings.logo_width | default: 130 }}px !important;
     width: 100%;
     display: inline-block;
   }
 
   .header__heading-logo {
-    max-width: 100%;
+    max-width: {{ section.settings.logo_width | default: settings.logo_width | default: 130 }}px !important;
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -51,24 +112,11 @@
     }
 
     .header__heading-logo-wrapper {
-      max-width: clamp(95px, 28vw, 125px);
+      max-width: clamp(95px, 28vw, 125px) !important;
     }
   }
 
-  {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
-    .scrolled-past-header .header__heading-logo-wrapper {
-      width: 75%;
-    }
-  {%- endif -%}
-
-  {%- if section.settings.menu_type_desktop != "drawer" -%}
-    @media screen and (min-width: 990px) {
-      header-drawer {
-        display: none;
-      }
-    }
-  {%- endif -%}
-
+  /* Menu Drawer & Lists */
   .menu-drawer-container {
     display: flex;
   }
@@ -107,41 +155,210 @@
       padding-top: 0.5rem;
     }
   }
-</style>
 
-{%- style -%}
-  .header {
-    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 1.5rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 1.5rem;
-  }
-
-  .section-header {
-    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
-    margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
-  }
-
-  @media screen and (min-width: 750px) {
-    .section-header {
-      margin-bottom: {{ section.settings.margin_bottom }}px;
-    }
-  }
-
-  @media screen and (min-width: 990px) {
-    .header {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
-  }
-
-  .header__heading-logo-wrapper {
-    max-width: {{ section.settings.logo_width | default: settings.logo_width | default: 130 }}px !important;
-  }
-
-  .header__heading-logo {
-    max-width: {{ section.settings.logo_width | default: settings.logo_width | default: 130 }}px !important;
+  /* Critical Navigation Menu Styling - Uppercase, Bold, Letter-spacing (Inlined to prevent reload FOUC) */
+  .header__inline-menu .list-menu--inline {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .header__inline-menu .list-menu__item {
+    padding: 0.8rem 1.6rem;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
     font-size: {{ section.settings.menu_font_size | default: 13 }}px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.12rem !important;
+    color: #121212 !important;
+    position: relative;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .header__inline-menu .list-menu__item:hover,
+  .header__inline-menu details[open] > .header__menu-item {
+    color: #764f65 !important;
+    text-decoration: none !important;
+  }
+
+  .header__inline-menu .list-menu__item span {
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+  }
+
+  .header__inline-menu .list-menu__item:hover span {
+    text-decoration: none !important;
+  }
+
+  .header__inline-menu .header__active-menu-item {
+    color: #121212 !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+  }
+
+  .header__inline-menu .header__active-menu-item:hover {
+    color: #764f65 !important;
+  }
+
+  .header__inline-menu .icon-caret {
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-left: 0.4rem;
+    opacity: 0.6;
+  }
+
+  /* Country / Currency Pill Selector */
+  .header-localization .desktop-localization-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 0.8rem;
+  }
+
+  .header-localization .desktop-localization-wrapper .disclosure {
+    position: relative;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__select {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.7rem !important;
+    padding: 0.45rem 1.3rem !important;
+    min-height: 3.3rem !important;
+    height: 3.3rem !important;
+    border: 1px solid rgba(0, 0, 0, 0.14) !important;
+    border-radius: 9999px !important;
+    background-color: #ffffff !important;
+    color: #121212 !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02rem !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__select:before,
+  .header-localization .desktop-localization-wrapper .localization-form__select:after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__select:hover {
+    border-color: rgba(0, 0, 0, 0.32) !important;
+    background-color: #fcfcfc !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06) !important;
+    text-decoration: none !important;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__flag-wrapper {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__flag-img {
+    width: 1.8rem;
+    height: 1.3rem;
+    border-radius: 0.2rem;
+    object-fit: cover;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
+    vertical-align: middle;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__currency-text {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #121212;
+    white-space: nowrap;
+  }
+
+  .header-localization .desktop-localization-wrapper .localization-form__select .icon-caret {
+    position: static !important;
+    width: 0.8rem !important;
+    height: 0.8rem !important;
+    margin-left: 0.2rem !important;
+    opacity: 0.6 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Header Right Utility Icons */
+  .header__icons {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    justify-self: end;
+    padding-right: 0.8rem;
+  }
+
+  .header__icons .header__icon {
+    width: 4rem;
+    height: 4rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #121212;
+    border-radius: 50%;
+    position: relative;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .header__icons .header__icon:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #764f65;
+  }
+
+  .header__icons .header__icon .icon {
+    vertical-align: middle;
+  }
+
+  .header__icons .header__icon--account .icon {
+    width: 1.9rem !important;
+    height: 1.9rem !important;
+  }
+
+  .header__icons .header__search .icon-search {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  .header__icons .header__icon--cart .icon {
+    width: 4.2rem !important;
+    height: 4.2rem !important;
+  }
+
+  .header__icons .header__icon--cart {
+    position: relative;
+    margin-right: 0 !important;
+  }
+
+  .header__icons .header__icon--cart .cart-count-bubble {
+    position: absolute;
+    background-color: #764f65;
+    color: #ffffff;
+    height: 1.7rem;
+    min-width: 1.7rem;
+    padding: 0 0.35rem;
+    border-radius: 9999px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    top: 0.2rem;
+    right: 0.1rem;
+    left: auto;
+    bottom: auto;
+    line-height: 1;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border: 1.5px solid #ffffff;
+    pointer-events: none;
   }
 {%- endstyle -%}
 
@@ -216,10 +433,10 @@
             {%- endif -%}
             {%- assign logo_height = header_logo_width | times: 329 | divided_by: 1319 | round -%}
             <div class="header__heading-logo-wrapper" style="max-width: {{ header_logo_width }}px; width: 100%;">
-              {%- if section.settings.logo != blank -%}
-                {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+              {%- if settings.logo != blank -%}
+                {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
                 {{
-                  section.settings.logo
+                  settings.logo
                   | image_url: width: 600
                   | image_tag:
                     class: 'header__heading-logo motion-reduce',
@@ -267,10 +484,10 @@
             {%- endif -%}
             {%- assign logo_height = header_logo_width | times: 329 | divided_by: 1319 | round -%}
             <div class="header__heading-logo-wrapper" style="max-width: {{ header_logo_width }}px; width: 100%;">
-              {%- if section.settings.logo != blank -%}
-                {%- assign logo_alt = section.settings.logo.alt | default: shop.name | escape -%}
+              {%- if settings.logo != blank -%}
+                {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
                 {{
-                  section.settings.logo
+                  settings.logo
                   | image_url: width: 600
                   | image_tag:
                     class: 'header__heading-logo',
@@ -597,11 +814,6 @@
       "content": "Logo"
     },
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo image"
-    },
-    {
       "type": "range",
       "id": "logo_width",
       "min": 50,
@@ -637,8 +849,7 @@
         }
       ],
       "default": "middle-left",
-      "label": "t:sections.header.settings.logo_position.label",
-      "info": "t:sections.header.settings.logo_help.content"
+      "label": "t:sections.header.settings.logo_position.label"
     },
     {
       "type": "header",
