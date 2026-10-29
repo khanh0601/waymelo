@@ -568,60 +568,6 @@
       })();
     </script>
 
-    {%- unless request.design_mode -%}
-      <script>
-        (function () {
-          var projectId = 'z0mer9hfse';
-          var startedAt = performance.now();
-          var targetAt = Infinity;
-          var timerId;
-          var loaded = false;
-          var interactionEvents = ['pointerdown', 'touchstart', 'keydown', 'scroll'];
-
-          function loadClarity() {
-            if (loaded) return;
-            loaded = true;
-            interactionEvents.forEach(function (name) {
-              window.removeEventListener(name, onInteraction);
-            });
-
-            (function (c, l, a, r, i, t, y) {
-              c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
-              t = l.createElement(r);
-              t.async = true;
-              t.src = 'https://www.clarity.ms/tag/' + i;
-              y = l.getElementsByTagName(r)[0];
-              y.parentNode.insertBefore(t, y);
-            })(window, document, 'clarity', 'script', projectId);
-          }
-
-          function runWhenIdle() {
-            if ('requestIdleCallback' in window) {
-              requestIdleCallback(loadClarity, { timeout: 2000 });
-            } else {
-              window.setTimeout(loadClarity, 250);
-            }
-          }
-
-          function schedule(minimumDelay) {
-            var nextTarget = startedAt + minimumDelay;
-            if (nextTarget >= targetAt) return;
-            targetAt = nextTarget;
-            window.clearTimeout(timerId);
-            timerId = window.setTimeout(runWhenIdle, Math.max(0, targetAt - performance.now()));
-          }
-
-          function onInteraction() {
-            schedule(4000);
-          }
-
-          interactionEvents.forEach(function (name) {
-            window.addEventListener(name, onInteraction, { passive: true, once: true });
-          });
-          window.addEventListener('load', function () { schedule(10000); }, { once: true });
-        })();
-      </script>
-    {%- endunless -%}
 
     <script>
       (function() {
@@ -708,9 +654,8 @@
           }, { once: true });
         }
 
-        var ticking = false;
+        var scrollTimer = null;
         function recordScroll() {
-          ticking = false;
           try {
             var y = window.pageYOffset || document.documentElement.scrollTop || (document.body ? document.body.scrollTop : 0) || 0;
             sessionStorage.setItem(scrollKey, Math.max(0, Math.round(y)));
@@ -718,10 +663,8 @@
         }
 
         window.addEventListener('scroll', function() {
-          if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(recordScroll);
-          }
+          clearTimeout(scrollTimer);
+          scrollTimer = setTimeout(recordScroll, 300);
         }, { passive: true });
 
         function saveFinalPosition() {

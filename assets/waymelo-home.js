@@ -163,21 +163,27 @@
     };
 
     let frame;
+    let positionsDirty = true;
+
+    const calculatePositions = () => {
+      positions = getPositions();
+      renderDots();
+      positionsDirty = false;
+    };
+
     const updatePagination = () => {
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
-        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
-        const nextPositions = getPositions();
-        if (nextPositions.length !== positions.length) {
-          positions = nextPositions;
-          renderDots();
-        } else {
-          positions = nextPositions;
+        if (positionsDirty || positions.length === 0) {
+          calculatePositions();
         }
-
+        const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
         pagination.hidden = maxScroll <= 1 || positions.length <= 1;
+        if (positions.length <= 1) return;
+
+        const scrollLeft = track.scrollLeft;
         const activeIndex = positions.reduce((closestIndex, position, index) => {
-          return Math.abs(track.scrollLeft - position) < Math.abs(track.scrollLeft - positions[closestIndex])
+          return Math.abs(scrollLeft - position) < Math.abs(scrollLeft - positions[closestIndex])
             ? index
             : closestIndex;
         }, 0);
@@ -190,8 +196,13 @@
       });
     };
 
+    const onResize = () => {
+      positionsDirty = true;
+      updatePagination();
+    };
+
     track.addEventListener('scroll', updatePagination, { passive: true });
-    window.addEventListener('resize', updatePagination, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
 
     if (isReviewTrack) {
       let pointerId;

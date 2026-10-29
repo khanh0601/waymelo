@@ -105,19 +105,42 @@
                 name="id"
                 value="{{ product.selected_or_first_available_variant.id }}"
                 class="product-variant-id"
+                {% if product.selected_or_first_available_variant.available == false %}
+                  disabled
+                {% endif %}
               >
               <button
+                id="{{ product_form_id }}-submit"
                 type="submit"
                 name="add"
                 class="wm-product-card__btn"
+                aria-haspopup="dialog"
+                aria-live="polite"
+                data-sold-out-message="true"
+                {% if product.selected_or_first_available_variant.available == false %}
+                  disabled
+                {% endif %}
               >
                 <svg class="wm-cart-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                   <line x1="3" y1="6" x2="21" y2="6"></line>
                   <path d="M16 10a4 4 0 0 1-8 0"></path>
                 </svg>
-                <span>Add to cart</span>
+                <span>
+                  {%- if product.selected_or_first_available_variant.available -%}
+                    Add to cart
+                  {%- else -%}
+                    Sold out
+                  {%- endif -%}
+                </span>
+                <span class="sold-out-message hidden">
+                  Sold out
+                </span>
+                {%- render 'loading-spinner' -%}
               </button>
+              <div class="product-form__error-message-wrapper" role="alert" hidden>
+                <span class="product-form__error-message"></span>
+              </div>
             {%- endform -%}
           </product-form>
         {%- endif -%}
