@@ -44,7 +44,7 @@
 .waymelo-collection-hero__eyebrow,
 .waymelo-collection-grid__eyebrow {
   margin: 0 0 14px;
-  color: #163e2e;
+  color: #7a5168;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -55,12 +55,11 @@
 .waymelo-collection-hero .collection-hero__title {
   max-width: 780px;
   margin: 0;
-  color: #163e2e;
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  color: #30243a;
   font-size: clamp(44px, 5.4vw, 70px);
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.05;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
   text-wrap: balance;
 }
 
@@ -99,12 +98,12 @@
 
 .waymelo-collection-hero__count {
   padding: 8px 14px;
-  border: 1px solid rgba(22, 62, 46, 0.14);
+  border: 1px solid rgba(122, 81, 104, 0.14);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.85);
-  color: #163e2e;
-  font-weight: 500;
-  box-shadow: 0 4px 18px rgba(22, 62, 46, 0.05);
+  background: rgba(255, 255, 255, 0.72);
+  color: #7a5168;
+  font-weight: 400;
+  box-shadow: 0 4px 18px rgba(71, 43, 58, 0.05);
 }
 
 .waymelo-collection-hero__benefit {
@@ -238,8 +237,8 @@
 
 .waymelo-collection-grid .waymelo-collection-filter__link:hover,
 .waymelo-collection-grid .waymelo-collection-filter__link.is-active {
-  background: #eef4f0;
-  color: #163e2e;
+  background: #f6f0f4;
+  color: #7a5168;
 }
 
 .waymelo-collection-grid .waymelo-collection-filter__link.is-active {
@@ -336,11 +335,7 @@
   display: block;
   width: 42px;
   height: 42px;
-<<<<<<< Updated upstream
   color: #7a5168;
-=======
-  color: #163e2e;
->>>>>>> Stashed changes
 }
 
 .waymelo-collection-grid .waymelo-collection-loading__spinner .spinner {

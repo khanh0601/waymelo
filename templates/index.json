@@ -124,11 +124,11 @@
         "products_to_show": 4,
         "show_badge": true,
         "badge_text": "SALE",
-        "badge_color": "#163e2e",
+        "badge_color": "#7a5168",
         "show_view_all": true,
         "view_all_label": "View all",
         "view_all_link": "shopify://collections/all",
-        "button_color": "#163e2e"
+        "button_color": "#7a5168"
       }
     },
     "waymelo_new_arrivals": {
@@ -173,11 +173,11 @@
         "products_to_show": 4,
         "show_badge": true,
         "badge_text": "SALE",
-        "badge_color": "#163e2e",
+        "badge_color": "#7a5168",
         "show_view_all": true,
         "view_all_label": "View all",
         "view_all_link": "shopify://collections/all",
-        "button_color": "#163e2e"
+        "button_color": "#7a5168"
       }
     },
     "image_with_text_h68zjW": {

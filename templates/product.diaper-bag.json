@@ -127,8 +127,8 @@
           "settings": {
             "show_dynamic_checkout": false,
             "cart_action": "cart_drawer",
-            "button_background": "#163e2e",
-            "button_border_color": "#163e2e",
+            "button_background": "#7a5168",
+            "button_border_color": "#7a5168",
             "button_text_color": "#ffffff",
             "dynamic_button_background_color": "#1aa1d2",
             "dynamic_button_text_color": "#ffffff",
