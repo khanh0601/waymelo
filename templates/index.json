@@ -42,22 +42,25 @@
         "benefit_comfort": {
           "type": "benefit",
           "settings": {
-            "icon": "✧",
-            "text": "Comfort along the way"
+            "icon": "✔",
+            "text": "COMFORT FOR BABY",
+            "subtext": "Soft & ergonomic support"
           }
         },
         "benefit_practical": {
           "type": "benefit",
           "settings": {
-            "icon": "↗",
-            "text": "Practical for life on the go"
+            "icon": "✔",
+            "text": "TRAVEL READY",
+            "subtext": "Lightweight & easy to carry"
           }
         },
         "benefit_family": {
           "type": "benefit",
           "settings": {
-            "icon": "♡",
-            "text": "Room for family moments"
+            "icon": "✔",
+            "text": "SAFE & DURABLE",
+            "subtext": "Non-toxic & easy to clean"
           }
         }
       },
@@ -73,11 +76,13 @@
         "eyebrow": "Thoughtful essentials. Easier journeys.",
         "heading": "Go places.",
         "accent_heading": "Feel good.",
+        "heading_line_3": "Every day.",
         "text": "<p>Thoughtful essentials for easier days on the go.</p>",
-        "button_label_1": "Shop Now",
+        "button_label_1": "SHOP NOW",
         "button_link_1": "shopify://collections/all",
-        "button_label_2": "Our Story",
+        "button_label_2": "READ NEWS",
         "button_link_2": "shopify://blogs/news",
+        "mobile_banner_first": true,
         "carousel_label": "Waymelo highlights",
         "autoplay_delay": 5
       }

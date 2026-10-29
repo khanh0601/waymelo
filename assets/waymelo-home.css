@@ -124,28 +124,28 @@
 
 .wm-home__buttons {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
-  margin-top: 30px;
+  gap: 14px;
+  margin-top: 10px;
+  margin-bottom: 28px;
 }
 
 .wm-home__button {
   display: inline-flex;
-  min-height: 48px;
+  min-height: 50px;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   padding: 12px 28px;
-  border-radius: 999px;
-  border: 1.5px solid #7a5168;
+  border-radius: 4px;
+  border: 2px solid #7a5168;
   background: #7a5168;
   color: #ffffff;
-  font-size: 1.45rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(122, 81, 104, 0.22);
+  box-shadow: 0 2px 8px rgba(122, 81, 104, 0.16);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -153,33 +153,75 @@
   background: #623e52;
   border-color: #623e52;
   color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(122, 81, 104, 0.32);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(122, 81, 104, 0.26);
 }
 
 .wm-home__button:nth-child(2) {
   background: #ffffff;
-  color: #7a5168;
-  border-color: #7a5168;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  color: #1f1625;
+  border: 2px solid #1f1625;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .wm-home__button:nth-child(2):hover {
-  background: #7a5168;
+  background: #1f1625;
   color: #ffffff;
-  border-color: #7a5168;
+  border-color: #1f1625;
 }
 
-.wm-home__button-arrow {
+.wm-hero__benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 22px;
+  margin-top: 8px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(122, 81, 104, 0.14);
+}
+
+.wm-hero__benefit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wm-hero__benefit-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wm-hero__benefit-check {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-  transition: transform 0.2s ease;
+  color: var(--wm-purple);
+  flex-shrink: 0;
 }
 
-.wm-home__button:hover .wm-home__button-arrow {
-  transform: translate(2px, -2px);
+.wm-hero__benefit-check svg {
+  width: 16px;
+  height: 16px;
+  stroke: #7a5168;
+}
+
+.wm-hero__benefit-title {
+  color: #1f1625;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.wm-hero__benefit-subtitle {
+  padding-left: 24px;
+  color: #776e7d;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  line-height: 1.35;
 }
 
 .wm-hero {
@@ -197,34 +239,42 @@
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
-  padding: clamp(54px, 7vw, 100px) max(30px, 10vw);
+  padding: clamp(48px, 6vw, 84px) max(30px, 8vw);
   background: var(--wm-paper);
 }
 
 .wm-hero__title {
+  display: flex;
+  flex-direction: column;
   max-width: 660px;
-  margin: 0 0 26px;
-  color: var(--wm-ink);
+  margin: 0 0 20px;
+  color: #1f1625;
   font-family: var(--font-heading-family);
-  font-size: clamp(5rem, 6.2vw, 8.4rem);
-  font-style: var(--font-heading-style);
-  font-weight: var(--font-heading-weight);
-  letter-spacing: -0.055em;
-  line-height: 0.98;
+  font-size: clamp(3.8rem, 5.2vw, 6.2rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  text-transform: uppercase;
+}
+
+.wm-hero__title-line {
+  display: block;
+  color: #1f1625;
 }
 
 .wm-hero__title-accent {
   display: block;
   color: var(--wm-purple);
-  font-style: italic;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .wm-hero__text {
-  max-width: 410px;
-  margin: 0 0 32px;
-  color: var(--wm-muted);
-  font-size: 1.5rem;
-  line-height: 1.8;
+  max-width: 480px;
+  margin: 0 0 24px;
+  color: #554e5b;
+  font-size: 1.55rem;
+  line-height: 1.6;
 }
 
 .wm-hero__text > * {
@@ -967,27 +1017,71 @@
     width: min(100% - 30px, 1320px);
   }
 
-  .wm-hero__grid,
-  .wm-brand-story {
-    grid-template-columns: 1fr;
-  }
-
-  .wm-brand-story {
-    height: auto;
-    max-height: none;
-  }
-
   .wm-hero__grid {
+    display: flex;
+    flex-direction: column;
     min-height: 0;
   }
 
-  .wm-hero__copy {
-    min-height: 430px;
-    padding: 54px 7vw;
+  .wm-hero--mobile-banner-first .wm-hero__media {
+    order: 1;
+    width: 100%;
+    min-height: clamp(340px, 85vw, 500px);
   }
 
-  .wm-hero__media {
-    min-height: 520px;
+  .wm-hero--mobile-banner-first .wm-hero__copy {
+    order: 2;
+    padding: 32px 20px 40px;
+    min-height: auto;
+  }
+
+  .wm-hero__title {
+    font-size: clamp(3.2rem, 8.5vw, 4.4rem);
+    line-height: 1.06;
+    margin-bottom: 16px;
+  }
+
+  .wm-hero__text {
+    font-size: 1.45rem;
+    margin-bottom: 22px;
+  }
+
+  .wm-home__buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    margin-top: 6px;
+    margin-bottom: 24px;
+  }
+
+  .wm-home__button {
+    width: 100%;
+    padding: 12px 10px;
+    font-size: 1.3rem;
+    min-height: 48px;
+    text-align: center;
+  }
+
+  .wm-hero__benefits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 12px;
+    padding-top: 18px;
+  }
+
+  .wm-hero__benefit-title {
+    font-size: 1.15rem;
+  }
+
+  .wm-hero__benefit-subtitle {
+    padding-left: 22px;
+    font-size: 0.95rem;
+  }
+
+  .wm-brand-story {
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
   }
 
   .wm-category-grid,
