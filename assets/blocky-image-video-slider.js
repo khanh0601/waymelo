@@ -97,6 +97,32 @@ if (!customElements.get('blocky-media-slider')) {
           window[glideId] = instance;
           this.glide = instance;
 
+          // Enable mouse wheel / trackpad scrolling for thumbnail slider
+          if (!this._hasWheelBound && (this.classList.contains('blocky-featured-product__thumb-slider') || this.hasAttribute('data-wheel-scroll'))) {
+            this._hasWheelBound = true;
+            let wheelBusy = false;
+            let wheelTimer;
+            this.addEventListener('wheel', (e) => {
+              const delta = Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+              if (Math.abs(delta) < 10) return;
+              e.preventDefault();
+
+              if (wheelBusy) return;
+              wheelBusy = true;
+
+              if (delta > 0) {
+                instance.go('>');
+              } else {
+                instance.go('<');
+              }
+
+              clearTimeout(wheelTimer);
+              wheelTimer = setTimeout(() => {
+                wheelBusy = false;
+              }, 220);
+            }, { passive: false });
+          }
+
           requestAnimationFrame(() => {
             this.classList.remove('is-loading');
             this.classList.add('is-ready');

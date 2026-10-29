@@ -76,6 +76,7 @@ function blockyScrollToSection(target) {
         this.syncQuantity();
         this.updateVariant();
         this.initMainMediaSwipe();
+        this.initThumbSliderWheel();
         this.initBundleSync();
       }
 
@@ -1056,6 +1057,38 @@ function blockyScrollToSection(target) {
             }
           }
         }, { passive: true });
+      }
+
+      initThumbSliderWheel() {
+        const slider = this.querySelector('blocky-media-slider.blocky-featured-product__thumb-slider');
+        if (!slider || slider._hasWheelBound) return;
+        slider._hasWheelBound = true;
+
+        let wheelBusy = false;
+        let wheelTimer;
+
+        slider.addEventListener('wheel', (e) => {
+          const delta = Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+          if (Math.abs(delta) < 10) return;
+          e.preventDefault();
+
+          if (wheelBusy) return;
+          wheelBusy = true;
+
+          const glide = slider.glide || (slider.dataset.id ? window['ivs-' + slider.dataset.id] : null);
+          if (glide) {
+            if (delta > 0) {
+              glide.go('>');
+            } else {
+              glide.go('<');
+            }
+          }
+
+          clearTimeout(wheelTimer);
+          wheelTimer = setTimeout(() => {
+            wheelBusy = false;
+          }, 220);
+        }, { passive: false });
       }
 
       changeQuantity(delta) {
