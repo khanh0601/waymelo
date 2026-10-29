@@ -146,7 +146,7 @@
   text-transform: uppercase;
   text-decoration: none;
   box-shadow: 0 2px 8px rgba(122, 81, 104, 0.16);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .wm-home__button:hover {
@@ -1139,22 +1139,6 @@
     font-size: 1.7rem;
   }
 
-  .wm-hero__copy {
-    min-height: 360px;
-    padding: 38px 5vw;
-  }
-
-  .wm-hero__copy .wm-home__eyebrow {
-    margin-bottom: 10px;
-  }
-
-  .wm-hero__title {
-    margin-bottom: 10px;
-  }
-
-  .wm-hero__text {
-    margin-bottom: 12px;
-  }
 
   .wm-review-card__body {
     padding: 18px;
@@ -1198,43 +1182,6 @@
     line-height: 1.1;
   }
 
-  .wm-hero__copy {
-    min-height: 0;
-    padding: 36px 20px;
-  }
-
-  .wm-home__buttons {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    margin-top: 18px;
-  }
-
-  .wm-home__button {
-    flex: 1 1 0;
-    min-width: 0;
-    min-height: 44px;
-    padding: 10px 14px;
-    font-size: 1.35rem;
-    gap: 8px;
-    border-radius: 999px;
-  }
-
-  .wm-hero__title {
-    margin-bottom: 14px;
-    font-size: clamp(4.6rem, 14vw, 5.6rem);
-  }
-
-  .wm-hero__text {
-    margin-bottom: 20px;
-    line-height: 1.65;
-  }
-
-  .wm-hero__media {
-    min-height: 380px;
-  }
 
   .wm-hero__note {
     right: 18px;
