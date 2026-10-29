@@ -76,6 +76,7 @@ function blockyScrollToSection(target) {
         this.syncQuantity();
         this.updateVariant();
         this.initMainMediaSwipe();
+        this.initBundleSync();
       }
 
       initMediaLoadingState() {
@@ -847,8 +848,50 @@ function blockyScrollToSection(target) {
         const mediaId = this.mediaByVariant[variant.id];
         if (mediaId) this.activateMedia(mediaId);
 
+        this.syncToExternalBundles(variant);
         this.updateInventory(variant);
         this.updateSku(variant);
+      }
+
+      initBundleSync() {
+        // Listen for variant changes from external bundle widgets (e.g. Selleasy, Pumper)
+        document.addEventListener('change', (e) => {
+          const select = e.target.closest('.lb-upsell-flat-card select.lb-variant-picker, .lb-widget select.lb-variant-picker');
+          if (!select) return;
+          const variantId = select.value;
+          if (variantId && this.mediaByVariant[variantId]) {
+            const variant = (this.product.variants || []).find((v) => String(v.id) === String(variantId));
+            if (variant) {
+              const options = variant.options || [variant.option1, variant.option2, variant.option3].filter(Boolean);
+              options.forEach((optVal, idx) => {
+                const input = this.querySelector(`input[data-blocky-option-position="${idx + 1}"][value="${optVal}"]`);
+                if (input && !input.checked) {
+                  input.checked = true;
+                  input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              });
+              this.activateMedia(this.mediaByVariant[variantId]);
+            }
+          }
+        });
+      }
+
+      syncToExternalBundles(variant) {
+        if (!variant) return;
+        try {
+          const selleasySelects = document.querySelectorAll(
+            '.lb-upsell-flat-card[lb-product-id="' + this.product.id + '"] select.lb-variant-picker, ' +
+            '.lb-widget select[aria-label*="' + (this.product.title || '') + '"]'
+          );
+          selleasySelects.forEach((sel) => {
+            if (sel.value !== String(variant.id)) {
+              sel.value = String(variant.id);
+              sel.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+          });
+        } catch (e) {
+          // ignore bundle sync errors
+        }
       }
 
       updateInventory(variant) {

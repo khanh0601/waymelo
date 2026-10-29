@@ -142,6 +142,10 @@
             "margin_bottom": 1.5
           }
         },
+        "selleasy_lb_upsell_widget_ba_b6cEVw": {
+          "type": "shopify://apps/selleasy/blocks/lb-upsell-widget-ba/790c1a03-a71f-4bc1-9869-00dad526d3c2",
+          "settings": {}
+        },
         "guarantee_badge_EPnTJn": {
           "type": "guarantee_badge",
           "settings": {
@@ -164,10 +168,6 @@
             "line_height": 0,
             "letter_spacing": 0
           }
-        },
-        "upsell_com_ex_reconvert_product_recommendations_rpc3FU": {
-          "type": "shopify://apps/upsell-com-ex-reconvert/blocks/product-recommendations/72c64c30-2f7c-4a71-ae4c-efd1d5d1d2e2",
-          "settings": {}
         },
         "review_carousel_4GyGbL": {
           "type": "review_carousel",
@@ -230,8 +230,8 @@
         "variant_picker_UQbGqh",
         "pumper_bundles_app_block_qb_efJJ49",
         "buy_buttons_GdRPbT",
+        "selleasy_lb_upsell_widget_ba_b6cEVw",
         "guarantee_badge_EPnTJn",
-        "upsell_com_ex_reconvert_product_recommendations_rpc3FU",
         "review_carousel_4GyGbL",
         "collapsible_tab_fCRPAE",
         "collapsible_tab_zQYhnn"
