@@ -1,0 +1,8 @@
+{% comment %}
+  Renders rating for luxury collection card
+  Accepts:
+  - product: {Object} Product Liquid object
+{% endcomment %}
+<div class="card-product__rating-box">
+  {% render 'card-product-rating', product: product, link: true %}
+</div>

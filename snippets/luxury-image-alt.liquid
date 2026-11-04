@@ -1,0 +1,20 @@
+{% comment %}
+  Renders descriptive image alt text for product card images
+  Accepts:
+  - image: {Object} Image object
+  - product: {Object} Product Liquid object
+  - index: {Number} Image index (1 for main, 2 for secondary)
+{% endcomment %}
+{%- liquid
+  if image.alt != blank
+    echo image.alt | escape
+  elsif product.title != blank
+    if index == 2
+      echo product.title | append: ' - Alternate View' | escape
+    else
+      echo product.title | escape
+    endif
+  else
+    echo 'Waymelo essential product'
+  endif
+-%}

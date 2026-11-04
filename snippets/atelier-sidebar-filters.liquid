@@ -1,0 +1,79 @@
+{% comment %}
+  Renders the sidebar filters and categories for collection pages
+  Accepts:
+  - results: {Object} Collection object
+  - collection: {Object} Collection object
+{% endcomment %}
+
+<div class="atelier-sidebar-filters">
+  <!-- Active filters summary bar -->
+  <div class="atelier-active-filters-bar" id="AtelierActiveFiltersBar" style="display: none;">
+    <span class="atelier-active-filters-label">Active filters</span>
+    <button type="button" class="atelier-clear-all-link" id="AtelierClearAllFilters">Clear all</button>
+  </div>
+
+  <!-- Categories / Collections Group -->
+  <details class="atelier-filter-group" open>
+    <summary class="atelier-filter-summary">
+      <span>Categories</span>
+      <svg class="atelier-caret-icon" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </summary>
+    <ul class="atelier-filter-list">
+      <li class="atelier-filter-item atelier-filter-type-item{% if collection.handle == 'all' %} is-active{% endif %}" data-url="/collections/all">
+        <a href="/collections/all" class="atelier-filter-link">
+          <span class="atelier-filter-name">All Products</span>
+        </a>
+      </li>
+      {%- for col in collections -%}
+        {%- if col.handle != 'all' and col.handle != 'frontpage' and col.all_products_count > 0 -%}
+          <li class="atelier-filter-item atelier-filter-type-item{% if collection.handle == col.handle %} is-active{% endif %}" data-url="{{ col.url }}">
+            <a href="{{ col.url }}" class="atelier-filter-link">
+              <span class="atelier-filter-name">{{ col.title }}</span>
+              <span class="atelier-filter-count">({{ col.all_products_count }})</span>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </details>
+
+  <!-- Price Range Filter Group -->
+  <details class="atelier-filter-group" open>
+    <summary class="atelier-filter-summary">
+      <span>Price</span>
+      <svg class="atelier-caret-icon" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </summary>
+    <div class="atelier-price-box">
+      <div class="atelier-price-inputs">
+        <span class="atelier-price-currency">$</span>
+        <input type="number" id="AtelierPriceMin" class="atelier-price-input" placeholder="Min" min="0">
+        <span class="atelier-price-separator">-</span>
+        <span class="atelier-price-currency">$</span>
+        <input type="number" id="AtelierPriceMax" class="atelier-price-input" placeholder="Max" min="0">
+      </div>
+      <button type="button" id="AtelierPriceFilterBtn" class="atelier-price-btn">Apply Price</button>
+    </div>
+  </details>
+
+  <!-- Availability Filter Group -->
+  <details class="atelier-filter-group" open>
+    <summary class="atelier-filter-summary">
+      <span>Availability</span>
+      <svg class="atelier-caret-icon" width="10" height="6" viewBox="0 0 10 6" fill="currentColor">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z"/>
+      </svg>
+    </summary>
+    <ul class="atelier-filter-list">
+      <li class="atelier-filter-item atelier-filter-avail-item" data-avail="true">
+        <span class="atelier-filter-name">In Stock</span>
+      </li>
+      <li class="atelier-filter-item atelier-filter-avail-item" data-avail="false">
+        <span class="atelier-filter-name">Out of Stock</span>
+      </li>
+    </ul>
+  </details>
+</div>

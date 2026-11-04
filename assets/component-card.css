@@ -727,6 +727,71 @@
   padding-top: 8px !important;
 }
 
+/* Card Product Rating Box & Stars */
+.card-product__rating-box {
+  min-height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 2px 0 6px 0 !important;
+}
+
+.card-product__detail-rating {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  color: #4b5563 !important;
+  font-family: inherit !important;
+  line-height: 1.2 !important;
+  text-decoration: none !important;
+}
+
+.card-product__detail-rating-stars {
+  color: transparent !important;
+  background: linear-gradient(90deg, #f59e0b 0 var(--rating-percent), #d1d5db var(--rating-percent) 100%) !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 1.35rem !important;
+  letter-spacing: 1px !important;
+  line-height: 1 !important;
+}
+
+.card-product__detail-rating-count {
+  font-size: 1.25rem !important;
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.card-product__judgeme-rating {
+  margin: 2px 0 6px 0 !important;
+  line-height: 1.2 !important;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge__stars {
+  display: none !important;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge::before {
+  content: '\2605\2605\2605\2605\2605' !important;
+  color: #f59e0b !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 1.35rem !important;
+  letter-spacing: 1px !important;
+  line-height: 1 !important;
+}
+
+.card-product__judgeme-rating .jdgm-prev-badge__text {
+  font-size: 1.25rem !important;
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
 /* Card Badges Across Entire Store */
 .card__inner .card__badge {
   position: absolute !important;
