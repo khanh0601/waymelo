@@ -863,15 +863,14 @@
 .card-quick-act-btn {
   width: 100% !important;
   padding: 8px 14px !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(8px) !important;
-  color: #0f172a !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: #ffffff !important;
+  color: #7a5168 !important;
+  border: 1.5px solid #7a5168 !important;
   border-radius: 999px !important;
   font-size: 12px !important;
   font-weight: 700 !important;
   letter-spacing: 0.03em !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 4px 14px rgba(122, 81, 104, 0.15) !important;
   cursor: pointer !important;
   display: inline-flex !important;
   align-items: center !important;

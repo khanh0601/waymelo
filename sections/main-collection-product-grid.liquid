@@ -364,23 +364,24 @@
   .atelier-price-btn {
     width: 100%;
     padding: 9px 12px;
-    background: #7a5168 !important;
-    color: #FAF8F5 !important;
-    border: 1px solid #7a5168 !important;
+    background: #ffffff !important;
+    color: #7a5168 !important;
+    border: 1.5px solid #7a5168 !important;
     border-radius: 4px;
     font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(122, 81, 104, 0.25);
+    box-shadow: 0 2px 6px rgba(122, 81, 104, 0.12);
     transition: all 0.2s ease;
   }
 
   .atelier-price-btn:hover {
-    background: #623e52 !important;
-    border-color: #623e52 !important;
+    background: #7a5168 !important;
+    border-color: #7a5168 !important;
     color: #FFFFFF !important;
+    box-shadow: 0 4px 12px rgba(122, 81, 104, 0.25);
   }
 
   /* Fix product cards sizing: ensure grid items fill their grid column */
@@ -519,9 +520,13 @@
     transform: scale(1.05) !important;
   }
 
-  /* HIDE redundant photo-blocking badge in List View mode */
-  #product-grid.view-mode-1 .card__inner .card__badge {
+  /* HIDE redundant photo-blocking badge and hover actions in List View mode so the image is never blocked */
+  #product-grid.view-mode-1 .card__inner .card__badge,
+  #product-grid.view-mode-1 .card__hover-actions {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   /* Right content box */
@@ -632,11 +637,21 @@
     font-size: 1.25rem !important;
     letter-spacing: 0.04em !important;
     font-weight: 700 !important;
-    background: #0f172a !important;
-    border: 1.5px solid #0f172a !important;
-    color: #ffffff !important;
-    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.15) !important;
+    background: #ffffff !important;
+    border: 1.5px solid #7a5168 !important;
+    color: #7a5168 !important;
+    box-shadow: 0 2px 8px rgba(122, 81, 104, 0.12) !important;
     transition: all 0.25s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+  }
+
+  #product-grid.view-mode-1 .quick-add__submit svg.card-atc-icon {
+    stroke: currentColor !important;
+    color: inherit !important;
   }
 
   #product-grid.view-mode-1 .quick-add__submit:hover {
@@ -645,6 +660,13 @@
     color: #ffffff !important;
     box-shadow: 0 6px 18px rgba(122, 81, 104, 0.35) !important;
     transform: translateY(-2px) !important;
+  }
+
+  #product-grid.view-mode-1 .quick-add__submit:active {
+    background: #623e52 !important;
+    border-color: #623e52 !important;
+    color: #ffffff !important;
+    transform: scale(0.98) !important;
   }
 
   /* =========================================================================
@@ -820,15 +842,14 @@
   .card-quick-act-btn {
     width: 100% !important;
     padding: 8px 14px !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(8px) !important;
-    color: #0f172a !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background: #ffffff !important;
+    color: #7a5168 !important;
+    border: 1.5px solid #7a5168 !important;
     border-radius: 999px !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     letter-spacing: 0.03em !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: 0 4px 14px rgba(122, 81, 104, 0.15) !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -839,10 +860,10 @@
   }
 
   .card-quick-act-btn:hover {
-    background: #0f172a !important;
+    background: #7a5168 !important;
     color: #ffffff !important;
-    border-color: #0f172a !important;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
+    border-color: #7a5168 !important;
+    box-shadow: 0 6px 18px rgba(122, 81, 104, 0.35) !important;
     transform: translateY(-1px) !important;
   }
 
@@ -1071,9 +1092,9 @@
     width: 100% !important;
     margin-top: auto !important;
     padding: 10px 18px !important;
-    background: #0f172a !important;
-    color: #ffffff !important;
-    border: 1.5px solid #0f172a !important;
+    background: #ffffff !important;
+    color: #7a5168 !important;
+    border: 1.5px solid #7a5168 !important;
     border-radius: 999px !important;
     font-size: 13px !important;
     font-weight: 700 !important;
@@ -1088,13 +1109,14 @@
     min-height: 42px !important;
     text-decoration: none !important;
     outline: none !important;
-    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12) !important;
+    box-shadow: 0 2px 8px rgba(122, 81, 104, 0.1) !important;
   }
 
   #product-grid:not(.view-mode-1) .quick-add__submit svg.card-atc-icon {
     width: 15px !important;
     height: 15px !important;
     stroke: currentColor !important;
+    color: inherit !important;
     flex-shrink: 0 !important;
     display: inline-block !important;
     transition: transform 0.2s ease !important;
@@ -1253,11 +1275,11 @@
     }
     .atelier-mobile-filter-btn:active {
       transform: scale(0.98) !important;
-      background: #FAF8F5 !important;
+      background: #ffffff !important;
     }
     .atelier-mobile-filter-btn[aria-expanded="true"] {
       border-color: #7a5168 !important;
-      background: #FAF8F5 !important;
+      background: #ffffff !important;
       border-bottom-left-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
     }
@@ -1491,11 +1513,11 @@
       font-weight: 700 !important;
       letter-spacing: 0.04em !important;
       border-radius: 999px !important;
-      border: 1.5px solid #0f172a !important;
-      background: #0f172a !important;
-      color: #ffffff !important;
+      border: 1.5px solid #7a5168 !important;
+      background: #ffffff !important;
+      color: #7a5168 !important;
       gap: 6px !important;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15) !important;
+      box-shadow: 0 2px 8px rgba(122, 81, 104, 0.1) !important;
       line-height: 1 !important;
       transition: all 0.2s ease !important;
     }
@@ -1509,6 +1531,8 @@
       width: 14px !important;
       height: 14px !important;
       stroke-width: 2.2 !important;
+      stroke: currentColor !important;
+      color: inherit !important;
       flex-shrink: 0 !important;
     }
 
@@ -1704,7 +1728,7 @@
       letter-spacing: 0.07em !important;
       border-radius: 999px !important;
       border: 1.5px solid #7a5168 !important;
-      background: #FAF8F5 !important;
+      background: #ffffff !important;
       color: #7a5168 !important;
       gap: 5px !important;
       display: flex !important;
