@@ -882,9 +882,9 @@
 }
 
 .card-quick-act-btn:hover {
-  background: #0f172a !important;
+  background: #7a5168 !important;
   color: #ffffff !important;
-  border-color: #0f172a !important;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
+  border-color: #7a5168 !important;
+  box-shadow: 0 6px 18px rgba(122, 81, 104, 0.35) !important;
   transform: translateY(-1px) !important;
 }
