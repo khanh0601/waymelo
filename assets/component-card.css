@@ -408,11 +408,15 @@
 }
 
 .card--standard.card--media .card__inner .card__information,
+.card--card.card--media .card__inner .card__information,
+.card--media .card__inner .card__information,
+.card__inner .card__media ~ .card__content .card__information,
+.card__inner .card__media + .card__content .card__information,
 .card--standard.card--text:not(.card--horizontal) > .card__content .card__heading:not(.card__heading--placeholder),
 .card--standard:not(.card--horizontal) > .card__content .card__badge,
 .card--standard.card--text.article-card > .card__content .card__information,
 .card--standard > .card__content .card__caption {
-  display: none;
+  display: none !important;
 }
 
 .card--standard:not(.card--horizontal) .placeholder-svg {
@@ -593,152 +597,229 @@
     clip-path: polygon(var(--shape--blob-5));
   }
 }
-.card-product__judgeme-rating {
-  margin-top: 0.5rem;
-  line-height: 1.2;
-}
 
-.card-product__judgeme-rating .jdgm-prev-badge {
-  display: inline-flex !important;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.card-product__judgeme-rating .jdgm-prev-badge__stars {
-  display: none !important;
-}
-
-.card-product__judgeme-rating .jdgm-prev-badge::before {
-  content: '\2605\2605\2605\2605\2605';
-  color: #f59e0b;
-  font-family: Arial, sans-serif;
-  font-size: 1.45rem;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-
-.card-product__judgeme-rating:has(.jdgm-prev-badge[data-number-of-reviews='0']),
-.card-product__judgeme-rating:has(.jdgm-prev-badge:not([data-number-of-reviews])) {
-  display: none;
-}
-
-.card-product__judgeme-rating .jdgm-prev-badge__text {
-  display: none;
-}
-
-.card-product__judgeme-rating .jdgm-prev-badge::after {
-  content: '(' attr(data-number-of-reviews) ') reviews';
-  color: rgb(var(--color-foreground));
-  font-family: var(--font-body-family);
-  font-size: 1.3rem;
-  line-height: 1.2;
-}
-
-.card-product__detail-rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7rem;
-  color: rgb(var(--color-foreground));
-  font-family: var(--font-body-family);
-  line-height: 1.2;
-  text-decoration: none;
-}
-
-.card-product__detail-rating-stars {
-  color: transparent;
-  background: linear-gradient(90deg, #f59e0b 0 var(--rating-percent), #d1d5db var(--rating-percent) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  font-family: Arial, sans-serif;
-  font-size: 1.45rem;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-
-.card-product__detail-rating-count {
-  font-size: 1.3rem;
-}
-
-/* Ensure all product grid cards have equal heights and aligned buttons */
-/* Do not force display here: Dawn's .grid already lays .product-grid out as a wrapping flex row,
-   while product-showcase / best-seller use their own CSS grid or horizontal scroller. */
-.product-grid {
-  align-items: stretch;
-}
-
-.product-grid .grid__item {
+/* =========================================================================
+   7. CHUẨN HÓA THẺ SẢN PHẨM (PRODUCT RECOMMENDATIONS & GRID CARD STABILIZATION)
+   - Cố định khung ảnh aspect-ratio: 4/5
+   - Tiêu đề khống chế 2 dòng: line-clamp 2, min-height 2.8em
+   - Thẻ hiển thị dạng flex column, giá tiền và nút neo thẳng đáy đều tăm tắp
+   ========================================================================= */
+.product-card-wrapper,
+.contains-card--product,
+.grid__item .card-wrapper {
   display: flex !important;
   flex-direction: column !important;
-  height: auto !important;
-}
-
-.product-grid .card-wrapper {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 auto !important;
   height: 100% !important;
 }
 
-.product-grid .card {
+.product-card-wrapper .card,
+.product-card-wrapper .card--card,
+.card--card,
+.card--standard {
   display: flex !important;
   flex-direction: column !important;
-  flex: 1 1 auto !important;
   height: 100% !important;
-}
-
-.product-grid .card > .card__content {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 auto !important;
   justify-content: space-between !important;
-  height: auto !important;
+  overflow: hidden !important;
+  border-radius: var(--border-radius, 18px) !important;
 }
 
-.product-grid .card > .card__content > .card__information {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 auto !important;
+.product-card-wrapper .card__inner,
+.card--standard .card__inner {
+  position: relative !important;
+  width: 100% !important;
+  aspect-ratio: 4 / 5 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-top-left-radius: calc(var(--border-radius, 18px) - var(--border-width, 1px)) !important;
+  border-top-right-radius: calc(var(--border-radius, 18px) - var(--border-width, 1px)) !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
-/* The duplicate heading inside .card__inner exists only for cards without media; keep it hidden. */
-.product-grid .card--media .card__inner .card__information {
-  display: none !important;
+.product-card-wrapper .card__inner .card__media,
+.card--standard .card__inner .card__media,
+.product-card-wrapper .card .card__media,
+.product-card-wrapper .card .media,
+.card--standard .card .media {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
 }
 
-.product-grid .card__heading {
+.product-card-wrapper .card__inner .card__media img,
+.card--standard .card__inner .card__media img,
+.product-card-wrapper .card .card__media img,
+.product-card-wrapper .card .media img,
+.card--standard .card .media img {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+
+.card__heading,
+.card-information .card__heading,
+.card__heading.h5,
+.card__heading.h4,
+.card__heading.h3,
+.card-wrapper .card__heading {
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  min-height: calc(1.35em * 2);
+  min-height: 2.8em !important;
+  line-height: 1.4 !important;
+  margin-bottom: 8px !important;
 }
 
-.product-grid .card-information {
+/* Triệt để ẩn mọi tiêu đề / card__information bên trong khung ảnh card__inner */
+.card__inner .card__information,
+.card__inner .card__heading,
+.card__inner .card__content .card__information,
+.card__inner a.full-unstyled-link,
+.card--media .card__inner .card__information,
+.card--media .card__inner .card__content .card__information {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+}
+
+.card > .card__content > .card__information,
+.card-wrapper .card > .card__content > .card__information {
   display: flex !important;
   flex-direction: column !important;
-  flex: 1 1 auto !important;
-  justify-content: flex-end !important;
+  justify-content: space-between !important;
+  flex-grow: 1 !important;
+  padding: 16px 12px 14px !important;
 }
 
-.card-product__rating-box {
-  min-height: 22px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.product-grid .quick-add {
-  margin-top: auto !important;
-  width: 100% !important;
-}
-
-.product-grid .quick-add__submit {
-  min-height: 48px !important;
-  height: 48px !important;
-  width: 100% !important;
+.card-information {
   display: flex !important;
+  flex-direction: column !important;
+  flex-grow: 1 !important;
+  justify-content: space-between !important;
+}
+
+.card-information > .price,
+.card__information .price,
+.card-wrapper .price {
+  margin-top: auto !important;
+  padding-top: 8px !important;
+}
+
+/* Card Badges Across Entire Store */
+.card__inner .card__badge {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 4 !important;
+  display: flex !important;
+  pointer-events: none !important;
+}
+
+.card__inner .card__badge .badge--sale,
+.card-wrapper .badge--sale {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  background: linear-gradient(135deg, #e50914 0%, #b3070f 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  line-height: 1.15 !important;
+  box-shadow: 0 3px 10px rgba(229, 9, 20, 0.4) !important;
+}
+
+.card__inner .card__badge .badge--soldout,
+.card-wrapper .badge--soldout {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: rgba(15, 23, 42, 0.88) !important;
+  backdrop-filter: blur(4px) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  line-height: 1.15 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Card Quick View Hover Action */
+.card__hover-actions {
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(8px) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  z-index: 5 !important;
+  pointer-events: auto !important;
+  width: calc(100% - 24px) !important;
+  max-width: 170px !important;
+}
+
+.card-wrapper:hover .card__hover-actions,
+.card:hover .card__hover-actions {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+.card-quick-act-btn {
+  width: 100% !important;
+  padding: 8px 14px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
 }
 
+.card-quick-act-btn:hover {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35) !important;
+  transform: translateY(-1px) !important;
+}
