@@ -335,7 +335,7 @@
 }
 
 .card--card.card--media > .card__content {
-  margin-top: calc(0rem - var(--image-padding));
+  margin-top: 0 !important;
 }
 
 .card--standard.card--text a::after,
@@ -683,8 +683,9 @@
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
-  min-height: 2.8em !important;
-  line-height: 1.4 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  line-height: 1.35 !important;
   margin-bottom: 8px !important;
 }
 
@@ -708,16 +709,18 @@
 .card-wrapper .card > .card__content > .card__information {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
-  flex-grow: 1 !important;
-  padding: 16px 12px 14px !important;
+  justify-content: flex-start !important;
+  flex-grow: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
 }
 
 .card-information {
   display: flex !important;
   flex-direction: column !important;
-  flex-grow: 1 !important;
-  justify-content: space-between !important;
+  flex-grow: 0 !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
 }
 
 .card-information > .price,
@@ -729,10 +732,24 @@
 
 /* Card Product Rating Box & Stars */
 .card-product__rating-box {
-  min-height: 18px !important;
+  min-height: 0 !important;
   display: flex !important;
   align-items: center !important;
   margin: 0 0 10px 0 !important;
+}
+
+.card-product__rating-box:empty,
+.card-product__rating-box:has(.jdgm-prev-badge[data-number-of-reviews='0']),
+.card-product__rating-box:has([data-number-of-reviews='0']),
+.card-product__rating-box:has(.jdgm--empty),
+.jdgm-prev-badge[data-number-of-reviews='0'],
+.jdgm-prev-badge:has(.jdgm-prev-badge__text:empty),
+[data-number-of-reviews='0'] {
+  display: none !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
 }
 
 .card-product__detail-rating {
@@ -886,4 +903,39 @@
   border-color: #7a5168 !important;
   box-shadow: 0 6px 18px rgba(122, 81, 104, 0.35) !important;
   transform: translateY(-1px) !important;
+}
+
+/* Quick Add submit button clean styling: Eliminate Dawn button:after black box-shadow overlay */
+.quick-add__submit:after,
+.quick-add__submit::after,
+.quick-add__submit:before,
+.quick-add__submit::before,
+.button.quick-add__submit:after,
+.button.quick-add__submit::after {
+  display: none !important;
+  content: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.quick-add__submit,
+.button.quick-add__submit {
+  border: 1.5px solid #7a5168 !important;
+  background-color: #ffffff !important;
+  color: #7a5168 !important;
+  box-shadow: 0 2px 6px rgba(122, 81, 104, 0.08) !important;
+  outline: none !important;
+}
+
+.quick-add__submit:hover:not(:disabled),
+.button.quick-add__submit:hover:not(:disabled) {
+  background-color: #7a5168 !important;
+  color: #ffffff !important;
+  border-color: #7a5168 !important;
+  box-shadow: 0 4px 14px rgba(122, 81, 104, 0.28) !important;
+}
+
+.quick-add__submit svg.card-atc-icon {
+  stroke: currentColor !important;
+  color: inherit !important;
 }

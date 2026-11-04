@@ -104,12 +104,6 @@
     assign detail_rating_percent = detail_rating | times: 100.0 | divided_by: detail_rating_max
     assign detail_rating_count = product.metafields.reviews.rating_count.value
   endif
-
-  if detail_rating_count == 0 and product.metafields.judgeme.badge == blank
-    assign detail_rating = 4.9
-    assign detail_rating_percent = 98
-    assign detail_rating_count = product.id | modulo: 25 | plus: 12
-  endif
 -%}
 
 {%- if detail_rating_count > 0 -%}
@@ -145,7 +139,10 @@
     </a>
   {%- endif -%}
 {%- elsif product.metafields.judgeme.badge != blank -%}
-  <div class="card-product__judgeme-rating{% if judgeme_class != blank %} {{ judgeme_class }}{% endif %} jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
-    {{ product.metafields.judgeme.badge }}
-  </div>
+  {%- assign j_badge = product.metafields.judgeme.badge -%}
+  {%- unless j_badge contains "data-number-of-reviews='0'" or j_badge contains 'data-number-of-reviews="0"' or j_badge contains '>0 reviews<' or j_badge contains '>No reviews<' or j_badge contains "data-average-rating='0.00'" or j_badge contains 'data-average-rating="0.00"' -%}
+    <div class="card-product__judgeme-rating{% if judgeme_class != blank %} {{ judgeme_class }}{% endif %} jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}">
+      {{ j_badge }}
+    </div>
+  {%- endunless -%}
 {%- endif -%}

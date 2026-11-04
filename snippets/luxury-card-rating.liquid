@@ -3,6 +3,12 @@
   Accepts:
   - product: {Object} Product Liquid object
 {% endcomment %}
-<div class="card-product__rating-box">
+{%- capture rating_markup -%}
   {% render 'card-product-rating', product: product, link: true %}
-</div>
+{%- endcapture -%}
+{%- assign trimmed_rating = rating_markup | strip -%}
+{%- if trimmed_rating != blank -%}
+  <div class="card-product__rating-box">
+    {{ rating_markup }}
+  </div>
+{%- endif -%}

@@ -882,10 +882,13 @@
   }
 
   /* Product Content Container (Below the Image, Clean & Balanced) */
-  #product-grid:not(.view-mode-1) .card > .card__content {
+  #product-grid:not(.view-mode-1) .card > .card__content,
+  #product-grid .card--card.card--media > .card__content,
+  #product-grid .card > .card__content {
     display: flex !important;
     flex-direction: column !important;
     flex-grow: 1 !important;
+    margin-top: 0 !important;
     padding: 10px 0 0 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -925,8 +928,9 @@
     font-weight: 600 !important;
     letter-spacing: -0.01em !important;
     line-height: 1.35 !important;
-    margin: 0 0 10px 0 !important;
-    min-height: 36px !important;
+    margin: 0 0 8px 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
@@ -961,14 +965,38 @@
     color: #7a5168 !important;
   }
 
+  /* Rating row (tight and neat, collapses if 0 reviews or empty) */
+  #product-grid .card-product__rating-box {
+    min-height: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    margin: 0 0 8px 0 !important;
+  }
+
+  #product-grid .card-product__rating-box:empty,
+  #product-grid .card-product__rating-box:has(.jdgm-prev-badge[data-number-of-reviews='0']),
+  #product-grid .card-product__rating-box:has([data-number-of-reviews='0']),
+  #product-grid .card-product__rating-box:has(.jdgm--empty),
+  #product-grid .jdgm-prev-badge[data-number-of-reviews='0'],
+  #product-grid .jdgm-prev-badge:has(.jdgm-prev-badge__text:empty),
+  #product-grid [data-number-of-reviews='0'] {
+    display: none !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+  }
+
   /* Price Row (Left-aligned, Current Bold, Strikethrough Regular, Red Pill Discount) */
   #product-grid:not(.view-mode-1) .card-information {
     margin: 0 0 10px 0 !important;
     padding: 0 !important;
     width: 100% !important;
     display: flex !important;
+    flex-direction: column !important;
     justify-content: flex-start !important;
     text-align: left !important;
+    gap: 0 !important;
   }
 
   #product-grid:not(.view-mode-1) .price,
@@ -1081,7 +1109,8 @@
 
   /* Add to Cart & Choose Options Button */
   #product-grid:not(.view-mode-1) .quick-add {
-    margin: 0 !important;
+    margin-top: auto !important;
+    margin-bottom: 0 !important;
     width: 100% !important;
   }
 
@@ -1090,6 +1119,21 @@
     width: 100% !important;
     display: block !important;
     margin: 0 !important;
+  }
+
+  /* Dawn Button Outline Elimination: Remove button:after black box-shadow ring */
+  #product-grid .quick-add__submit:after,
+  #product-grid .quick-add__submit::after,
+  #product-grid .quick-add__submit:before,
+  #product-grid .quick-add__submit::before,
+  #product-grid .button:after,
+  #product-grid .button::after,
+  #product-grid button.button--secondary:after,
+  #product-grid button.button--secondary::after {
+    display: none !important;
+    content: none !important;
+    box-shadow: none !important;
+    border: none !important;
   }
 
   #product-grid:not(.view-mode-1) .quick-add__submit {
@@ -1138,14 +1182,7 @@
   #product-grid:not(.view-mode-1) .quick-add__submit:hover:not(:disabled) svg.card-atc-icon {
     transform: scale(1.08) !important;
     stroke: #ffffff !important;
-  }
-    border-color: #7a5168 !important;
-    box-shadow: 0 6px 20px rgba(122, 81, 104, 0.35) !important;
-    transform: translateY(-2px) !important;
-  }
-
-  #product-grid:not(.view-mode-1) .quick-add__submit:hover:not(:disabled) svg.card-atc-icon {
-    transform: scale(1.1) !important;
+    color: #ffffff !important;
   }
 
   #product-grid:not(.view-mode-1) .quick-add__submit:active:not(:disabled) {
@@ -1384,6 +1421,7 @@
     }
 
     #product-grid:not(.view-mode-1) .card > .card__content {
+      margin-top: 0 !important;
       padding: 8px 0 0 0 !important;
       width: 100% !important;
       display: flex !important;
@@ -1407,7 +1445,8 @@
       font-size: 13px !important;
       font-weight: 600 !important;
       line-height: 1.3 !important;
-      min-height: 34px !important;
+      min-height: 0 !important;
+      height: auto !important;
       margin-bottom: 6px !important;
       text-align: left !important;
     }
@@ -1637,7 +1676,7 @@
       font-size: 9.5px !important;
       font-weight: 800 !important;
       letter-spacing: 0.1em !important;
-      color: #9E7A38 !important;
+      color: #7a5168 !important;
       text-transform: uppercase !important;
       margin: 0 0 2px 0 !important;
       line-height: 1.1 !important;
@@ -2311,6 +2350,29 @@
             }
           });
         }
+
+        // Auto-hide empty review badges or 0 reviews
+        function hideEmptyReviewBadges() {
+          document.querySelectorAll('.card-product__rating-box').forEach(function(box) {
+            const badge = box.querySelector('.jdgm-prev-badge');
+            if (badge) {
+              const num = badge.getAttribute('data-number-of-reviews');
+              const text = (badge.innerText || badge.textContent || '').trim().toLowerCase();
+              if (num === '0' || text === 'no reviews' || text === '0 reviews' || text === '') {
+                box.style.setProperty('display', 'none', 'important');
+                box.style.setProperty('margin', '0', 'important');
+                box.style.setProperty('height', '0', 'important');
+                box.style.setProperty('min-height', '0', 'important');
+                box.style.setProperty('padding', '0', 'important');
+              }
+            }
+          });
+        }
+        hideEmptyReviewBadges();
+        document.addEventListener('jdgm.doneSetup', hideEmptyReviewBadges);
+        window.addEventListener('load', hideEmptyReviewBadges);
+        setTimeout(hideEmptyReviewBadges, 800);
+        setTimeout(hideEmptyReviewBadges, 2000);
       }
 
       if (document.readyState === 'loading') {
