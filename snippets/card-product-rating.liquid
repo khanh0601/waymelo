@@ -95,6 +95,10 @@
         assign detail_rating = 4.9
         assign detail_rating_percent = 98
         assign detail_rating_count = 27
+      when '3-in-1-airplane-sleep-support-kit-copy' or '3-in-1-airplane-sleep-support-kit' or 'airplane-sleep-support-kit'
+        assign detail_rating = 4.9
+        assign detail_rating_percent = 97.5
+        assign detail_rating_count = 8
     endcase
   endif
 
@@ -114,11 +118,7 @@
       aria-hidden="true"
     >&#9733;&#9733;&#9733;&#9733;&#9733;</span>
     <span class="card-product__detail-rating-count" aria-hidden="true">
-      {%- if product.template_suffix == 'wearable-nursing-pillow' or product.handle contains 'nursing-pillow' -%}
-        ({{ detail_rating_count }}) reviews
-      {%- else -%}
-        ({{ detail_rating_count }})
-      {%- endif -%}
+      ({{ detail_rating_count }})
     </span>
   {%- endcapture -%}
   {%- if link == false -%}
