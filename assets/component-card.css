@@ -941,8 +941,8 @@
 }
 
 /* Card Quick Add & Stepper Alignment: Prevent any overflow outside card boundaries */
-.card--card .quick-add,
-.card .quick-add {
+.card:not(.card--horizontal) .quick-add,
+.card--card:not(.card--horizontal) .quick-add {
   margin: auto 0 0 0 !important;
   margin-top: auto !important;
   margin-bottom: 0 !important;
@@ -954,8 +954,8 @@
   box-sizing: border-box !important;
 }
 
-.card--card .quick-add form,
-.card--card .quick-add modal-opener {
+.card:not(.card--horizontal) .quick-add form,
+.card:not(.card--horizontal) .quick-add modal-opener {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;

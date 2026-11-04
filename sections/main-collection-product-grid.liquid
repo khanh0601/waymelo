@@ -530,19 +530,21 @@
   }
 
   /* Right content box */
-  #product-grid.view-mode-1 .card > .card__content {
+  #product-grid.view-mode-1 .card > .card__content,
+  #product-grid.view-mode-1 .card--card.card--media > .card__content {
     flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
     padding: 0 !important;
+    margin: 0 !important;
     gap: 20px !important;
-    width: calc(100% - 150px) !important;
+    width: calc(100% - 144px) !important;
     box-sizing: border-box !important;
   }
 
-  #product-grid.view-mode-1 .card > .card__content .card__information {
+  #product-grid.view-mode-1 .card > .card__content > .card__information {
     flex: 1 1 auto !important;
     display: flex !important;
     flex-direction: column !important;
@@ -550,6 +552,9 @@
     align-items: flex-start !important;
     text-align: left !important;
     padding: 0 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    gap: 4px !important;
   }
 
   #product-grid.view-mode-1 .card__eyebrow {
@@ -558,7 +563,7 @@
     letter-spacing: 0.08em !important;
     color: #7a5168 !important;
     text-transform: uppercase !important;
-    margin: 0 0 3px 0 !important;
+    margin: 0 0 2px 0 !important;
     display: block !important;
     line-height: 1.1 !important;
   }
@@ -570,6 +575,8 @@
     line-height: 1.3 !important;
     margin: 0 0 4px 0 !important;
     letter-spacing: -0.01em !important;
+    min-height: 0 !important;
+    height: auto !important;
   }
 
   #product-grid.view-mode-1 .card__heading a {
@@ -584,11 +591,22 @@
     text-decoration: none !important;
   }
 
+  /* Horizontal arrangement: Rating and Price side-by-side */
   #product-grid.view-mode-1 .card-information {
     display: flex !important;
-    align-items: baseline !important;
-    gap: 12px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin: 4px 0 0 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+  }
+
+  #product-grid.view-mode-1 .card-product__rating-box {
     margin: 0 !important;
+    min-height: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
 
   #product-grid.view-mode-1 .card-information .price {
@@ -598,6 +616,9 @@
     font-weight: 700 !important;
     color: #0f172a !important;
     margin: 0 !important;
+    display: inline-flex !important;
+    align-items: baseline !important;
+    width: auto !important;
   }
 
   /* FIX: Ensure only ONE price is displayed. Hide price__sale if not on sale; hide price__regular if on sale */
@@ -615,24 +636,47 @@
     gap: 8px !important;
   }
 
+  /* Right-aligned action area (Button or Stepper + Button) */
   #product-grid.view-mode-1 .quick-add {
     flex-shrink: 0 !important;
+    flex-grow: 0 !important;
     margin: 0 !important;
-    min-width: 130px !important;
+    margin-left: auto !important;
+    width: auto !important;
+    max-width: 280px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
-  #product-grid.view-mode-1 .quick-add modal-opener {
-    display: block !important;
-    width: 100% !important;
-  }
-
+  #product-grid.view-mode-1 .quick-add modal-opener,
   #product-grid.view-mode-1 .quick-add form {
-    width: 100% !important;
+    display: block !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #product-grid.view-mode-1 .card__atc-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #product-grid.view-mode-1 .card-atc-stepper {
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+    height: 38px !important;
+    min-height: 38px !important;
   }
 
   #product-grid.view-mode-1 .quick-add__submit {
     min-width: 140px !important;
-    padding: 10px 20px !important;
+    width: auto !important;
+    padding: 9px 20px !important;
     border-radius: 9999px !important;
     font-size: 1.25rem !important;
     letter-spacing: 0.04em !important;
@@ -640,6 +684,8 @@
     background: #ffffff !important;
     border: 1.5px solid #7a5168 !important;
     color: #7a5168 !important;
+    height: 38px !important;
+    min-height: 38px !important;
     box-shadow: 0 2px 8px rgba(122, 81, 104, 0.12) !important;
     transition: all 0.25s ease !important;
     display: inline-flex !important;
@@ -647,6 +693,8 @@
     justify-content: center !important;
     gap: 8px !important;
     cursor: pointer !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
   }
 
   #product-grid.view-mode-1 .quick-add__submit svg.card-atc-icon {
@@ -884,8 +932,7 @@
 
   /* Product Content Container (Below the Image, Clean & Balanced) */
   #product-grid:not(.view-mode-1) .card > .card__content,
-  #product-grid .card--card.card--media > .card__content,
-  #product-grid .card > .card__content {
+  #product-grid:not(.view-mode-1) .card--card.card--media > .card__content {
     display: flex !important;
     flex-direction: column !important;
     flex-grow: 1 !important;
@@ -1110,8 +1157,7 @@
 
   /* Add to Cart & Choose Options Button */
   #product-grid:not(.view-mode-1) .quick-add,
-  #product-grid .quick-add,
-  .card--card .quick-add {
+  #product-grid:not(.view-mode-1) .card--card .quick-add {
     margin: auto 0 0 0 !important;
     margin-top: auto !important;
     margin-bottom: 0 !important;
@@ -1124,9 +1170,7 @@
   }
 
   #product-grid:not(.view-mode-1) .quick-add form,
-  #product-grid:not(.view-mode-1) .quick-add modal-opener,
-  #product-grid .quick-add form,
-  #product-grid .quick-add modal-opener {
+  #product-grid:not(.view-mode-1) .quick-add modal-opener {
     width: 100% !important;
     max-width: 100% !important;
     display: block !important;
@@ -1259,8 +1303,7 @@
     border: none !important;
   }
 
-  #product-grid:not(.view-mode-1) .quick-add__submit,
-  #product-grid .quick-add__submit {
+  #product-grid:not(.view-mode-1) .quick-add__submit {
     width: 100%;
     margin: 0 !important;
     padding: 7px 14px !important;
@@ -1682,8 +1725,7 @@
     }
 
     /* Add to Cart Button & Quantity Stepper on Mobile */
-    #product-grid:not(.view-mode-1) .quick-add,
-    #product-grid .quick-add {
+    #product-grid:not(.view-mode-1) .quick-add {
       margin: auto 0 0 0 !important;
       margin-top: auto !important;
       margin-left: 0 !important;
