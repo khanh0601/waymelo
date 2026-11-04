@@ -363,22 +363,23 @@
 
   .atelier-price-btn {
     width: 100%;
-    padding: 8px 12px;
-    background: linear-gradient(180deg, #1D4B37 0%, #143828 42%, #081610 100%) !important;
+    padding: 9px 12px;
+    background: #7a5168 !important;
     color: #FAF8F5 !important;
-    border: 1px solid rgba(216, 184, 140, 0.4) !important;
+    border: 1px solid #7a5168 !important;
     border-radius: 4px;
     font-size: 1.2rem;
+    font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(8, 22, 16, 0.25);
+    box-shadow: 0 2px 6px rgba(122, 81, 104, 0.25);
     transition: all 0.2s ease;
   }
 
   .atelier-price-btn:hover {
-    background: linear-gradient(180deg, #245E45 0%, #18422F 42%, #0C1E15 100%) !important;
-    border-color: #D8B88C !important;
+    background: #623e52 !important;
+    border-color: #623e52 !important;
     color: #FFFFFF !important;
   }
 
@@ -1212,7 +1213,7 @@
       font-size: 1.3rem !important;
       font-weight: 700 !important;
       padding: 4px 18px 4px 4px !important;
-      color: #163327 !important;
+      color: #111111 !important;
       max-width: 140px !important;
     }
     .atelier-sort-caret {
@@ -1245,9 +1246,9 @@
       font-family: inherit !important;
       font-size: 13px !important;
       font-weight: 700 !important;
-      color: #163327 !important;
+      color: #7a5168 !important;
       cursor: pointer !important;
-      box-shadow: 0 2px 6px rgba(22, 51, 39, 0.04) !important;
+      box-shadow: 0 2px 6px rgba(122, 81, 104, 0.06) !important;
       transition: all 0.2s ease !important;
     }
     .atelier-mobile-filter-btn:active {
@@ -1255,7 +1256,7 @@
       background: #FAF8F5 !important;
     }
     .atelier-mobile-filter-btn[aria-expanded="true"] {
-      border-color: #163327 !important;
+      border-color: #7a5168 !important;
       background: #FAF8F5 !important;
       border-bottom-left-radius: 0 !important;
       border-bottom-right-radius: 0 !important;
@@ -1265,7 +1266,7 @@
     }
     .atelier-mobile-filter-chevron {
       transition: transform 0.25s ease !important;
-      color: #163327 !important;
+      color: #7a5168 !important;
     }
     .atelier-mobile-filter-btn-left,
     .atelier-mobile-filter-btn-right {
@@ -1278,7 +1279,7 @@
       font-weight: 800 !important;
       padding: 2px 8px !important;
       border-radius: 999px !important;
-      background: #163327 !important;
+      background: #7a5168 !important;
       color: #FAF8F5 !important;
     }
     .atelier-mobile-filter-collapsible {
@@ -1667,7 +1668,7 @@
       display: inline !important;
       font-size: 15px !important;
       font-weight: 800 !important;
-      color: #163327 !important;
+      color: #7a5168 !important;
       order: 1 !important;
     }
     #product-grid.view-mode-1 .price-item--compare-wrap {
@@ -1702,9 +1703,9 @@
       font-weight: 800 !important;
       letter-spacing: 0.07em !important;
       border-radius: 999px !important;
-      border: 1.5px solid #163327 !important;
+      border: 1.5px solid #7a5168 !important;
       background: #FAF8F5 !important;
-      color: #163327 !important;
+      color: #7a5168 !important;
       gap: 5px !important;
       display: flex !important;
       align-items: center !important;
@@ -1785,13 +1786,13 @@
       </div>
     </div>
 
-    <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
+    <div class="{% if section.settings.enable_filtering %}facets-vertical {% endif %}page-width">
       {{ 'component-facets.css' | asset_url | stylesheet_tag }}
       <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
       {%- if section.settings.enable_filtering -%}
         <aside
           aria-labelledby="verticalTitle"
-          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+          class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}"
           id="main-collection-filters"
           data-id="{{ section.id }}"
         >
@@ -1843,7 +1844,7 @@
           </div>
         {%- else -%}
           <div
-            class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+            class="collection"
           >
             <div class="loading-overlay gradient"></div>
             <ul
