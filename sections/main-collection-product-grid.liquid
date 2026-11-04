@@ -685,6 +685,7 @@
     border: 1px solid #e5e7eb !important;
     border-radius: 12px !important;
     padding: 10px 10px 12px !important;
+    overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
@@ -1108,16 +1109,138 @@
   }
 
   /* Add to Cart & Choose Options Button */
-  #product-grid:not(.view-mode-1) .quick-add {
+  #product-grid:not(.view-mode-1) .quick-add,
+  #product-grid .quick-add,
+  .card--card .quick-add {
+    margin: auto 0 0 0 !important;
     margin-top: auto !important;
     margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   #product-grid:not(.view-mode-1) .quick-add form,
-  #product-grid:not(.view-mode-1) .quick-add modal-opener {
+  #product-grid:not(.view-mode-1) .quick-add modal-opener,
+  #product-grid .quick-add form,
+  #product-grid .quick-add modal-opener {
     width: 100% !important;
+    max-width: 100% !important;
     display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Card ATC Row with Quantity Stepper */
+  #product-grid .card__atc-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #product-grid .card__atc-row .quick-add__submit {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 7px 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* Quantity Stepper inside Card ATC row */
+  #product-grid .card-atc-stepper,
+  #product-grid .card-atc-stepper.quantity {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    border-radius: 999px !important;
+    border: 1.5px solid #7a5168 !important;
+    background: #ffffff !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  #product-grid .card-atc-stepper:after,
+  #product-grid .card-atc-stepper::after,
+  #product-grid .card-atc-stepper:before,
+  #product-grid .card-atc-stepper::before {
+    display: none !important;
+    content: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  #product-grid .card-atc-stepper .quantity__button {
+    width: 24px !important;
+    height: 32px !important;
+    min-width: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: none !important;
+    background: transparent !important;
+    color: #7a5168 !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+  }
+
+  #product-grid .card-atc-stepper .quantity__button * {
+    pointer-events: none !important;
+  }
+
+  #product-grid .card-atc-stepper .quantity__button:hover {
+    background: rgba(122, 81, 104, 0.12) !important;
+    color: #7a5168 !important;
+  }
+
+  #product-grid .card-atc-stepper .quantity__button svg {
+    width: 10px !important;
+    height: 10px !important;
+    stroke: currentColor !important;
+    stroke-width: 2.5 !important;
+    display: block !important;
+  }
+
+  #product-grid .card-atc-stepper .quantity__input {
+    width: 24px !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #7a5168 !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100% !important;
+    -moz-appearance: textfield !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+  }
+
+  #product-grid .card-atc-stepper .quantity__input::-webkit-outer-spin-button,
+  #product-grid .card-atc-stepper .quantity__input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
     margin: 0 !important;
   }
 
@@ -1136,8 +1259,9 @@
     border: none !important;
   }
 
-  #product-grid:not(.view-mode-1) .quick-add__submit {
-    width: 100% !important;
+  #product-grid:not(.view-mode-1) .quick-add__submit,
+  #product-grid .quick-add__submit {
+    width: 100%;
     margin: 0 !important;
     padding: 7px 14px !important;
     min-height: 36px !important;
@@ -1159,6 +1283,8 @@
     text-decoration: none !important;
     outline: none !important;
     box-shadow: 0 2px 6px rgba(122, 81, 104, 0.08) !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
   }
 
   #product-grid:not(.view-mode-1) .quick-add__submit svg.card-atc-icon {
@@ -1555,27 +1681,57 @@
       line-height: 1 !important;
     }
 
-    /* Add to Cart Button on Mobile */
-    #product-grid:not(.view-mode-1) .quick-add {
+    /* Add to Cart Button & Quantity Stepper on Mobile */
+    #product-grid:not(.view-mode-1) .quick-add,
+    #product-grid .quick-add {
+      margin: auto 0 0 0 !important;
       margin-top: auto !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
       width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #product-grid .card__atc-row {
+      gap: 5px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #product-grid .card-atc-stepper,
+    #product-grid .card-atc-stepper.quantity {
+      width: 68px !important;
+      min-width: 68px !important;
+      max-width: 68px !important;
+      height: 34px !important;
+      min-height: 34px !important;
+      padding: 0 2px !important;
+    }
+    #product-grid .card-atc-stepper .quantity__button {
+      width: 20px !important;
+      min-width: 20px !important;
+      height: 30px !important;
+    }
+    #product-grid .card-atc-stepper .quantity__input {
+      width: 22px !important;
+      font-size: 12px !important;
     }
     #product-grid:not(.view-mode-1) .quick-add__submit {
       width: 100% !important;
-      padding: 6px 10px !important;
+      padding: 6px 6px !important;
       min-height: 34px !important;
       height: 34px !important;
-      font-size: 11.5px !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.03em !important;
+      font-size: 11px !important;
+      letter-spacing: 0 !important;
       border-radius: 999px !important;
       border: 1.5px solid #7a5168 !important;
       background: #ffffff !important;
       color: #7a5168 !important;
-      gap: 5px !important;
+      gap: 4px !important;
       box-shadow: 0 2px 6px rgba(122, 81, 104, 0.08) !important;
       line-height: 1 !important;
       transition: all 0.2s ease !important;
+      box-sizing: border-box !important;
     }
     #product-grid:not(.view-mode-1) .quick-add__submit:active {
       transform: scale(0.97) !important;

@@ -939,3 +939,134 @@
   stroke: currentColor !important;
   color: inherit !important;
 }
+
+/* Card Quick Add & Stepper Alignment: Prevent any overflow outside card boundaries */
+.card--card .quick-add,
+.card .quick-add {
+  margin: auto 0 0 0 !important;
+  margin-top: auto !important;
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.card--card .quick-add form,
+.card--card .quick-add modal-opener {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.card__atc-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.card__atc-row .quick-add__submit {
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 7px 10px !important;
+  white-space: nowrap !important;
+}
+
+/* Card Quantity Stepper */
+.card-atc-stepper,
+.card-atc-stepper.quantity {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 82px !important;
+  min-width: 82px !important;
+  max-width: 82px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  border-radius: 999px !important;
+  border: 1.5px solid #7a5168 !important;
+  background: #ffffff !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+.card-atc-stepper:after,
+.card-atc-stepper::after,
+.card-atc-stepper:before,
+.card-atc-stepper::before {
+  display: none !important;
+  content: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.card-atc-stepper .quantity__button {
+  width: 24px !important;
+  height: 32px !important;
+  min-width: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  background: transparent !important;
+  color: #7a5168 !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.card-atc-stepper .quantity__button * {
+  pointer-events: none !important;
+}
+
+.card-atc-stepper .quantity__button:hover {
+  background: rgba(122, 81, 104, 0.12) !important;
+  color: #7a5168 !important;
+}
+
+.card-atc-stepper .quantity__button svg {
+  width: 10px !important;
+  height: 10px !important;
+  stroke: currentColor !important;
+  stroke-width: 2.5 !important;
+  display: block !important;
+}
+
+.card-atc-stepper .quantity__input {
+  width: 24px !important;
+  min-width: 0 !important;
+  text-align: center !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #7a5168 !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100% !important;
+  -moz-appearance: textfield !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+
+.card-atc-stepper .quantity__input::-webkit-outer-spin-button,
+.card-atc-stepper .quantity__input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}

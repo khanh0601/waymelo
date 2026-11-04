@@ -380,35 +380,59 @@
                       disabled
                     {% endif %}
                   >
-                  <button
-                    id="{{ product_form_id }}-submit"
-                    type="submit"
-                    name="add"
-                    class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
-                    aria-haspopup="dialog"
-                    aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                    aria-live="polite"
-                    data-sold-out-message="true"
-                    {% if card_product.selected_or_first_available_variant.available == false %}
-                      disabled
-                    {% endif %}
-                  >
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="card-atc-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span>
-                      {%- if card_product.selected_or_first_available_variant.available -%}
-                        {{ 'products.product.add_to_cart' | t }}
-                      {%- else -%}
-                        {{ 'products.product.sold_out' | t }}
-                      {%- endif -%}
-                    </span>
-                    <span class="sold-out-message hidden">
-                      {{ 'products.product.sold_out' | t }}
-                    </span>
-                    {%- if horizontal_quick_add -%}
-                      <span class="icon-wrap">{% render 'icon-plus' %}</span>
+                  <div class="card__atc-row">
+                    {%- if card_product.selected_or_first_available_variant.available -%}
+                      <quantity-input class="quantity card-atc-stepper">
+                        <button class="quantity__button no-js-hidden" name="minus" type="button" aria-label="Decrease quantity">
+                          {% render 'icon-minus' %}
+                        </button>
+                        <input
+                          class="quantity__input"
+                          type="number"
+                          name="quantity"
+                          min="1"
+                          value="1"
+                          step="1"
+                          data-min="1"
+                          aria-label="Quantity"
+                          id="CardQty-{{ section_id }}-{{ card_product.id }}"
+                        >
+                        <button class="quantity__button no-js-hidden" name="plus" type="button" aria-label="Increase quantity">
+                          {% render 'icon-plus' %}
+                        </button>
+                      </quantity-input>
                     {%- endif -%}
-                    {%- render 'loading-spinner' -%}
-                  </button>
+
+                    <button
+                      id="{{ product_form_id }}-submit"
+                      type="submit"
+                      name="add"
+                      class="quick-add__submit button button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
+                      aria-haspopup="dialog"
+                      aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+                      aria-live="polite"
+                      data-sold-out-message="true"
+                      {% if card_product.selected_or_first_available_variant.available == false %}
+                        disabled
+                      {% endif %}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="card-atc-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                      <span>
+                        {%- if card_product.selected_or_first_available_variant.available -%}
+                          {{ 'products.product.add_to_cart' | t }}
+                        {%- else -%}
+                          {{ 'products.product.sold_out' | t }}
+                        {%- endif -%}
+                      </span>
+                      <span class="sold-out-message hidden">
+                        {{ 'products.product.sold_out' | t }}
+                      </span>
+                      {%- if horizontal_quick_add -%}
+                        <span class="icon-wrap">{% render 'icon-plus' %}</span>
+                      {%- endif -%}
+                      {%- render 'loading-spinner' -%}
+                    </button>
+                  </div>
                 {%- endform -%}
               </product-form>
             {%- endif -%}
