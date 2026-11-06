@@ -1070,3 +1070,37 @@
   -webkit-appearance: none !important;
   margin: 0 !important;
 }
+
+.card__media-link {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  cursor: pointer !important;
+}
+
+.card__media-link .media {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.card__eyebrow-link {
+  display: block !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  cursor: pointer !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.card__price-link {
+  display: inline-flex !important;
+  text-decoration: none !important;
+  color: inherit !important;
+  cursor: pointer !important;
+  align-items: baseline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
