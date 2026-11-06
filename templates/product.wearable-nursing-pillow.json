@@ -241,7 +241,7 @@
             "heading": "Product Details",
             "icon": "none",
             "heading_size": 16,
-            "content": "<p>🍼 <strong>Portable Baby Formula Dispenser – Perfect for On-the-Go Feeding!</strong></p><p>Make feeding time easier wherever you go! This compact, stackable baby formula dispenser keeps pre-measured formula fresh, organized, and ready to use. Perfect for travel, diaper bags, nighttime feedings, and everyday outings.</p><p>✨ <strong>Key Features:</strong></p><ul><li><strong>Stackable & Portable:</strong> Independent compartments can be used separately or stacked together.</li><li><strong>Mess-Free Feeding:</strong> Built-in funnels make pouring formula into bottles quick and easy.</li><li><strong>Perfect for Travel:</strong> Compact, lightweight design fits easily into diaper bags.</li><li><strong>Nighttime Convenience:</strong> Pre-measure formula for quick, hassle-free nighttime feedings.</li><li><strong>Baby-Safe Material:</strong> Made from food-grade, BPA-free PP plastic.</li><li><strong>Easy to Clean:</strong> Dishwasher safe below 212°F (100°C).</li></ul><p>📏 <strong>Capacity:</strong> 2.1 oz (60g) per container</p><p>💕 <strong>Less mess, less stress, and more convenience for busy parents!</strong></p>",
+            "content": "<p>👶 <strong>Wearable Nursing Pillow – Comfortable Support for Feeding & Travel!</strong><br/>Make feeding, cuddling, and traveling with your baby easier! This wearable nursing pillow provides comfortable, hands-free support to help reduce arm strain and make everyday parenting more convenient. Perfect for home, airplane travel, and on-the-go feeding.<br/>✨ <strong>Key Features:</strong> <strong>Comfortable Baby Support:</strong> Soft, supportive cushions help position your baby comfortably during feeding and cuddling.<br/><strong>Wearable & Adjustable:</strong> Features an adjustable neck strap and secure fastening system for a customized fit.<br/><strong>Hands-Free Convenience:</strong> Helps reduce the need to constantly hold the pillow in place while feeding.<br/><strong>Travel-Friendly Design:</strong> Great for airplane trips, road trips, and everyday outings.<br/><strong>Multi-Cushion Support:</strong> Includes separate head and support cushions for flexible positioning.<br/><strong>Easy to Use:</strong> Simply wrap around your waist, adjust the neck strap, and position the cushions.<br/>📏 <strong>Size:</strong> 23.6\" × 23.6\" (60 × 60 cm)<br/>👶 <strong>Recommended Age:</strong> 0–8 months, depending on baby's size and development.<br/>📦 <strong>What's Included:</strong> Main support pillow, head cushion, support cushion, adjustable neck strap, and fastening system.<br/>💕 <strong>More comfort for your baby, less strain for you — wherever life takes you!</strong><br/>⚠️ <strong>Safety Note:</strong> Always use under adult supervision. Not intended for infant sleep or unattended use.</p>",
             "content_size": 14,
             "page": "",
             "open_by_default": false,
@@ -258,38 +258,6 @@
             "icon": "none",
             "heading_size": 16,
             "content": "<p>✔ <strong>Wear & Secure</strong> – Fasten the adjustable shoulder and waist straps around yourself to fit comfortably before taking your seat on the plane.<br/>✔ <strong>Position Baby</strong> – Place your baby on the pillow, resting their head on the built-in round cushion for ergonomic support during feeding or naptime.<br/>✔ <strong>Relax Hands-Free</strong> – Enjoy pain-free arms as the 3-point support system holds baby securely at the perfect height throughout the flight.<br/>✔ <strong>Care & Clean</strong> – Simply unzip the 100% cotton cover and machine wash on a gentle cycle after your trip for quick, effortless maintenance.</p>",
-            "content_size": 14,
-            "page": "",
-            "open_by_default": false,
-            "bg_color": "",
-            "text_color": "",
-            "row_padding": 14,
-            "letter_spacing": 0
-          }
-        },
-        "collapsible_tab_9jUktt": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Shipping & Delivery",
-            "icon": "none",
-            "heading_size": 16,
-            "content": "<p>📦 <strong>Fast Processing</strong> – Orders are packed and shipped within 2 business days.<br/>🚚 <strong>Reliable Shipping</strong> – We partner with trusted carriers to ensure your order arrives safely.<br/>🌍 <strong>Worldwide Delivery</strong> – We ship to most locations around the world.<br/>📩 <strong>Tracking Included</strong> – Stay updated with tracking details sent to your email.</p><p>Delivery times may vary based on your location. If you have any questions, feel free to reach out!</p>",
-            "content_size": 14,
-            "page": "",
-            "open_by_default": false,
-            "bg_color": "",
-            "text_color": "",
-            "row_padding": 14,
-            "letter_spacing": 0
-          }
-        },
-        "collapsible_tab_mXtiYD": {
-          "type": "collapsible_tab",
-          "settings": {
-            "heading": "Return & Refund Policy",
-            "icon": "none",
-            "heading_size": 16,
-            "content": "<p>🔄 <strong>Hassle-Free Returns</strong> – If you're not satisfied, you can return your item within 30 days.<br/>💰 <strong>Money-Back Guarantee</strong> – Get a full refund or exchange if your item arrives damaged or defective.<br/>📦 <strong>Easy Process</strong> – Simply contact our support team, and we’ll guide you through the steps.<br/>📩 <strong>Customer Support</strong> – Have questions? We’re here to help!</p><p>For full details, please check our Return Policy or contact us anytime.</p>",
             "content_size": 14,
             "page": "",
             "open_by_default": false,
@@ -316,9 +284,7 @@
         "upsell_com_ex_reconvert_product_recommendations_hCQgTH",
         "review_carousel_fxV7nG",
         "collapsible_tab_pnakVM",
-        "collapsible_tab_VBrdmj",
-        "collapsible_tab_9jUktt",
-        "collapsible_tab_mXtiYD"
+        "collapsible_tab_VBrdmj"
       ],
       "custom_css": [
         ".alert-text + .product__text {margin: 1rem 0;}",
