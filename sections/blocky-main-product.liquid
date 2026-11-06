@@ -24,7 +24,10 @@
   endif
 
   assign current_variant = product.selected_or_first_available_variant
-  assign initial_media = current_variant.featured_media | default: product.featured_media
+  assign initial_media = product.featured_media | default: current_variant.featured_media
+  if product.selected_variant and product.selected_variant.featured_media != blank
+    assign initial_media = product.selected_variant.featured_media
+  endif
 
   assign media_ratio = '1 / 1'
   case section.settings.media_aspect_ratio

@@ -33,9 +33,13 @@
       tabindex="0"
     >
       {%- liquid
-        if product.selected_or_first_available_variant.featured_media != null
-          assign media = product.selected_or_first_available_variant.featured_media
-          render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants
+        assign initial_modal_media = product.featured_media
+        if product.selected_variant and product.selected_variant.featured_media != null
+          assign initial_modal_media = product.selected_variant.featured_media
+        endif
+
+        if initial_modal_media != null
+          render 'product-media', media: initial_modal_media, loop: section.settings.enable_video_looping, variant_image: section.settings.hide_variants
         endif
       -%}
 
@@ -47,7 +51,7 @@
             assign variant_image = false
           endif
 
-          unless media.id == product.selected_or_first_available_variant.featured_media.id
+          unless media.id == initial_modal_media.id
             render 'product-media', media: media, loop: section.settings.enable_video_looping, variant_image: variant_image
           endunless
         -%}

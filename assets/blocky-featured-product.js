@@ -63,7 +63,13 @@ function blockyScrollToSection(target) {
         this.initComplementary();
 
         this.querySelectorAll('[data-blocky-option-position]').forEach((input) => {
-          input.addEventListener('change', () => this.updateVariant());
+          input.addEventListener('change', () => this.updateVariant(true));
+          input.addEventListener('click', () => {
+            const variant = this.getSelectedVariant();
+            if (variant && this.mediaByVariant[variant.id]) {
+              this.activateMedia(this.mediaByVariant[variant.id]);
+            }
+          });
         });
 
         this.querySelector('[data-blocky-quantity-minus]')?.addEventListener('click', () => this.changeQuantity(-1));
@@ -74,7 +80,8 @@ function blockyScrollToSection(target) {
         });
 
         this.syncQuantity();
-        this.updateVariant();
+        const hasVariantInUrl = new URLSearchParams(window.location.search).has('variant');
+        this.updateVariant(hasVariantInUrl);
         this.initMainMediaSwipe();
         this.initThumbSliderWheel();
         this.initBundleSync();
@@ -817,7 +824,7 @@ function blockyScrollToSection(target) {
         });
       }
 
-      updateVariant() {
+      updateVariant(switchMedia = true) {
         if (!(this.product.variants || []).length) return;
 
         this.updateOptionAvailability();
@@ -846,8 +853,10 @@ function blockyScrollToSection(target) {
         if (addText && addButton) addText.innerHTML = (variant.available ? addButton.dataset.addText : addButton.dataset.soldOutText).replace(/\[PRICE\]/g, this.formatMoney(variant.price));
         if (paymentButton) paymentButton.hidden = !variant.available;
 
-        const mediaId = this.mediaByVariant[variant.id];
-        if (mediaId) this.activateMedia(mediaId);
+        if (switchMedia) {
+          const mediaId = this.mediaByVariant[variant.id];
+          if (mediaId) this.activateMedia(mediaId);
+        }
 
         this.syncToExternalBundles(variant);
         this.updateInventory(variant);

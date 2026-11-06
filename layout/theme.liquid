@@ -26,7 +26,10 @@
     {%- endif -%} {% endcomment %}
 
     {%- if request.page_type == 'product' and product.featured_media.preview_image != blank -%}
-      {%- assign waymelo_hero_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+      {%- assign waymelo_hero_media = product.featured_media -%}
+      {%- if product.selected_variant and product.selected_variant.featured_media != null -%}
+        {%- assign waymelo_hero_media = product.selected_variant.featured_media -%}
+      {%- endif -%}
       {%- assign waymelo_hero_image = waymelo_hero_media.preview_image -%}
       <link
         rel="preload"
