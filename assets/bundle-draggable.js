@@ -28,7 +28,7 @@
       // Pointer event handlers (Desktop mouse + Touchscreen)
       container.addEventListener('pointerdown', (e) => {
         // Do not intercept interactive form elements, checkboxes, selects, or buttons
-        if (e.target.closest('select, option, input, label, button, a, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, [role="button"]')) {
+        if (e.target.closest('select, option, input, label, button, a, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, .lb-cta-container, [role="button"]')) {
           return;
         }
 
@@ -108,7 +108,7 @@
 
     document.addEventListener('click', function(e) {
       // Ignore interactive controls: buttons, inputs, selects, labels, quantity controls, checkboxes
-      if (e.target.closest('button, select, option, input, label, .lb-qty-picker-cont, .lb-qty-picker, .lb-qty-add, .lb-qty-remove, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, [class*="cta-button"]')) {
+      if (e.target.closest('button, select, option, input, label, .lb-qty-picker-cont, .lb-qty-picker, .lb-qty-add, .lb-qty-remove, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, .lb-cta-container, .lb-bundle-cta-button')) {
         return;
       }
 
