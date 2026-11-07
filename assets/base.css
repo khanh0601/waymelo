@@ -4510,14 +4510,15 @@ body.template-product,
       overflow-x: auto !important;
       overflow-y: hidden !important;
       -webkit-overflow-scrolling: touch !important;
-      scroll-behavior: smooth !important;
-      scroll-snap-type: x mandatory !important;
+      scroll-behavior: auto !important;
+      scroll-snap-type: none !important;
       margin: 0 !important;
       padding: 4px 4px 10px 4px !important;
       box-sizing: border-box !important;
-      cursor: grab !important;
+      cursor: default !important;
       user-select: none !important;
       -webkit-user-select: none !important;
+      touch-action: pan-y !important;
       scrollbar-width: thin !important;
       scrollbar-color: rgba(22, 51, 39, 0.35) rgba(0, 0, 0, 0.05) !important;
     }
@@ -4543,7 +4544,7 @@ body.template-product,
       max-width: 230px !important;
       margin: 0 !important;
       box-sizing: border-box !important;
-      scroll-snap-align: start !important;
+      scroll-snap-align: none !important;
     }
     .lb-bundle-offers .lb-bundle-divider {
       display: flex !important;
@@ -4691,12 +4692,14 @@ body.template-product,
   overflow-x: auto !important;
   overflow-y: hidden !important;
   -webkit-overflow-scrolling: touch !important;
-  scroll-behavior: smooth !important;
+  scroll-behavior: auto !important;
+  scroll-snap-type: none !important;
   padding: 4px 4px 12px 4px !important;
   box-sizing: border-box !important;
-  cursor: grab !important;
+  cursor: default !important;
   user-select: none !important;
   -webkit-user-select: none !important;
+  touch-action: pan-y !important;
   scrollbar-width: thin !important;
   scrollbar-color: rgba(22, 51, 39, 0.35) rgba(0, 0, 0, 0.05) !important;
 }
@@ -4720,14 +4723,28 @@ body.template-product,
 }
 
 .lb-bundle-offers.is-dragging {
-  cursor: grabbing !important;
+  cursor: default !important;
   scroll-behavior: auto !important;
   scroll-snap-type: none !important;
 }
 
-.lb-bundle-offers.is-dragging * {
+.lb-bundle-offers *,
+[class*="lb-bundle-offers"] * {
   user-select: none !important;
   -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+  user-drag: none !important;
+  scroll-snap-align: none !important;
+}
+
+.lb-bundle-offers select,
+.lb-bundle-offers option,
+.lb-bundle-offers input,
+.lb-bundle-offers label,
+.lb-bundle-offers button,
+.lb-bundle-offers a {
+  cursor: pointer !important;
+  user-select: auto !important;
 }
 
 .lb-bundle-offers .lb-card-img {
@@ -4745,7 +4762,7 @@ body.template-product,
   height: auto !important;
   display: flex !important;
   box-sizing: border-box !important;
-  scroll-snap-align: start !important;
+  scroll-snap-align: none !important;
 }
 
 .lb-bundle-offers .lb-bundle-divider {

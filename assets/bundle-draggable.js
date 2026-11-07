@@ -1,64 +1,98 @@
 /**
  * Selleasy Bundle Draggable & Swipeable Carousel
- * Enables smooth mouse drag-to-scroll on Desktop and enhanced touch swipe on Mobile
+ * Enables smooth drag-to-scroll on Desktop and touch swipe on Mobile
+ * No hand cursor (standard cursor preserved)
  */
 (function() {
   function initDraggableBundle() {
-    const containers = document.querySelectorAll('.lb-bundle-offers, [class*="lb-bundle-offers"]');
+    const selector = '.lb-bundle-offers, [class*="lb-bundle-offers"], .lb-bundle-products-cont, .lb-bundle-products, .lb-addon-cont';
+    const containers = document.querySelectorAll(selector);
+
     containers.forEach(container => {
       if (container.dataset.dragInit === 'true') return;
       container.dataset.dragInit = 'true';
 
       let isDown = false;
       let startX = 0;
-      let scrollLeft = 0;
-      let hasDragged = false;
+      let startY = 0;
+      let initialScrollLeft = 0;
+      let isDragging = false;
+      let preventClick = false;
 
-      // Mouse drag handlers (Desktop)
-      container.addEventListener('mousedown', (e) => {
-        // Never hijack clicks on inputs, checkboxes, selects, or labels
-        if (e.target.closest('select, option, input, label, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, button, a')) {
+      // Prevent native HTML5 image/text drag-and-drop
+      container.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+      });
+
+      // Pointer event handlers (Desktop mouse + Touchscreen)
+      container.addEventListener('pointerdown', (e) => {
+        // Do not intercept interactive form elements, checkboxes, selects, or buttons
+        if (e.target.closest('select, option, input, label, button, a, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, [role="button"]')) {
           return;
         }
+
         isDown = true;
-        hasDragged = false;
-        container.classList.add('is-dragging');
-        startX = e.pageX - container.offsetLeft;
-        scrollLeft = container.scrollLeft;
-      });
+        isDragging = false;
+        preventClick = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialScrollLeft = container.scrollLeft;
 
-      window.addEventListener('mouseup', () => {
-        if (!isDown) return;
-        isDown = false;
-        container.classList.remove('is-dragging');
-        setTimeout(() => {
-          hasDragged = false;
-        }, 50);
-      });
+        // Disable smooth scroll during drag to prevent animation fighting
+        container.style.scrollBehavior = 'auto';
 
-      window.addEventListener('mouseleave', () => {
-        if (!isDown) return;
-        isDown = false;
-        container.classList.remove('is-dragging');
-        setTimeout(() => {
-          hasDragged = false;
-        }, 50);
-      });
-
-      container.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        const x = e.pageX - container.offsetLeft;
-        const walk = (x - startX) * 1.6;
-        if (Math.abs(x - startX) > 5) {
-          hasDragged = true;
+        if (e.pointerType === 'mouse') {
           e.preventDefault();
         }
-        container.scrollLeft = scrollLeft - walk;
+
+        try {
+          container.setPointerCapture(e.pointerId);
+        } catch (err) {}
       });
 
-      // Prevent accidental clicks if the user was dragging
+      container.addEventListener('pointermove', (e) => {
+        if (!isDown) return;
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+
+        // Distinguish intentional horizontal drag from vertical page scroll
+        if (!isDragging && Math.abs(deltaX) > 4) {
+          isDragging = true;
+          preventClick = true;
+          container.classList.add('is-dragging');
+        }
+
+        if (isDragging) {
+          container.scrollLeft = initialScrollLeft - deltaX;
+          e.preventDefault();
+        }
+      });
+
+      function endDrag(e) {
+        if (!isDown) return;
+        isDown = false;
+
+        try {
+          container.releasePointerCapture(e.pointerId);
+        } catch (err) {}
+
+        container.classList.remove('is-dragging');
+        container.style.scrollBehavior = '';
+
+        if (isDragging) {
+          setTimeout(() => {
+            isDragging = false;
+            preventClick = false;
+          }, 60);
+        }
+      }
+
+      container.addEventListener('pointerup', endDrag);
+      container.addEventListener('pointercancel', endDrag);
+
+      // Prevent triggering click on links/cards after dragging
       container.addEventListener('click', (e) => {
-        if (hasDragged) {
+        if (preventClick || isDragging) {
           e.preventDefault();
           e.stopPropagation();
         }
@@ -72,7 +106,7 @@
     initDraggableBundle();
   }
 
-  // Observe for dynamic insertion by Selleasy custom elements
+  // Observe for dynamic insertion by Selleasy custom elements / async DOM updates
   const observer = new MutationObserver(() => {
     initDraggableBundle();
   });
