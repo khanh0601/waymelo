@@ -116,7 +116,7 @@
       const clickable = e.target.closest('lb-card-image, .lb-card-image-cont, .lb-card-img, lb-card-title, .lb-card-title, .lb-card-title-cont');
       if (!clickable) return;
 
-      const card = clickable.closest('lb-upsell-long-card, [class*="lb-product-card"], .lb-long-card');
+      const card = clickable.closest('[lb-product-handle]') || clickable.closest('lb-upsell-long-card, [class*="lb-product-card"]');
       if (!card) return;
 
       const handle = card.getAttribute('lb-product-handle');
