@@ -4519,19 +4519,14 @@ body.template-product,
       user-select: none !important;
       -webkit-user-select: none !important;
       touch-action: pan-y !important;
-      scrollbar-width: thin !important;
-      scrollbar-color: rgba(22, 51, 39, 0.35) rgba(0, 0, 0, 0.05) !important;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
     }
-    .lb-bundle-offers::-webkit-scrollbar {
-      height: 5px !important;
-    }
-    .lb-bundle-offers::-webkit-scrollbar-track {
-      background: #f1ece6 !important;
-      border-radius: 999px !important;
-    }
-    .lb-bundle-offers::-webkit-scrollbar-thumb {
-      background: #163327 !important;
-      border-radius: 999px !important;
+    .lb-bundle-offers::-webkit-scrollbar,
+    [class*="lb-bundle-offers"]::-webkit-scrollbar {
+      display: none !important;
+      height: 0 !important;
+      width: 0 !important;
     }
     .lb-bundle-offers lb-upsell-long-card.lb-product-card,
     .lb-bundle-offers .lb-upsell-long-card.lb-product-card,
@@ -4700,26 +4695,15 @@ body.template-product,
   user-select: none !important;
   -webkit-user-select: none !important;
   touch-action: pan-y !important;
-  scrollbar-width: thin !important;
-  scrollbar-color: rgba(22, 51, 39, 0.35) rgba(0, 0, 0, 0.05) !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-.lb-bundle-offers::-webkit-scrollbar {
-  height: 6px !important;
-}
-
-.lb-bundle-offers::-webkit-scrollbar-track {
-  background: #f1ece6 !important;
-  border-radius: 999px !important;
-}
-
-.lb-bundle-offers::-webkit-scrollbar-thumb {
-  background: #163327 !important;
-  border-radius: 999px !important;
-}
-
-.lb-bundle-offers::-webkit-scrollbar-thumb:hover {
-  background: #0f241b !important;
+.lb-bundle-offers::-webkit-scrollbar,
+[class*="lb-bundle-offers"]::-webkit-scrollbar {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 .lb-bundle-offers.is-dragging {
