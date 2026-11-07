@@ -1,8 +1,8 @@
 /**
  * Selleasy Bundle Draggable & Swipeable Carousel
- * - Enables smooth drag-to-scroll on Desktop and touch swipe on Mobile
- * - Preserves standard cursor (no hand/grab cursor)
- * - Native Selleasy Preview Popup handles product preview on card image & title click
+ * - Smooth drag-to-scroll on Desktop and touch swipe on Mobile (no hand cursor)
+ * - Safe pointer tracking: Only captures pointer and prevents click when deltaX > 6px (actual drag)
+ * - Standard click on card image & title naturally triggers Selleasy Preview Popup
  */
 (function() {
   'use strict';
@@ -21,8 +21,9 @@
       let initialScrollLeft = 0;
       let isDragging = false;
       let preventClick = false;
+      let hasCaptured = false;
 
-      // Prevent native HTML5 image/text drag-and-drop
+      // Prevent native HTML5 image/text drag-and-drop ghosting
       container.addEventListener('dragstart', (e) => {
         e.preventDefault();
       });
@@ -37,19 +38,13 @@
         isDown = true;
         isDragging = false;
         preventClick = false;
+        hasCaptured = false;
         startX = e.clientX;
         startY = e.clientY;
         initialScrollLeft = container.scrollLeft;
 
-        container.style.scrollBehavior = 'auto';
-
-        if (e.pointerType === 'mouse') {
-          e.preventDefault();
-        }
-
-        try {
-          container.setPointerCapture(e.pointerId);
-        } catch (err) {}
+        // Note: Do NOT call e.preventDefault() here so that normal mouse clicks are preserved!
+        // Note: Do NOT call setPointerCapture here so that click targets (img, title) receive the click!
       });
 
       container.addEventListener('pointermove', (e) => {
@@ -57,11 +52,18 @@
         const deltaX = e.clientX - startX;
         const deltaY = e.clientY - startY;
 
-        // Distinguish intentional horizontal drag from vertical page scroll
-        if (!isDragging && Math.abs(deltaX) > 4) {
+        // Only start dragging if horizontal movement exceeds 6px
+        if (!isDragging && Math.abs(deltaX) > 6 && Math.abs(deltaX) > Math.abs(deltaY)) {
           isDragging = true;
           preventClick = true;
           container.classList.add('is-dragging');
+          container.style.scrollBehavior = 'auto';
+
+          // Now capture pointer to ensure smooth drag tracking even outside container
+          try {
+            container.setPointerCapture(e.pointerId);
+            hasCaptured = true;
+          } catch (err) {}
         }
 
         if (isDragging) {
@@ -74,25 +76,31 @@
         if (!isDown) return;
         isDown = false;
 
-        try {
-          container.releasePointerCapture(e.pointerId);
-        } catch (err) {}
+        if (hasCaptured) {
+          try {
+            container.releasePointerCapture(e.pointerId);
+          } catch (err) {}
+          hasCaptured = false;
+        }
 
         container.classList.remove('is-dragging');
         container.style.scrollBehavior = '';
 
         if (isDragging) {
+          // Block accidental click after drag
           setTimeout(() => {
             isDragging = false;
             preventClick = false;
-          }, 60);
+          }, 100);
+        } else {
+          preventClick = false;
         }
       }
 
       container.addEventListener('pointerup', endDrag);
       container.addEventListener('pointercancel', endDrag);
 
-      // Prevent triggering clicks when dragging was performed
+      // Prevent triggering click when an actual drag occurred
       container.addEventListener('click', (e) => {
         if (preventClick || isDragging) {
           e.preventDefault();
