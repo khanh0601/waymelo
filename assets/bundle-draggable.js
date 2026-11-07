@@ -2,10 +2,11 @@
  * Selleasy Bundle Draggable & Swipeable Carousel
  * Enables smooth drag-to-scroll on Desktop and touch swipe on Mobile
  * No hand cursor (standard cursor preserved)
+ * Enables direct click navigation on product card images and titles
  */
 (function() {
   function initDraggableBundle() {
-    const selector = '.lb-bundle-offers, [class*="lb-bundle-offers"], .lb-bundle-products-cont, .lb-bundle-products, .lb-addon-cont';
+    const selector = '.lb-bundle-offers, [class*="lb-bundle-offers"], .lb-bundle-products-cont, .lb-bundle-products';
     const containers = document.querySelectorAll(selector);
 
     containers.forEach(container => {
@@ -100,10 +101,39 @@
     });
   }
 
+  // Selleasy Product Cards: Click on Image or Title to navigate to product page
+  function initProductCardNavigation() {
+    if (window._selleasyNavInitialized) return;
+    window._selleasyNavInitialized = true;
+
+    document.addEventListener('click', function(e) {
+      // Ignore interactive controls: buttons, inputs, selects, labels, quantity controls, checkboxes
+      if (e.target.closest('button, select, option, input, label, .lb-qty-picker-cont, .lb-qty-picker, .lb-qty-add, .lb-qty-remove, .lb-checkbox-cont, .lb-custom-checkbox, .lb-card-checkbox-cont, [class*="cta-button"]')) {
+        return;
+      }
+
+      // Check if clicked element is part of product card image or title
+      const clickable = e.target.closest('lb-card-image, .lb-card-image-cont, .lb-card-img, lb-card-title, .lb-card-title, .lb-card-title-cont');
+      if (!clickable) return;
+
+      const card = clickable.closest('lb-upsell-long-card, [class*="lb-product-card"], .lb-long-card');
+      if (!card) return;
+
+      const handle = card.getAttribute('lb-product-handle');
+      if (handle) {
+        window.location.href = '/products/' + handle;
+      }
+    });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDraggableBundle);
+    document.addEventListener('DOMContentLoaded', () => {
+      initDraggableBundle();
+      initProductCardNavigation();
+    });
   } else {
     initDraggableBundle();
+    initProductCardNavigation();
   }
 
   // Observe for dynamic insertion by Selleasy custom elements / async DOM updates

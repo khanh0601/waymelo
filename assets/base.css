@@ -4825,6 +4825,34 @@ body.template-product,
 }
 
 /* =========================================================================
+   SELLEASY PRODUCT CARDS: CLICKABLE IMAGE & TITLE TO PRODUCT PAGE
+   - Visual pointer cue & subtle underline on hover
+   ========================================================================= */
+[class*="lb-widget-"] lb-card-image,
+[class*="lb-widget-"] .lb-card-image-cont,
+[class*="lb-widget-"] .lb-card-img,
+[class*="lb-widget-"] lb-card-title,
+[class*="lb-widget-"] .lb-card-title,
+.lb-addon-cont lb-card-image,
+.lb-addon-cont .lb-card-image-cont,
+.lb-addon-cont .lb-card-img,
+.lb-addon-cont lb-card-title,
+.lb-addon-cont .lb-card-title,
+.lb-bundle-offers lb-card-image,
+.lb-bundle-offers .lb-card-image-cont,
+.lb-bundle-offers .lb-card-img,
+.lb-bundle-offers lb-card-title,
+.lb-bundle-offers .lb-card-title {
+  cursor: pointer !important;
+}
+
+[class*="lb-widget-"] .lb-card-title:hover,
+.lb-addon-cont .lb-card-title:hover,
+.lb-bundle-offers .lb-card-title:hover {
+  text-decoration: underline !important;
+}
+
+/* =========================================================================
    SELLEASY BUNDLE & UPSELL NUMBERS & PRICING TYPOGRAPHY (BIGGER & BOLDER)
    - High legibility, crisp contrast, elegant prominence
    ========================================================================= */
